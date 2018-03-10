@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
             //Move
             playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * walkSpeed * Time.deltaTime));       //Add new position to current position.
             //Turn
-            playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, turnSpeed * Time.deltaTime));    //Gradually rotate from current direction to new direction.
+            playerRigidbody.MoveRotation(Quaternion.Slerp(currentRotation, newRotation, turnSpeed * Time.deltaTime));    //Gradually rotate from current direction to new direction.
         }
     }
 
