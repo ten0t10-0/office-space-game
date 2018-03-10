@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    //NB: This script controls the Rigidbody of the player; collisions work better this way.
-
     //Public variables can be edited within Unity, so that the script doesn't need to recompile every time if you had to change them here
-    public float walkSpeed = 1f;            // Walking speed
-    public float turnSpeed = 1f;       // Turning Speed
+    public float walkSpeed = 1f; 
+    public float turnSpeed = 1f;
 
-    Vector3 movement;                   // Stores the direction of the player's movement.
     Animator animator;                  // Reference to the animator component.
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
-    Quaternion newRotation;             //Used to get the player's rotation in Quaternions
 
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()
@@ -27,6 +23,7 @@ public class PlayerController : MonoBehaviour
     {
         // Store the input axes.
         //GetAxisRaw() is used so that movement is instant instead of gradual.
+        //***Might need to change Input method to work for all devices.
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -34,38 +31,37 @@ public class PlayerController : MonoBehaviour
         Move(horizontal, vertical);
 
         // Animate the player.
-        Animating(horizontal, vertical);
+        AnimateMoving(horizontal, vertical);
     }
 
     void Move(float h, float v)
     {
+        Vector3 currentPostion, newPosition;
+        Quaternion currentRotation, newRotation;
+
+        Vector3 cameraForward, cameraRight;     //Used to move the player according to the X and Z axes (right/left & forward/back) of the camera.
+
         if (h != 0 || v != 0)
         {
-            // Set the movement vector based on the axis input.
-            movement.Set(h, 0, v);
+            currentPostion = playerRigidbody.position;
+            currentRotation = playerRigidbody.rotation;
 
-            Turn();
+            cameraForward = Camera.main.transform.forward;
+            cameraRight = Camera.main.transform.right;
+            cameraForward.y = cameraRight.y = 0;    //Prevent player from moving up or down.
 
-            // Normalise the movement vector and make it proportional to the speed per second.
-            movement = movement.normalized * walkSpeed * Time.deltaTime;
+            newPosition = cameraForward * v + cameraRight * h;
+            newRotation = Quaternion.LookRotation(newPosition, Vector3.up);
 
-            // Move the player to it's current position plus the movement.
-            playerRigidbody.MovePosition(transform.position + movement);
+            //NB: Rigidbody gets moved so that collisions work properly.
+            //Move
+            playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * walkSpeed * Time.deltaTime));       //Add new position to current position.
+            //Turn
+            playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, turnSpeed * Time.deltaTime));    //Gradually rotate from current direction to new direction.
         }
     }
 
-    void Turn()
-    {
-        newRotation = Quaternion.LookRotation(movement);
-
-        //Gradually rotates player (from current rotation) to new rotation. NOTE Time.deltaTime multiplier!
-        playerRigidbody.rotation = Quaternion.Slerp(playerRigidbody.rotation, newRotation, Time.deltaTime * turnSpeed);
-
-        //Instantly points player to new rotation
-        //playerRigidbody.MoveRotation(newRotation);
-    }
-
-    void Animating(float h, float v)
+    void AnimateMoving(float h, float v)
     {
         // Create a boolean that is true if either of the input axes is not equal to 0.
         bool walking = h != 0 || v != 0;

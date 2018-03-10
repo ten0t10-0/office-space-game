@@ -1348,8 +1348,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b564843b9f3d34caf67d1c1bc55a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRigidbody: {fileID: 1495239141}
-  playerTarget: {fileID: 1650220260}
+  target: {fileID: 64230938}
+  targetHeightOffset: 2.325
+  maxDistanceFromTarget: 10
+  minDistanceFromTarget: 6
+  zoomSpeed: 15
 --- !u!114 &2015045692
 MonoBehaviour:
   m_ObjectHideFlags: 0
