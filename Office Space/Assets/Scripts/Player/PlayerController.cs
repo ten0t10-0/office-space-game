@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Public variables can be edited within Unity, so that the script doesn't need to recompile every time if you had to change them here
-    public float walkSpeed = 1f; 
-    public float turnSpeed = 1f;
+    public float walkSpeed = 1f;
 
     Animator animator;                  // Reference to the animator component.
     Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
@@ -41,6 +40,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 cameraForward, cameraRight;     //Used to move the player according to the X and Z axes (right/left & forward/back) of the camera.
 
+        float slerpTimeStart = Time.time;
+
         if (h != 0 || v != 0)
         {
             currentPostion = playerRigidbody.position;
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
             //Move
             playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * walkSpeed * Time.deltaTime));       //Add new position to current position.
             //Turn
-            playerRigidbody.MoveRotation(Quaternion.Slerp(currentRotation, newRotation, turnSpeed * Time.deltaTime));    //Gradually rotate from current direction to new direction.
+            playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
         }
     }
 
