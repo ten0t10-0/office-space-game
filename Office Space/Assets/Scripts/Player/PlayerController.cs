@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
     //Public variables can be edited within Unity, so that the script doesn't need to recompile every time if you had to change them here
     public float walkSpeed = 1f;
 
-    Animator animator;                  // Reference to the animator component.
-    Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
+    private Animator animator;                  // Reference to the animator component.
+    private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()

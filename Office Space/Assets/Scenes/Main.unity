@@ -1224,7 +1224,6 @@ GameObject:
   - component: {fileID: 1495239141}
   - component: {fileID: 1495239140}
   - component: {fileID: 1495239142}
-  - component: {fileID: 1495239145}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -1307,20 +1306,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1495239145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1495239139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 968254dfc73bb1347b69ca2aa6d21b30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  body: {fileID: 984172267}
-  bodyOnez01: {fileID: 435091210}
-  clothOnez01: {fileID: 2672794}
 --- !u!1 &1516817033
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,6 +1660,7 @@ GameObject:
   - component: {fileID: 2015045687}
   - component: {fileID: 2015045691}
   - component: {fileID: 2015045692}
+  - component: {fileID: 2015045693}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1757,6 +1743,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMouseControl: 1
+  verticalSensitivity: 2
+  horizontalSensitivity: 2
   target: {fileID: 1309112032}
   initialYOffset: 3
   maxDistanceFromTarget: 10
@@ -1774,6 +1762,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: d06115e22c1ecab4a98ff80e496c72e2, type: 2}
+--- !u!114 &2015045693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2015045686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2922841a48bdc42a3966f3e8205e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMaster: {fileID: 1415113535136420, guid: 21273d5281c22804e824eb34d5b99661, type: 2}
 --- !u!4 &2015411413 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4363201477249098, guid: 6133741666171864e8d8047911d92885,
