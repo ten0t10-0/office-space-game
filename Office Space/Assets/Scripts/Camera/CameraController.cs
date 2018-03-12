@@ -43,8 +43,8 @@ public class CameraController : MonoBehaviour
     {
         if (cameraMouseControl)
         {
-            float horizontal = Input.GetAxisRaw("Mouse X") * 2; //*
-            float vertical = Input.GetAxisRaw("Mouse Y") * 2 * -1; //*
+            float horizontal = Input.GetAxisRaw("Mouse X") * horizontalSensitivity; //*
+            float vertical = Input.GetAxisRaw("Mouse Y") * verticalSensitivity * -1; //*
 
             Vector3 currentEulerAngles = target.rotation.eulerAngles;
             float currentXAngle = currentEulerAngles.x;
