@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4894069694185576}
   - component: {fileID: 114137614351113880}
+  - component: {fileID: 114554498239400020}
+  - component: {fileID: 114599112133082384}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -51,4 +53,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09973a4b5c91074f982dc3c35537041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  examplePlayerMoney: 10000
+  initialPlayerName: New Player
+  initialBusinessName: My Business
+  initialPlayerMoney: 10000
+  initialPlayerInventorySpace: 100
+  Difficulty: 0
+  GameTimeHour: 23
+  GameTimeMinutes: 55
+  GameTimeSpeed: 60
+--- !u!114 &114554498239400020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e2754a5c338375419d450c49fe1e98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tempPreNames:
+  - Galaxy
+  - Hello
+  - Illuminati
+  - FizzBuzz
+  - Perfect
+  tempPostNames:
+  - Suppliers
+  - Inc.
+  - Ltd
+  - (Pty) Ltd
+  tempUniqueNames:
+  - Test Supplier
+--- !u!114 &114599112133082384
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e5c43e71c0e06540b77437bbbfab665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
