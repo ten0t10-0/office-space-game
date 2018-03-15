@@ -61,6 +61,7 @@ MonoBehaviour:
   GameTimeHour: 23
   GameTimeMinutes: 55
   GameTimeSpeed: 60
+  initialNumberOfSuppliers: 10
 --- !u!114 &114554498239400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -72,19 +73,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2754a5c338375419d450c49fe1e98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempPreNames:
+  namesPre:
   - Galaxy
   - Hello
-  - Illuminati
-  - FizzBuzz
-  - Perfect
-  tempPostNames:
+  - Great
+  - Practical
+  - Unity
+  - Boost
+  - Cycle
+  - Global
+  - Onward
+  - Advance
+  namesPost:
   - Suppliers
-  - Inc.
-  - Ltd
+  - Inc
   - (Pty) Ltd
-  tempUniqueNames:
-  - Test Supplier
+  - Ltd
+  - Craft
+  - Traders
+  - Distributors
+  namesUnique:
+  - Bonus Supplier
 --- !u!114 &114599112133082384
 MonoBehaviour:
   m_ObjectHideFlags: 1
