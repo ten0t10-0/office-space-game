@@ -21,10 +21,11 @@ public class Player
     }
 
     //Existing Player
-    public Player(string name, float money, Supplier business)
+    public Player(string name, float money, Supplier business, float playTime)
     {
         Name = name;
         Money = money;
+        PlayTime = playTime;
 
         Business = business;
     }

@@ -106,7 +106,11 @@ public class GameMaster : MonoBehaviour
             GameTimeHour++;
 
             if (GameTimeHour >= 24)
+            {
                 GameTimeHour = 0;
+
+                UpdateGlobalAges();
+            }
         }
     }
 
@@ -119,6 +123,13 @@ public class GameMaster : MonoBehaviour
         gameTimeString += GameTimeMinutes.ToString().PadLeft(2, '0');
 
         return gameTimeString;
+    }
+
+    public void UpdateGlobalAges() //**Called from AdvanceGameTime() method, when the clock is set back to 00:00
+    {
+        //PLAYER INVENTORY ITEMS
+        foreach (InventoryItem item in Player.Business.Inventory.InventoryItems)
+            item.Age += 1;
     }
     #endregion
 

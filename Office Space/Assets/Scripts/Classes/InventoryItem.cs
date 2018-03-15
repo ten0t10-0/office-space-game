@@ -7,7 +7,7 @@ public class InventoryItem
     public Item Item { get; set; }
     public int Quantity { get; set; }
     public float Condition { get; set; }
-    public float Age { get; set; }
+    public float Age { get; set; } //in days
 
     #region <Constructors>
     public InventoryItem(Item item, int quantity, float condition)

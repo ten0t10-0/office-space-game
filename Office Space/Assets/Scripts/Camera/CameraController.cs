@@ -16,6 +16,8 @@ public class CameraController : MonoBehaviour
 
     private Vector3 offset;
 
+    private float physicsSphereRadius = 0.5f;
+
     //max/min angles used when cameraMouseControl is true. Used to limit the camera target rotation so that it stops rotating when it is above or below the player.
     private float maxTargetAngle = 89.9f;
     private float minTargetAngle = -45f;
@@ -55,7 +57,6 @@ public class CameraController : MonoBehaviour
             Vector3 newPosition;
 
             RaycastHit wallHit;
-            float physicsSphereRadius = 0.5f;
 
             if ((currentXAngle % 360) > 180)
                 currentXAngle = currentXAngle - 360;
@@ -91,15 +92,18 @@ public class CameraController : MonoBehaviour
         //***Might need to change Input method for this to work on all devices.
         if (cameraMouseControl)
         {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            if (Physics.OverlapSphere(transform.position, physicsSphereRadius).Length == 0)
             {
-                if (Vector3.Distance(target.position, transform.position) > minDistanceFromTarget)
-                    offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
-            }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            {
-                if (Vector3.Distance(target.position, transform.position) < maxDistanceFromTarget)
-                    offset += Vector3.forward * zoomSpeed * Time.deltaTime;
+                if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                {
+                    if (Vector3.Distance(target.position, transform.position) > minDistanceFromTarget)
+                        offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
+                }
+                else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                {
+                    if (Vector3.Distance(target.position, transform.position) < maxDistanceFromTarget)
+                        offset += Vector3.forward * zoomSpeed * Time.deltaTime;
+                }
             }
         }
         else
