@@ -29,6 +29,7 @@ public class GameMaster : MonoBehaviour
 
     [HideInInspector]
     public List<Supplier> Suppliers;
+    public int initialNumberOfSuppliers = 5;
 
     //TIMERS/LAPSES:
     private float tPlayerPlayTime;
@@ -57,11 +58,15 @@ public class GameMaster : MonoBehaviour
 
     private void NewGameTEST()
     {
+        string generateSuppliersResult;
+
         Player = new Player(initialPlayerName, initialPlayerMoney, initialBusinessName, initialPlayerInventorySpace);
 
-        Suppliers = supplierManager.GenerateSuppliers(5);
+        //TEMP out var
+        Suppliers = supplierManager.GenerateSuppliers(initialNumberOfSuppliers, out generateSuppliersResult);
 
         #region **DEBUG LOGS**
+        Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
         CreateDebugLogs();
         #endregion
 
@@ -83,7 +88,7 @@ public class GameMaster : MonoBehaviour
             #endregion
         }
 
-        if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) //Multiplied by time.deltaTime so that if the game is lagging bad, the in game time will adjust.
+        if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) //Time.deltaTime added so that if the game is lagging bad, the in game time will adjust.
         {
             tGameTime = currentTime;
             AdvanceInGameTime();
@@ -109,7 +114,7 @@ public class GameMaster : MonoBehaviour
             {
                 GameTimeHour = 0;
 
-                UpdateGlobalAges();
+                NextDay();
             }
         }
     }
@@ -125,7 +130,7 @@ public class GameMaster : MonoBehaviour
         return gameTimeString;
     }
 
-    public void UpdateGlobalAges() //**Called from AdvanceGameTime() method, when the clock is set back to 00:00
+    private void NextDay() //**Called from AdvanceGameTime() method, when the clock is set back to 00:00
     {
         //PLAYER INVENTORY ITEMS
         foreach (InventoryItem item in Player.Business.Inventory.InventoryItems)

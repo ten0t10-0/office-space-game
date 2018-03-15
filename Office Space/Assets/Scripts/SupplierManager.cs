@@ -4,85 +4,82 @@ using UnityEngine;
 
 public class SupplierManager : MonoBehaviour
 {
-    #region <PRESET NAMES LISTS>
-    public List<string> tempPreNames = new List<string>()
+    #region <PRESET NAMES LISTS + VARS>
+    public List<string> namesPre = new List<string>()
         {
             "Galaxy", "Hello", "Illuminati", "FizzBuzz", "Perfect"
         };
-
-    public List<string> tempPostNames = new List<string>()
+    public List<string> namesPost = new List<string>()
         {
             "Suppliers", "Inc", "Ltd", "(Pty) Ltd"
         };
-
-    public List<string> tempUniqueNames = new List<string>()
+    public List<string> namesUnique = new List<string>()
         {
-            "Test Supplier"
+            "Bonus Supplier"
         };
+
+    private List<string> namesPreRemaining;
     #endregion
 
-    private class MinMax
+    private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
+    private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
+    private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
+
+    public List<Supplier> GenerateSuppliers(int count, out string message)
     {
-        public float MinimumValue { get; set; }
-        public float MaximumValue { get; set; }
+        List<Supplier> suppliers = new List<Supplier>();
 
-        public MinMax(float min, float max)
+        string currentGeneratedName;
+
+        message = "Uh oh!";
+
+        namesPreRemaining = new List<string>();
+
+        for (int i = 0; i < namesPre.Count; i++)
+        { namesPreRemaining.Add(namesPre[i]); }
+
+        for (int c = 1; c <= count; c++)
         {
-            MinimumValue = min;
-            MaximumValue = max;
+            currentGeneratedName = GenerateSupplierName();
+
+            if (currentGeneratedName != "")
+                suppliers.Add(new Supplier(currentGeneratedName));
+            else
+            {
+                c = count + 1; //set sentinel value to end the FOR loop
+                message = "Partial Success - " + suppliers.Count.ToString() + " out of " + count.ToString() + " suppliers were generated!";
+            }
         }
-    }
 
-    private MinMax markupPercent = new MinMax(0.00f, 4.00f); //Up to 400%
-    private MinMax buyPriceMult = new MinMax(0.25f, 3.00f);
-    private MinMax conditionPercent = new MinMax(0.25f, 1.00f);
-
-    public List<Supplier> GenerateSuppliers(int count)
-    {
-        List<Supplier> suppliers = new List<Supplier>(count);
-
-        for (int i = 1; i <= count; i++)
-        {
-            suppliers.Add(new Supplier(GenerateSupplierName()));
-        }
+        if (suppliers.Count == count)
+            message = "Success - All " + count.ToString() + " suppliers were generated!";
 
         return suppliers;
     }
 
-    public string GenerateSupplierName()
+    //Generate name using a random pre-name + <space> + post-name
+    private string GenerateSupplierName()
     {
         string generatedName = "";
 
-        int random = Random.Range(0, 2);
+        int iPreName, iPostName;
 
-        switch (random)
+        if (namesPreRemaining.Count != 0)
         {
-            case 0:
-                {
-                    random = Random.Range(0, tempPreNames.Count);
-                    generatedName += tempPreNames[random] + " ";
+            iPreName = Random.Range(0, namesPreRemaining.Count);
+            iPostName = Random.Range(0, namesPost.Count);
 
-                    random = Random.Range(0, tempPostNames.Count);
-                    generatedName += tempPostNames[random];
+            generatedName = namesPreRemaining[iPreName] + ' ' + namesPost[iPostName];
 
-                    break;
-                }
-            case 1:
-                {
-                    if (tempUniqueNames.Count != 0)
-                    {
-                        random = Random.Range(0, tempUniqueNames.Count);
-                        generatedName = tempUniqueNames[random];
-
-                        tempUniqueNames.RemoveAt(random);
-                    }
-                    else
-                        generatedName = GenerateSupplierName();
-
-                    break;
-                }
+            namesPreRemaining.RemoveAt(iPreName);
         }
 
         return generatedName;
+    }
+
+    private string GetRandomUniqueName()
+    {
+        int random = Random.Range(0, namesUnique.Count);
+        return namesUnique[random];
     }
 }
