@@ -26,6 +26,30 @@ public class Inventory
     }
     #endregion
 
+    #region <Calculated Properties>
+    public float TotalSpaceUsed()
+    {
+        float spaceUsed = 0;
+
+        foreach (InventoryItem item in InventoryItems)
+            spaceUsed += item.SpaceUsed();
+
+        return spaceUsed;
+    }
+
+    //*Inventory Valuation: research
+    public float Valuation()
+    {
+        float value = 0;
+
+        foreach (InventoryItem item in InventoryItems)
+            value += item.Value();
+
+        return value;
+    }
+    #endregion
+
+    #region Methods
     public bool AddItem(Item item, int quantity, float condition, out string message)
     {
         //*Maybe rather store on and retrieve messages from classes/GameMaster*
@@ -40,7 +64,7 @@ public class Inventory
             if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
             {
                 InventoryItems.Add(new InventoryItem(item, quantity, condition));
-                //message = "Item(s) successfully stored!";
+                message = "Item(s) successfully stored!";
             }
             else
                 message = "You do not have enough Inventory space to accomodate this order!";
@@ -81,36 +105,16 @@ public class Inventory
         //message = "Maximum space successfully increased by " + newSpaceIncrement.ToString() + "!";
     }
 
-    public float TotalSpaceUsed()
-    {
-        float spaceUsed = 0;
-
-        foreach (InventoryItem item in InventoryItems)
-            spaceUsed += item.SpaceUsed();
-
-        return spaceUsed;
-    }
-
-    //*Inventory Valuation: research
-    public float Valuation()
-    {
-        float value = 0;
-
-        foreach (InventoryItem item in InventoryItems)
-            value += item.Value();
-
-        return value;
-    }
-
     //*IDEA: Clear all items in inventory function. Scenario: sell at half price informally. etc
     public void Clear()
     {
         InventoryItems.Clear();
     }
+    #endregion
 
     //TEMP:
     public override string ToString()
     {
-        return "MaximumSpace: " + MaximumSpace.ToString();
+        return "Valuation: " + Valuation().ToString() + "; TotalSpaceUsed: " + TotalSpaceUsed().ToString() + "; MaximumSpace: " + MaximumSpace.ToString();
     }
 }

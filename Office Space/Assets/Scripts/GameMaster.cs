@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public enum ItemQuality { None, Low, Medium, High }
 public enum ItemCategory { None, Furniture, Electronics, Appliances, Clothing, Media } //Add...
@@ -16,20 +17,24 @@ public class GameMaster : MonoBehaviour
 
     //PLAYER:
     public Player Player;
-    public string initialPlayerName = "New Player";
-    public string initialBusinessName = "My Business";
-    public float initialPlayerMoney = 10000;
-    public float initialPlayerInventorySpace = 100;
+    public string initPlayerName = "New Player";
+    public string initBusinessName = "My Business";
+    public float initPlayerMoney = 10000;
+    public float initPlayerInventorySpace = 100;
 
     //GAME:
     public int Difficulty = 0; //0 = Tutorial
 
-    public int GameTimeHour, GameTimeMinutes;
+    public DateTime GameDateTime;
+
+    public int initGameDateYear, initGameDateMonth, initGameDateDay;
+
+    public int initGameTimeHour, initGameTimeMinutes;
     public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
 
     [HideInInspector]
     public List<Supplier> Suppliers;
-    public int initialNumberOfSuppliers = 5;
+    public int initNumberOfSuppliers = 5;
 
     //TIMERS/LAPSES:
     private float tPlayerPlayTime;
@@ -51,19 +56,39 @@ public class GameMaster : MonoBehaviour
         supplierManager = GetComponent<SupplierManager>();
         customerManager = GetComponent<CustomerManager>();
 
-        #region <TEST NEW GAME METHOD>
-        NewGameTEST();
+        #region <Initialize Date & Time>
+        if (initGameDateYear == 0)
+            initGameDateYear = DateTime.Today.Year;
+        if (initGameDateMonth == 0)
+            initGameDateMonth = DateTime.Today.Month;
+        if (initGameDateDay == 0)
+            initGameDateDay = DateTime.Today.Day;
+
+        GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
+
+        GameDateTime = GameDateTime.AddHours(initGameTimeHour);
+        GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
         #endregion
+
+        //<TEST NEW GAME METHOD>
+        NewGameTEST();
     }
 
     private void NewGameTEST()
     {
+        //out Messages (GUI/Debug purposes)
+        string genericMessage;
         string generateSuppliersResult;
 
-        Player = new Player(initialPlayerName, initialPlayerMoney, initialBusinessName, initialPlayerInventorySpace);
+        //Player Initializer
+        Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
 
-        //TEMP out var
-        Suppliers = supplierManager.GenerateSuppliers(initialNumberOfSuppliers, out generateSuppliersResult);
+        //Supplier generator (passed from SupplierManager instance)
+        Suppliers = supplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
+
+        //TEST: Adding items
+        Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 10, 1, out genericMessage);
+        Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 8, 0.9f, out genericMessage);
 
         #region **DEBUG LOGS**
         Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
@@ -71,73 +96,70 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         tPlayerPlayTime = tGameTime = Time.time;
-
     }
 
     private void Update()
     {
         currentTime = Time.time;
 
+        //Increase Player's play time by 1 second if 1 second has passed:
         if (currentTime >= tPlayerPlayTime + 1)
         {
             tPlayerPlayTime = currentTime;
             Player.PlayTime += 1;
 
             #region **DEBUG PLAY TIME**
-            Debug.Log("Play time (s): " + Player.PlayTime.ToString());
+            //Debug.Log("Play time (s): " + Player.PlayTime.ToString());
             #endregion
         }
 
-        if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) //Time.deltaTime added so that if the game is lagging bad, the in game time will adjust.
+        //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) has passed:
+        if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
         {
             tGameTime = currentTime;
-            AdvanceInGameTime();
+            AdvanceInGameTime(1);
+            
             //<Adjust time in GUI with GameTimeString() string method>
+
             #region **DEBUG GAME TIME**
-            //Debug.Log("Game Time: " + GameTimeString());
+            //Debug.Log("Game Time: " + GameTimeString12());
             #endregion
         }
     }
 
     #region <GAME TIME METHODS>
-    private void AdvanceInGameTime()
+    private void AdvanceInGameTime(int minutesToAdd)
     {
-        GameTimeMinutes++;
+        int previousGameTimeHour = GameDateTime.Hour;
 
-        if (GameTimeMinutes >= 60)
-        {
-            GameTimeMinutes = 0;
+        GameDateTime = GameDateTime.AddMinutes(minutesToAdd);
 
-            GameTimeHour++;
-
-            if (GameTimeHour >= 24)
-            {
-                GameTimeHour = 0;
-
-                NextDay();
-            }
-        }
+        if (GameDateTime.Hour == 0 && previousGameTimeHour == 23)
+            NextDay();
     }
 
-    public string GameTimeString()
-    {
-        string gameTimeString = "";
-
-        gameTimeString += GameTimeHour.ToString().PadLeft(2, '0');
-        gameTimeString += ":";
-        gameTimeString += GameTimeMinutes.ToString().PadLeft(2, '0');
-
-        return gameTimeString;
-    }
-
-    private void NextDay() //**Called from AdvanceGameTime() method, when the clock is set back to 00:00
+    private void NextDay() //**Called ONCE from AdvanceGameTime() method, when the clock is set back to 00:00
     {
         //PLAYER INVENTORY ITEMS
         foreach (InventoryItem item in Player.Business.Inventory.InventoryItems)
             item.Age += 1;
+
+        #region **DEBUG NEXT DAY**
+        //Debug.Log("NEXT DAY");
+        #endregion
+    }
+
+    public string GameTimeString12()
+    {
+        return GameDateTime.ToShortTimeString();
+    }
+    public string GameTimeString24()
+    {
+        return GameDateTime.ToString("HH:mm");
     }
     #endregion
 
+    #region**DEBUG LOGS METHOD**
     private void CreateDebugLogs()
     {
         string lineL = "----------------------------------------------------------------";
@@ -169,4 +191,5 @@ public class GameMaster : MonoBehaviour
         }
         Debug.Log("*<START!>");
     }
+    #endregion
 }

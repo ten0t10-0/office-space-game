@@ -21,14 +21,14 @@ public class Item
     }
 
     //Generic Item?
-    public Item(string name, float unitCost, float unitSpace)
-    {
-        Name = name;
-        Category = ItemCategory.None;
-        Quality = ItemQuality.None;
-        UnitCost = unitCost;
-        UnitSpace = unitSpace;
-    }
+    //public Item(string name, float unitCost, float unitSpace)
+    //{
+    //    Name = name;
+    //    Category = ItemCategory.None;
+    //    Quality = ItemQuality.None;
+    //    UnitCost = unitCost;
+    //    UnitSpace = unitSpace;
+    //}
     #endregion
 
     //TEMP:

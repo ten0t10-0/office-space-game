@@ -25,6 +25,7 @@ public class SupplierManager : MonoBehaviour
     private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
     private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
 
+    #region Methods
     public List<Supplier> GenerateSuppliers(int count, out string message)
     {
         List<Supplier> suppliers = new List<Supplier>();
@@ -82,4 +83,5 @@ public class SupplierManager : MonoBehaviour
         int random = Random.Range(0, namesUnique.Count);
         return namesUnique[random];
     }
+    #endregion
 }

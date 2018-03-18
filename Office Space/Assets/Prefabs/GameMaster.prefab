@@ -53,15 +53,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09973a4b5c91074f982dc3c35537041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPlayerName: New Player
-  initialBusinessName: My Business
-  initialPlayerMoney: 10000
-  initialPlayerInventorySpace: 100
+  initPlayerName: New Player
+  initBusinessName: My Business
+  initPlayerMoney: 10000
+  initPlayerInventorySpace: 100
   Difficulty: 0
-  GameTimeHour: 23
-  GameTimeMinutes: 55
+  initGameDateYear: 0
+  initGameDateMonth: 0
+  initGameDateDay: 0
+  initGameTimeHour: 23
+  initGameTimeMinutes: 55
   GameTimeSpeed: 60
-  initialNumberOfSuppliers: 10
+  initNumberOfSuppliers: 5
 --- !u!114 &114554498239400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

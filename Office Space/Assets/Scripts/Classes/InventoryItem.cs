@@ -19,15 +19,17 @@ public class InventoryItem
     }
     #endregion
 
+    #region <Calculated Properties>
     public float Value()
     {
-        return Quantity * Item.UnitCost;
+        return Quantity * Item.UnitCost * Condition;
     }
 
     public float SpaceUsed()
     {
         return Quantity * Item.UnitSpace;
     }
+    #endregion
 
     //TEMP:
     public override string ToString()
