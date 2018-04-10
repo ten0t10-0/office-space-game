@@ -23,14 +23,18 @@ public class PlayerController : MonoBehaviour
         // Store the input axes.
         //GetAxisRaw() is used so that movement is instant instead of gradual.
         //***Might need to change Input method to work for all devices.
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
 
-        // Move the player around the scene.
-        Move(horizontal, vertical);
+        if (!GameMaster.Instance.UIMode)
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
 
-        // Animate the player.
-        AnimateMoving(horizontal, vertical);
+            // Move the player around the scene.
+            Move(horizontal, vertical);
+
+            // Animate the player.
+            AnimateMoving(horizontal, vertical);
+        }
     }
 
     void Move(float h, float v)
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 cameraForward, cameraRight;     //Used to move the player according to the X and Z axes (right/left & forward/back) of the camera.
 
-        float slerpTimeStart = Time.time;
+        //float slerpTimeStart = Time.time;
 
         if (h != 0 || v != 0)
         {

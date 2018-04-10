@@ -53,10 +53,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09973a4b5c91074f982dc3c35537041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SupplierManager: {fileID: 0}
+  CustomerManager: {fileID: 0}
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 10000
   initPlayerInventorySpace: 100
+  UIMode: 0
   Difficulty: 0
   initGameDateYear: 0
   initGameDateMonth: 0

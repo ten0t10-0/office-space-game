@@ -6,7 +6,7 @@ public class InventoryItem
 {
     public Item Item { get; set; }
     public int Quantity { get; set; }
-    public float Condition { get; set; }
+    public float Condition { get; set; } //for now, affects what is returned in the Value() method.
     public float Age { get; set; } //in days
 
     #region <Constructors>

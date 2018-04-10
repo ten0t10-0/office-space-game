@@ -49,10 +49,9 @@ public class Inventory
     }
     #endregion
 
-    #region Methods
+    #region <Methods>
     public bool AddItem(Item item, int quantity, float condition, out string message)
     {
-        //*Maybe rather store on and retrieve messages from classes/GameMaster*
         message = "ITEM_NOT_ADDED.";
         bool added = false;
 
@@ -64,6 +63,35 @@ public class Inventory
             if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
             {
                 InventoryItems.Add(new InventoryItem(item, quantity, condition));
+                added = true;
+                message = "Item(s) successfully stored!";
+            }
+            else
+                message = "You do not have enough Inventory space to accomodate this order!";
+        }
+        else
+        {
+            message = "Your Inventory space is currently full!";
+        }
+
+        return added;
+    }
+
+    //This method can be used when the player purchases items from a supplier. Just pass the supplier's InventoryItem object as a param and all done.
+    public bool AddItem(InventoryItem inventoryItem, out string message)
+    {
+        message = "ITEM_NOT_ADDED.";
+        bool added = false;
+
+        float itemSpaceUsed = inventoryItem.SpaceUsed();
+        float totalSpaceUsed = TotalSpaceUsed();
+
+        if (totalSpaceUsed < MaximumSpace)
+        {
+            if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
+            {
+                InventoryItems.Add(inventoryItem);
+                added = true;
                 message = "Item(s) successfully stored!";
             }
             else
@@ -87,11 +115,12 @@ public class Inventory
         if (totalSpaceUsed < newMaxSpaceAmount)
         {
             MaximumSpace = newMaxSpaceAmount;
+            changed = true;
             //message = "Maximum space successfully changed!";
         }
         else
         {
-            message = "Too many Items in Inventory!";
+            //message = "Too many Items in Inventory!";
         }
 
         return changed;

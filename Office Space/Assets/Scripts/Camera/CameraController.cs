@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public bool cameraMouseControl;
     public float verticalSensitivity = 2f, horizontalSensitivity = 2f;
+    public float zoomSpeed = 15f;
 
     public Transform target;
 
-    public float initialYOffset = 2f; //not used if cameraMouseControl is true.
-
     public float maxDistanceFromTarget, minDistanceFromTarget;
-    public float zoomSpeed = 1f;
 
     private Vector3 offset;
 
@@ -26,24 +23,16 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         //Set initial camera position.
-        if (cameraMouseControl)
-        {
-            transform.position = target.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
-            offset = target.position - transform.position;
+        transform.position = target.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
+        offset = target.position - transform.position;
 
-            Cursor.visible = false;
-        }
-        else
-        {
-            transform.position = target.position + new Vector3(0, initialYOffset, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
-            offset = target.position - transform.position;
-        }
+        //Cursor.visible = false;
     }
 
     // Called after all other update functions have been called
     void LateUpdate()
     {
-        if (cameraMouseControl)
+        if (!GameMaster.Instance.UIMode)
         {
             float horizontal = Input.GetAxisRaw("Mouse X") * horizontalSensitivity; //*
             float vertical = Input.GetAxisRaw("Mouse Y") * verticalSensitivity * -1; //*
@@ -79,18 +68,12 @@ public class CameraController : MonoBehaviour
 
             transform.LookAt(target.position);
         }
-        else
-        {
-            transform.position = target.position - offset;
-
-            transform.LookAt(target.position);
-        }
     }
 
     private void FixedUpdate()
     {
         //***Might need to change Input method for this to work on all devices.
-        if (cameraMouseControl)
+        if (!GameMaster.Instance.UIMode)
         {
             if (Physics.OverlapSphere(transform.position, physicsSphereRadius).Length == 0)
             {
@@ -104,19 +87,6 @@ public class CameraController : MonoBehaviour
                     if (Vector3.Distance(target.position, transform.position) < maxDistanceFromTarget)
                         offset += Vector3.forward * zoomSpeed * Time.deltaTime;
                 }
-            }
-        }
-        else
-        {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
-            {
-                if (Vector3.Distance(target.position, transform.position) > minDistanceFromTarget)
-                    offset -= transform.forward * zoomSpeed * Time.deltaTime;
-            }
-            else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-            {
-                if (Vector3.Distance(target.position, transform.position) < maxDistanceFromTarget)
-                    offset += transform.forward * zoomSpeed * Time.deltaTime;
             }
         }
     }

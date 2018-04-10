@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SupplierManager : MonoBehaviour
 {
-    #region <PRESET NAMES LISTS + VARS>
+    #region <PRESET NAMES LISTS>
     public List<string> namesPre = new List<string>()
         {
             "Galaxy", "Hello", "Illuminati", "FizzBuzz", "Perfect"
@@ -21,18 +21,21 @@ public class SupplierManager : MonoBehaviour
     private List<string> namesPreRemaining;
     #endregion
 
+    [HideInInspector]
+    public List<Supplier> Suppliers;
+
     private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
     private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
     private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
 
     #region Methods
-    public List<Supplier> GenerateSuppliers(int count, out string message)
+    public void GenerateSuppliers(int count, out string message)
     {
-        List<Supplier> suppliers = new List<Supplier>();
+        Suppliers = new List<Supplier>();
 
         string currentGeneratedName;
 
-        message = "Uh oh!";
+        message = GameMaster.MSG_ERR_DEFAULT;
 
         namesPreRemaining = new List<string>();
 
@@ -44,18 +47,16 @@ public class SupplierManager : MonoBehaviour
             currentGeneratedName = GenerateSupplierName();
 
             if (currentGeneratedName != "")
-                suppliers.Add(new Supplier(currentGeneratedName));
+                Suppliers.Add(new Supplier(currentGeneratedName));
             else
             {
                 c = count + 1; //set sentinel value to end the FOR loop
-                message = "Partial Success - " + suppliers.Count.ToString() + " out of " + count.ToString() + " suppliers were generated!";
+                message = "Partial Success - " + Suppliers.Count.ToString() + " out of " + count.ToString() + " suppliers were generated!";
             }
         }
 
-        if (suppliers.Count == count)
+        if (Suppliers.Count == count)
             message = "Success - All " + count.ToString() + " suppliers were generated!";
-
-        return suppliers;
     }
 
     //Generate name using a random pre-name + <space> + post-name

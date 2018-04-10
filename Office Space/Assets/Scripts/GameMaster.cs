@@ -8,14 +8,16 @@ public enum ItemCategory { None, Furniture, Electronics, Appliances, Clothing, M
 
 public class GameMaster : MonoBehaviour
 {
-    public static GameMaster instance = null;
+    public static GameMaster Instance = null;
 
     #region Variables
     //SCRIPTS: (Add new scripts to the GameMaster object in Prefabs folder)
-    private SupplierManager supplierManager;
-    private CustomerManager customerManager;
+    [HideInInspector]
+    public SupplierManager SupplierManager;
+    [HideInInspector]
+    public CustomerManager CustomerManager;
 
-    //PLAYER:
+    //PLAYER CLASS AND INFO:
     public Player Player;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
@@ -23,6 +25,7 @@ public class GameMaster : MonoBehaviour
     public float initPlayerInventorySpace = 100;
 
     //GAME:
+    public bool UIMode = false;
     public int Difficulty = 0; //0 = Tutorial
 
     public DateTime GameDateTime;
@@ -32,29 +35,33 @@ public class GameMaster : MonoBehaviour
     public int initGameTimeHour, initGameTimeMinutes;
     public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
 
-    [HideInInspector]
-    public List<Supplier> Suppliers;
+    //SUPPLIER MANAGER INFO:
     public int initNumberOfSuppliers = 5;
 
     //TIMERS/LAPSES:
     private float tPlayerPlayTime;
     private float tGameTime;
+
     private float currentTime;
+
+    //MESSAGES:
+    public const string MSG_ERR_DEFAULT = "Uh oh.";
+
     #endregion
 
     private void Awake()
     {
         #region <Setups>
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
+        if (Instance == null)
+            Instance = this;
+        else if (Instance != this)
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
         #endregion
 
-        supplierManager = GetComponent<SupplierManager>();
-        customerManager = GetComponent<CustomerManager>();
+        SupplierManager = GetComponent<SupplierManager>();
+        CustomerManager = GetComponent<CustomerManager>();
 
         #region <Initialize Date & Time>
         if (initGameDateYear == 0)
@@ -83,12 +90,12 @@ public class GameMaster : MonoBehaviour
         //Player Initializer
         Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
 
-        //Supplier generator (passed from SupplierManager instance)
-        Suppliers = supplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
+        //Supplier generator
+        SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
 
         //TEST: Adding items
-        Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 10, 1, out genericMessage);
-        Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 8, 0.9f, out genericMessage);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 10, 1, out genericMessage);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 8, 0.9f, out genericMessage);
 
         #region **DEBUG LOGS**
         Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
@@ -113,7 +120,7 @@ public class GameMaster : MonoBehaviour
             #endregion
         }
 
-        //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) has passed:
+        //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
         if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
         {
             tGameTime = currentTime;
@@ -167,7 +174,7 @@ public class GameMaster : MonoBehaviour
 
         Debug.Log("SUPPLIERS:");
         Debug.Log(lineS);
-        foreach (Supplier s in Suppliers)
+        foreach (Supplier s in SupplierManager.Suppliers)
         {
             Debug.Log("*Supplier:");
             Debug.Log(s.ToString());
