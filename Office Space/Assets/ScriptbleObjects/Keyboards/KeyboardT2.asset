@@ -8,10 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db59672e6d7a1354b92d352a8ee7d7a8, type: 3}
+  m_Script: {fileID: 0}
   m_Name: KeyboardT2
-  m_EditorClassIdentifier: 
-  Name: Backlit Keyboards
+  m_EditorClassIdentifier: Assembly-CSharp::Keyboard
+  Name: Backlit Keyboard
   Category: 2
   Quality: 2
   UnitCost: 250

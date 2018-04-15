@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName="Keyboard",menuName="Keyboard")]
+[CreateAssetMenu(fileName="T",menuName="Item/keyboard")]
 public class Keyboard : ScriptableObject
 {
 	public string Name;
