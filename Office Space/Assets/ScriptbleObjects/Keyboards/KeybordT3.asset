@@ -9,12 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db59672e6d7a1354b92d352a8ee7d7a8, type: 3}
-  m_Name: KeyboardT1
+  m_Name: KeybordT3
   m_EditorClassIdentifier: 
-  Name: ' Basic Keyboard'
+  Name: Awesome Bloop Keyboard
   type: Keyboard
   Category: 2
-  Quality: 1
-  UnitCost: 100
+  Quality: 3
+  UnitCost: 500
   UnitSpace: 1
   pic: {fileID: 0}
