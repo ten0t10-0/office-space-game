@@ -5,41 +5,59 @@ using System;
 
 public class OrderManager : MonoBehaviour
 {
-    public List<Order> Orders;
+    public List<Order> OrdersOpen, OrdersClosed;
 
-    private int difficulty;
-
-    public void GenerateOrder(int difficulty)
+    public void GenerateOrder()
     {
-        this.difficulty = difficulty;
+        DateTime currentDate = GameMaster.Instance.GameDateTime;
+        int difficulty = GameMaster.Instance.Difficulty;
 
+        #region [CUSTOMER]
         Customer customer = GameMaster.Instance.CustomerManager.GenerateCustomer();
-        List<InventoryItem> items = GenerateOrderItemList();
-        DateTime dueDate = GenerateOrderDueDate();
+        #endregion
 
-        Orders.Add(new Order(customer, items, GameMaster.Instance.GameDateTime, dueDate));
-    }
-
-    private List<InventoryItem> GenerateOrderItemList()
-    {
+        #region [ORDER_ITEMS]
         List<InventoryItem> items = new List<InventoryItem>();
-
         //<algorithm> (check current suppliers' inventories to ensure only items that are possible to buy get generated; make use of difficulty to determine item requirements such as number of Items and each of their quality & quantity values).*
+        #endregion
 
-        return items;
+        #region [DUE DATE]
+        DateTime? dueDate;
+        //<algorithm> (make use of difficulty to determine the order due date; take into account number of items in order - add time to due date).*
+
+        #region (Example)
+        float hoursToAdd = 1;
+
+        if (difficulty != 0)
+        {
+            //...
+            dueDate = currentDate.AddHours(hoursToAdd);
+        }
+        else
+            dueDate = null;
+
+
+        #endregion
+
+        #endregion
+
+        OrdersOpen.Add(new Order(customer, items, currentDate, dueDate));
     }
 
-    private DateTime GenerateOrderDueDate()
+    public void CloseOrder(int i)
     {
-        DateTime date = GameMaster.Instance.GameDateTime.AddHours(1); //*TEMP
+        DateTime filledDate = GameMaster.Instance.GameDateTime;
+        Order filledOrder = OrdersOpen[i];
 
-        //<algorithm> (make use of difficulty to determine the order due date; maybe add hours to current date or add day(s) for larger orders).*
+        filledOrder.CloseOrder(filledDate);
 
-        return date;
+        OrdersOpen.RemoveAt(i);
+        OrdersClosed.Add(filledOrder);
     }
 
-    private void RemoveOrder(int i)
+    private void ClearAllOrders()
     {
-        Orders.RemoveAt(i);
+        OrdersOpen.Clear();
+        OrdersClosed.Clear();
     }
 }
