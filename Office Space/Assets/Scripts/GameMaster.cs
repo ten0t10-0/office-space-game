@@ -16,6 +16,8 @@ public class GameMaster : MonoBehaviour
     public SupplierManager SupplierManager;
     [HideInInspector]
     public CustomerManager CustomerManager;
+    [HideInInspector]
+    public OrderManager OrderManager;
 
     //PLAYER CLASS AND INFO:
     public Player Player;
@@ -64,6 +66,7 @@ public class GameMaster : MonoBehaviour
 
         SupplierManager = GetComponent<SupplierManager>();
         CustomerManager = GetComponent<CustomerManager>();
+        OrderManager = GetComponent<OrderManager>();
 
         #region <Initialize Date & Time>
         if (initGameDateYear == 0)

@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour
 {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
-    public string Name { get; set; }
-
-    public Customer(string name)
+    #region <Constructors>
+    public Customer(string firstName, string lastName)
     {
-        Name = name;
+        FirstName = firstName;
+        LastName = lastName;
         //...
     }
+    #endregion
 }

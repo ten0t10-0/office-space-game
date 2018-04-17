@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114137614351113880}
   - component: {fileID: 114554498239400020}
   - component: {fileID: 114599112133082384}
+  - component: {fileID: 114541504168204232}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -55,10 +56,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SupplierManager: {fileID: 0}
   CustomerManager: {fileID: 0}
+  OrderManager: {fileID: 0}
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 10000
   initPlayerInventorySpace: 100
+  initPlayerLevel: 1
+  initPlayerExperience: 0
   UIMode: 0
   Difficulty: 0
   initGameDateYear: 0
@@ -68,6 +72,17 @@ MonoBehaviour:
   initGameTimeMinutes: 55
   GameTimeSpeed: 60
   initNumberOfSuppliers: 5
+--- !u!114 &114541504168204232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f301c4af3e6dc414999e861170decf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114554498239400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,3 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5c43e71c0e06540b77437bbbfab665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstNames:
+  - John
+  - Jane
+  lastNames:
+  - Doe

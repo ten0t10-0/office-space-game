@@ -24,9 +24,9 @@ public class SupplierManager : MonoBehaviour
     [HideInInspector]
     public List<Supplier> Suppliers;
 
-    private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
-    private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
-    private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
+    //private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
+    //private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
+    //private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
 
     #region Methods
     public void GenerateSuppliers(int count, out string message)
@@ -44,7 +44,7 @@ public class SupplierManager : MonoBehaviour
 
         for (int c = 1; c <= count; c++)
         {
-            currentGeneratedName = GenerateSupplierName();
+            currentGeneratedName = GenerateName();
 
             if (currentGeneratedName != "")
                 Suppliers.Add(new Supplier(currentGeneratedName));
@@ -60,7 +60,7 @@ public class SupplierManager : MonoBehaviour
     }
 
     //Generate name using a random pre-name + <space> + post-name
-    private string GenerateSupplierName()
+    private string GenerateName()
     {
         string generatedName = "";
 

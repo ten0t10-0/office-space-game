@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
             // Animate the player.
             AnimateMoving(horizontal, vertical);
         }
+        else
+            StopAnimations();
     }
 
     private bool IsRunning()
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
         return isRunning;
     }
 
-    void Move(float h, float v)
+    private void Move(float h, float v)
     {
         Vector3 currentPostion, newPosition;
         Quaternion currentRotation, newRotation;
@@ -84,7 +86,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void AnimateMoving(float h, float v)
+    private void AnimateMoving(float h, float v)
     {
         //// Create a boolean that is true if either of the input axes is not equal to 0.
         //bool walking = h != 0 || v != 0;
@@ -110,5 +112,11 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsWalking", false);
             animator.SetBool("IsRunning", false);
         }
+    }
+
+    private void StopAnimations()
+    {
+        animator.SetBool("IsWalking", false);
+        animator.SetBool("IsRunning", false);
     }
 }

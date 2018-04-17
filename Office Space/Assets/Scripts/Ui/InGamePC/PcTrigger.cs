@@ -8,22 +8,24 @@ public class PcTrigger : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.CompareTag("Player"));
-		OpenShop();
+		if (other.gameObject.CompareTag("Player"))
+            OpenShop();
 			
 	}
 	void OpenShop()
 	{
 		ComputerCanvas.enabled = true;
-		Time.timeScale = 0;
+        GameMaster.Instance.UIMode = true;
+		//Time.timeScale = 0;
 		Cursor.visible = (ComputerCanvas.gameObject.activeInHierarchy);
 	}
 
 	void CloseShop()
 	{
 		ComputerCanvas.enabled = false;
-		Time.timeScale = 1;
-	}
+        GameMaster.Instance.UIMode = false;
+        //Time.timeScale = 1;
+    }
 
 
 }
