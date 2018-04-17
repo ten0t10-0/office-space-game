@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Public variables can be edited within Unity, so that the script doesn't need to recompile every time if you had to change them here
-    public float walkSpeed = 1f;
+    public float walkSpeed = 3f;
+    public float runSpeed = 6f;
 
     private Animator animator;                  // Reference to the animator component.
     private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
@@ -37,12 +38,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private bool IsRunning()
+    {
+        bool isRunning = false;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            isRunning = true;
+
+        return isRunning;
+    }
+
     void Move(float h, float v)
     {
         Vector3 currentPostion, newPosition;
         Quaternion currentRotation, newRotation;
 
         Vector3 cameraForward, cameraRight;     //Used to move the player according to the X and Z axes (right/left & forward/back) of the camera.
+
+        float speed;
 
         //float slerpTimeStart = Time.time;
 
@@ -58,9 +71,14 @@ public class PlayerController : MonoBehaviour
             newPosition = cameraForward * v + cameraRight * h;
             newRotation = Quaternion.LookRotation(newPosition, Vector3.up);
 
+            if (IsRunning())
+                speed = runSpeed;
+            else
+                speed = walkSpeed;
+
             //NB: Rigidbody gets moved so that collisions work properly.
             //Move
-            playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * walkSpeed * Time.deltaTime));       //Add new position to current position.
+            playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
             //Turn
             playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
         }
@@ -68,10 +86,29 @@ public class PlayerController : MonoBehaviour
 
     void AnimateMoving(float h, float v)
     {
-        // Create a boolean that is true if either of the input axes is not equal to 0.
-        bool walking = h != 0 || v != 0;
+        //// Create a boolean that is true if either of the input axes is not equal to 0.
+        //bool walking = h != 0 || v != 0;
 
-        // Tell the animator whether or not the player is walking.
-        animator.SetBool("IsWalking", walking);
+        //// Tell the animator whether or not the player is walking.
+        //animator.SetBool("IsWalking", walking);
+
+        if (h != 0 || v != 0)
+        {
+            if (IsRunning())
+            {
+                animator.SetBool("IsWalking", false);
+                animator.SetBool("IsRunning", true);
+            }
+            else
+            {
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsWalking", true);
+            }
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsRunning", false);
+        }
     }
 }

@@ -23,6 +23,8 @@ public class GameMaster : MonoBehaviour
     public string initBusinessName = "My Business";
     public float initPlayerMoney = 10000;
     public float initPlayerInventorySpace = 100;
+    public int initPlayerLevel = 1;
+    public int initPlayerExperience = 0;
 
     //GAME:
     public bool UIMode = false;
