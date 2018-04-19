@@ -22,7 +22,7 @@ public class SupplierManager : MonoBehaviour
     #endregion
 
     [HideInInspector]
-    public List<Supplier> Suppliers;
+    public List<SupplierAI> Suppliers;
 
     //private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
     //private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
@@ -31,7 +31,7 @@ public class SupplierManager : MonoBehaviour
     #region Methods
     public void GenerateSuppliers(int count, out string message)
     {
-        Suppliers = new List<Supplier>();
+        Suppliers = new List<SupplierAI>();
 
         string currentGeneratedName;
 
@@ -47,7 +47,7 @@ public class SupplierManager : MonoBehaviour
             currentGeneratedName = GenerateName();
 
             if (currentGeneratedName != "")
-                Suppliers.Add(new Supplier(currentGeneratedName));
+                Suppliers.Add(new SupplierAI(currentGeneratedName));
             else
             {
                 c = count + 1; //set sentinel value to end the FOR loop

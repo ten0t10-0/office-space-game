@@ -14,5 +14,23 @@ public class Customer : MonoBehaviour
         LastName = lastName;
         //...
     }
+
+    //Players as customers:
+    public Customer(string userName)
+    {
+        FirstName = userName;
+        LastName = null;
+        //...
+    }
+    #endregion
+
+    #region <Methods>
+    public string FullName()
+    {
+        if (LastName != null)
+            return FirstName + ' ' + LastName;
+        else
+            return FirstName;
+    }
     #endregion
 }

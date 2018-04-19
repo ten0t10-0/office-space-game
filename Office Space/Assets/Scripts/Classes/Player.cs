@@ -6,7 +6,7 @@ public class Player
 {
     public string Name { get; private set; }
     public float Money { get; set; }
-    public Supplier Business { get; private set; }
+    public SupplierPlayer Business { get; private set; }
     public float PlayTime { get; set; }
     public int Level { get; set; }
     public int Experience { get; set; }
@@ -18,7 +18,7 @@ public class Player
         Name = name;
         Money = startingMoney;
 
-        Business = new Supplier(businessName, maximumInventorySpace);
+        Business = new SupplierPlayer(businessName, maximumInventorySpace);
 
         PlayTime = 0f;
         Level = 1;
@@ -26,7 +26,7 @@ public class Player
     }
 
     //Existing Player
-    public Player(string name, float money, Supplier business, float playTime, int level, int experience)
+    public Player(string name, float money, SupplierPlayer business, float playTime, int level, int experience)
     {
         Name = name;
         Money = money;
@@ -44,6 +44,13 @@ public class Player
         PlayTime = playTime;
         Level = level;
         Experience = experience;
+    }
+    #endregion
+
+    #region <Methods>
+    public Customer ToCustomer()
+    {
+        return new Customer(this.Name);
     }
     #endregion
 }

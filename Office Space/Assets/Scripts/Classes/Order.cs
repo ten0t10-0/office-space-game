@@ -12,6 +12,20 @@ public class Order
     public bool Filled { get; set; }
     public DateTime? DateFilled { get; set; }
 
+    #region <Calculated Properties>
+    public float Cost()
+    {
+        float cost = 0f;
+
+        foreach (InventoryItem item in Items)
+        {
+            cost += item.TotalValue();
+        }
+
+        return cost;
+    }
+    #endregion
+
     #region <Constructors>
     public Order (Customer customer, List<InventoryItem> items, DateTime dateReceived, DateTime? dateDue) //*
     {

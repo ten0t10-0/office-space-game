@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory
 {
     //*Check comments*
-    public List<InventoryItem> InventoryItems { get; set; }
+    public List<InventoryItem> Items { get; set; }
     public float MaximumSpace { get; private set; }
 
     private const float maximumSpace_DEFAULT = Mathf.Infinity;
@@ -15,14 +15,14 @@ public class Inventory
     public Inventory(float maximumSpace)
     {
         MaximumSpace = maximumSpace;
-        InventoryItems = new List<InventoryItem>();
+        Items = new List<InventoryItem>();
     }
 
     //AI Inventory
     public Inventory()
     {
         MaximumSpace = maximumSpace_DEFAULT;
-        InventoryItems = new List<InventoryItem>();
+        Items = new List<InventoryItem>();
     }
     #endregion
 
@@ -31,8 +31,8 @@ public class Inventory
     {
         float spaceUsed = 0;
 
-        foreach (InventoryItem item in InventoryItems)
-            spaceUsed += item.SpaceUsed();
+        foreach (InventoryItem item in Items)
+            spaceUsed += item.TotalSpaceUsed();
 
         return spaceUsed;
     }
@@ -42,85 +42,111 @@ public class Inventory
     {
         float value = 0;
 
-        foreach (InventoryItem item in InventoryItems)
-            value += item.Value();
+        foreach (InventoryItem item in Items)
+            value += item.TotalValue();
 
         return value;
     }
     #endregion
 
     #region <Methods>
-    public bool AddItem(Item item, int quantity, float condition, out string message)
+    //This method can be used when the player purchases items from a supplier. Just pass the supplier's InventoryItem object as a param (AFTER the desired quantity is set) and all done.
+    public bool AddItem(InventoryItem inventoryItem, out string result)
     {
-        message = "ITEM_NOT_ADDED.";
-        bool added = false;
+        return ContinueAddItem(inventoryItem, out result);
+    }
+    //***(TEMP)
+    public bool AddItem(Item item, float condition, out string result)
+    {
+        return ContinueAddItem(new InventoryItem(item, condition), out result);
+    }
 
-        float itemSpaceUsed = quantity * item.UnitSpace;
-        float totalSpaceUsed = TotalSpaceUsed();
+    private bool ContinueAddItem(InventoryItem inventoryItem, out string result)
+    {
+        result = GameMaster.MSG_ERR_DEFAULT;
+        bool added;
 
-        if (totalSpaceUsed < MaximumSpace)
+        if (MaximumSpace != maximumSpace_DEFAULT)
         {
-            if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
+            float itemSpaceUsed = inventoryItem.TotalSpaceUsed();
+            float totalSpaceUsed = TotalSpaceUsed();
+
+            if (totalSpaceUsed < MaximumSpace)
             {
-                InventoryItems.Add(new InventoryItem(item, quantity, condition));
-                added = true;
-                message = "Item(s) successfully stored!";
+                if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
+                {
+                    Items.Add(inventoryItem);
+                    added = true;
+                    result = "Item(s) successfully added!";
+                }
+                else
+                {
+                    added = false;
+                    result = "You do not have enough Inventory space!";
+                }
             }
             else
-                message = "You do not have enough Inventory space to accomodate this order!";
+            {
+                added = false;
+                result = "Your Inventory space is currently full!";
+            }
         }
         else
         {
-            message = "Your Inventory space is currently full!";
+            Items.Add(inventoryItem);
+            added = true;
+            result = "Item(s) successfully added!";
         }
 
         return added;
     }
 
-    //This method can be used when the player purchases items from a supplier. Just pass the supplier's InventoryItem object as a param and all done.
-    public bool AddItem(InventoryItem inventoryItem, out string message)
+    public bool RemoveItem(int itemToRemoveId, out string result)
     {
-        message = "ITEM_NOT_ADDED.";
-        bool added = false;
+        bool itemRemoved;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
-        float itemSpaceUsed = inventoryItem.SpaceUsed();
-        float totalSpaceUsed = TotalSpaceUsed();
-
-        if (totalSpaceUsed < MaximumSpace)
+        try
         {
-            if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
-            {
-                InventoryItems.Add(inventoryItem);
-                added = true;
-                message = "Item(s) successfully stored!";
-            }
-            else
-                message = "You do not have enough Inventory space to accomodate this order!";
+            Items.RemoveAt(itemToRemoveId);
+
+            itemRemoved = true;
+            result = "Item removed!";
         }
-        else
+        catch
         {
-            message = "Your Inventory space is currently full!";
+            itemRemoved = false;
+            result = "Item does not exist!";
         }
 
-        return added;
+        return itemRemoved;
     }
 
     public bool ChangeMaximumSpace(float newMaxSpaceAmount, out string message)
     {
-        message = "SPACE_UNCHANGED.";
-        bool changed = false;
+        bool changed;
+        message = GameMaster.MSG_ERR_DEFAULT;
 
-        float totalSpaceUsed = TotalSpaceUsed();
-
-        if (totalSpaceUsed < newMaxSpaceAmount)
+        if (MaximumSpace != maximumSpace_DEFAULT)
         {
-            MaximumSpace = newMaxSpaceAmount;
-            changed = true;
-            //message = "Maximum space successfully changed!";
+            float totalSpaceUsed = TotalSpaceUsed();
+
+            if (totalSpaceUsed < newMaxSpaceAmount)
+            {
+                MaximumSpace = newMaxSpaceAmount;
+                changed = true;
+                //message = "Maximum space successfully changed!";
+            }
+            else
+            {
+                changed = false;
+                //message = "Too many Items in Inventory!";
+            }
         }
         else
         {
-            //message = "Too many Items in Inventory!";
+            changed = true;
+            //message = GameMaster.MSG_GEN_NA;
         }
 
         return changed;
@@ -128,16 +154,23 @@ public class Inventory
 
     public void IncreaseMaximumSpace(float newMaxSpaceIncrement, out string message)
     {
-        message = "SPACE_UNCHANGED.";
+        message = GameMaster.MSG_ERR_DEFAULT;
 
-        MaximumSpace += newMaxSpaceIncrement;
-        //message = "Maximum space successfully increased by " + newSpaceIncrement.ToString() + "!";
+        if (MaximumSpace != maximumSpace_DEFAULT)
+        {
+            MaximumSpace += newMaxSpaceIncrement;
+            message = "Maximum space successfully increased by " + newMaxSpaceIncrement.ToString() + "!";
+        }
+        else
+        {
+            message = GameMaster.MSG_GEN_NA;
+        }
     }
 
     //*IDEA: Clear all items in inventory function. Scenario: sell at half price informally. etc
     public void Clear()
     {
-        InventoryItems.Clear();
+        Items.Clear();
     }
     #endregion
 

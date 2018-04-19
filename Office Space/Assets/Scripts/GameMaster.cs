@@ -10,16 +10,19 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
 
-    #region Variables
-    //SCRIPTS: (Add new scripts to the GameMaster object in Prefabs folder)
+    #region [Variables]
+
+    #region <SCRIPTS>
+    //(Add new scripts to the GameMaster object in Prefabs folder)
     [HideInInspector]
     public SupplierManager SupplierManager;
     [HideInInspector]
     public CustomerManager CustomerManager;
     [HideInInspector]
     public OrderManager OrderManager;
+    #endregion
 
-    //PLAYER CLASS AND INFO:
+    #region <PLAYER CLASS & INFO>
     public Player Player;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
@@ -27,29 +30,72 @@ public class GameMaster : MonoBehaviour
     public float initPlayerInventorySpace = 100;
     public int initPlayerLevel = 1;
     public int initPlayerExperience = 0;
+    #endregion
 
-    //GAME:
+    #region <GAME>
     public bool UIMode = false;
+    public bool OfflineMode = false;
+
     public int Difficulty = 0; //0 = Tutorial
 
     public DateTime GameDateTime;
 
-    public int initGameDateYear, initGameDateMonth, initGameDateDay;
+    public int initGameDateYear;
+    [Range(0, 12)]
+    public int initGameDateMonth;
+    [Range(0, 31)]
+    public int initGameDateDay;
 
-    public int initGameTimeHour, initGameTimeMinutes;
+    [Range(0, 23)]
+    public int initGameTimeHour;
+    [Range(0, 59)]
+    public int initGameTimeMinutes;
+
     public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
+    #endregion
 
-    //SUPPLIER MANAGER INFO:
+    #region <SUPPLIER MANAGER INFO>
     public int initNumberOfSuppliers = 5;
+    #endregion
 
-    //TIMERS/LAPSES:
+    #region <TIMERS/LAPSES>
     private float tPlayerPlayTime;
     private float tGameTime;
 
     private float currentTime;
+    #endregion
 
-    //MESSAGES:
+    #region <MESSAGES>
     public const string MSG_ERR_DEFAULT = "Uh oh.";
+
+    public const string MSG_GEN_NA = "N/A";
+    #endregion
+
+    #endregion
+
+    #region [Classes]
+    //User details: username and password + encryption/encoding
+    //(For security, maybe only use this class as a private variable within a block/struct so that all info held gets disposed once the code in the block/struct ends.)
+    private class UserDetails
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public UserDetails(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
+        private string Encrypt(string s)
+        {
+            return s;
+        } //*
+        private string Decrypt(string s)
+        {
+            return s;
+        } //*
+    }
 
     #endregion
 
@@ -76,7 +122,11 @@ public class GameMaster : MonoBehaviour
         if (initGameDateDay == 0)
             initGameDateDay = DateTime.Today.Day;
 
-        GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
+        //if invalid init date entered, default to today's date:
+        try
+        { GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0); }
+        catch
+        { GameDateTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 0, 0, 0); }
 
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
         GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
@@ -99,8 +149,8 @@ public class GameMaster : MonoBehaviour
         SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
 
         //TEST: Adding items
-        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 10, 1, out genericMessage);
-        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 8, 0.9f, out genericMessage);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 1, out genericMessage);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 0.9f, out genericMessage);
 
         #region **DEBUG LOGS**
         Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
@@ -139,6 +189,10 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    #region <SUPPLIER/PLAYER SALES METHODS>
+    //*
+    #endregion
+
     #region <GAME TIME METHODS>
     private void AdvanceInGameTime(int minutesToAdd)
     {
@@ -153,7 +207,7 @@ public class GameMaster : MonoBehaviour
     private void NextDay() //**Called ONCE from AdvanceGameTime() method, when the clock is set back to 00:00
     {
         //PLAYER INVENTORY ITEMS
-        foreach (InventoryItem item in Player.Business.Inventory.InventoryItems)
+        foreach (InventoryItem item in Player.Business.Inventory.Items)
             item.Age += 1;
 
         #region **DEBUG NEXT DAY**
@@ -179,7 +233,7 @@ public class GameMaster : MonoBehaviour
 
         Debug.Log("SUPPLIERS:");
         Debug.Log(lineS);
-        foreach (Supplier s in SupplierManager.Suppliers)
+        foreach (SupplierAI s in SupplierManager.Suppliers)
         {
             Debug.Log("*Supplier:");
             Debug.Log(s.ToString());
@@ -188,9 +242,9 @@ public class GameMaster : MonoBehaviour
             Debug.Log(s.Inventory.ToString());
             Debug.Log("*<OK!>");
             Debug.Log("*Inventory Items:");
-            if (s.Inventory.InventoryItems.Count != 0)
+            if (s.Inventory.Items.Count != 0)
             {
-                foreach (InventoryItem item in s.Inventory.InventoryItems)
+                foreach (InventoryItem item in s.Inventory.Items)
                     Debug.Log(item.ToString());
             }
             else
