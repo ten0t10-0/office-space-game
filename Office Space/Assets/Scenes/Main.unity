@@ -2017,6 +2017,54 @@ SkinnedMeshRenderer:
     m_Center: {x: -1.264215, y: 0.0000005364418, z: -0.08209646}
     m_Extent: {x: 2.0791838, y: 1.3246729, z: 1.0069295}
   m_DirtyAABB: 0
+--- !u!1 &444755381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 444755383}
+  - component: {fileID: 444755382}
+  m_Layer: 0
+  m_Name: DataBase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &444755382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 444755381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b553c1f98333914e8788f426cd341b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    rows:
+    - row:
+      - {fileID: 11400000, guid: 44b062ec4f790e5428466ee896887aa0, type: 2}
+      - {fileID: 11400000, guid: 4961d1dd1f54bcf4ab8ffd74961c08b7, type: 2}
+      - {fileID: 11400000, guid: b4cd37b7ee569d342ac6dbb78999ccb7, type: 2}
+    - row: []
+    - row: []
+--- !u!4 &444755383
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 444755381}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &483751028
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryItemList : ScriptableObject 
+public class AssetDataBase : MonoBehaviour 
 {
-	public List<Item> itemList;
+
+	public ArrayLayout data;
 }
-
-
