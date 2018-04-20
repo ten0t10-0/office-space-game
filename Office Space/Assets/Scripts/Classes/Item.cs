@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]  
 public class Item
 {
-    public string Name { get; set; }
-    public ItemCategory Category { get; set; }
-    public ItemQuality Quality { get; set; }  //Low-end, Medium-end, High-end
-    public float UnitCost { get; set; }
-    public float UnitSpace { get; set; }
+	public string Id;
+	public string Name; 
+	public ItemCategory Category; 
+	public ItemQuality Quality;  //Low-end, Medium-end, High-end
+	public float UnitCost;
+	public float UnitSpace; 
+
+	public Sprite pic; 
 
     #region <Constructors>
     public Item (string name, ItemCategory itemCategory, ItemQuality itemQuality, float unitCost, float unitSpace)
