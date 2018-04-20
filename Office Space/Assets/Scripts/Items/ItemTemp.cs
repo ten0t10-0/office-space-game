@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName="T",menuName="Item")]
 public class ItemTemp : ScriptableObject
 {
+	public string Id;
 	public string Name;
-	public string type;
 	public ItemCategory Category; 
 	public ItemQuality Quality; 
 	public float UnitCost; 
