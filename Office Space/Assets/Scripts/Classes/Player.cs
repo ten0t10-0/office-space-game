@@ -48,6 +48,11 @@ public class Player
     #endregion
 
     #region <Methods>
+
+    /// <summary>
+    /// Returns a Customer object representing the player.
+    /// </summary>
+    /// <returns></returns>
     public Customer ToCustomer()
     {
         return new Customer(this.Name);

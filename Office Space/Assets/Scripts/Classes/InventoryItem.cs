@@ -31,11 +31,20 @@ public class InventoryItem
     #endregion
 
     #region <Calculated Properties>
+
+    /// <summary>
+    /// Returns a float containing the total value of these items.
+    /// </summary>
+    /// <returns></returns>
     public float TotalValue()
     {
         return Quantity * Item.UnitCost * Condition;
     }
 
+    /// <summary>
+    /// Returns a float containing the total inventory space these items use up.
+    /// </summary>
+    /// <returns></returns>
     public float TotalSpaceUsed()
     {
         return Quantity * Item.UnitSpace;
@@ -43,6 +52,13 @@ public class InventoryItem
     #endregion
 
     #region <Methods>
+
+    /// <summary>
+    /// Reduces the quantity of these items by the specified number.
+    /// </summary>
+    /// <param name="quantityToRemove">The quantity of items to be removed.</param>
+    /// <param name="result">String containing the result message.</param>
+    /// <returns></returns>
     public bool RemoveItems(int quantityToRemove, out string result)
     {
         bool itemsRemoved;
@@ -72,6 +88,9 @@ public class InventoryItem
         return itemsRemoved;
     }
 
+    /// <summary>
+    /// Sets these items to have the default quantity. (Intended for AI Suppliers only)
+    /// </summary>
     public void ResetQuantity()
     {
         Quantity = quantity_DEFAULT;

@@ -5,8 +5,11 @@ using System;
 
 public class OrderManager : MonoBehaviour
 {
-    public List<Order> OrdersOpen, OrdersClosed;
+    public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
 
+    /// <summary>
+    /// (WIP) Generates an Order based on the difficulty specified in the GameMaster instance.
+    /// </summary>
     public void GenerateOrder()
     {
         DateTime currentDate = GameMaster.Instance.GameDateTime;
@@ -44,20 +47,36 @@ public class OrderManager : MonoBehaviour
         OrdersOpen.Add(new Order(customer, items, currentDate, dueDate));
     }
 
-    public void CloseOrder(int i)
+    /// <summary>
+    /// Removes the specified order from the Open Orders list and adds it to either the Filled Orders or Failed Orders list.
+    /// </summary>
+    /// <param name="orderToCloseId">The ID/index of the order in the Open Orders list.</param>
+    /// <param name="orderFilled">Was the order successful?</param>
+    public void CloseOrder(int orderToCloseId, bool orderFilled)
     {
-        DateTime filledDate = GameMaster.Instance.GameDateTime;
-        Order filledOrder = OrdersOpen[i];
+        Order orderToClose = OrdersOpen[orderToCloseId];
+        OrdersOpen.RemoveAt(orderToCloseId);
 
-        filledOrder.CloseOrder(filledDate);
+        if (orderFilled)
+        {
+            DateTime filledDate = GameMaster.Instance.GameDateTime;
+            orderToClose.SetFilled(filledDate);
 
-        OrdersOpen.RemoveAt(i);
-        OrdersClosed.Add(filledOrder);
+            OrdersFilled.Add(orderToClose);
+        }
+        else
+        {
+            OrdersFailed.Add(orderToClose);
+        }
     }
 
+    /// <summary>
+    /// Removes all orders from the Open, Filled and Failed Orders lists.
+    /// </summary>
     private void ClearAllOrders()
     {
         OrdersOpen.Clear();
-        OrdersClosed.Clear();
+        OrdersFilled.Clear();
+        OrdersFailed.Clear();
     }
 }

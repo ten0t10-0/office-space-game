@@ -13,6 +13,11 @@ public class Order
     public DateTime? DateFilled { get; set; }
 
     #region <Calculated Properties>
+
+    /// <summary>
+    /// Returns a float containing the total cost of this order.
+    /// </summary>
+    /// <returns></returns>
     public float Cost()
     {
         float cost = 0f;
@@ -35,11 +40,17 @@ public class Order
         DateDue = dateDue;
 
         Filled = false;
+        DateFilled = null;
     }
     #endregion
 
     #region <Methods>
-    public void CloseOrder(DateTime dateFilled)
+
+    /// <summary>
+    /// Sets this order as completed.
+    /// </summary>
+    /// <param name="dateFilled">The date the order was successfully completed.</param>
+    public void SetFilled(DateTime dateFilled)
     {
         if (!Filled)
         {

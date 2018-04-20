@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
 
     private float physicsSphereRadius = 0.5f;
 
-    //max/min angles used when cameraMouseControl is true. Used to limit the camera target rotation so that it stops rotating when it is above or below the player.
+    //Used to limit the camera target rotation so that it stops rotating when it is above or below the player.
     private float maxTargetAngle = 89.9f;
     private float minTargetAngle = -45f;
 

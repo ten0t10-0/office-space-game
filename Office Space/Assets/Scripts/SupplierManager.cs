@@ -25,10 +25,15 @@ public class SupplierManager : MonoBehaviour
     public List<SupplierAI> Suppliers;
 
     //private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
-    //private RangeAttribute buyPriceMult = new RangeAttribute(0.25f, 3.00f);
     //private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
 
     #region Methods
+    
+    /// <summary>
+    /// Generates the specified number of Suppliers and stores them in the Suppliers list.
+    /// </summary>
+    /// <param name="count">The number of Suppliers to generate.</param>
+    /// <param name="message">String to store the result message.</param>
     public void GenerateSuppliers(int count, out string message)
     {
         Suppliers = new List<SupplierAI>();
@@ -59,7 +64,31 @@ public class SupplierManager : MonoBehaviour
             message = "Success - All " + count.ToString() + " suppliers were generated!";
     }
 
-    //Generate name using a random pre-name + <space> + post-name
+    /// <summary>
+    /// (WIP) Populates all Suppliers' inventories with new randomized items.
+    /// </summary>
+    public void PopulateSupplierInventories()
+    {
+        //1. Clear items:
+        ClearAllSupplierInventoryItems();
+
+        //2. Generate items:
+        //*
+    }
+
+    /// <summary>
+    /// Clears all Suppliers' inventories.
+    /// </summary>
+    private void ClearAllSupplierInventoryItems()
+    {
+        for (int i = 0; i < Suppliers.Count; i++)
+        { Suppliers[i].Inventory.Items.Clear(); }
+    }
+
+    /// <summary>
+    /// Returns a string containing a randomly generated Supplier name.
+    /// </summary>
+    /// <returns></returns>
     private string GenerateName()
     {
         string generatedName = "";
@@ -79,6 +108,10 @@ public class SupplierManager : MonoBehaviour
         return generatedName;
     }
 
+    /// <summary>
+    /// Returns a string containing a random unique Supplier name.
+    /// </summary>
+    /// <returns></returns>
     private string GetRandomUniqueName()
     {
         int random = Random.Range(0, namesUnique.Count);

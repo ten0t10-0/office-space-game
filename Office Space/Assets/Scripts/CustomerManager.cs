@@ -15,7 +15,10 @@ public class CustomerManager : MonoBehaviour
         };
     #endregion
 
-    //Generate name using a random first name + <space> + surname
+    /// <summary>
+    /// Returns a randomly generated Customer object.
+    /// </summary>
+    /// <returns></returns>
     public Customer GenerateCustomer()
     {
         string firstName, lastName;

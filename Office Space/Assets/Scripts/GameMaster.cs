@@ -101,7 +101,7 @@ public class GameMaster : MonoBehaviour
 
     private void Awake()
     {
-        #region <Setups>
+        #region <SP Setup>
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
@@ -190,7 +190,7 @@ public class GameMaster : MonoBehaviour
     }
 
     #region <SUPPLIER/PLAYER SALES METHODS>
-    //*
+    // (WIP) *
     #endregion
 
     #region <GAME TIME METHODS>
