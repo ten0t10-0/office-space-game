@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AssetDB", menuName = "Database")]
-public class PieceData : ScriptableObject
+public class AssetDataBase : ScriptableObject
 {
-    private const int defaultGridSize = 3;
+        private const int defaultGridSize = 3;
 
-    [Range(1, 5)]
-    public int gridSize = defaultGridSize;
+        [Range(1, 5)]
+        public int gridSize = defaultGridSize;
 
-    public CellRow[] cells = new CellRow[defaultGridSize];
+        public CellRow[] cells = new CellRow[defaultGridSize];
 
-    [System.Serializable]
-    public class CellRow
-    {
-        public ScriptableObject[] row = new ScriptableObject[defaultGridSize];
+        [System.Serializable]
+        public class CellRow
+        {
+            public ScriptableObject[] row = new ScriptableObject[defaultGridSize];
+        }
     }
-}
