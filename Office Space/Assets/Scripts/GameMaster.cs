@@ -10,7 +10,7 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
 
-    #region [Variables]
+    #region [Fields]
 
     #region <SCRIPTS>
     //(Add new scripts to the GameMaster object in Prefabs folder)
@@ -20,6 +20,8 @@ public class GameMaster : MonoBehaviour
     public CustomerManager CustomerManager;
     [HideInInspector]
     public OrderManager OrderManager;
+    [HideInInspector]
+    public ItemManager ItemManager;
     #endregion
 
     #region <PLAYER CLASS & INFO>
@@ -113,6 +115,7 @@ public class GameMaster : MonoBehaviour
         SupplierManager = GetComponent<SupplierManager>();
         CustomerManager = GetComponent<CustomerManager>();
         OrderManager = GetComponent<OrderManager>();
+        ItemManager = GetComponent<ItemManager>();
 
         #region <Initialize Date & Time>
         if (initGameDateYear == 0)
@@ -151,6 +154,9 @@ public class GameMaster : MonoBehaviour
         //TEST: Adding items
         SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 1, out genericMessage);
         SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 0.9f, out genericMessage);
+
+        //TEST: Accessing Items
+        Debug.Log(ItemManager.Categories[0].Types[0].Items[0].Name);
 
         #region **DEBUG LOGS**
         Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);

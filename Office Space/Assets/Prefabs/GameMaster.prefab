@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114554498239400020}
   - component: {fileID: 114599112133082384}
   - component: {fileID: 114541504168204232}
+  - component: {fileID: 114553822043926498}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -57,6 +58,7 @@ MonoBehaviour:
   SupplierManager: {fileID: 0}
   CustomerManager: {fileID: 0}
   OrderManager: {fileID: 0}
+  ItemManager: {fileID: 0}
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 10000
@@ -84,6 +86,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f301c4af3e6dc414999e861170decf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114553822043926498
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b541ee055fceac4d9a6b0fa72193d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemCategoryList:
+  - {fileID: 11400000, guid: 434097270eb838d4e85847fce4504752, type: 2}
 --- !u!114 &114554498239400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
