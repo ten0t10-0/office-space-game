@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class InventoryItem
 {
-    public Item Item { get; set; }
+    //public Item Item { get; set; }
+    public ItemID ItemID { get; set; }
     public int Quantity { get; set; }
     public float Condition { get; set; } //for now, affects what is returned in the TotalValue() method.
     public float Age { get; set; } //in days
@@ -12,18 +13,21 @@ public class InventoryItem
     private const int quantity_DEFAULT = -1;
 
     #region <Constructors>
-    public InventoryItem(Item item, int quantity, float condition)
+    public InventoryItem(ItemID itemId, int quantity, float condition)
     {
-        Item = item;
+        ItemID = itemId;
         Quantity = quantity;
         Condition = condition;
+
         Age = 0f;
     }
 
-    public InventoryItem(Item item, float condition)
+    //Default quantity:
+    public InventoryItem(ItemID itemId, float condition)
     {
-        Item = item;
+        ItemID = itemId;
         Condition = condition;
+
         Age = 0f;
 
         Quantity = quantity_DEFAULT;
@@ -33,12 +37,21 @@ public class InventoryItem
     #region <Calculated Properties>
 
     /// <summary>
+    /// Returns the ItemSO object that this is representing.
+    /// </summary>
+    /// <returns></returns>
+    public ItemSO GetItemSO()
+    {
+        return GameMaster.Instance.ItemManager.Categories[ItemID.CategoryID].Types[ItemID.TypeID].Items[ItemID.QualityID];
+    }
+
+    /// <summary>
     /// Returns a float containing the total value of these items.
     /// </summary>
     /// <returns></returns>
     public float TotalValue()
     {
-        return Quantity * Item.UnitCost * Condition;
+        return Quantity * GetItemSO().UnitCost * Condition;
     }
 
     /// <summary>
@@ -47,7 +60,7 @@ public class InventoryItem
     /// <returns></returns>
     public float TotalSpaceUsed()
     {
-        return Quantity * Item.UnitSpace;
+        return Quantity * GetItemSO().UnitSpace;
     }
     #endregion
 
@@ -100,6 +113,6 @@ public class InventoryItem
     //TEMP:
     public override string ToString()
     {
-        return Item.ToString() + "; Quantity: " + Quantity.ToString() + "; Condition: " + Condition.ToString() +"; Age: " + Age.ToString();
+        return GetItemSO().ToString() + "; Quantity: " + Quantity.ToString() + "; Condition: " + Condition.ToString() +"; Age: " + Age.ToString();
     }
 }

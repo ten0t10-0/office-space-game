@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: BackLit Keyboard
   Category: 2
-  Quality: 2
+  Quality: 1
   UnitCost: 250
-  UnitSpace: 1
-  pic: {fileID: 0}
+  UnitSpace: 0.1
+  Picture: {fileID: 0}

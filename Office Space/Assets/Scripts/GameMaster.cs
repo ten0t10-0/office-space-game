@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum ItemQuality { None, Low, Medium, High }
-public enum ItemCategory { None, Furniture, Electronics, Appliances, Clothing, Media } //Add...
+public enum ItemQuality { Low, Medium, High }
+public enum ItemCategory { None, Electronics, Furniture } //Add...
 
 public class GameMaster : MonoBehaviour
 {
@@ -152,11 +152,8 @@ public class GameMaster : MonoBehaviour
         SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
 
         //TEST: Adding items
-        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Table", ItemCategory.Furniture, ItemQuality.Medium, 700, 2), 1, out genericMessage);
-        SupplierManager.Suppliers[0].Inventory.AddItem(new Item("Designer Table", ItemCategory.Furniture, ItemQuality.High, 3000, 2), 0.9f, out genericMessage);
-
-        //TEST: Accessing Items
-        Debug.Log(ItemManager.Categories[0].Types[0].Items[0].Name);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 1), 10, 1f), out genericMessage);
+        SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5, 1f), out genericMessage);
 
         #region **DEBUG LOGS**
         Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
