@@ -2,8 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AssetDataBase : MonoBehaviour 
+[CreateAssetMenu(fileName = "AssetDB", menuName = "Database")]
+public class PieceData : ScriptableObject
 {
+    private const int defaultGridSize = 3;
 
-	public ArrayLayout data;
+    [Range(1, 5)]
+    public int gridSize = defaultGridSize;
+
+    public CellRow[] cells = new CellRow[defaultGridSize];
+
+    [System.Serializable]
+    public class CellRow
+    {
+        public ScriptableObject[] row = new ScriptableObject[defaultGridSize];
+    }
 }

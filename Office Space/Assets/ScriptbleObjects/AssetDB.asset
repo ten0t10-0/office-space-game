@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: AssetDB
+  m_EditorClassIdentifier: Assembly-CSharp::PieceData
+  gridSize: 3
+  cells:
+  - row:
+    - {fileID: 11400000, guid: 44b062ec4f790e5428466ee896887aa0, type: 2}
+    - {fileID: 11400000, guid: 4961d1dd1f54bcf4ab8ffd74961c08b7, type: 2}
+    - {fileID: 11400000, guid: b4cd37b7ee569d342ac6dbb78999ccb7, type: 2}
+  - row:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - row:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
