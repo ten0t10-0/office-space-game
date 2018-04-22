@@ -65,6 +65,8 @@ MonoBehaviour:
   initPlayerInventorySpace: 100
   initPlayerLevel: 1
   initPlayerExperience: 0
+  SaveFileName: Game
+  SaveFileExtension: .gd
   UIMode: 0
   OfflineMode: 0
   Difficulty: 0
@@ -86,6 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f301c4af3e6dc414999e861170decf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OrdersOpen: []
+  OrdersFilled: []
+  OrdersFailed: []
 --- !u!114 &114553822043926498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,6 +138,7 @@ MonoBehaviour:
   - Distributors
   namesUnique:
   - Bonus Supplier
+  Suppliers: []
 --- !u!114 &114599112133082384
 MonoBehaviour:
   m_ObjectHideFlags: 1

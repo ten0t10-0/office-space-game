@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
 public class Order
 {
     public Customer Customer { get; set; }
+    [SerializeField]
     public List<InventoryItem> Items { get; set; }
     public DateTime DateReceived { get; private set; }
     public DateTime? DateDue { get; set; } //null due date for tutorial level?

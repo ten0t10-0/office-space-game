@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Inventory
 {
     //*Check comments*
+
+    [SerializeField]
     public List<InventoryItem> Items { get; set; }
     public float MaximumSpace { get; private set; }
 

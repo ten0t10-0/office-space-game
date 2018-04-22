@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
+[SerializeField]
 public enum ItemQuality { Low, Medium, High }
+[SerializeField]
 public enum ItemCategory { None, Electronics, Furniture } //Add...
 
 public class GameMaster : MonoBehaviour
@@ -35,6 +40,10 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <GAME>
+    public string SaveFileName = "Game";
+    public string SaveFileExtension = ".gd";
+    private string saveFileDirString;
+
     public bool UIMode = false;
     public bool OfflineMode = false;
 
@@ -117,6 +126,40 @@ public class GameMaster : MonoBehaviour
         OrderManager = GetComponent<OrderManager>();
         ItemManager = GetComponent<ItemManager>();
 
+        #region <Validate Game Save File Name & Extension>
+        string tempSaveFileName, tempSaveFileExtension;
+
+        //NAME:
+        tempSaveFileName = "";
+
+        for (int i = 0; i < SaveFileName.Length; i++)
+        {
+            if (Char.IsLetterOrDigit(SaveFileName[i]))
+                tempSaveFileName += SaveFileName[i];
+        }
+
+        //EXTENSION:
+        tempSaveFileExtension = ".";
+
+        if (SaveFileExtension[0] != '.')
+            SaveFileExtension = '.' + SaveFileExtension;
+
+        for (int i = 1; i < SaveFileExtension.Length; i++)
+        {
+            if (Char.IsLetter(SaveFileExtension[i]))
+                tempSaveFileExtension += Char.ToLower(SaveFileExtension[i]);
+        }
+
+        //FINALLY:
+        SaveFileName = tempSaveFileName;
+        SaveFileExtension = tempSaveFileExtension;
+
+        saveFileDirString = "/" + SaveFileName + SaveFileExtension;
+
+        //*TEMP:
+        Debug.Log(saveFileDirString + "*");
+        #endregion
+
         #region <Initialize Date & Time>
         if (initGameDateYear == 0)
             initGameDateYear = DateTime.Today.Year;
@@ -145,20 +188,40 @@ public class GameMaster : MonoBehaviour
         string genericMessage;
         string generateSuppliersResult;
 
-        //Player Initializer
-        Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
+        if (!File.Exists(Application.persistentDataPath + saveFileDirString))
+        {
+            //Player Initializer
+            Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
 
-        //Supplier generator
-        SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
+            //Supplier generator
+            SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
 
-        //TEST: Adding items
-        SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 1), 10, 1f), out genericMessage);
-        SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5, 1f), out genericMessage);
+            //TEST: Adding items
+            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 0), 10, 1f), out genericMessage);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5, 1f), out genericMessage);
 
-        #region **DEBUG LOGS**
-        Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
-        CreateDebugLogs();
-        #endregion
+            //TEST: Adding orders
+            OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), SupplierManager.Suppliers[0].Inventory.Items, GameDateTime.AddHours(-1), GameDateTime.AddHours(2)));
+
+            //TEST: Save Game
+            SaveGame();
+
+            #region **DEBUG LOGS**
+            Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
+            Debug.Log(OrderManager.OrdersOpen[0].DateReceived.ToString());
+            CreateDebugLogs();
+            #endregion
+        }
+        else
+        {
+            //TEST: Load Game
+            LoadGame();
+
+            #region ***DEBUG LOGS***
+            Debug.Log(OrderManager.OrdersOpen[0].DateReceived.ToString());
+            CreateDebugLogs();
+            #endregion
+        }
 
         tPlayerPlayTime = tGameTime = Time.time;
     }
@@ -225,6 +288,56 @@ public class GameMaster : MonoBehaviour
     public string GameTimeString24()
     {
         return GameDateTime.ToString("HH:mm");
+    }
+
+    public string TimeString12(DateTime dateTime)
+    {
+        return dateTime.ToShortTimeString();
+    }
+    public string TimeString24(DateTime dateTime)
+    {
+        return dateTime.ToString("HH:mm");
+    }
+    #endregion
+
+    #region <SAVING/LOADING>
+    private void SaveGame()
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        GameData saveData = new GameData(Player, SupplierManager.Suppliers, OrderManager.OrdersOpen, OrderManager.OrdersFilled, OrderManager.OrdersFailed);
+
+        FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
+
+        bf.Serialize(file, saveData);
+
+        file.Close();
+
+        //LOG:
+        Debug.Log("GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
+    }
+
+    private void LoadGame()
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+
+        FileStream file = File.Open(Application.persistentDataPath + saveFileDirString, FileMode.Open);
+
+        GameData loadData = (GameData)bf.Deserialize(file);
+
+        file.Close();
+
+        //Load data from GameData object:
+        Player = loadData.Player;
+
+        SupplierManager.Suppliers = loadData.Suppliers;
+
+        OrderManager.OrdersOpen = loadData.OrdersOpen;
+        OrderManager.OrdersFilled = loadData.OrdersFilled;
+        OrderManager.OrdersFailed = loadData.OrdersFailed;
+
+        //LOG:
+        Debug.Log("GAME DATA LOADED!");
     }
     #endregion
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class SupplierAI : Supplier
 {
     public float MarkupPercentage { get; set; }
