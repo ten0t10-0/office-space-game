@@ -59,9 +59,9 @@ public class Inventory
         return ContinueAddItem(inventoryItem, out result);
     }
     //***(TEMP)
-    public bool AddItem(ItemID itemId, float condition, out string result)
+    public bool AddItem(ItemID itemId, out string result)
     {
-        return ContinueAddItem(new InventoryItem(itemId, condition), out result);
+        return ContinueAddItem(new InventoryItem(itemId), out result);
     }
 
     private bool ContinueAddItem(InventoryItem inventoryItem, out string result)

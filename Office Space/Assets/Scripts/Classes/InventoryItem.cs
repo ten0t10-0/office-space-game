@@ -5,29 +5,25 @@ using UnityEngine;
 [System.Serializable]
 public class InventoryItem
 {
-    //public Item Item { get; set; }
     public ItemID ItemID { get; set; }
     public int Quantity { get; set; }
-    public float Condition { get; set; } //for now, affects what is returned in the TotalValue() method.
     public float Age { get; set; } //in days
 
     private const int quantity_DEFAULT = -1;
 
     #region <Constructors>
-    public InventoryItem(ItemID itemId, int quantity, float condition)
+    public InventoryItem(ItemID itemId, int quantity)
     {
         ItemID = itemId;
         Quantity = quantity;
-        Condition = condition;
 
         Age = 0f;
     }
 
     //Default quantity:
-    public InventoryItem(ItemID itemId, float condition)
+    public InventoryItem(ItemID itemId)
     {
         ItemID = itemId;
-        Condition = condition;
 
         Age = 0f;
 
@@ -52,7 +48,7 @@ public class InventoryItem
     /// <returns></returns>
     public float TotalValue()
     {
-        return Quantity * GetItemSO().UnitCost * Condition;
+        return Quantity * GetItemSO().UnitCost;
     }
 
     /// <summary>
@@ -114,6 +110,6 @@ public class InventoryItem
     //TEMP:
     public override string ToString()
     {
-        return GetItemSO().ToString() + "; Quantity: " + Quantity.ToString() + "; Condition: " + Condition.ToString() +"; Age: " + Age.ToString();
+        return GetItemSO().ToString() + "; Quantity: " + Quantity.ToString() + "; Age: " + Age.ToString();
     }
 }

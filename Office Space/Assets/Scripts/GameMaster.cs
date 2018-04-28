@@ -197,8 +197,8 @@ public class GameMaster : MonoBehaviour
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
 
             //TEST: Adding items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 0), 10, 1f), out genericMessage);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5, 1f), out genericMessage);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 0), 10), out genericMessage);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5), out genericMessage);
 
             //TEST: Adding orders
             OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), SupplierManager.Suppliers[0].Inventory.Items, GameDateTime.AddHours(-1), GameDateTime.AddHours(2)));
