@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopController : MonoBehaviour 
 {
@@ -26,9 +27,10 @@ public class ShopController : MonoBehaviour
 			{
 				GameObject newItem = Instantiate(ItemContainer,scrollViewContent);
 
+				Debug.Log(item.GetItemSO().Name);
 				newItem.transform.Find("Image").GetComponent<Image> ().sprite = item.GetItemSO().Picture;
-				//newItem.transform.Find("Name").GetComponent<Text>().text = item.GetItemSO().Name;
-				//newItem.transform.Find("Price").GetComponent<Text>().text = item.GetItemSO().UnitCost.ToString();
+				newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.GetItemSO().Name.ToString();
+				newItem.transform.Find("Price").GetComponent<TMP_Text>().text = item.GetItemSO().UnitCost.ToString();
 			}
 		}
 	}
