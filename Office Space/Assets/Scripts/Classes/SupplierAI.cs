@@ -29,6 +29,6 @@ public class SupplierAI : Supplier
     //TEMP:
     public override string ToString()
     {
-        return base.ToString() + "; Markup Percentage: " + MarkupPercentage.ToString() + "; Condition Percentage: " + ConditionPercentage.ToString();
+        return base.ToString() + "; Markup Percentage: " + MarkupPercentage.ToString();
     }
 }

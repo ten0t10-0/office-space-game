@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopController : MonoBehaviour 
+public class ShopController 
 {
 	
-	SupplierManager sm = new SupplierManager();
-
 	public void PopulateInventory()
 	{
 
-		foreach (SupplierAI s in sm.Suppliers)
+		foreach (SupplierAI s in GameMaster.Instance.SupplierManager.Suppliers)
 		{
 		
 				foreach (InventoryItem item in s.Inventory.Items)
