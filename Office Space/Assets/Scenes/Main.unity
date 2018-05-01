@@ -4017,8 +4017,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 463d6524af1e5ef4b99f53e481565985, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRoot: {fileID: 64230938}
-  target: {fileID: 1650220260}
+  target: {fileID: 64230939}
+  yOffset: 2.5
 --- !u!4 &1309112032
 Transform:
   m_ObjectHideFlags: 0
