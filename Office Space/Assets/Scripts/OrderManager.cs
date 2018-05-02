@@ -21,7 +21,7 @@ public class OrderManager : MonoBehaviour
         #endregion
 
         #region [ORDER_ITEMS]
-        List<InventoryItem> items = new List<InventoryItem>();
+        List<OrderItem> items = new List<OrderItem>();
         //<algorithm> (check current suppliers' inventories to ensure only items that are possible to buy get generated; make use of difficulty to determine item requirements such as number of Items and each of their quality & quantity values).*
         #endregion
 

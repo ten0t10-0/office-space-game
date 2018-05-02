@@ -76,7 +76,7 @@ MonoBehaviour:
   initGameTimeHour: 23
   initGameTimeMinutes: 55
   GameTimeSpeed: 60
-  initNumberOfSuppliers: 5
+  initNumberOfSuppliers: 3
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1

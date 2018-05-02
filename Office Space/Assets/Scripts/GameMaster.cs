@@ -15,6 +15,12 @@ public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
 
+    public void Log(string message)
+    {
+        currentMessage = message;
+        //Debug.Log(currentMessage);
+    }
+
     #region [Fields]
 
     #region <SCRIPTS>
@@ -77,8 +83,9 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <MESSAGES>
-    public const string MSG_ERR_DEFAULT = "Uh oh.";
+    private string currentMessage;
 
+    public const string MSG_ERR_DEFAULT = "Uh oh.";
     public const string MSG_GEN_NA = "N/A";
     #endregion
 
@@ -112,7 +119,7 @@ public class GameMaster : MonoBehaviour
 
     private void Awake()
     {
-        #region <SP Setup>
+        #region <Pattern Setup>
         if (Instance == null)
             Instance = this;
         else if (Instance != this)
@@ -178,6 +185,8 @@ public class GameMaster : MonoBehaviour
         GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
         #endregion
 
+        currentMessage = MSG_GEN_NA;
+
         //<TEST NEW GAME METHOD>
         NewGameTEST();
     }
@@ -185,7 +194,6 @@ public class GameMaster : MonoBehaviour
     private void NewGameTEST()
     {
         //out Messages (GUI/Debug purposes)
-        string genericMessage;
         string generateSuppliersResult;
 
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
@@ -194,14 +202,24 @@ public class GameMaster : MonoBehaviour
             Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
 
             //Supplier generator
-            SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out generateSuppliersResult);
+            SupplierManager.GenerateSuppliers(initNumberOfSuppliers);
+            generateSuppliersResult = currentMessage;
 
-            //TEST: Adding items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(1, 0, 0), 10), out genericMessage);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new InventoryItem(new ItemID(2, 0, 2), 5), out genericMessage);
+            //TEST: Adding supplier items
+            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(1, 0, 0));
+            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(2, 0, 2));
+
+            //TEST: Adding player items
+            Player.Business.Inventory.AddItem(new ItemID(1, 0, 2), 5);
 
             //TEST: Adding orders
-            OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), SupplierManager.Suppliers[0].Inventory.Items, GameDateTime.AddHours(-1), GameDateTime.AddHours(2)));
+            List<OrderItem> orderItems = new List<OrderItem>();
+            foreach (Item item in SupplierManager.Suppliers[0].Inventory.Items)
+            {
+                int qty = UnityEngine.Random.Range(5, 21);
+                orderItems.Add(new OrderItem(item.ItemID, qty));
+            }
+            OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), orderItems, GameDateTime, GameDateTime.AddHours(2)));
 
             //TEST: Save Game
             SaveGame();
@@ -214,11 +232,13 @@ public class GameMaster : MonoBehaviour
         }
         else
         {
+            //TEMP: Delete save game
+            //DeleteSave();
+
             //TEST: Load Game
             LoadGame();
 
             #region ***DEBUG LOGS***
-            Debug.Log(OrderManager.OrdersOpen[0].DateReceived.ToString());
             CreateDebugLogs();
             #endregion
         }
@@ -339,6 +359,11 @@ public class GameMaster : MonoBehaviour
         //LOG:
         Debug.Log("GAME DATA LOADED!");
     }
+
+    private void DeleteSave()
+    {
+        File.Delete(Application.persistentDataPath + saveFileDirString);
+    }
     #endregion
 
     #region**DEBUG LOGS METHOD**
@@ -346,6 +371,28 @@ public class GameMaster : MonoBehaviour
     {
         string lineL = "----------------------------------------------------------------";
         string lineS = "=======================";
+
+        Debug.Log("PLAYER:");
+        Debug.Log(lineS);
+        Debug.Log("*Player:");
+        Debug.Log(Player.ToString());
+        Debug.Log("*<OK!>");
+        Debug.Log("*Business:");
+        Debug.Log(Player.Business.ToString());
+        Debug.Log("*<OK!>");
+        Debug.Log("*Inventory:");
+        Debug.Log(Player.Business.Inventory.ToString());
+        Debug.Log("*<OK!>");
+        if (Player.Business.Inventory.Items.Count != 0)
+        {
+            foreach (InventoryItem item in Player.Business.Inventory.Items)
+                Debug.Log(item.ToString());
+        }
+        else
+        {
+            Debug.Log("0");
+        }
+        Debug.Log(lineL);
 
         Debug.Log("SUPPLIERS:");
         Debug.Log(lineS);
@@ -360,7 +407,7 @@ public class GameMaster : MonoBehaviour
             Debug.Log("*Inventory Items:");
             if (s.Inventory.Items.Count != 0)
             {
-                foreach (InventoryItem item in s.Inventory.Items)
+                foreach (Item item in s.Inventory.Items)
                     Debug.Log(item.ToString());
             }
             else

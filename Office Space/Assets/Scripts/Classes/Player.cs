@@ -59,4 +59,10 @@ public class Player
         return new Customer(this.Name);
     }
     #endregion
+
+    //TEMP:
+    public override string ToString()
+    {
+        return string.Format("Name: {0}; Money: {1}; PlayTime: {2}; Level: {3}; Experience: {4}", Name, Money.ToString(), PlayTime.ToString(), Level.ToString(), Experience.ToString());
+    }
 }

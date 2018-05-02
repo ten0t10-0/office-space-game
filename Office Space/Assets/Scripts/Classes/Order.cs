@@ -8,7 +8,7 @@ public class Order
 {
     public Customer Customer { get; set; }
     [SerializeField]
-    public List<InventoryItem> Items { get; set; }
+    public List<OrderItem> Items { get; set; }
     public DateTime DateReceived { get; private set; }
     public DateTime? DateDue { get; set; } //null due date for tutorial level?
     public bool Filled { get; set; }
@@ -34,7 +34,7 @@ public class Order
     #endregion
 
     #region <Constructors>
-    public Order (Customer customer, List<InventoryItem> items, DateTime dateReceived, DateTime? dateDue) //*
+    public Order (Customer customer, List<OrderItem> items, DateTime dateReceived, DateTime? dateDue) //*
     {
         Customer = customer;
         Items = items;

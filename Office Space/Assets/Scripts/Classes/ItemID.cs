@@ -7,6 +7,7 @@ public class ItemID
 {
     public int CategoryID, TypeID, QualityID;
 
+    #region <Constructors>
     public ItemID(int categoryId, int typeId, int qualityId)
     {
         CategoryID = categoryId;
@@ -20,6 +21,7 @@ public class ItemID
         TypeID = int.Parse(itemId[1].ToString());
         QualityID = int.Parse(itemId[2].ToString());
     }
+    #endregion
 
     public override string ToString()
     {

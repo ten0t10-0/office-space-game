@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class SupplierAI : Supplier
 {
+    public InventoryAI Inventory { get; set; }
     public float MarkupPercentage { get; set; }
 
     protected const float markupPercentage_DEFAULT = 0.00f;
@@ -12,7 +13,7 @@ public class SupplierAI : Supplier
     #region <Constructors>
     public SupplierAI(string name, float markupPercent) : base(name)
     {
-        Inventory = new Inventory();
+        Inventory = new InventoryAI();
 
         MarkupPercentage = markupPercent;
     }
@@ -20,7 +21,7 @@ public class SupplierAI : Supplier
     //***(TEMP)
     public SupplierAI(string name) : base(name)
     {
-        Inventory = new Inventory();
+        Inventory = new InventoryAI();
 
         MarkupPercentage = markupPercentage_DEFAULT;
     }

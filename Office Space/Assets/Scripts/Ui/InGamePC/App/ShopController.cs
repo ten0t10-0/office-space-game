@@ -39,20 +39,20 @@ public class ShopController : MonoBehaviour
 		}
         */
 
-        int iSupplier, iInventoryItem;
+        int iSupplier, iItem;
 
         for (iSupplier = 0; iSupplier < GameMaster.Instance.SupplierManager.Suppliers.Count; iSupplier++)
         {
             SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers[iSupplier];
 
-            for (iInventoryItem = 0; iInventoryItem < supplier.Inventory.Items.Count; iInventoryItem++)
+            for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++)
             {
-                InventoryItem item = supplier.Inventory.Items[iInventoryItem];
+                Item item = supplier.Inventory.Items[iItem];
 
                 GameObject newItem = Instantiate(ItemContainer, scrollViewContent);
 
                 newItem.GetComponent<ItemContainerScript>().SupplierIndex = iSupplier;
-                newItem.GetComponent<ItemContainerScript>().InventoryItemIndex = iInventoryItem;
+                newItem.GetComponent<ItemContainerScript>().InventoryItemIndex = iItem;
 
                 newItem.transform.Find("Image").GetComponent<Image>().sprite = item.GetItemSO().Picture;
                 newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.GetItemSO().Name.ToString();
@@ -90,7 +90,7 @@ public class ShopController : MonoBehaviour
         iSupplier = selected.GetComponent<ItemContainerScript>().SupplierIndex;
         iInventoryItem = selected.GetComponent<ItemContainerScript>().InventoryItemIndex;
 
-        InventoryItem purchasedItem = GameMaster.Instance.SupplierManager.Suppliers[iSupplier].Inventory.Items[iInventoryItem];
+        Item purchasedItem = GameMaster.Instance.SupplierManager.Suppliers[iSupplier].Inventory.Items[iInventoryItem];
 
         //Make sure we can find the item and a can afford it
         if (purchasedItem == null)

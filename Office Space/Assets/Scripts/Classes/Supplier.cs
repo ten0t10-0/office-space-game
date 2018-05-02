@@ -6,7 +6,6 @@ using UnityEngine;
 public abstract class Supplier
 {
     public string Name { get; set; }
-    public Inventory Inventory { get; set; }
 
     protected Supplier(string name)
     {

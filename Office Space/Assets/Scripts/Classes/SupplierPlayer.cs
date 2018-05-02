@@ -5,10 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class SupplierPlayer : Supplier
 {
+    public InventoryPlayer Inventory { get; set; }
+
     #region <Constructor>
     public SupplierPlayer(string name, float maximumInventorySpace) : base(name)
     {
-        Inventory = new Inventory(maximumInventorySpace);
+        Inventory = new InventoryPlayer(maximumInventorySpace);
     }
     #endregion
 

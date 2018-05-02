@@ -25,22 +25,21 @@ public class SupplierManager : MonoBehaviour
     public List<SupplierAI> Suppliers;
 
     //private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
-    //private RangeAttribute conditionPercent = new RangeAttribute(0.25f, 1.00f);
 
     #region Methods
     
     /// <summary>
-    /// Generates the specified number of Suppliers and stores them in the Suppliers list.
+    /// (WIP?) Generates the specified number of Suppliers and stores them in the Suppliers list.
     /// </summary>
     /// <param name="count">The number of Suppliers to generate.</param>
     /// <param name="message">String to store the result message.</param>
-    public void GenerateSuppliers(int count, out string message)
+    public void GenerateSuppliers(int count)
     {
         Suppliers = new List<SupplierAI>();
 
         string currentGeneratedName;
 
-        message = GameMaster.MSG_ERR_DEFAULT;
+        string message = GameMaster.MSG_ERR_DEFAULT;
 
         namesPreRemaining = new List<string>();
 
@@ -62,6 +61,8 @@ public class SupplierManager : MonoBehaviour
 
         if (Suppliers.Count == count)
             message = "Success - All " + count.ToString() + " suppliers were generated!";
+
+        GameMaster.Instance.Log(message);
     }
 
     /// <summary>
@@ -82,7 +83,7 @@ public class SupplierManager : MonoBehaviour
     private void ClearAllSupplierInventoryItems()
     {
         for (int i = 0; i < Suppliers.Count; i++)
-        { Suppliers[i].Inventory.Items.Clear(); }
+        { Suppliers[i].Inventory.Clear(); }
     }
 
     /// <summary>
