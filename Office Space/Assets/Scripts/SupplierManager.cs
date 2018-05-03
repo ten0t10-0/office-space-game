@@ -33,13 +33,13 @@ public class SupplierManager : MonoBehaviour
     /// </summary>
     /// <param name="count">The number of Suppliers to generate.</param>
     /// <param name="message">String to store the result message.</param>
-    public void GenerateSuppliers(int count)
+    public void GenerateSuppliers(int count, out string result)
     {
         Suppliers = new List<SupplierAI>();
 
         string currentGeneratedName;
 
-        string message = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         namesPreRemaining = new List<string>();
 
@@ -55,14 +55,14 @@ public class SupplierManager : MonoBehaviour
             else
             {
                 c = count + 1; //set sentinel value to end the FOR loop
-                message = "Partial Success - " + Suppliers.Count.ToString() + " out of " + count.ToString() + " suppliers were generated!";
+                result = "Partial Success - " + Suppliers.Count.ToString() + " out of " + count.ToString() + " suppliers were generated!";
             }
         }
 
         if (Suppliers.Count == count)
-            message = "Success - All " + count.ToString() + " suppliers were generated!";
+            result = "Success - All " + count.ToString() + " suppliers were generated!";
 
-        GameMaster.Instance.Log(message);
+        GameMaster.Instance.Log(result);
     }
 
     /// <summary>

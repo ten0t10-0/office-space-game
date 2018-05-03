@@ -39,10 +39,10 @@ public class OrderItem : Item
     /// <param name="quantityToRemove">The quantity of items to be removed.</param>
     /// <param name="result">String containing the result message.</param>
     /// <returns></returns>
-    public bool RemoveItems(int quantityToRemove)
+    public bool RemoveItems(int quantityToRemove, out string result)
     {
         bool itemsRemoved;
-        string result = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         if (Quantity > quantityToRemove)
         {

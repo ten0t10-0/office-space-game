@@ -194,7 +194,7 @@ public class GameMaster : MonoBehaviour
     private void NewGameTEST()
     {
         //out Messages (GUI/Debug purposes)
-        string generateSuppliersResult;
+        string resultGenerateSuppliers, resultGeneric;
 
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
         {
@@ -202,15 +202,14 @@ public class GameMaster : MonoBehaviour
             Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
 
             //Supplier generator
-            SupplierManager.GenerateSuppliers(initNumberOfSuppliers);
-            generateSuppliersResult = currentMessage;
+            SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGenerateSuppliers);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(1, 0, 0));
-            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(2, 0, 2));
+            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(1, 0, 0), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(2, 0, 2), out resultGeneric);
 
             //TEST: Adding player items
-            Player.Business.Inventory.AddItem(new ItemID(1, 0, 2), 5);
+            Player.Business.Inventory.AddItem(new ItemID(1, 0, 2), 5, out resultGeneric);
 
             //TEST: Adding orders
             List<OrderItem> orderItems = new List<OrderItem>();
@@ -225,7 +224,7 @@ public class GameMaster : MonoBehaviour
             SaveGame();
 
             #region **DEBUG LOGS**
-            Debug.Log("SUPPLIER GENERATOR RESULT: " + generateSuppliersResult);
+            Debug.Log("SUPPLIER GENERATOR RESULT: " + resultGenerateSuppliers);
             Debug.Log(OrderManager.OrdersOpen[0].DateReceived.ToString());
             CreateDebugLogs();
             #endregion

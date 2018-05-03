@@ -16,10 +16,10 @@ public class InventoryAI : Inventory
     #endregion
 
     #region <Methods>
-    public bool AddItem(ItemID itemId)
+    public bool AddItem(ItemID itemId, out string result)
     {
         bool added;
-        string result = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         Items.Add(new Item(itemId));
 
@@ -36,10 +36,10 @@ public class InventoryAI : Inventory
     /// <param name="itemToRemoveId">The ID/index of the item in the list to remove.</param>
     /// <param name="result">String containing the result message.</param>
     /// <returns></returns>
-    public bool RemoveItem(int itemToRemoveId)
+    public bool RemoveItem(int itemToRemoveId, out string result)
     {
         bool itemRemoved;
-        string result = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         try
         {

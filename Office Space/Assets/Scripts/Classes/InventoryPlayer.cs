@@ -40,10 +40,10 @@ public class InventoryPlayer : Inventory
     }
 
     //This method can be used when the player purchases items from a supplier. Just pass the supplier's InventoryItem object as a param (AFTER the desired quantity is set) and all done.
-    public bool AddItem(ItemID itemId, int quantity)
+    public bool AddItem(ItemID itemId, int quantity, out string result)
     {
         bool added;
-        string result = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         InventoryItem inventoryItem = new InventoryItem(itemId, quantity);
 
@@ -80,10 +80,10 @@ public class InventoryPlayer : Inventory
     /// <param name="itemToRemoveId">The ID/index of the item in the list to remove.</param>
     /// <param name="result">String containing the result message.</param>
     /// <returns></returns>
-    public bool RemoveItem(int itemToRemoveId)
+    public bool RemoveItem(int itemToRemoveId, out string result)
     {
         bool itemRemoved;
-        string result = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         try
         {
@@ -108,10 +108,10 @@ public class InventoryPlayer : Inventory
     /// <param name="newMaxSpaceAmount">The new Maximum Space value.</param>
     /// <param name="message">String containing the result message.</param>
     /// <returns></returns>
-    public bool ChangeMaximumSpace(float newMaxSpaceAmount)
+    public bool ChangeMaximumSpace(float newMaxSpaceAmount, out string result)
     {
         bool changed;
-        string message = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         if (newMaxSpaceAmount > 0)
         {
@@ -121,21 +121,21 @@ public class InventoryPlayer : Inventory
             {
                 MaximumSpace = newMaxSpaceAmount;
                 changed = true;
-                message = "Maximum space successfully changed!";
+                result = "Maximum space successfully changed!";
             }
             else
             {
                 changed = false;
-                message = "Too many Items in Inventory!";
+                result = "Too many Items in Inventory!";
             }
         }
         else
         {
             changed = false;
-            message = "New maximum space amount must be greater than or equal to 0.";
+            result = "New maximum space amount must be greater than or equal to 0.";
         }
 
-        GameMaster.Instance.Log(message);
+        GameMaster.Instance.Log(result);
         return changed;
     }
 
@@ -144,25 +144,25 @@ public class InventoryPlayer : Inventory
     /// </summary>
     /// <param name="newMaxSpaceIncrement">The number to add to the maximum Inventory space.</param>
     /// <param name="message">String containing the result message.</param>
-    public bool IncreaseMaximumSpace(float newMaxSpaceIncrement)
+    public bool IncreaseMaximumSpace(float newMaxSpaceIncrement, out string result)
     {
         bool changed;
-        string message = GameMaster.MSG_ERR_DEFAULT;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
         if (newMaxSpaceIncrement > -1)
         {
             MaximumSpace += newMaxSpaceIncrement;
 
             changed = true;
-            message = "Maximum space successfully increased by " + newMaxSpaceIncrement.ToString() + "!";
+            result = "Maximum space successfully increased by " + newMaxSpaceIncrement.ToString() + "!";
         }
         else
         {
             changed = false;
-            message = "Increment must be a positive number!";
+            result = "Increment must be a positive number!";
         }
 
-        GameMaster.Instance.Log(message);
+        GameMaster.Instance.Log(result);
         return changed;
     }
 
