@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SupplierIndex: -1
-  InventoryItemIndex: -1
+  ItemIndex: -1
 --- !u!114 &114216214652350820
 MonoBehaviour:
   m_ObjectHideFlags: 1

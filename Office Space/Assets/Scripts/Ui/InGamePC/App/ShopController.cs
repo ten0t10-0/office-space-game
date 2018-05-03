@@ -20,6 +20,7 @@ public class ShopController : MonoBehaviour
 
 	void Start () 
 	{
+        playerUI = this.gameObject.GetComponent<PlayerUiController>();
 		AddAllItems();
 	}
 
@@ -40,7 +41,7 @@ public class ShopController : MonoBehaviour
                 GameObject newItem = Instantiate(ItemContainer, scrollViewContent);
 
                 newItem.GetComponent<ItemContainerScript>().SupplierIndex = iSupplier;
-                newItem.GetComponent<ItemContainerScript>().InventoryItemIndex = iItem;
+                newItem.GetComponent<ItemContainerScript>().ItemIndex = iItem;
 
                 newItem.transform.Find("Image").GetComponent<Image>().sprite = item.GetItemSO().Picture;
                 newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.GetItemSO().Name.ToString();
@@ -68,14 +69,15 @@ public class ShopController : MonoBehaviour
 
 	public void BuyOnClick()
 	{
-        int iSupplier, iInventoryItem;
+        int iSupplier, iItem;
 
         ItemContainerScript selected = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemContainerScript>();
 
         iSupplier = selected.GetComponent<ItemContainerScript>().SupplierIndex;
-        iInventoryItem = selected.GetComponent<ItemContainerScript>().InventoryItemIndex;
+        iItem = selected.GetComponent<ItemContainerScript>().ItemIndex;
 
-		purchasedItem = GameMaster.Instance.SupplierManager.Suppliers[iSupplier].Inventory.Items[iInventoryItem];
+		purchasedItem = GameMaster.Instance.SupplierManager.Suppliers[iSupplier].Inventory.Items[iItem];
+        playerUI.SetItem(purchasedItem);
 
         //Make sure we can find the item and a can afford it
         if (purchasedItem == null)

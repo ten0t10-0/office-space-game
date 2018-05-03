@@ -6,8 +6,6 @@ using TMPro;
 
 public class PlayerUiController : MonoBehaviour 
 {
-	private ShopController Sc;
-
 	public InputField amount;
 	public Button btnDecrease; 
 	public Button btnIncrease;
@@ -22,28 +20,26 @@ public class PlayerUiController : MonoBehaviour
 
 	int currentAmount = 1;
 
-	Item purchasedItem;
+	public Item purchasedItem;
 
 	void Start()
 	{
 		//disable decrease btn on start up
 
-		GameObject sp = GameObject.Find("StockPanel");
-		ShopController sc = sp.GetComponent<ShopController>();
-		Item purchasedItem = sc.purchasedItem;
-
-		nameText.SetText(purchasedItem.GetItemSO ().name.ToString());
-		//pic = purchasedItem.GetItemSO ().Picture;
-		totalText.SetText(purchasedItem.GetItemSO ().UnitCost.ToString());
-
-		Debug.Log("booopl"+purchasedItem.ToString ());
+		//GameObject sp = GameObject.Find("StockPanel");
 
 	}
 
-	public void setItem(Item pi)
+	public void SetItem(Item pi)
 	{
 		purchasedItem = pi;
-	}
+
+        nameText.SetText(purchasedItem.GetItemSO().Name.ToString());
+        //pic = purchasedItem.GetItemSO ().Picture;
+        totalText.SetText(purchasedItem.GetItemSO().UnitCost.ToString());
+
+        Debug.Log("booopl" + purchasedItem.ToString());
+    }
 
 	public void InputChanged(InputField at)
 	{
