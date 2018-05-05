@@ -70,6 +70,8 @@ MonoBehaviour:
   UIMode: 0
   OfflineMode: 0
   Difficulty: 0
+  DayStartHour: 8
+  DayEndHour: 20
   initGameDateYear: 0
   initGameDateMonth: 0
   initGameDateDay: 0

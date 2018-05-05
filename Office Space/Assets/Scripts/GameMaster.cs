@@ -46,14 +46,27 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <GAME>
+
+    #region <Game Data (Saving/Loading)>
     public string SaveFileName = "Game";
     public string SaveFileExtension = ".gd";
     private string saveFileDirString;
+    #endregion
 
+    #region <Bools>
     public bool UIMode = false;
     public bool OfflineMode = false;
+    #endregion
 
+    #region <Difficulty>
     public int Difficulty = 0; //0 = Tutorial
+    #endregion
+
+    #region <Date & Time>
+    [Range(0, 11)]
+    public int DayStartHour = 8;
+    [Range(12, 23)]
+    public int DayEndHour = 20;
 
     public DateTime GameDateTime;
 
@@ -69,6 +82,7 @@ public class GameMaster : MonoBehaviour
     public int initGameTimeMinutes;
 
     public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
+    #endregion
     #endregion
 
     #region <SUPPLIER MANAGER INFO>
@@ -324,7 +338,17 @@ public class GameMaster : MonoBehaviour
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        GameData saveData = new GameData(Player, SupplierManager.Suppliers, OrderManager.OrdersOpen, OrderManager.OrdersFilled, OrderManager.OrdersFailed);
+        //Save data to GameData object (saveData):
+        GameData saveData = new GameData
+        {
+            Player = this.Player,
+
+            Suppliers = SupplierManager.Suppliers,
+
+            OrdersOpen = OrderManager.OrdersOpen,
+            OrdersFilled = OrderManager.OrdersFilled,
+            OrdersFailed = OrderManager.OrdersFailed
+        };
 
         FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
 
@@ -346,7 +370,7 @@ public class GameMaster : MonoBehaviour
 
         file.Close();
 
-        //Load data from GameData object:
+        //Load data from GameData object (loadData):
         Player = loadData.Player;
 
         SupplierManager.Suppliers = loadData.Suppliers;
@@ -382,6 +406,7 @@ public class GameMaster : MonoBehaviour
         Debug.Log("*Inventory:");
         Debug.Log(Player.Business.Inventory.ToString());
         Debug.Log("*<OK!>");
+        Debug.Log("*Inventory Items:");
         if (Player.Business.Inventory.Items.Count != 0)
         {
             foreach (InventoryItem item in Player.Business.Inventory.Items)

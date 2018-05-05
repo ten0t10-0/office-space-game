@@ -14,6 +14,9 @@ public class GameData
     [SerializeField]
     public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
 
+    public GameData()
+    { }
+
     public GameData(Player player, List<SupplierAI> suppliers, List<Order> ordersOpen, List<Order> ordersFilled, List<Order> ordersFailed)
     {
         Suppliers = suppliers;
