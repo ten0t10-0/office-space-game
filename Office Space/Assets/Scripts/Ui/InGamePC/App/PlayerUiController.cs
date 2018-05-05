@@ -38,7 +38,7 @@ public class PlayerUiController : MonoBehaviour
         //pic = purchasedItem.GetItemSO ().Picture;
         totalText.SetText(purchasedItem.GetItemSO().UnitCost.ToString());
 
-        Debug.Log("booopl" + purchasedItem.ToString());
+     
     }
 
 	public void InputChanged(InputField at)
@@ -71,6 +71,7 @@ public class PlayerUiController : MonoBehaviour
 		//Update the balance in ui Somewhere
 
 		//add the item to the players inventory
+
 
 		//decrease the players inventory space
 
