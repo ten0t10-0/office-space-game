@@ -12,11 +12,30 @@ public class InventoryItem : OrderItem
     {
         Age = 0f;
     }
+
+    public InventoryItem(Item supplierItem, int quantity) : base(supplierItem.ItemID, quantity)
+    {
+        Age = 0f;
+    }
+
+    public InventoryItem(int categoryId, int typeId, int qualityId, int quantity) : base(categoryId, typeId, qualityId, quantity)
+    {
+        Age = 0f;
+    }
+
+    public InventoryItem(string itemId, int quantity) : base(itemId, quantity)
+    {
+        Age = 0f;
+    }
     #endregion
 
     #region <Methods>
 
     //Currently does nothing, but maybe take age into account when determining total value?
+    /// <summary>
+    /// Returns the total cost of these items.
+    /// </summary>
+    /// <returns></returns>
     public override float TotalValue()
     {
         return base.TotalValue();

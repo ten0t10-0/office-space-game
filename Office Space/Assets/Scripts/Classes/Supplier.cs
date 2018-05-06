@@ -12,6 +12,8 @@ public abstract class Supplier
         Name = name;
     }
 
+    public abstract bool ExecutePurchase(Item item, int quantity, out float payment, out string result);
+
     public override string ToString()
     {
         return "Name: " + Name;

@@ -27,6 +27,40 @@ public class SupplierAI : Supplier
     }
     #endregion
 
+    #region <Methods>
+    /// <summary>
+    /// Executes a purchase for this supplier.
+    /// </summary>
+    /// <param name="item">The item to be purchased.</param>
+    /// <param name="quantity">The quantity of the item to be purchased.</param>
+    /// <param name="payment">The total value of the purchase.</param>
+    /// <param name="result">The result message.</param>
+    /// <returns></returns>
+    public override bool ExecutePurchase(Item item, int quantity, out float payment, out string result)
+    {
+        bool itemFound = false;
+
+        if (Inventory.Items.Count != 0)
+        {
+            for (int i = 0; i < Inventory.Items.Count; i++)
+            {
+                if (Inventory.Items[i].ItemID == item.ItemID)
+                {
+                    itemFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!itemFound)
+            Inventory.AddItem(item, out result);
+
+        payment = item.GetItemSO().UnitCost * quantity;
+        result = "Items successfully purchased! (SUPPLIER)";
+        return true;
+    }
+    #endregion
+
     //TEMP:
     public override string ToString()
     {

@@ -39,13 +39,10 @@ public class InventoryPlayer : Inventory
         return value;
     }
 
-    //This method can be used when the player purchases items from a supplier. Just pass the supplier's InventoryItem object as a param (AFTER the desired quantity is set) and all done.
-    public bool AddItem(ItemID itemId, int quantity, out string result)
+    public bool AddItem(InventoryItem inventoryItem, out string result)
     {
         bool added;
         result = GameMaster.MSG_ERR_DEFAULT;
-
-        InventoryItem inventoryItem = new InventoryItem(itemId, quantity);
 
         float itemSpaceUsed = inventoryItem.TotalSpaceUsed();
         float totalSpaceUsed = TotalSpaceUsed();

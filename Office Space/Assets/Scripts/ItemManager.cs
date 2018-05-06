@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public ItemCategorySO[] Categories;
+    public ItemDatabaseSO Database;
 }

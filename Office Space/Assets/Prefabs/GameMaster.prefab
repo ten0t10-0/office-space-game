@@ -104,10 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b541ee055fceac4d9a6b0fa72193d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Categories:
-  - {fileID: 11400000, guid: 51b446254277fba40bfed50f74127ed7, type: 2}
-  - {fileID: 11400000, guid: 434097270eb838d4e85847fce4504752, type: 2}
-  - {fileID: 11400000, guid: 0e7e7200504c05d40bbbab2f6467ff49, type: 2}
+  Database: {fileID: 11400000, guid: f2f11caff8856a041b9016b34faea9e8, type: 2}
 --- !u!114 &114554498239400020
 MonoBehaviour:
   m_ObjectHideFlags: 1

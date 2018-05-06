@@ -42,7 +42,7 @@ public class ShopController : MonoBehaviour
 		elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Electronics.ToString());});
 		furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
 	
-		money.SetText((GameMaster.Instance.Player.Money).ToString());
+		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
 
 
 
@@ -212,14 +212,14 @@ public class ShopController : MonoBehaviour
 			Debug.Log("Unable to find item");
 			return;
 		}
-		else if (purchasedItem.GetItemSO().UnitCost >= GameMaster.Instance.Player.Money)
+		else if (purchasedItem.GetItemSO().UnitCost >= GameMaster.Instance.Player.Business.Money)
 		{
-			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.GetItemSO().UnitCost.ToString(), GameMaster.Instance.Player.Money.ToString()));
+			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.GetItemSO().UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
 			return;
 		}
         else
         {
-            Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.GetItemSO().Name, purchasedItem.GetItemSO().UnitCost, GameMaster.Instance.Player.Money - purchasedItem.GetItemSO().UnitCost));
+            Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.GetItemSO().Name, purchasedItem.GetItemSO().UnitCost, GameMaster.Instance.Player.Business.Money - purchasedItem.GetItemSO().UnitCost));
         }
 			
 		qtyPanel.SetActive(true);

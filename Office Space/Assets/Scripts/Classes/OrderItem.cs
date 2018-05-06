@@ -12,6 +12,21 @@ public class OrderItem : Item
     {
         Quantity = quantity;
     }
+
+    public OrderItem(Item supplierItem, int quantity) : base(supplierItem.ItemID)
+    {
+        Quantity = quantity;
+    }
+
+    public OrderItem(int categoryId, int typeId, int qualityId, int quantity) : base(categoryId, typeId, qualityId)
+    {
+        Quantity = quantity;
+    }
+
+    public OrderItem(string itemIdString, int quantity) : base(itemIdString)
+    {
+        Quantity = quantity;
+    }
     #endregion
 
     #region <Methods>
@@ -59,6 +74,15 @@ public class OrderItem : Item
 
         GameMaster.Instance.Log(result);
         return itemsRemoved;
+    }
+
+    /// <summary>
+    /// Returns a base class representation of this.
+    /// </summary>
+    /// <returns></returns>
+    public Item ToItem()
+    {
+        return new Item(ItemID);
     }
     #endregion
 

@@ -16,12 +16,12 @@ public class InventoryAI : Inventory
     #endregion
 
     #region <Methods>
-    public bool AddItem(ItemID itemId, out string result)
+    public bool AddItem(Item item, out string result)
     {
         bool added;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        Items.Add(new Item(itemId));
+        Items.Add(item);
 
         added = true;
         result = "Item(s) successfully added!";

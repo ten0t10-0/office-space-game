@@ -8,9 +8,19 @@ public class Item
     public ItemID ItemID { get; set; }
 
     #region <Constructors>
-    public Item (ItemID itemId)
+    public Item(ItemID itemId)
     {
         ItemID = itemId;
+    }
+
+    public Item(int categoryId, int typeId, int qualityId)
+    {
+        ItemID = new ItemID(categoryId, typeId, qualityId);
+    }
+
+    public Item(string itemIdString)
+    {
+        ItemID = new ItemID(itemIdString);
     }
     #endregion
 
@@ -21,7 +31,7 @@ public class Item
     /// <returns></returns>
     public ItemSO GetItemSO()
     {
-        return GameMaster.Instance.ItemManager.Categories[ItemID.CategoryID].Types[ItemID.TypeID].Items[ItemID.QualityID];
+        return GameMaster.Instance.ItemManager.Database.Categories[ItemID.CategoryID].Types[ItemID.TypeID].Items[ItemID.QualityID];
     }
 
     /// <summary>
@@ -49,6 +59,6 @@ public class Item
     /// <returns></returns>
     public override string ToString()
     {
-        return GetItemSO().ToString();
+        return string.Format("ItemID: {0}; {1}", ItemID.ToString(), GetItemSO().ToString());
     }
 }

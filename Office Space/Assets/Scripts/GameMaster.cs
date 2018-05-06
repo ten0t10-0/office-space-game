@@ -176,9 +176,6 @@ public class GameMaster : MonoBehaviour
         SaveFileExtension = tempSaveFileExtension;
 
         saveFileDirString = "/" + SaveFileName + SaveFileExtension;
-
-        //*TEMP:
-        Debug.Log(saveFileDirString + "*");
         #endregion
 
         #region <Initialize Date & Time>
@@ -213,17 +210,42 @@ public class GameMaster : MonoBehaviour
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
         {
             //Player Initializer
-            Player = new Player(initPlayerName, initPlayerMoney, initBusinessName, initPlayerInventorySpace);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerInventorySpace);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGenerateSuppliers);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(1, 0, 0), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new ItemID(2, 0, 2), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("100"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("202"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("211"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("212"), out resultGeneric);
 
             //TEST: Adding player items
-            Player.Business.Inventory.AddItem(new ItemID(1, 0, 2), 5, out resultGeneric);
+            Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));
+            Player.Business.Inventory.AddItem(new InventoryItem(SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5), out resultGeneric);
+            Debug.Log(resultGeneric);
+            Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));
+
+            //TEST: PLAYER *purchasing* items from AI SUPPLIER
+            float paymentToSupplier;
+            Player.Business.ExecutePurchase(SupplierManager.Suppliers[0].Inventory.Items[1], 1000, out paymentToSupplier, out resultGeneric); //(Testing; too expensive)
+            Debug.Log("*PURCHASE RESULT: " + resultGeneric);
+            Debug.Log("Remaining Player money: " + Player.Business.Money);
+            Player.Business.ExecutePurchase(SupplierManager.Suppliers[0].Inventory.Items[1], 2, out paymentToSupplier, out resultGeneric);
+            Debug.Log("*PURCHASE RESULT: " + resultGeneric);
+            Debug.Log("Remaining Player money: " + Player.Business.Money.ToString());
+
+            //TEST: PLAYER *selling* items to AI SUPPLIER
+            float paymentToPlayer;
+            int playerItemId = 0;
+            int quantity = 1;
+            SupplierManager.Suppliers[1].ExecutePurchase(Player.Business.Inventory.Items[playerItemId].ToItem(), quantity, out paymentToPlayer, out resultGeneric);
+            Debug.Log(resultGeneric);
+            Player.Business.Inventory.Items[playerItemId].RemoveItems(quantity, out resultGeneric);
+            Debug.Log(resultGeneric);
+            Player.Business.Money += paymentToPlayer;
+            Debug.Log("Current Player money: " + Player.Business.Money.ToString());
 
             //TEST: Adding orders
             List<OrderItem> orderItems = new List<OrderItem>();
@@ -288,8 +310,8 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    #region <SUPPLIER/PLAYER SALES METHODS>
-    // (WIP) *
+    #region <PLAYER TO PLAYER SALES METHOD(S)>
+    // (online stuffs)***
     #endregion
 
     #region <GAME TIME METHODS>
