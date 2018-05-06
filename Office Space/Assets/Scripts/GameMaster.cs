@@ -6,11 +6,6 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-[SerializeField]
-public enum ItemQuality { Low, Medium, High }
-[SerializeField]
-public enum ItemCategory { None, Electronics, Furniture } //Add...
-
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
