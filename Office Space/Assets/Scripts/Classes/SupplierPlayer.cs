@@ -36,7 +36,6 @@ public class SupplierPlayer : Supplier
         if (Money >= payment)
         {
             success = Inventory.AddItem(inventoryItem, out result);
-            
 
             if (success)
             {

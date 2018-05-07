@@ -8,17 +8,12 @@ public class OrderItem : Item
     public int Quantity { get; set; }
 
     #region <Constructors>
-    public OrderItem(ItemID itemId, int quantity) : base(itemId)
+    public OrderItem(int itemId, int quantity) : base(itemId)
     {
         Quantity = quantity;
     }
 
     public OrderItem(Item supplierItem, int quantity) : base(supplierItem.ItemID)
-    {
-        Quantity = quantity;
-    }
-
-    public OrderItem(int categoryId, int typeId, int qualityId, int quantity) : base(categoryId, typeId, qualityId)
     {
         Quantity = quantity;
     }
@@ -59,12 +54,12 @@ public class OrderItem : Item
             Quantity -= quantityToRemove;
 
             itemsRemoved = true;
-            result = quantityToRemove.ToString() + " of these items have been successfully removed! (New quantity: " + Quantity.ToString() + ")";
+            result = string.Format("{0} x '{1}' successfully removed! (New quantity: " + Quantity.ToString() + ")", quantityToRemove.ToString(), Name);
         }
         else
         {
             itemsRemoved = false;
-            result = "Quantity to be removed is too high!";
+            result = "Quantity to be removed is too high.";
         }
 
         GameMaster.Instance.Log(result);

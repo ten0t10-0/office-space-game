@@ -6,9 +6,10 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     public string Description;
-	public ItemQuality Quality;  //Low-end, Medium-end, High-end
-	public float UnitCost;
-	public float UnitSpace; 
+    public ItemTypeSO Type;
+    public ItemQuality Quality;
+    public float UnitCost;
+    public float UnitSpace;
 
-	public Sprite Picture;
+    public Sprite Picture;
 }

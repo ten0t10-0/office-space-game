@@ -1,1 +1,0 @@
-<delete this file from within Unity once files have been placed in this directory>

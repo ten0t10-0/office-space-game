@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: TableT3
   m_EditorClassIdentifier: 
   Description: Contemporary
+  Type: {fileID: 11400000, guid: 088398810b84cbc45b046bebecf499ee, type: 2}
   Quality: 2
   UnitCost: 2000
   UnitSpace: 1

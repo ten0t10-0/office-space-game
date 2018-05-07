@@ -8,17 +8,12 @@ public class InventoryItem : OrderItem
     public float Age { get; set; } //in days
 
     #region <Constructors>
-    public InventoryItem(ItemID itemId, int quantity) : base(itemId, quantity)
+    public InventoryItem(int itemId, int quantity) : base(itemId, quantity)
     {
         Age = 0f;
     }
 
     public InventoryItem(Item supplierItem, int quantity) : base(supplierItem.ItemID, quantity)
-    {
-        Age = 0f;
-    }
-
-    public InventoryItem(int categoryId, int typeId, int qualityId, int quantity) : base(categoryId, typeId, qualityId, quantity)
     {
         Age = 0f;
     }

@@ -38,25 +38,10 @@ public class SupplierAI : Supplier
     /// <returns></returns>
     public override bool ExecutePurchase(Item item, int quantity, out float payment, out string result)
     {
-        bool itemFound = false;
-
-        if (Inventory.Items.Count != 0)
-        {
-            for (int i = 0; i < Inventory.Items.Count; i++)
-            {
-                if (Inventory.Items[i].ItemID == item.ItemID)
-                {
-                    itemFound = true;
-                    break;
-                }
-            }
-        }
-
-        if (!itemFound)
-            Inventory.AddItem(item, out result);
+        Inventory.AddItem(item, out result);
 
         payment = item.UnitCost * quantity;
-        result = "Items successfully purchased! (SUPPLIER)";
+        result = string.Format("{0} x '{1}' successfully purchased by {2}!", quantity.ToString(), item.Name, Name);
         return true;
     }
     #endregion

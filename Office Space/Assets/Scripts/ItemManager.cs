@@ -3,47 +3,83 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemCategory { Special, Electronics, Furniture } //Add...
-[SerializeField]
 public enum ItemQuality { Low, Medium, High }
 
 public class ItemManager : MonoBehaviour
 {
     public ItemDatabaseSO Database;
 
-    private const string err = "**[!]**";
+    private string itemTypeLast, itemDescriptionLast;
+
+    private const int INDEX_DEFAULT = 0;
 
     private void Awake()
     {
-        ValidateDatabase();
+        //ValidateItemDatabase();
     }
 
-    private void ValidateDatabase()
+    #region Queries
+    public ItemSO FetchItem(int itemId)
     {
-        bool valid = true;
+        return Database.Items[itemId];
+    }
 
-        int iCategory, iType;
+    public int GetItemID(string itemType, string itemDescription)
+    {
+        int itemId = INDEX_DEFAULT;
 
-        for (iCategory = 0; iCategory < Database.Categories.Length; iCategory ++)
+        bool itemTypeFound = false;
+
+        itemType = itemType.ToLower();
+        itemDescription = itemDescription.ToLower();
+
+        for (int i = 0; i < Database.Items.Count; i++)
         {
-            for (iType = 0; iType < Database.Categories[iCategory].Types.Length; iType++)
+            if (!itemTypeFound && Database.Items[i].Type.Name.ToLower() == itemType)
             {
-                if (Database.Categories[iCategory].Types[iType].Items.Length == 3)
-                {
-                    if (Database.Categories[iCategory].Types[iType].Items[0].Quality != ItemQuality.Low || Database.Categories[iCategory].Types[iType].Items[1].Quality != ItemQuality.Medium || Database.Categories[iCategory].Types[iType].Items[2].Quality != ItemQuality.High)
-                    {
-                        valid = false;
-                        Debug.Log(string.Format(err + " Invalid Item Quality value(s) in {0} > {1}!", Database.Categories[iCategory].name, Database.Categories[iCategory].Types[iType].name));
-                    }
-                }
-                else
-                {
-                    valid = false;
-                    Debug.Log(string.Format(err + " More than 3 Items in {0} > {1}!", Database.Categories[iCategory].name, Database.Categories[iCategory].Types[iType].name));
-                }
+                itemTypeFound = true;
+
+                itemTypeLast = itemType;
+
+                itemId = i;
+            }
+
+            if (itemTypeFound && Database.Items[i].Description.ToLower() == itemDescription)
+            {
+                itemId = i;
+
+                itemDescriptionLast = itemDescription;
+
+                i = Database.Items.Count; //end
             }
         }
 
-        if (valid)
-            Debug.Log("***ITEMS VALIDATED***");
+        return itemId;
+    }
+    #endregion
+
+    private void ValidateItemDatabase()
+    {
+        List<ItemTypeSO> typesFound = new List<ItemTypeSO>();
+        List<int> typesItemCount = new List<int>();
+        List<ItemQuality[]> typesItemQualities = new List<ItemQuality[]>();
+
+        for (int i = 0; i < Database.Items.Count; i++)
+        {
+            //Pull Item Type:
+            ItemTypeSO typeFound = Database.Items[i].Type;
+
+            //If Item Type not in list, add it, and add/set its item count in parallel list to 1;
+            if (!typesFound.Contains(typeFound))
+            {
+                typesFound.Add(typeFound);
+                typesItemCount.Add(1);
+            }
+            //If Item Type already in list, increment its item count by 1;
+            else
+            {
+                typesItemCount[i]++;
+            }
+        }
     }
 }

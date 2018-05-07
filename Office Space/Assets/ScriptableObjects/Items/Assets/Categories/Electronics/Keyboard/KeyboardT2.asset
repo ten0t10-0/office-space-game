@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Name: KeyboardT2
   m_EditorClassIdentifier: 
   Description: BackLit
+  Type: {fileID: 11400000, guid: c1602c206fe0c1844a72f0e533e65dac, type: 2}
   Quality: 1
-  UnitCost: 250
+  UnitCost: 550
   UnitSpace: 0.1
   Picture: {fileID: 0}

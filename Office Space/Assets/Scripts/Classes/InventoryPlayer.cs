@@ -44,27 +44,29 @@ public class InventoryPlayer : Inventory
         bool added;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        float itemSpaceUsed = inventoryItem.TotalSpaceUsed();
+        float itemTotalSpaceUsed = inventoryItem.TotalSpaceUsed();
         float totalSpaceUsed = TotalSpaceUsed();
 
         if (totalSpaceUsed < MaximumSpace)
         {
-            if (totalSpaceUsed + itemSpaceUsed < MaximumSpace)
+            if (totalSpaceUsed + itemTotalSpaceUsed < MaximumSpace)
             {
+                //bool itemFound = false; *
+
                 Items.Add(inventoryItem);
                 added = true;
-                result = "Item(s) successfully added!";
+                result = string.Format("{0} x '{1}' successfully added!", inventoryItem.Quantity.ToString(), inventoryItem.Name);
             }
             else
             {
                 added = false;
-                result = "You do not have enough Inventory space!";
+                result = "You do not have enough Inventory space.";
             }
         }
         else
         {
             added = false;
-            result = "Your Inventory space is currently full!";
+            result = "Your Inventory space is currently full.";
         }
 
         GameMaster.Instance.Log(result);
@@ -92,7 +94,7 @@ public class InventoryPlayer : Inventory
         catch
         {
             itemRemoved = false;
-            result = "Item does not exist!";
+            result = "Item does not exist.";
         }
 
         GameMaster.Instance.Log(result);
@@ -123,7 +125,7 @@ public class InventoryPlayer : Inventory
             else
             {
                 changed = false;
-                result = "Too many Items in Inventory!";
+                result = "Too many Items in Inventory.";
             }
         }
         else
@@ -156,7 +158,7 @@ public class InventoryPlayer : Inventory
         else
         {
             changed = false;
-            result = "Increment must be a positive number!";
+            result = "Increment must be a positive number.";
         }
 
         GameMaster.Instance.Log(result);

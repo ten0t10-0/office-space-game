@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Item Type", menuName = "Item Type")]
 public class ItemTypeSO : ScriptableObject
 {
-    public ItemSO[] Items;
+    public string Name;
+    public ItemCategory Category;
 }

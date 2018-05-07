@@ -18,13 +18,34 @@ public class InventoryAI : Inventory
     #region <Methods>
     public bool AddItem(Item item, out string result)
     {
-        bool added;
+        bool added = false;
+        bool itemFound = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        Items.Add(item);
+        if (Items.Count != 0)
+        {
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i].ItemID == item.ItemID)
+                {
+                    itemFound = true;
+                    added = false;
 
-        added = true;
-        result = "Item(s) successfully added!";
+                    result = "Item already added.";
+
+                    i = Items.Count; //end
+                }
+            }
+        }
+
+        if (!itemFound)
+        {
+            Items.Add(item);
+
+            added = true;
+
+            result = string.Format("'{0}' successfully added!", item.Name);
+        }
 
         GameMaster.Instance.Log(result);
         return added;
@@ -51,7 +72,7 @@ public class InventoryAI : Inventory
         catch
         {
             itemRemoved = false;
-            result = "Item does not exist!";
+            result = "Item does not exist.";
         }
 
         GameMaster.Instance.Log(result);

@@ -102,7 +102,7 @@ public class GameMaster : MonoBehaviour
 
     #region [Classes]
     //User details: username and password + encryption/encoding
-    //(For security, maybe only use this class as a private variable within a block/struct so that all info held gets disposed once the code in the block/struct ends.)
+    //(For security, maybe only use this class as a private variable within a block so that all info held gets disposed once the code in the block ends.)
     private class UserDetails
     {
         public string Username { get; set; }
@@ -211,10 +211,12 @@ public class GameMaster : MonoBehaviour
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGenerateSuppliers);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(1,0,0), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(2,0,2), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(2,1,1), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(2,1,2), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("keyboard", "basic"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("keyboard", "gaming"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("bed", "modern"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("table", "MODERN"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("BeD", "CONTemporary"), out resultGeneric);
+            SupplierManager.Suppliers[2].Inventory.AddItem(new Item("keyboard", "backlit"), out resultGeneric);
 
             //TEST: Adding player items
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));

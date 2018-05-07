@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Name: KeyboardT3
   m_EditorClassIdentifier: 
   Description: Gaming
+  Type: {fileID: 11400000, guid: c1602c206fe0c1844a72f0e533e65dac, type: 2}
   Quality: 2
-  UnitCost: 500
+  UnitCost: 1000
   UnitSpace: 0.1
   Picture: {fileID: 0}
