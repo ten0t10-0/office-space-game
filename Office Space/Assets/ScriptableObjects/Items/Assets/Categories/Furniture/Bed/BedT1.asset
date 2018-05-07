@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Name: BedT1
   m_EditorClassIdentifier: 
   Description: Basic
-  Quality: {fileID: 11400000, guid: 9e76ac75d594c0c4fa6bf53ed2552305, type: 2}
   Type: {fileID: 11400000, guid: 85e156aa88390144f9fb94a825508b9e, type: 2}
+  Quality: 1
   UnitCost: 1200
   UnitSpace: 1.5
   Picture: {fileID: 0}

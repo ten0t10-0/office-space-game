@@ -223,6 +223,8 @@ public class GameMaster : MonoBehaviour
             Player.Business.Inventory.AddItem(new InventoryItem(SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5), out resultGeneric);
             Debug.Log(resultGeneric);
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));
+            Player.Business.Inventory.AddItem(new InventoryItem("x", "x", 20), out resultGeneric);
+            Debug.Log(resultGeneric);
 
             //TEST: PLAYER *purchasing* items from AI SUPPLIER
             float paymentToSupplier;

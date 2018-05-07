@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
-  m_Name: KeyboardT1
+  m_Name: NothingT0
   m_EditorClassIdentifier: 
-  Description: Basic
-  Type: {fileID: 11400000, guid: c1602c206fe0c1844a72f0e533e65dac, type: 2}
-  Quality: 1
-  UnitCost: 200
-  UnitSpace: 0.1
+  Description: Totally
+  Type: {fileID: 11400000, guid: 46d61029a909c1e4abd943d1c2b32fa8, type: 2}
+  Quality: 0
+  UnitCost: 0
+  UnitSpace: 0
   Picture: {fileID: 0}

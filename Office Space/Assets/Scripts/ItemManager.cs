@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemCategory { Special, Electronics, Furniture } //Add...
-public enum ItemQuality { Low, Medium, High }
+public enum ItemQuality { None, Low, Medium, High }
 
 public class ItemManager : MonoBehaviour
 {

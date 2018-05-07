@@ -8,12 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
-  m_Name: TableT1
+  m_Script: {fileID: 11500000, guid: a5997cfe763b1ea49b797b0520f1ad74, type: 3}
+  m_Name: Nothing
   m_EditorClassIdentifier: 
-  Description: Basic
-  Type: {fileID: 11400000, guid: 088398810b84cbc45b046bebecf499ee, type: 2}
-  Quality: 1
-  UnitCost: 300
-  UnitSpace: 1
-  Picture: {fileID: 0}
+  Name: Nothing
+  Category: 0

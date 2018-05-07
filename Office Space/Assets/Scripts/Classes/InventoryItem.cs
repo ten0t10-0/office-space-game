@@ -17,6 +17,11 @@ public class InventoryItem : OrderItem
     {
         Age = 0f;
     }
+
+    public InventoryItem(string itemType, string itemDescription, int quantity) : base(itemType, itemDescription, quantity)
+    {
+        Age = 0f;
+    }
     #endregion
 
     #region <Methods>

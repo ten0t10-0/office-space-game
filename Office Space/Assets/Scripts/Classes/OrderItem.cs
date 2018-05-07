@@ -17,6 +17,11 @@ public class OrderItem : Item
     {
         Quantity = quantity;
     }
+
+    public OrderItem(string itemType, string itemDescription, int quantity) : base(itemType, itemDescription)
+    {
+        Quantity = quantity;
+    }
     #endregion
 
     #region <Methods>

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: Contemporary
   Type: {fileID: 11400000, guid: 85e156aa88390144f9fb94a825508b9e, type: 2}
-  Quality: 2
+  Quality: 3
   UnitCost: 3000
   UnitSpace: 2
   Picture: {fileID: 0}
