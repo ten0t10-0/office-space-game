@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffe125b11fde894f9cb9f44f0c4e365, type: 3}
   m_Name: Furniture
   m_EditorClassIdentifier: 
+  Name: Furniture
   Types:
   - {fileID: 11400000, guid: 81a4d957d9477fc48adafe7a18e1c103, type: 2}
   - {fileID: 11400000, guid: ae90e0ea7583cb547849b660a4e19d7d, type: 2}

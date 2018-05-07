@@ -34,9 +34,9 @@ public class PlayerUiController : MonoBehaviour
 	{
 		purchasedItem = pi;
 
-        nameText.SetText(purchasedItem.GetItemSO().Name.ToString());
+        nameText.SetText(purchasedItem.Name);
         //pic = purchasedItem.GetItemSO ().Picture;
-        totalText.SetText(purchasedItem.GetItemSO().UnitCost.ToString());
+        totalText.SetText(purchasedItem.UnitCost.ToString());
 
      
     }
@@ -53,7 +53,7 @@ public class PlayerUiController : MonoBehaviour
 		currentAmount = Mathf.Clamp(currentAmount + (increase ? increasePerClick : -increasePerClick), min, max);
 		amount.text = currentAmount.ToString();
 
-		total = float.Parse(amount.text) * purchasedItem.GetItemSO().UnitCost;
+		total = float.Parse(amount.text) * purchasedItem.UnitCost;
 		totalText.SetText(total.ToString());
 
 		// disable buttons i

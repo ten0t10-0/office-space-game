@@ -39,8 +39,8 @@ public class ShopController : MonoBehaviour
 		AddSupplier ();
 
 		all.GetComponent<Button>().onClick.AddListener(delegate {SetCate("all");});
-		elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Electronics.ToString());});
-		furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
+		elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(GameMaster.Instance.ItemManager.Database.Categories[1].name);});
+		furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(GameMaster.Instance.ItemManager.Database.Categories[2].name);});
 	
 		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
 
@@ -106,14 +106,14 @@ public class ShopController : MonoBehaviour
 				newItem.GetComponent<ItemContainerScript>().SupplierIndex = iSupplier;
 				newItem.GetComponent<ItemContainerScript>().ItemIndex = iItem;
 
-				newItem.transform.Find("Image").GetComponent<Image>().sprite = item.GetItemSO().Picture;
-				newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.GetItemSO().Name.ToString();
-				newItem.transform.Find("Price").GetComponent<TMP_Text>().text = "$"+item.GetItemSO().UnitCost.ToString();
-				newItem.transform.Find("Supplier").GetComponent<TMP_Text>().text = supplier.Name.ToString();
+				newItem.transform.Find("Image").GetComponent<Image>().sprite = item.Picture;
+				newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.Name;
+				newItem.transform.Find("Price").GetComponent<TMP_Text>().text = "$"+item.UnitCost.ToString();
+				newItem.transform.Find("Supplier").GetComponent<TMP_Text>().text = supplier.Name;
 
 				newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(BuyOnClick);
 
-				Debug.Log (item.GetItemSO ().Category);
+                Debug.Log(item.Category.name);
             }
         }
 	}
@@ -147,16 +147,16 @@ public class ShopController : MonoBehaviour
 				{
 					Item item = supplier.Inventory.Items [iItem];
 				
-					if ((item.GetItemSO ().Category).ToString () == cat && allCat == false) 
+					if (item.Category.name == cat && allCat == false) 
 					{
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
 						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
 						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
 
-						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.GetItemSO ().Picture;
-						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.GetItemSO ().Name.ToString ();
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.GetItemSO ().UnitCost.ToString ();
+						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString();
 
 						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
 					}
@@ -167,9 +167,9 @@ public class ShopController : MonoBehaviour
 							newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
 							newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
 
-							newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.GetItemSO ().Picture;
-							newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.GetItemSO ().Name.ToString ();
-							newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.GetItemSO ().UnitCost.ToString ();
+							newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+							newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+							newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString();
 
 							newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
 						}
@@ -212,14 +212,14 @@ public class ShopController : MonoBehaviour
 			Debug.Log("Unable to find item");
 			return;
 		}
-		else if (purchasedItem.GetItemSO().UnitCost >= GameMaster.Instance.Player.Business.Money)
+		else if (purchasedItem.UnitCost >= GameMaster.Instance.Player.Business.Money)
 		{
-			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.GetItemSO().UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
+			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
 			return;
 		}
         else
         {
-            Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.GetItemSO().Name, purchasedItem.GetItemSO().UnitCost, GameMaster.Instance.Player.Business.Money - purchasedItem.GetItemSO().UnitCost));
+            Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.Name, purchasedItem.UnitCost.ToString(), (GameMaster.Instance.Player.Business.Money - purchasedItem.UnitCost).ToString()));
         }
 			
 		qtyPanel.SetActive(true);

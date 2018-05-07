@@ -63,4 +63,9 @@ public class InventoryAI : Inventory
         Items.Clear();
     }
     #endregion
+
+    public override string ToString()
+    {
+        return "-AI Inventory-";
+    }
 }

@@ -7,6 +7,43 @@ public class Item
 {
     public ItemID ItemID { get; set; }
 
+    #region <Properties>
+    
+    #region [ItemSO Wrapping]
+    //public string Description
+    //{
+    //    get { return GetItemSO().Description; }
+    //}
+    public float UnitCost
+    {
+        get { return GetItemSO().UnitCost; }
+    }
+    public float UnitSpace
+    {
+        get { return GetItemSO().UnitSpace; }
+    }
+
+    public Sprite Picture
+    {
+        get { return GetItemSO().Picture; }
+    }
+    #endregion
+
+    public string Name
+    {
+        get { return GetItemSO().Description + ' ' + Type.name; }
+    }
+
+    public ItemCategorySO Category
+    {
+        get { return GameMaster.Instance.ItemManager.Database.Categories[ItemID.CategoryID]; }
+    }
+    public ItemTypeSO Type
+    {
+        get { return GameMaster.Instance.ItemManager.Database.Categories[ItemID.CategoryID].Types[ItemID.TypeID]; }
+    }
+    #endregion
+
     #region <Constructors>
     public Item(ItemID itemId)
     {
@@ -17,30 +54,20 @@ public class Item
     {
         ItemID = new ItemID(categoryId, typeId, qualityId);
     }
-
-    public Item(string itemIdString)
-    {
-        ItemID = new ItemID(itemIdString);
-    }
     #endregion
 
     #region <Methods>
-    /// <summary>
-    /// Returns the ItemSO object that this is representing.
-    /// </summary>
-    /// <returns></returns>
-    public ItemSO GetItemSO()
+    private ItemSO GetItemSO()
     {
         return GameMaster.Instance.ItemManager.Database.Categories[ItemID.CategoryID].Types[ItemID.TypeID].Items[ItemID.QualityID];
     }
-
     /// <summary>
     /// Returns the cost per unit.
     /// </summary>
     /// <returns></returns>
     public virtual float TotalValue()
     {
-        return GetItemSO().UnitCost;
+        return UnitCost;
     }
 
     /// <summary>
@@ -49,7 +76,7 @@ public class Item
     /// <returns></returns>
     public virtual float TotalSpaceUsed()
     {
-        return GetItemSO().UnitSpace;
+        return UnitSpace;
     }
     #endregion
 
@@ -59,6 +86,6 @@ public class Item
     /// <returns></returns>
     public override string ToString()
     {
-        return string.Format("ItemID: {0}; {1}", ItemID.ToString(), GetItemSO().ToString());
+        return string.Format("Name: {0}; Category: {1}; Type: {2}, Quality: {3}; UnitCost: {4}; UnitSpace: {5}", Name, Category.name, Type.name, GetItemSO().Quality.ToString(), UnitCost.ToString(), UnitSpace.ToString());
     }
 }

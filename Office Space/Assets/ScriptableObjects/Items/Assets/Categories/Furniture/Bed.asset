@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5997cfe763b1ea49b797b0520f1ad74, type: 3}
-  m_Name: Beds
+  m_Name: Bed
   m_EditorClassIdentifier: 
   Items:
   - {fileID: 11400000, guid: 4a02a3c44c2aaf049b3ebd0477d0a45c, type: 2}

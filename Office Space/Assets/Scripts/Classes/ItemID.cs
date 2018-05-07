@@ -14,17 +14,5 @@ public class ItemID
         TypeID = typeId;
         QualityID = qualityId;
     }
-
-    public ItemID(string itemId)
-    {
-        CategoryID = int.Parse(itemId[0].ToString());
-        TypeID = int.Parse(itemId[1].ToString());
-        QualityID = int.Parse(itemId[2].ToString());
-    }
     #endregion
-
-    public override string ToString()
-    {
-        return CategoryID.ToString() + TypeID.ToString() + QualityID.ToString();
-    }
 }

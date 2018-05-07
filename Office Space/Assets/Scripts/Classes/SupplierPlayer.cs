@@ -41,13 +41,13 @@ public class SupplierPlayer : Supplier
             if (success)
             {
                 Money -= payment;
-                result = string.Format("Purchase for {0} x '{1}' completed!", quantity.ToString(), item.GetItemSO().Name);
+                result = string.Format("Purchase for {0} x '{1}' completed!", quantity.ToString(), item.Name);
             }
         }
         else
         {
             success = false;
-            result = string.Format("You do not have enough money to purchase these items. Purchase for {0} x '{1}' cancelled.", quantity.ToString(), item.GetItemSO().Name);
+            result = string.Format("You do not have enough money to purchase these items. Purchase for {0} x '{1}' cancelled.", quantity.ToString(), item.Name);
         }
 
         return success;

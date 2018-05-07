@@ -11,5 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffe125b11fde894f9cb9f44f0c4e365, type: 3}
   m_Name: Electronics
   m_EditorClassIdentifier: 
+  Name: Electronics
   Types:
   - {fileID: 11400000, guid: 0afa469908dd83f409874ee024cb519f, type: 2}

@@ -55,7 +55,7 @@ public class SupplierAI : Supplier
         if (!itemFound)
             Inventory.AddItem(item, out result);
 
-        payment = item.GetItemSO().UnitCost * quantity;
+        payment = item.UnitCost * quantity;
         result = "Items successfully purchased! (SUPPLIER)";
         return true;
     }

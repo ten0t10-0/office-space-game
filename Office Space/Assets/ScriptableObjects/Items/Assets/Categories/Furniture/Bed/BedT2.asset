@@ -9,11 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
-  m_Name: TableT2
+  m_Name: BedT2
   m_EditorClassIdentifier: 
-  Name: Modern Table
-  Category: 2
+  Description: Modern
   Quality: 1
-  UnitCost: 1000
-  UnitSpace: 1
+  UnitCost: 2100
+  UnitSpace: 1.8
   Picture: {fileID: 0}

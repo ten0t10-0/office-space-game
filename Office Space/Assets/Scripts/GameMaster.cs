@@ -211,10 +211,10 @@ public class GameMaster : MonoBehaviour
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGenerateSuppliers);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("100"), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("202"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("211"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("212"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(1,0,0), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(2,0,2), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(2,1,1), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(2,1,2), out resultGeneric);
 
             //TEST: Adding player items
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));

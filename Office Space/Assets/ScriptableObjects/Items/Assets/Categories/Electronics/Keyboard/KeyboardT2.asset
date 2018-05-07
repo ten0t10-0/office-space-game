@@ -11,8 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
   m_Name: KeyboardT2
   m_EditorClassIdentifier: 
-  Name: BackLit Keyboard
-  Category: 1
+  Description: BackLit
   Quality: 1
   UnitCost: 250
   UnitSpace: 0.1

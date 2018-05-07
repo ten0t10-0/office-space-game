@@ -22,11 +22,6 @@ public class OrderItem : Item
     {
         Quantity = quantity;
     }
-
-    public OrderItem(string itemIdString, int quantity) : base(itemIdString)
-    {
-        Quantity = quantity;
-    }
     #endregion
 
     #region <Methods>
@@ -36,7 +31,7 @@ public class OrderItem : Item
     /// <returns></returns>
     public override float TotalValue()
     {
-        return Quantity * GetItemSO().UnitCost;
+        return Quantity * UnitCost;
     }
 
     /// <summary>
@@ -45,7 +40,7 @@ public class OrderItem : Item
     /// <returns></returns>
     public override float TotalSpaceUsed()
     {
-        return Quantity * GetItemSO().UnitSpace;
+        return Quantity * UnitSpace;
     }
 
     /// <summary>

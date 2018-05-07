@@ -22,11 +22,6 @@ public class InventoryItem : OrderItem
     {
         Age = 0f;
     }
-
-    public InventoryItem(string itemId, int quantity) : base(itemId, quantity)
-    {
-        Age = 0f;
-    }
     #endregion
 
     #region <Methods>
