@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;                  // Reference to the animator component.
     private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 
+    private bool isRunning;
+
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()
     {
@@ -40,16 +42,6 @@ public class PlayerController : MonoBehaviour
             StopAnimations();
     }
 
-    private bool IsRunning()
-    {
-        bool isRunning = false;
-
-        if (Input.GetKey(KeyCode.LeftShift))
-            isRunning = true;
-
-        return isRunning;
-    }
-
     private void Move(float h, float v)
     {
         Vector3 currentPostion, newPosition;
@@ -63,6 +55,11 @@ public class PlayerController : MonoBehaviour
 
         if (h != 0 || v != 0)
         {
+            if (Input.GetKey(KeyCode.LeftShift))
+                isRunning = true;
+            else
+                isRunning = false;
+
             currentPostion = playerRigidbody.position;
             currentRotation = playerRigidbody.rotation;
 
@@ -73,7 +70,7 @@ public class PlayerController : MonoBehaviour
             newPosition = cameraForward * v + cameraRight * h;
             newRotation = Quaternion.LookRotation(newPosition, Vector3.up);
 
-            if (IsRunning())
+            if (isRunning)
                 speed = runSpeed;
             else
                 speed = walkSpeed;
@@ -96,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
         if (h != 0 || v != 0)
         {
-            if (IsRunning())
+            if (isRunning)
             {
                 animator.SetBool("IsWalking", false);
                 animator.SetBool("IsRunning", true);

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 9bc0d1016ae24fb4fa4f7b34deb201dc
-timeCreated: 1520197729
+guid: f81ee6aa04b938a4db9078a3a9c942d5
+timeCreated: 1525806216
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -9,60 +9,90 @@ ModelImporter:
     100002: Arm1_R
     100004: Arm2_L
     100006: Arm2_R
-    100008: char_Armature
-    100010: char_Body
-    100012: Chest
-    100014: Collar_L
-    100016: Collar_R
-    100018: Head
-    100020: Hip
-    100022: Hip_CONT
-    100024: Leg_L
-    100026: Leg_R
-    100028: Neck
-    100030: //RootNode
-    100032: ROOT
-    100034: shape_Sphere
-    100036: Spine
-    100038: Thigh_L
-    100040: Thigh_R
-    100042: char_Body_Onez01
-    100044: char_Clothing_Onez01
+    100008: B_FULL
+    100010: B_Lower
+    100012: B_Upper
+    100014: C_Costume
+    100016: C_HandL
+    100018: C_HandR
+    100020: C_Head
+    100022: C_Lower
+    100024: C_Upper
+    100026: Chest
+    100028: Collar_L
+    100030: Collar_R
+    100032: Head
+    100034: Hip
+    100036: Hip_CONT
+    100038: Leg_L
+    100040: Leg_R
+    100042: Neck
+    100044: Player
+    100046: //RootNode
+    100048: ROOT
+    100050: Spine
+    100052: Thigh_L
+    100054: Thigh_R
+    100056: C_ArmL
+    100058: C_ArmR
     400000: Arm1_L
     400002: Arm1_R
     400004: Arm2_L
     400006: Arm2_R
-    400008: char_Armature
-    400010: char_Body
-    400012: Chest
-    400014: Collar_L
-    400016: Collar_R
-    400018: Head
-    400020: Hip
-    400022: Hip_CONT
-    400024: Leg_L
-    400026: Leg_R
-    400028: Neck
-    400030: //RootNode
-    400032: ROOT
-    400034: shape_Sphere
-    400036: Spine
-    400038: Thigh_L
-    400040: Thigh_R
-    400042: char_Body_Onez01
-    400044: char_Clothing_Onez01
-    2100000: charBody
-    2100002: charClothingOnez01
-    4300000: char_Body
-    4300002: char_Body_Onez01
-    4300004: char_Clothing_Onez01
+    400008: B_FULL
+    400010: B_Lower
+    400012: B_Upper
+    400014: C_Costume
+    400016: C_HandL
+    400018: C_HandR
+    400020: C_Head
+    400022: C_Lower
+    400024: C_Upper
+    400026: Chest
+    400028: Collar_L
+    400030: Collar_R
+    400032: Head
+    400034: Hip
+    400036: Hip_CONT
+    400038: Leg_L
+    400040: Leg_R
+    400042: Neck
+    400044: Player
+    400046: //RootNode
+    400048: ROOT
+    400050: Spine
+    400052: Thigh_L
+    400054: Thigh_R
+    400056: C_ArmL
+    400058: C_ArmR
+    2100000: B_Default
+    2100002: C_Default
+    4300000: B_Lower
+    4300002: B_Upper
+    4300004: C_Costume
+    4300006: C_HandR
+    4300008: C_HandL
+    4300010: C_Upper
+    4300012: C_Lower
+    4300014: C_Head
+    4300016: B_FULL
+    4300018: C_ArmR
+    4300020: C_ArmL
     7400000: Default Take
     7400002: Idle01
     7400004: Walk01
     9500000: //RootNode
-    13700000: char_Body
-    13700002: char_Body_Onez01
-    13700004: char_Clothing_Onez01
+    13700000: B_FULL
+    13700002: B_Lower
+    13700004: B_Upper
+    13700006: C_Costume
+    13700008: C_HandL
+    13700010: C_HandR
+    13700012: C_Head
+    13700014: C_Lower
+    13700016: C_Upper
+    13700018: C_ArmL
+    13700020: C_ArmR
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -94,7 +124,7 @@ ModelImporter:
       name: Default Take
       takeName: Default Take
       firstFrame: -1
-      lastFrame: 59
+      lastFrame: 27
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -122,7 +152,7 @@ ModelImporter:
       name: Idle01
       takeName: Idle01
       firstFrame: -1
-      lastFrame: 59
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -150,7 +180,7 @@ ModelImporter:
       name: Walk01
       takeName: Walk01
       firstFrame: -1
-      lastFrame: 59
+      lastFrame: 27
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

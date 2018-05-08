@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     public float verticalSensitivity = 2f, horizontalSensitivity = 2f;
     public float zoomSpeed = 15f;
 
-    public Transform target;
+    public Transform Target;
 
     public float maxDistanceFromTarget, minDistanceFromTarget;
 
@@ -23,8 +23,8 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         //Set initial camera position.
-        transform.position = target.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
-        offset = target.position - transform.position;
+        transform.position = Target.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
+        offset = Target.position - transform.position;
 
         //Cursor.visible = false;
     }
@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
             float horizontal = Input.GetAxisRaw("Mouse X") * horizontalSensitivity; //*
             float vertical = Input.GetAxisRaw("Mouse Y") * verticalSensitivity * -1; //*
 
-            Vector3 currentEulerAngles = target.rotation.eulerAngles;
+            Vector3 currentEulerAngles = Target.rotation.eulerAngles;
             float currentXAngle = currentEulerAngles.x;
 
             Vector3 newEulerAngles;
@@ -55,18 +55,18 @@ public class CameraController : MonoBehaviour
             newEulerAngles = new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0);
 
             newRotation = Quaternion.Euler(newEulerAngles);
-            target.rotation = newRotation;
+            Target.rotation = newRotation;
 
             //New position of the camera before taking collision into account:
-            newPosition = target.position - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
+            newPosition = Target.position - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
 
             //Check for collision:
-            if (Physics.SphereCast(target.position, physicsSphereRadius, target.forward * -1, out wallHit, Vector3.Distance(target.position, newPosition)))
+            if (Physics.SphereCast(Target.position, physicsSphereRadius, Target.forward * -1, out wallHit, Vector3.Distance(Target.position, newPosition)))
                 newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
 
             transform.position = newPosition;
 
-            transform.LookAt(target.position);
+            transform.LookAt(Target.position);
         }
     }
 
@@ -79,12 +79,12 @@ public class CameraController : MonoBehaviour
             {
                 if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    if (Vector3.Distance(target.position, transform.position) > minDistanceFromTarget)
+                    if (Vector3.Distance(Target.position, transform.position) > minDistanceFromTarget)
                         offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    if (Vector3.Distance(target.position, transform.position) < maxDistanceFromTarget)
+                    if (Vector3.Distance(Target.position, transform.position) < maxDistanceFromTarget)
                         offset += Vector3.forward * zoomSpeed * Time.deltaTime;
                 }
             }

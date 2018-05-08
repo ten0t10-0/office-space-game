@@ -28,9 +28,12 @@ public class GameMaster : MonoBehaviour
     public OrderManager OrderManager;
     [HideInInspector]
     public ItemManager ItemManager;
+    [HideInInspector]
+    public CustomizationManager CustomizationManager;
     #endregion
 
-    #region <PLAYER CLASS & INFO>
+    #region <PLAYER>
+    public GameObject PlayerObject;
     public Player Player;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
@@ -141,6 +144,7 @@ public class GameMaster : MonoBehaviour
         CustomerManager = GetComponent<CustomerManager>();
         OrderManager = GetComponent<OrderManager>();
         ItemManager = GetComponent<ItemManager>();
+        CustomizationManager = GetComponent<CustomizationManager>();
 
         #region <Validate Game Save File Name & Extension>
         string tempSaveFileName, tempSaveFileExtension;
@@ -277,7 +281,21 @@ public class GameMaster : MonoBehaviour
             #endregion
         }
 
+        SpawnPlayer();
+
         tPlayerPlayTime = tGameTime = Time.time;
+    }
+
+    private void SpawnPlayer()
+    {
+        if (GameObject.FindGameObjectWithTag("Player") == null)
+        {
+            GameObject newPlayer = Instantiate(PlayerObject, Vector3.up, Quaternion.Euler(Vector3.zero));
+
+            Camera.main.GetComponent<CameraController>().Target.GetComponent<CameraTargetController>().Target = newPlayer.transform;
+
+            CustomizationManager.Player.SetPlayerObject(newPlayer);
+        }
     }
 
     private void Update()
