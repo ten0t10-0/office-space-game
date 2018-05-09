@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347938cd4bcd2af489ad8f18486c0745, type: 3}
-  m_Name: Lower-default
+  m_Script: {fileID: 11500000, guid: ac0e2302ff71e254682266315aea62f9, type: 3}
+  m_Name: DefaultArmR
   m_EditorClassIdentifier: 
-  Clothing: {fileID: 4300012, guid: f81ee6aa04b938a4db9078a3a9c942d5, type: 3}
-  Body: {fileID: 4300000, guid: f81ee6aa04b938a4db9078a3a9c942d5, type: 3}
+  Category: {fileID: 11400000, guid: 2d40e81f33d37604ea3e573c1dc23457, type: 2}
+  Mesh: {fileID: 4300018, guid: f81ee6aa04b938a4db9078a3a9c942d5, type: 3}

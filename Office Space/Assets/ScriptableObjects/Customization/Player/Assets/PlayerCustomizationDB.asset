@@ -11,32 +11,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed35c22b0de3b6345a66d3c5e17e629c, type: 3}
   m_Name: PlayerCustomizationDB
   m_EditorClassIdentifier: 
-  ClothingPlaceholderUpper: {fileID: 0}
-  ClothingPlaceholderLower: {fileID: 0}
-  ClothingPlaceholderCostume: {fileID: 0}
-  ClothingPlaceholderHead: {fileID: 0}
-  ClothingPlaceholderArmL: {fileID: 0}
-  ClothingPlaceholderArmR: {fileID: 0}
-  Body: {fileID: 0}
-  BodyPlaceholderUpper: {fileID: 0}
-  BodyPlaceholderLower: {fileID: 0}
-  DefaultUpperClothingMaterial: {fileID: 2100000, guid: e6a8404019c466649b05fa61bb18d741,
-    type: 2}
-  DefaultLowerClothingMaterial: {fileID: 2100000, guid: 9878e845db7884a4fad23331ffd3d756,
-    type: 2}
-  DefaultCostumeClothingMaterial: {fileID: 2100000, guid: 7a717510d62628546a5f6d93309c9316,
-    type: 2}
-  DefaultHeadClothingMaterial: {fileID: 0}
-  DefaultArmClothingMaterial: {fileID: 0}
-  UpperMeshGroups:
-  - {fileID: 11400000, guid: 7c6f393d1b6896148873a790defb5ede, type: 2}
-  LowerMeshGroups:
-  - {fileID: 11400000, guid: 548782515fdb3614ab6befd485f7b607, type: 2}
-  CostumeMeshGroups:
-  - {fileID: 11400000, guid: 8de44f15273348948bf93cd7a14ec269, type: 2}
-  HeadMeshes:
-  - {fileID: 0}
-  ArmLMeshes:
-  - {fileID: 0}
-  ArmRMeshes:
-  - {fileID: 0}
+  BodyMaterialDefault: {fileID: 2100000, guid: 67854ed261cd1fb41b2624148f20cfa5, type: 2}
+  Clothing:
+  - {fileID: 11400000, guid: 831bc993b871ef746a2c8589f3585a26, type: 2}
+  - {fileID: 11400000, guid: 8e5481009ae9b9141b01cd82ce06ba17, type: 2}
+  - {fileID: 11400000, guid: 34ca9548ac274b840b814890f3460a0b, type: 2}
+  Accessories:
+  - {fileID: 11400000, guid: f3d181c4b54ba314597505f0642429b6, type: 2}
+  - {fileID: 11400000, guid: e21be1f085a7f0e489ecd9b61aa09a7f, type: 2}
+  - {fileID: 11400000, guid: 5ef1e44f82dfd854589cc4e6e94147bc, type: 2}
+  ClothingCategories:
+  - {fileID: 11400000, guid: 3c0387124e10061459fdbdc09faa9ad6, type: 2}
+  - {fileID: 11400000, guid: 96ce8d10302e78f41b324a8eb4283146, type: 2}
+  - {fileID: 11400000, guid: a4a5bf58ef2d8a94bb48d9e07c679ac7, type: 2}
+  AccessoryCategories:
+  - {fileID: 11400000, guid: f90ca7beee7271c46a169d6f19342ec2, type: 2}
+  - {fileID: 11400000, guid: 995f5c2253d1cfe45ad6a35c278d9e30, type: 2}
+  - {fileID: 11400000, guid: 2d40e81f33d37604ea3e573c1dc23457, type: 2}

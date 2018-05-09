@@ -8,8 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347938cd4bcd2af489ad8f18486c0745, type: 3}
-  m_Name: Upper-default
+  m_Script: {fileID: 11500000, guid: 7466eaec9ba79804d830752fb2a51b7a, type: 3}
+  m_Name: Upper
   m_EditorClassIdentifier: 
-  Clothing: {fileID: 4300010, guid: f81ee6aa04b938a4db9078a3a9c942d5, type: 3}
-  Body: {fileID: 4300002, guid: f81ee6aa04b938a4db9078a3a9c942d5, type: 3}
+  BodyPlaceholderName: B_Upper
+  ClothingPlaceholderName: C_Upper
+  ClothingMaterialDefault: {fileID: 2100000, guid: e6a8404019c466649b05fa61bb18d741,
+    type: 2}

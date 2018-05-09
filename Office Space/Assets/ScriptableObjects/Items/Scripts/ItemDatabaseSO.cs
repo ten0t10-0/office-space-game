@@ -6,4 +6,5 @@ using UnityEngine;
 public class ItemDatabaseSO : ScriptableObject
 {
     public List<ItemSO> Items;
+    public List<ItemTypeSO> Types;
 }

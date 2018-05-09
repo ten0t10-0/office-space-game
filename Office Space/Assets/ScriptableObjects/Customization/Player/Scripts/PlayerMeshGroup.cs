@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Player Mesh Group", menuName = "Player Mesh Group")]
+[CreateAssetMenu(fileName = "New Player Mesh Group", menuName = "Player Customization/Mesh Group")]
 public class PlayerMeshGroup : ScriptableObject
 {
-    public Mesh Clothing;
-    public Mesh Body;
+    public Mesh BodyMesh;
+    public Mesh ClothingMesh;
 }
