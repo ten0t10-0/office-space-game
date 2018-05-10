@@ -299,11 +299,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 108708972623237564, guid: 7a0ac125b6a6299439a3f1e45b46e59a,
-        type: 2}
-      propertyPath: m_Lightmapping
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 1268886436010040, guid: 7a0ac125b6a6299439a3f1e45b46e59a, type: 2}
       propertyPath: m_IsActive
       value: 0
@@ -4373,11 +4368,6 @@ Prefab:
     - target: {fileID: 1058679269668074, guid: 6133741666171864e8d8047911d92885, type: 2}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 108688638696592142, guid: 6133741666171864e8d8047911d92885,
-        type: 2}
-      propertyPath: m_Range
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 108688638696592142, guid: 6133741666171864e8d8047911d92885,
         type: 2}
