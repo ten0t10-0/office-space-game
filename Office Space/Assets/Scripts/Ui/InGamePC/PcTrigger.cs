@@ -20,7 +20,7 @@ public class PcTrigger : MonoBehaviour {
 		Cursor.visible = (ComputerCanvas.gameObject.activeInHierarchy);
 	}
 
-	void CloseShop()
+	public void CloseShop()
 	{
 		ComputerCanvas.enabled = false;
         GameMaster.Instance.UIMode = false;

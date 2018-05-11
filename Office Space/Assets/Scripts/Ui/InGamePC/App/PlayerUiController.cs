@@ -11,7 +11,7 @@ public class PlayerUiController : MonoBehaviour
 	public Button btnIncrease;
 	public TextMeshProUGUI totalText;
 	public TextMeshProUGUI nameText;
-	//public Image pic;
+	//public GameObject pic;
 
 	public int max = 25;
 	public int min = 1;
@@ -35,7 +35,7 @@ public class PlayerUiController : MonoBehaviour
 		purchasedItem = pi;
 
         nameText.SetText(purchasedItem.Name);
-        //pic = purchasedItem.GetItemSO ().Picture;
+
         totalText.SetText(purchasedItem.UnitCost.ToString());
 
      
