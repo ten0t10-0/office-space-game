@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 
     private bool isRunning;
+    private bool grounded;
 
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()
@@ -40,6 +41,18 @@ public class PlayerController : MonoBehaviour
         }
         else
             StopAnimations();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        { grounded = true; Debug.Log("Grounded!"); }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        { grounded = false; Debug.Log("Airborne!"); }
     }
 
     private void Move(float h, float v)

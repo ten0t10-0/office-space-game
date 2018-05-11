@@ -292,7 +292,7 @@ public class GameMaster : MonoBehaviour
         {
             GameObject newPlayer = Instantiate(PlayerObject, Vector3.up, Quaternion.Euler(Vector3.zero));
 
-            Camera.main.GetComponent<CameraController>().Target.GetComponent<CameraTargetController>().Target = newPlayer.transform;
+            Camera.main.GetComponent<CameraController>().SetTarget(newPlayer.transform);
 
             CustomizationManager.Player.SetPlayerObject(newPlayer);
         }

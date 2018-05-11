@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraMode { Orbit, Build, Static }
+
 public class CameraController : MonoBehaviour
 {
     public float verticalSensitivity = 2f, horizontalSensitivity = 2f;
     public float zoomSpeed = 15f;
 
-    public Transform Target;
+    [Range(2.25f, 3.75f)]
+    public float OffsetY = 2.5f;
 
     public float maxDistanceFromTarget, minDistanceFromTarget;
+
+    [HideInInspector]
+    public CameraMode CameraMode { get; private set; }
+
+    [HideInInspector]
+    public Transform Target { get; private set; }
+
+    private GameObject targetController;
+    private string targetControllerName = "CameraTargetController";
 
     private Vector3 offset;
 
@@ -19,12 +31,28 @@ public class CameraController : MonoBehaviour
     private float maxTargetAngle = 89.9f;
     private float minTargetAngle = -45f;
 
+    /// <summary>
+    /// Sets the camera target to the specified transform.
+    /// </summary>
+    /// <param name="target"></param>
+    public void SetTarget(Transform target)
+    {
+        Target = target;
+    }
+
+    private void Awake()
+    {
+        targetController = new GameObject(targetControllerName);
+    }
+
     // Use this method for initialization
     void Start()
     {
+        CameraMode = CameraMode.Orbit;
+
         //Set initial camera position.
-        transform.position = Target.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
-        offset = Target.position - transform.position;
+        transform.position = targetController.transform.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
+        offset = targetController.transform.position - transform.position;
 
         //Cursor.visible = false;
     }
@@ -37,36 +65,42 @@ public class CameraController : MonoBehaviour
             float horizontal = Input.GetAxisRaw("Mouse X") * horizontalSensitivity; //*
             float vertical = Input.GetAxisRaw("Mouse Y") * verticalSensitivity * -1; //*
 
-            Vector3 currentEulerAngles = Target.rotation.eulerAngles;
-            float currentXAngle = currentEulerAngles.x;
+            switch (CameraMode)
+            {
+                case CameraMode.Orbit:
+                    {
+                        Vector3 currentEulerAngles = targetController.transform.rotation.eulerAngles;
+                        float currentXAngle = currentEulerAngles.x;
 
-            Vector3 newEulerAngles;
-            Quaternion newRotation;
+                        Quaternion newRotation;
+                        Vector3 newPosition;
 
-            Vector3 newPosition;
+                        RaycastHit wallHit;
 
-            RaycastHit wallHit;
+                        targetController.transform.position = Target.position + new Vector3(0, OffsetY, 0);
 
-            if ((currentXAngle % 360) > 180)
-                currentXAngle = currentXAngle - 360;
+                        if ((currentXAngle % 360) > 180)
+                            currentXAngle = currentXAngle - 360;
 
-            currentXAngle = Mathf.Clamp(currentXAngle + vertical, minTargetAngle, maxTargetAngle);
+                        currentXAngle = Mathf.Clamp(currentXAngle + vertical, minTargetAngle, maxTargetAngle);
 
-            newEulerAngles = new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0);
+                        newRotation = Quaternion.Euler(new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0));
+                        targetController.transform.rotation = newRotation;
 
-            newRotation = Quaternion.Euler(newEulerAngles);
-            Target.rotation = newRotation;
+                        //New position of the camera before taking collision into account:
+                        newPosition = targetController.transform.position - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
 
-            //New position of the camera before taking collision into account:
-            newPosition = Target.position - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
+                        //Check for collision:
+                        if (Physics.SphereCast(targetController.transform.position, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetController.transform.position, newPosition)))
+                            newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
 
-            //Check for collision:
-            if (Physics.SphereCast(Target.position, physicsSphereRadius, Target.forward * -1, out wallHit, Vector3.Distance(Target.position, newPosition)))
-                newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
+                        transform.position = newPosition;
 
-            transform.position = newPosition;
+                        transform.LookAt(targetController.transform.position);
 
-            transform.LookAt(Target.position);
+                        break;
+                    }
+            }
         }
     }
 
@@ -75,18 +109,15 @@ public class CameraController : MonoBehaviour
         //***Might need to change Input method for this to work on all devices.
         if (!GameMaster.Instance.UIMode)
         {
-            if (Physics.OverlapSphere(transform.position, physicsSphereRadius).Length == 0)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (Input.GetAxis("Mouse ScrollWheel") > 0)
-                {
-                    if (Vector3.Distance(Target.position, transform.position) > minDistanceFromTarget)
-                        offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
-                }
-                else if (Input.GetAxis("Mouse ScrollWheel") < 0)
-                {
-                    if (Vector3.Distance(Target.position, transform.position) < maxDistanceFromTarget)
-                        offset += Vector3.forward * zoomSpeed * Time.deltaTime;
-                }
+                if (offset.z > minDistanceFromTarget)
+                    offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                if (offset.z < maxDistanceFromTarget)
+                    offset += Vector3.forward * zoomSpeed * Time.deltaTime;
             }
         }
     }
