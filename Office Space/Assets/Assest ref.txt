@@ -1,0 +1,24 @@
+<<<Asset Models>>>
+
+VERTEX STUDIO
+Big Furniture Pack
+https://assetstore.unity.com/packages/3d/props/furniture/big-furniture-pack-7717
+********************************************************************************************
+REYNARD DROSTE
+Modern Furniture Pieces Pack
+https://assetstore.unity.com/packages/3d/props/furniture/modern-furniture-pieces-pack-81417
+********************************************************************************************
+
+<<<UI>>>
+UNITY TECHNOLOGIES
+TextMesh Pro
+https://assetstore.unity.com/packages/essentials/beta-projects/textmesh-pro-84126
+********************************************************************************************
+MICHSKY
+Modern UI Pack
+https://assetstore.unity.com/packages/tools/gui/modern-ui-pack-114792
+********************************************************************************************
+
+<<<Other>>>
+https://www.iconsdb.com
+https://www.iconfinder.com

@@ -24,6 +24,7 @@ public class ShopController : MonoBehaviour
 
 	public TextMeshProUGUI time;
 	public TextMeshProUGUI money;
+	public TextMeshProUGUI company;
 
 	string supp = "all";
 	string cate = "all";
@@ -43,7 +44,7 @@ public class ShopController : MonoBehaviour
 		furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
 	
 		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
-
+		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 
 
 	}
@@ -51,7 +52,7 @@ public class ShopController : MonoBehaviour
 	void Update()
 	{
 		
-
+		time.SetText (GameMaster.Instance.GameTimeString12 ());
 	}
 		
 	public void AddSupplier()

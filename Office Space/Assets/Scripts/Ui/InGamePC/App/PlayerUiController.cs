@@ -38,7 +38,7 @@ public class PlayerUiController : MonoBehaviour
 
         totalText.SetText(purchasedItem.UnitCost.ToString());
 
-     
+      
     }
 
 	public void InputChanged(InputField at)
