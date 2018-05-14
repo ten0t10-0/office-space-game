@@ -11,9 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7466eaec9ba79804d830752fb2a51b7a, type: 3}
   m_Name: ArmRight
   m_EditorClassIdentifier: 
-  Name: Right Arm
+  Name: Arm (Right)
   Slot: 5
   IsAccessory: 1
   MaterialDefault: {fileID: 2100000, guid: 90229bd6efa30c941b9f986c339cb7a8, type: 2}
   PlaceholderNames:
   - C_ArmR
+  Body: {fileID: 0}

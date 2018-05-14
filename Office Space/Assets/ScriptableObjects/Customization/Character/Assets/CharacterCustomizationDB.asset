@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed35c22b0de3b6345a66d3c5e17e629c, type: 3}
-  m_Name: PlayerClothingDB
+  m_Name: CharacterCustomizationDB
   m_EditorClassIdentifier: 
   MaterialBodyDefault: {fileID: 2100000, guid: 67854ed261cd1fb41b2624148f20cfa5, type: 2}
   Clothing:

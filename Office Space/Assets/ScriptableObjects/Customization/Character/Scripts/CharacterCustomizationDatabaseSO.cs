@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum ClothingSlot { Costume, Upper, Lower, Head, LeftArm, RightArm }
 
-[CreateAssetMenu(fileName = "New Player Customization DB", menuName = "Player Customization/Player Customization DB")]
-public class PlayerClothingDatabaseSO : ScriptableObject
+[CreateAssetMenu(fileName = "New Char Clothing DB", menuName = "Character Customization/Database")]
+public class CharacterCustomizationDatabaseSO : ScriptableObject
 {
     public Material MaterialBodyDefault;
 
-    public List<PlayerClothingSO> Clothing;
-    public List<PlayerClothingSlotSO> ClothingSlots;
+    public List<CharacterClothingSO> Clothing;
+    public List<CharacterClothingSlotSO> ClothingSlots;
 
     public List<int> DefaultClothingIndexes;
 
@@ -20,23 +20,11 @@ public class PlayerClothingDatabaseSO : ScriptableObject
     private CharacterCustomizationScript playerCustomizationScript;
 
     /// <summary>
-    /// Sets the specified object as the player object, and binds it with default clothing.
-    /// </summary>
-    /// <param name="playerObject"></param>
-    public void SetPlayer(GameObject playerObject)
-    {
-        player = playerObject;
-        playerCustomizationScript = player.GetComponent<CharacterCustomizationScript>();
-
-        playerCustomizationScript.SetClothingByList(GetDefaultClothing());
-    }
-
-    /// <summary>
     /// Sets the specified object as the player object, and binds it with the specified clothing.
     /// </summary>
     /// <param name="playerObject"></param>
     /// <param name="currentClothing"></param>
-    public void SetPlayer(GameObject playerObject, List<PlayerClothing> currentClothing)
+    public void SetPlayer(GameObject playerObject, List<CharacterClothing> currentClothing)
     {
         player = playerObject;
         playerCustomizationScript = player.GetComponent<CharacterCustomizationScript>();
@@ -48,21 +36,21 @@ public class PlayerClothingDatabaseSO : ScriptableObject
     /// Returns a list of clothing items based on the default indexes defined in GameMaster.
     /// </summary>
     /// <returns></returns>
-    private List<PlayerClothing> GetDefaultClothing()
+    private List<CharacterClothing> GetDefaultClothing()
     {
-        List<PlayerClothing> defaultClothing = new List<PlayerClothing>();
+        List<CharacterClothing> defaultClothing = new List<CharacterClothing>();
 
         foreach (int i in DefaultClothingIndexes)
         {
-            defaultClothing.Add(new PlayerClothing(i));
+            defaultClothing.Add(new CharacterClothing(i));
         }
 
         return defaultClothing;
     }
 
-    public PlayerClothingSlotSO GetClothingSlotSO(ClothingSlot slot)
+    public CharacterClothingSlotSO GetClothingSlotSO(ClothingSlot slot)
     {
-        PlayerClothingSlotSO slotSO = ClothingSlots[0];
+        CharacterClothingSlotSO slotSO = ClothingSlots[0];
 
         for (int i = 0; i < ClothingSlots.Count; i++)
         {

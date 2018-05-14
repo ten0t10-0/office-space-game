@@ -12,7 +12,7 @@ public class Player
     public int Experience { get; set; }
 
     [SerializeField]
-    public List<PlayerClothing> CurrentClothing { get; set; }
+    public List<CharacterClothing> CurrentClothing { get; set; }
     [SerializeField]
     public List<int> UnlockedClothing { get; set; }
 
@@ -34,13 +34,13 @@ public class Player
         Level = 1;
         Experience = 0;
 
-        CurrentClothing = new List<PlayerClothing>();
+        CurrentClothing = new List<CharacterClothing>();
         UnlockedClothing = new List<int>();
 
         foreach (int i in GameMaster.Instance.CustomizationManager.Player.DefaultClothingIndexes)
         {
             UnlockedClothing.Add(i);
-            CurrentClothing.Add(new PlayerClothing(i));
+            CurrentClothing.Add(new CharacterClothing(i));
         }
     }
 

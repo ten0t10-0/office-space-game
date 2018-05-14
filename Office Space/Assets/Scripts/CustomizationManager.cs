@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class CustomizationManager : MonoBehaviour
 {
-    public PlayerClothingDatabaseSO Player;
+    public CharacterCustomizationDatabaseSO Player;
 }

@@ -57,6 +57,7 @@ public class GameMaster : MonoBehaviour
     #region <Bools>
     public bool UIMode = false;
     public bool OfflineMode = false;
+    public bool TEMPSaveGame = true;
     #endregion
 
     #region <Difficulty>
@@ -385,30 +386,33 @@ public class GameMaster : MonoBehaviour
     #region <SAVING/LOADING>
     private void SaveGame()
     {
-        BinaryFormatter bf = new BinaryFormatter();
-
-        Player.CurrentClothing = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CurrentClothing;
-
-        //Save data to GameData object (saveData):
-        GameData saveData = new GameData
+        if (TEMPSaveGame)
         {
-            Player = this.Player,
+            BinaryFormatter bf = new BinaryFormatter();
 
-            Suppliers = SupplierManager.Suppliers,
+            Player.CurrentClothing = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CurrentClothing;
 
-            OrdersOpen = OrderManager.OrdersOpen,
-            OrdersFilled = OrderManager.OrdersFilled,
-            OrdersFailed = OrderManager.OrdersFailed
-        };
+            //Save data to GameData object (saveData):
+            GameData saveData = new GameData
+            {
+                Player = this.Player,
 
-        FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
+                Suppliers = SupplierManager.Suppliers,
 
-        bf.Serialize(file, saveData);
+                OrdersOpen = OrderManager.OrdersOpen,
+                OrdersFilled = OrderManager.OrdersFilled,
+                OrdersFailed = OrderManager.OrdersFailed
+            };
 
-        file.Close();
+            FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
 
-        //LOG:
-        Debug.Log("GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
+            bf.Serialize(file, saveData);
+
+            file.Close();
+
+            //LOG:
+            Debug.Log("GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
+        }
     }
 
     private void LoadGame()

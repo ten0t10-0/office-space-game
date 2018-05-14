@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerClothing
+public class CharacterClothing
 {
     public int ClothingID { get; set; }
     public int CustomMaterialID { get; set; }
@@ -19,7 +19,7 @@ public class PlayerClothing
     /// </summary>
     /// <param name="clothingId"></param>
     /// <param name="color"></param>
-    public PlayerClothing(int clothingId, Color color)
+    public CharacterClothing(int clothingId, Color color)
     {
         ClothingID = clothingId;
 
@@ -30,10 +30,10 @@ public class PlayerClothing
     /// Create a reference to a clothing item in the DB. Default material used.
     /// </summary>
     /// <param name="clothingId"></param>
-    public PlayerClothing(int clothingId)
+    public CharacterClothing(int clothingId)
     {
         ClothingID = clothingId;
-        PopulateColorInfo(GetPlayerClothingSO().ClothingSlot.MaterialDefault.color);
+        PopulateColorInfo(GetClothingSO().ClothingSlot.MaterialDefault.color);
 
         CustomMaterialID = -1;
     }
@@ -43,7 +43,7 @@ public class PlayerClothing
     /// </summary>
     /// <param name="clothingId"></param>
     /// <param name="materialId"></param>
-    public PlayerClothing(int clothingId, int materialId)
+    public CharacterClothing(int clothingId, int materialId)
     {
         ClothingID = clothingId;
         CustomMaterialID = materialId;
@@ -53,7 +53,7 @@ public class PlayerClothing
     #endregion
 
     #region <Methods>
-    public PlayerClothingSO GetPlayerClothingSO()
+    public CharacterClothingSO GetClothingSO()
     {
         return GameMaster.Instance.CustomizationManager.Player.Clothing[ClothingID];
     }

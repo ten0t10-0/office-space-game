@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Player Clothing Slot", menuName = "Player Customization/Clothing Slot")]
-public class PlayerClothingSlotSO : ScriptableObject
+[CreateAssetMenu(fileName = "New Char Clothing Slot", menuName = "Character Customization/Clothing Slot")]
+public class CharacterClothingSlotSO : ScriptableObject
 {
     public string Name;
 
@@ -18,5 +18,5 @@ public class PlayerClothingSlotSO : ScriptableObject
     /// </summary>
     public string[] PlaceholderNames;
 
-    public PlayerBodySO Body;
+    public CharacterBodySO Body;
 }
