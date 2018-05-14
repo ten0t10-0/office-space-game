@@ -294,7 +294,7 @@ public class GameMaster : MonoBehaviour
 
             Camera.main.GetComponent<CameraController>().SetTarget(newPlayer.transform);
 
-            CustomizationManager.Player.SetPlayerObject(newPlayer);
+            CustomizationManager.Player.SetPlayer(newPlayer, ref Player);
         }
     }
 

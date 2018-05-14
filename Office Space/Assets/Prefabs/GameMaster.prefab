@@ -61,7 +61,7 @@ MonoBehaviour:
   OrderManager: {fileID: 0}
   ItemManager: {fileID: 0}
   CustomizationManager: {fileID: 0}
-  PlayerObject: {fileID: 1775430206603672, guid: 61594c30539aef940a32fb8aa5ef0454,
+  PlayerObject: {fileID: 1679451262847682, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   initPlayerName: New Player
   initBusinessName: My Business

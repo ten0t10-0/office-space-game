@@ -11,6 +11,8 @@ public class Player
     public int Level { get; set; }
     public int Experience { get; set; }
 
+    public PlayerCustomizationData CustomizationData { get; set; }
+
     #region <Constructors>
     //New Player
     public Player(string name, string businessName, float startingMoney, float maximumInventorySpace)
@@ -22,6 +24,8 @@ public class Player
         PlayTime = 0f;
         Level = 1;
         Experience = 0;
+
+        CustomizationData = new PlayerCustomizationData(GameMaster.Instance.CustomizationManager.Player.DefaultClothingIndexes);
     }
 
     ////Existing Player
