@@ -11,10 +11,19 @@ public class Player
     public int Level { get; set; }
     public int Experience { get; set; }
 
-    public PlayerCustomizationData CustomizationData { get; set; }
+    [SerializeField]
+    public List<PlayerClothing> CurrentClothing { get; set; }
+    [SerializeField]
+    public List<int> UnlockedClothing { get; set; }
 
     #region <Constructors>
-    //New Player
+    /// <summary>
+    /// Create a new player. Default clothing unlocked & equipped.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="businessName"></param>
+    /// <param name="startingMoney"></param>
+    /// <param name="maximumInventorySpace"></param>
     public Player(string name, string businessName, float startingMoney, float maximumInventorySpace)
     {
         Name = name;
@@ -25,7 +34,14 @@ public class Player
         Level = 1;
         Experience = 0;
 
-        CustomizationData = new PlayerCustomizationData(GameMaster.Instance.CustomizationManager.Player.DefaultClothingIndexes);
+        CurrentClothing = new List<PlayerClothing>();
+        UnlockedClothing = new List<int>();
+
+        foreach (int i in GameMaster.Instance.CustomizationManager.Player.DefaultClothingIndexes)
+        {
+            UnlockedClothing.Add(i);
+            CurrentClothing.Add(new PlayerClothing(i));
+        }
     }
 
     ////Existing Player

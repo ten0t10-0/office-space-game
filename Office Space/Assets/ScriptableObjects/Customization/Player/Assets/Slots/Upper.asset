@@ -18,4 +18,4 @@ MonoBehaviour:
   PlaceholderNames:
   - C_Upper
   - B_Upper
-  NoClothingMesh: {fileID: 4300012, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
+  Body: {fileID: 11400000, guid: 69b4fce29be477649aa174a83886f6ec, type: 2}

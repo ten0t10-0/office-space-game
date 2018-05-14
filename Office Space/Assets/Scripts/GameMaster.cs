@@ -32,8 +32,11 @@ public class GameMaster : MonoBehaviour
     public CustomizationManager CustomizationManager;
     #endregion
 
-    #region <PLAYER>
-    public GameObject PlayerObject;
+    #region <PLAYER/NPC>
+    public GameObject CharacterObject;
+    [HideInInspector]
+    public GameObject CurrentPlayerObject;
+    [HideInInspector]
     public Player Player;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
@@ -45,7 +48,7 @@ public class GameMaster : MonoBehaviour
 
     #region <GAME>
 
-    #region <Game Data (Saving/Loading)>
+    #region <Game Data file info>
     public string SaveFileName = "Game";
     public string SaveFileExtension = ".gd";
     private string saveFileDirString;
@@ -197,7 +200,7 @@ public class GameMaster : MonoBehaviour
 
         currentMessage = MSG_GEN_NA;
 
-        //<TEST NEW GAME METHOD>
+        //***<TEST NEW GAME METHOD>***
         NewGameTEST();
     }
 
@@ -259,6 +262,9 @@ public class GameMaster : MonoBehaviour
             }
             OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), orderItems, GameDateTime, GameDateTime.AddHours(2)));
 
+            //TEST: Spawn (NEW) player
+            SpawnPlayer();
+
             //TEST: Save Game
             SaveGame();
 
@@ -276,12 +282,15 @@ public class GameMaster : MonoBehaviour
             //TEST: Load Game
             LoadGame();
 
+            //TEST: Spawn (EXISTING) player
+            SpawnPlayer();
+
             #region ***DEBUG LOGS***
             CreateDebugLogs();
             #endregion
         }
 
-        SpawnPlayer();
+        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.transform);
 
         tPlayerPlayTime = tGameTime = Time.time;
     }
@@ -290,11 +299,12 @@ public class GameMaster : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("Player") == null)
         {
-            GameObject newPlayer = Instantiate(PlayerObject, Vector3.up, Quaternion.Euler(Vector3.zero));
+            CurrentPlayerObject = Instantiate(CharacterObject, Vector3.up, Quaternion.Euler(Vector3.zero));
 
-            Camera.main.GetComponent<CameraController>().SetTarget(newPlayer.transform);
+            CurrentPlayerObject.AddComponent<PlayerController>();
+            CurrentPlayerObject.tag = "Player";
 
-            CustomizationManager.Player.SetPlayer(newPlayer, ref Player);
+            CustomizationManager.Player.SetPlayer(CurrentPlayerObject, Player.CurrentClothing);
         }
     }
 
@@ -376,6 +386,8 @@ public class GameMaster : MonoBehaviour
     private void SaveGame()
     {
         BinaryFormatter bf = new BinaryFormatter();
+
+        Player.CurrentClothing = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CurrentClothing;
 
         //Save data to GameData object (saveData):
         GameData saveData = new GameData

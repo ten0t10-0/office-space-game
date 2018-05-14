@@ -18,5 +18,5 @@ public class PlayerClothingSlotSO : ScriptableObject
     /// </summary>
     public string[] PlaceholderNames;
 
-    public Mesh NoClothingMesh;
+    public PlayerBodySO Body;
 }

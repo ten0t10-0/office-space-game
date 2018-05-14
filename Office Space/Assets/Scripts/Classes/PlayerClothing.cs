@@ -6,11 +6,49 @@ using UnityEngine;
 public class PlayerClothing
 {
     public int ClothingID { get; set; }
+    public int CustomMaterialID { get; set; }
+
+    public float ColorR { get; set; }
+    public float ColorG { get; set; }
+    public float ColorB { get; set; }
+    public float ColorA { get; set; }
 
     #region <Constructors>
+    /// <summary>
+    /// Create a reference to a clothing item in the DB. Default material with custom color used.
+    /// </summary>
+    /// <param name="clothingId"></param>
+    /// <param name="color"></param>
+    public PlayerClothing(int clothingId, Color color)
+    {
+        ClothingID = clothingId;
+
+        CustomMaterialID = -1;
+    }
+
+    /// <summary>
+    /// Create a reference to a clothing item in the DB. Default material used.
+    /// </summary>
+    /// <param name="clothingId"></param>
     public PlayerClothing(int clothingId)
     {
         ClothingID = clothingId;
+        PopulateColorInfo(GetPlayerClothingSO().ClothingSlot.MaterialDefault.color);
+
+        CustomMaterialID = -1;
+    }
+
+    /// <summary>
+    /// Create a reference to a clothing item in the DB. Custom material used.
+    /// </summary>
+    /// <param name="clothingId"></param>
+    /// <param name="materialId"></param>
+    public PlayerClothing(int clothingId, int materialId)
+    {
+        ClothingID = clothingId;
+        CustomMaterialID = materialId;
+
+        PopulateColorInfo(GameMaster.Instance.CustomizationManager.Player.CustomMaterials[materialId].color);
     }
     #endregion
 
@@ -18,6 +56,24 @@ public class PlayerClothing
     public PlayerClothingSO GetPlayerClothingSO()
     {
         return GameMaster.Instance.CustomizationManager.Player.Clothing[ClothingID];
+    }
+
+    public Color GetColor()
+    {
+        return new Color(ColorR, ColorG, ColorB, ColorA);
+    }
+
+    public void PopulateColorInfo(Color color)
+    {
+        ColorR = color.r;
+        ColorG = color.g;
+        ColorB = color.b;
+        ColorA = color.a;
+    }
+
+    public bool HasCustomMaterial()
+    {
+        return CustomMaterialID > -1;
     }
     #endregion
 }
