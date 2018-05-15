@@ -14,7 +14,7 @@ public class ShopController : MonoBehaviour
 
 	[SerializeField] //suppliers
 	private GameObject Supplierbtn;
-	public RectTransform SupplierContent;
+	private Transform SupplierContent;
 
 	public GameObject qtyPanel;
 	private PlayerUiController playerUI;
@@ -31,7 +31,7 @@ public class ShopController : MonoBehaviour
 
 	public Button all,elec,furn;
 
-	public Dropdown drop;
+
 
 	void Start () 
 	{
@@ -57,7 +57,7 @@ public class ShopController : MonoBehaviour
 		
 	public void AddSupplier()
 	{
-		//ClearSuppliers ();
+		ClearSupp ();
 
 		int iSupplier;
 
@@ -65,11 +65,8 @@ public class ShopController : MonoBehaviour
 		{
 			SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers[iSupplier];
 
-			//GameObject newSupp = Instantiate(Supplierbtn, SupplierContent);
+			GameObject newSupp = Instantiate(Supplierbtn, SupplierContent);
 			//newSupp.transform.Find("SuppName").GetComponent<TMP_Text>().text = supplier.Name;
-
-			GameObject newSupp = (GameObject)Instantiate(Supplierbtn);
-			newSupp.transform.SetParent(SupplierContent);
 			newSupp.transform.Find("Button/Text").GetComponent<TMP_Text>().text = supplier.Name;
 
 			newSupp.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetSupp(supplier.Name);});
@@ -141,14 +138,55 @@ public class ShopController : MonoBehaviour
 		{
 			SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers[iSupplier];
 
-			if (supplier.Name==supp && allSupp==false)
+			if (supplier.Name == supp && allSupp == false) 
 			{	
 			
-				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) 
-				{
+				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
 					Item item = supplier.Inventory.Items [iItem];
 				
-					if (item.Category.ToString() == cat && allCat == false) 
+					if (item.Category.ToString () == cat && allCat == false) {
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+
+						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
+						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
+
+						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString ();
+
+						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
+					} else if (allCat == true) {
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+
+						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
+						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
+
+						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString ();
+
+						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
+					}
+				}
+			} 
+			else if (allSupp == true) 
+			{
+				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
+					Item item = supplier.Inventory.Items [iItem];
+
+					if (item.Category.ToString () == cat && allCat == false) {
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+
+						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
+						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
+
+						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString ();
+
+						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
+					} 
+					else if (allCat == true) 
 					{
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
@@ -157,27 +195,15 @@ public class ShopController : MonoBehaviour
 
 						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
 						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString();
+						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString ();
 
 						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
 					}
-					else if (allCat==true)
-						{
-							GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-
-							newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-							newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-
-							newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-							newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-							newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = item.UnitCost.ToString();
-
-							newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
-						}
-					}
 				}
-			}
+			} 
 		}
+	}
+		
 
 
 	/// Clears out any existing shop UI items
@@ -194,6 +220,20 @@ public class ShopController : MonoBehaviour
 			Destroy(child.gameObject);
 		}
 	}	
+
+	public void ClearSupp()
+	{
+
+		if (SupplierContent == null)
+		{
+			SupplierContent = transform.Find("Button/SupplierList/Viewport/Content");
+		}
+
+		foreach (Transform child in SupplierContent)
+		{
+			Destroy(child.gameObject);
+		}
+	}
 
 	public void BuyOnClick()
 	{

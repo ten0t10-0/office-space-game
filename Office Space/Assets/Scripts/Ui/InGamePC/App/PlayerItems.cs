@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class PlayerItems : MonoBehaviour 
 {
-	public GameObject itemContainer;
-	public RectTransform Content;
+	[SerializeField]
+	private GameObject itemContainer;
+	private Transform scrollViewContent;
 
 	// Use this for initialization
 	void Start () 
@@ -21,8 +22,7 @@ public class PlayerItems : MonoBehaviour
 
 		foreach (InventoryItem item in GameMaster.Instance.Player.Business.Inventory.Items) 
 		{
-			GameObject newItem = (GameObject)Instantiate(itemContainer);
-			newItem.transform.SetParent(Content);
+			GameObject newItem = Instantiate (itemContainer, scrollViewContent);
 			newItem.transform.Find("Panel/Name").GetComponent<TMP_Text>().text = item.Name;
 			newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
 		}
@@ -31,10 +31,15 @@ public class PlayerItems : MonoBehaviour
 	public void ClearInventory()
 	{
 
-		foreach (Transform child in Content)
+		if (scrollViewContent == null)
+		{
+			scrollViewContent = transform.Find("Scroll View/Viewport/Content");
+		}
+
+		foreach (Transform child in scrollViewContent)
 		{
 			Destroy(child.gameObject);
 		}
-	}
+	}	
 		
 }
