@@ -305,7 +305,10 @@ public class GameMaster : MonoBehaviour
             CurrentPlayerObject.AddComponent<PlayerController>();
             CurrentPlayerObject.tag = "Player";
 
-            CustomizationManager.Player.SetPlayer(CurrentPlayerObject, Player.CurrentClothing);
+            //TEST: Body color change
+            //Player.CustomizationData.PopulateBodyColorInfo(new Color(0f, 0f, 0f));
+
+            CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CustomizationData);
         }
     }
 
@@ -390,7 +393,7 @@ public class GameMaster : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
 
-            Player.CurrentClothing = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CurrentClothing;
+            Player.CustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData;
 
             //Save data to GameData object (saveData):
             GameData saveData = new GameData

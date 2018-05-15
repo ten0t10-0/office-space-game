@@ -11,8 +11,8 @@ public class Player
     public int Level { get; set; }
     public int Experience { get; set; }
 
-    [SerializeField]
-    public List<CharacterClothing> CurrentClothing { get; set; }
+    public CharacterCustomizationData CustomizationData;
+
     [SerializeField]
     public List<int> UnlockedClothing { get; set; }
 
@@ -34,13 +34,13 @@ public class Player
         Level = 1;
         Experience = 0;
 
-        CurrentClothing = new List<CharacterClothing>();
+        CustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
         UnlockedClothing = new List<int>();
 
-        foreach (int i in GameMaster.Instance.CustomizationManager.Player.DefaultClothingIndexes)
+        foreach (int i in GameMaster.Instance.CustomizationManager.Character.DefaultClothingIndexes)
         {
+            CustomizationData.CurrentClothing.Add(new CharacterClothing(i));
             UnlockedClothing.Add(i);
-            CurrentClothing.Add(new CharacterClothing(i));
         }
     }
 

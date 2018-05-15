@@ -64,6 +64,7 @@ MonoBehaviour:
   CharacterObject: {fileID: 1679451262847682, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
+  Player: {}
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 10000
@@ -96,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6851b7a1e714c4fae1544d43d57fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
+  Character: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1

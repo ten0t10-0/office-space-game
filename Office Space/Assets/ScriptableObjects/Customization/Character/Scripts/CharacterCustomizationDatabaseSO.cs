@@ -24,12 +24,12 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
     /// </summary>
     /// <param name="playerObject"></param>
     /// <param name="currentClothing"></param>
-    public void SetPlayer(GameObject playerObject, List<CharacterClothing> currentClothing)
+    public void SetPlayer(GameObject playerObject, CharacterCustomizationData customizationData)
     {
         player = playerObject;
         playerCustomizationScript = player.GetComponent<CharacterCustomizationScript>();
 
-        playerCustomizationScript.SetClothingByList(currentClothing);
+        playerCustomizationScript.SetAppearanceByData(customizationData);
     }
 
     /// <summary>

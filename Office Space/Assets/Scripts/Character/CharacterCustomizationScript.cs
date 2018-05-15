@@ -8,47 +8,43 @@ public class CharacterCustomizationScript : MonoBehaviour
     [HideInInspector]
     public Material MaterialBody;
 
-    [HideInInspector]
-    public List<CharacterClothing> CurrentClothing;
+    public CharacterCustomizationData CustomizationData;
 
     private void Awake()
     {
-        MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Player.MaterialBodyDefault);
+        MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);
 
         //Remove placeholder objects:
-        for (int i = 0; i < GameMaster.Instance.CustomizationManager.Player.ClothingSlots.Count; i++)
+        for (int i = 0; i < GameMaster.Instance.CustomizationManager.Character.ClothingSlots.Count; i++)
         {
-            UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Player.ClothingSlots[i].PlaceholderNames[0]).gameObject);
+            UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].PlaceholderNames[0]).gameObject);
 
-            if (!GameMaster.Instance.CustomizationManager.Player.ClothingSlots[i].IsAccessory)
+            if (!GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].IsAccessory)
             {
-                UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Player.ClothingSlots[i].PlaceholderNames[1]).gameObject);
+                UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].PlaceholderNames[1]).gameObject);
             }
         }
     }
 
     /// <summary>
-    /// Replaces the CurrentClothing list with specified clothing list, and reloads the character.
+    /// Replaces the customization data with specified customization data, and reloads the character.
     /// </summary>
     /// <param name="clothingList"></param>
-    public void SetClothingByList(List<CharacterClothing> clothingList)
+    public void SetAppearanceByData(CharacterCustomizationData customizationData)
     {
-        CurrentClothing.Clear();
+        CustomizationData = customizationData;
 
-        for (int i = 0; i < clothingList.Count; i++)
-        {
-            CurrentClothing.Add(clothingList[i]);
-        }
-
-        ReloadClothing();
+        ReloadCharacterAppearance();
     }
 
     /// <summary>
-    /// Binds clothing to the character based on the CurrentClothing list.
+    /// Binds clothing to the character based on the CurrentClothing list in the customization data.
     /// </summary>
-    public void ReloadClothing()
+    public void ReloadCharacterAppearance()
     {
-        if (CurrentClothing.Count > 0)
+        MaterialBody.color = CustomizationData.GetBodyColor();
+
+        if (CustomizationData.CurrentClothing.Count > 0)
         {
             UnsetAllClothing();
 
@@ -58,38 +54,38 @@ public class CharacterCustomizationScript : MonoBehaviour
 
             if (!isSlotUsedCostume && !isSlotUsedUpper && !isSlotUsedLower)
             {
-                SetObjectBody(GameMaster.Instance.CustomizationManager.Player.GetClothingSlotSO(ClothingSlot.Costume).Body);
+                SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Costume).Body);
             }
             else if (!isSlotUsedCostume)
             {
                 if (isSlotUsedLower && !isSlotUsedUpper)
                 {
-                    SetObjectBody(GameMaster.Instance.CustomizationManager.Player.GetClothingSlotSO(ClothingSlot.Upper).Body);
+                    SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Upper).Body);
                 }
                 else if (isSlotUsedUpper && !isSlotUsedLower)
                 {
-                    SetObjectBody(GameMaster.Instance.CustomizationManager.Player.GetClothingSlotSO(ClothingSlot.Lower).Body);
+                    SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Lower).Body);
                 }
             }
 
-            for (int i = 0; i < CurrentClothing.Count; i++)
+            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
             {
-                ClothingSlot clothingSlot = CurrentClothing[i].GetClothingSO().ClothingSlot.Slot;
+                ClothingSlot clothingSlot = CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot;
 
                 if (!isSlotUsedCostume)
                 {
-                    SetObject(CurrentClothing[i]);
+                    SetObject(CustomizationData.CurrentClothing[i]);
                 }
                 else
                 {
                     if (clothingSlot == ClothingSlot.Costume || clothingSlot == ClothingSlot.Head)
-                        SetObject(CurrentClothing[i]);
+                        SetObject(CustomizationData.CurrentClothing[i]);
                 }
             }
         }
         else
         {
-            SetObjectBody(GameMaster.Instance.CustomizationManager.Player.GetClothingSlotSO(ClothingSlot.Costume).Body);
+            SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Costume).Body);
         }
     }
 
@@ -101,7 +97,7 @@ public class CharacterCustomizationScript : MonoBehaviour
     {
         AddClothingToList(charClothing);
 
-        ReloadClothing();
+        ReloadCharacterAppearance();
     }
 
     /// <summary>
@@ -112,7 +108,7 @@ public class CharacterCustomizationScript : MonoBehaviour
     {
         RemoveClothingFromList(clothingSlot);
 
-        ReloadClothing();
+        ReloadCharacterAppearance();
     }
 
     private void AddClothingToList(CharacterClothing clothing)
@@ -120,9 +116,9 @@ public class CharacterCustomizationScript : MonoBehaviour
         int iClothing;
 
         if (IsClothingSlotUsed(clothing.GetClothingSO().ClothingSlot.Slot, out iClothing))
-            CurrentClothing.RemoveAt(iClothing);
+            CustomizationData.CurrentClothing.RemoveAt(iClothing);
 
-        CurrentClothing.Add(clothing);
+        CustomizationData.CurrentClothing.Add(clothing);
     }
 
     private void RemoveClothingFromList(CharacterClothingSlotSO clothingSlot)
@@ -131,7 +127,7 @@ public class CharacterCustomizationScript : MonoBehaviour
 
         if (IsClothingSlotUsed(clothingSlot.Slot, out iClothing))
         {
-            CurrentClothing.RemoveAt(iClothing);
+            CustomizationData.CurrentClothing.RemoveAt(iClothing);
         }
         else
         {
@@ -144,11 +140,11 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// </summary>
     private void UnsetAllClothing()
     {
-        if (CurrentClothing.Count > 0)
+        if (CustomizationData.CurrentClothing.Count > 0)
         {
-            for (int i = 0; i < CurrentClothing.Count; i++)
+            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
             {
-                UnsetClothing(CurrentClothing[i].GetClothingSO().ClothingSlot);
+                UnsetClothing(CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot);
             }
         }
     }
@@ -182,12 +178,11 @@ public class CharacterCustomizationScript : MonoBehaviour
 
                     if (!charClothing.HasCustomMaterial()) //if no custom material
                     {
-                        newMaterial = new Material(charClothingSO.ClothingSlot.MaterialDefault)
-                        { color = charClothing.GetColor() };
+                        newMaterial = new Material(charClothingSO.ClothingSlot.MaterialDefault) { color = charClothing.GetColor() };
                     }
                     else
                     {
-                        newMaterial = new Material(GameMaster.Instance.CustomizationManager.Player.CustomMaterials[charClothing.CustomMaterialID]);
+                        newMaterial = new Material(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[charClothing.CustomMaterialID]);
                     }
 
                     clothingObject.GetComponent<Renderer>().sharedMaterial = newMaterial;
@@ -309,16 +304,16 @@ public class CharacterCustomizationScript : MonoBehaviour
         bool clothingFound = false;
         iClothing = -1;
 
-        if (CurrentClothing.Count > 0)
+        if (CustomizationData.CurrentClothing.Count > 0)
         {
-            for (int i = 0; i < CurrentClothing.Count; i++)
+            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
             {
-                if (CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
+                if (CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
                 {
                     clothingFound = true;
                     iClothing = i;
 
-                    i = CurrentClothing.Count; //end
+                    i = CustomizationData.CurrentClothing.Count; //end
                 }
             }
         }
@@ -335,15 +330,15 @@ public class CharacterCustomizationScript : MonoBehaviour
     {
         bool clothingFound = false;
 
-        if (CurrentClothing.Count > 0)
+        if (CustomizationData.CurrentClothing.Count > 0)
         {
-            for (int i = 0; i < CurrentClothing.Count; i++)
+            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
             {
-                if (CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
+                if (CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
                 {
                     clothingFound = true;
 
-                    i = CurrentClothing.Count; //end
+                    i = CustomizationData.CurrentClothing.Count; //end
                 }
             }
         }

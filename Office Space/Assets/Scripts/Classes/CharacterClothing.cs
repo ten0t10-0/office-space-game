@@ -48,14 +48,14 @@ public class CharacterClothing
         ClothingID = clothingId;
         CustomMaterialID = materialId;
 
-        PopulateColorInfo(GameMaster.Instance.CustomizationManager.Player.CustomMaterials[materialId].color);
+        PopulateColorInfo(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[materialId].color);
     }
     #endregion
 
     #region <Methods>
     public CharacterClothingSO GetClothingSO()
     {
-        return GameMaster.Instance.CustomizationManager.Player.Clothing[ClothingID];
+        return GameMaster.Instance.CustomizationManager.Character.Clothing[ClothingID];
     }
 
     public Color GetColor()
