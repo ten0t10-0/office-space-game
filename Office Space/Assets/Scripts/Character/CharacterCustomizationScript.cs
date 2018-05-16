@@ -8,10 +8,12 @@ public class CharacterCustomizationScript : MonoBehaviour
     [HideInInspector]
     public Material MaterialBody;
 
+    [HideInInspector]
     public CharacterCustomizationData CustomizationData;
 
     private void Awake()
     {
+        //Get & use default body material (and color)
         MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);
 
         //Remove placeholder objects:
@@ -109,6 +111,17 @@ public class CharacterCustomizationScript : MonoBehaviour
         RemoveClothingFromList(clothingSlot);
 
         ReloadCharacterAppearance();
+    }
+
+    /// <summary>
+    /// Updates the character's body (skin) color to the specified color and updates customization data.
+    /// </summary>
+    /// <param name="newBodyColor"></param>
+    public void UpdateBodyColor(Color newBodyColor)
+    {
+        MaterialBody.color = newBodyColor;
+
+        CustomizationData.UpdateBodyColorInfo(newBodyColor);
     }
 
     private void AddClothingToList(CharacterClothing clothing)

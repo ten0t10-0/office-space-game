@@ -61,7 +61,7 @@ MonoBehaviour:
   OrderManager: {fileID: 0}
   ItemManager: {fileID: 0}
   CustomizationManager: {fileID: 0}
-  CharacterObject: {fileID: 1679451262847682, guid: 61594c30539aef940a32fb8aa5ef0454,
+  GenericCharacterObject: {fileID: 1679451262847682, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
   Player: {}
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Character: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
+  Office: {fileID: 11400000, guid: 26d39428fe603c648918aa2e55f31bbc, type: 2}
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1

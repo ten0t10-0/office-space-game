@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5267979d31f3a13448c3e0160f46bd3e, type: 3}
+  m_Name: OfficeItemDB
+  m_EditorClassIdentifier: 
+  MaterialWallsDefault: {fileID: 2100000, guid: 8a4fa6fb7e6e45e4b82eb5850cc2a17f,
+    type: 2}
+  MaterialFloorDefault: {fileID: 2100000, guid: 527bd8531b860794089202bf1b3a87be,
+    type: 2}
+  MaterialCeilingDefault: {fileID: 2100000, guid: 72895f0d12bb70d46be5517d4e2f429e,
+    type: 2}
+  OfficeParentName: Office
+  ObjectsParentName: Objects
+  MaxNumberOfObjects: 15
+  Items:
+  - {fileID: 11400000, guid: c6a5117425a2d5e4fb37cf6a294e5348, type: 2}
+  Types:
+  - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
+  DefaultOfficeItemIndexes: 00000000

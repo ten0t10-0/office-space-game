@@ -17,12 +17,12 @@ public class CharacterCustomizationData
     public CharacterCustomizationData(Color bodyColor)
     {
         CurrentClothing = new List<CharacterClothing>();
-        PopulateBodyColorInfo(bodyColor);
+        UpdateBodyColorInfo(bodyColor);
     }
     #endregion
 
     #region <Methods>
-    public void PopulateBodyColorInfo(Color bodyColor)
+    public void UpdateBodyColorInfo(Color bodyColor)
     {
         BodyColorR = bodyColor.r;
         BodyColorG = bodyColor.g;

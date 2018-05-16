@@ -33,7 +33,7 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <PLAYER/NPC>
-    public GameObject CharacterObject;
+    public GameObject GenericCharacterObject;
     [HideInInspector]
     public GameObject CurrentPlayerObject;
     [HideInInspector]
@@ -200,7 +200,10 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         currentMessage = MSG_GEN_NA;
+    }
 
+    private void Start()
+    {
         //***<TEST NEW GAME METHOD>***
         NewGameTEST();
     }
@@ -266,6 +269,19 @@ public class GameMaster : MonoBehaviour
             //TEST: Spawn (NEW) player
             SpawnPlayer();
 
+            //TEST: Set up Office
+            CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+
+            //  ^ Adding office object:
+            GameObject newObject1 = CustomizationManager.Office.InitializeOfficeObject(0);
+            newObject1.transform.position = new Vector3(-4.33f, 0f, 10.39f);
+            newObject1.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
+
+            //  ^ Adding office object:
+            GameObject newObject2 = CustomizationManager.Office.InitializeOfficeObject(0);
+            newObject2.transform.position = new Vector3(0, 0f, -7.63f);
+            newObject2.transform.rotation = Quaternion.Euler(-90f, 90f, 0);
+
             //TEST: Save Game
             SaveGame();
 
@@ -286,6 +302,9 @@ public class GameMaster : MonoBehaviour
             //TEST: Spawn (EXISTING) player
             SpawnPlayer();
 
+            //TEST: Set Office
+            CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+
             #region ***DEBUG LOGS***
             CreateDebugLogs();
             #endregion
@@ -296,19 +315,32 @@ public class GameMaster : MonoBehaviour
         tPlayerPlayTime = tGameTime = Time.time;
     }
 
+    /// <summary>
+    /// Instantiates a Character object as the player, and binds clothing to the player according to the customization data in the Player class.
+    /// </summary>
     private void SpawnPlayer()
     {
         if (GameObject.FindGameObjectWithTag("Player") == null)
         {
-            CurrentPlayerObject = Instantiate(CharacterObject, Vector3.up, Quaternion.Euler(Vector3.zero));
+            CurrentPlayerObject = Instantiate(GenericCharacterObject, Vector3.up, Quaternion.Euler(Vector3.zero));
 
             CurrentPlayerObject.AddComponent<PlayerController>();
             CurrentPlayerObject.tag = "Player";
 
-            //TEST: Body color change
-            //Player.CustomizationData.PopulateBodyColorInfo(new Color(0f, 0f, 0f));
+            //TEST: Body color change (Before setting player char - changing color in customization data in player class)
+            //Player.CharacterCustomizationData.UpdateBodyColorInfo(new Color(0f, 0f, 0f));
 
-            CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CustomizationData);
+            CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CharacterCustomizationData);
+
+            //TEST A: (OK) Body color change (After setting player char - changing color in customization data held by player object customization script component - REQUIRES ReloadCharacterAppearance() method to be called!)
+            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData.UpdateBodyColorInfo(new Color(0f, 0f, 0f));
+            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().ReloadCharacterAppearance();
+
+            //TEST B: (-Nope-) Body color change (After setting player char - directly changing color of MaterialBody field in player object customization script component - *Does NOT update customization data - will not be saved*)
+            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().MaterialBody.color = new Color(0f, 0f, 0f);
+
+            //TEST C: (*Preferred!*) Body color change (After setting player char - Using custom method UpdateBodyColor() )
+            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateBodyColor(new Color(0f, 0f, 0f));
         }
     }
 
@@ -393,7 +425,8 @@ public class GameMaster : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
 
-            Player.CustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData;
+            Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData;
+            Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
 
             //Save data to GameData object (saveData):
             GameData saveData = new GameData
@@ -404,7 +437,10 @@ public class GameMaster : MonoBehaviour
 
                 OrdersOpen = OrderManager.OrdersOpen,
                 OrdersFilled = OrderManager.OrdersFilled,
-                OrdersFailed = OrderManager.OrdersFailed
+                OrdersFailed = OrderManager.OrdersFailed,
+
+                GameDateTime = this.GameDateTime,
+                GameTimeSpeed = this.GameTimeSpeed
             };
 
             FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
@@ -436,6 +472,9 @@ public class GameMaster : MonoBehaviour
         OrderManager.OrdersOpen = loadData.OrdersOpen;
         OrderManager.OrdersFilled = loadData.OrdersFilled;
         OrderManager.OrdersFailed = loadData.OrdersFailed;
+
+        GameDateTime = loadData.GameDateTime;
+        GameTimeSpeed = loadData.GameTimeSpeed;
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");

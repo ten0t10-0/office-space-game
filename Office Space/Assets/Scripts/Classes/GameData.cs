@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using System;
+
 [System.Serializable]
 public class GameData
 {
@@ -14,10 +16,16 @@ public class GameData
     [SerializeField]
     public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
 
+    [SerializeField]
+    public DateTime GameDateTime;
+    public float GameTimeSpeed;
+
+    //Difficulty?
+
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> ordersOpen, List<Order> ordersFilled, List<Order> ordersFailed)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> ordersOpen, List<Order> ordersFilled, List<Order> ordersFailed, DateTime gameDateTime, float gameTimeSpeed)
     {
         Suppliers = suppliers;
 
@@ -26,5 +34,8 @@ public class GameData
         OrdersOpen = ordersOpen;
         OrdersFilled = ordersFilled;
         OrdersFailed = ordersFailed;
+
+        GameDateTime = gameDateTime;
+        GameTimeSpeed = gameTimeSpeed;
     }
 }

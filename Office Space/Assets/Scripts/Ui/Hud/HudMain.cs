@@ -11,7 +11,7 @@ public class HudMain : MonoBehaviour {
 
 	void Start () 
 	{
-		money.SetText("$ "+(GameMaster.Instance.Player.Business.Money).ToString());
+		//money.SetText("$ "+(GameMaster.Instance.Player.Business.Money).ToString());
 
 
 	}
@@ -20,5 +20,6 @@ public class HudMain : MonoBehaviour {
 	void Update () 
 	{
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
-	}
+        money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
+    }
 }

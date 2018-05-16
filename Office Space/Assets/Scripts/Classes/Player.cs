@@ -11,19 +11,17 @@ public class Player
     public int Level { get; set; }
     public int Experience { get; set; }
 
-    public CharacterCustomizationData CustomizationData;
+    public CharacterCustomizationData CharacterCustomizationData;
+    public OfficeCustomizationData OfficeCustomizationData;
 
     [SerializeField]
     public List<int> UnlockedClothing { get; set; }
+    [SerializeField]
+    public List<int> UnlockedOfficeItems { get; set; }
 
     #region <Constructors>
-    /// <summary>
-    /// Create a new player. Default clothing unlocked & equipped.
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="businessName"></param>
-    /// <param name="startingMoney"></param>
-    /// <param name="maximumInventorySpace"></param>
+
+    //Creates a new player. Default clothing unlocked & equipped. Default Office items unlocked.
     public Player(string name, string businessName, float startingMoney, float maximumInventorySpace)
     {
         Name = name;
@@ -34,13 +32,22 @@ public class Player
         Level = 1;
         Experience = 0;
 
-        CustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
+        CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
         UnlockedClothing = new List<int>();
 
         foreach (int i in GameMaster.Instance.CustomizationManager.Character.DefaultClothingIndexes)
         {
-            CustomizationData.CurrentClothing.Add(new CharacterClothing(i));
             UnlockedClothing.Add(i);
+
+            CharacterCustomizationData.CurrentClothing.Add(new CharacterClothing(i));
+        }
+
+        OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);
+        UnlockedOfficeItems = new List<int>();
+
+        foreach (int i in GameMaster.Instance.CustomizationManager.Office.DefaultOfficeItemIndexes)
+        {
+            UnlockedOfficeItems.Add(i);
         }
     }
 

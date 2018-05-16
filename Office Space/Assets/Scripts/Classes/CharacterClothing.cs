@@ -22,6 +22,7 @@ public class CharacterClothing
     public CharacterClothing(int clothingId, Color color)
     {
         ClothingID = clothingId;
+        UpdateColorData(color);
 
         CustomMaterialID = -1;
     }
@@ -33,7 +34,7 @@ public class CharacterClothing
     public CharacterClothing(int clothingId)
     {
         ClothingID = clothingId;
-        PopulateColorInfo(GetClothingSO().ClothingSlot.MaterialDefault.color);
+        UpdateColorData(GetClothingSO().ClothingSlot.MaterialDefault.color);
 
         CustomMaterialID = -1;
     }
@@ -48,7 +49,7 @@ public class CharacterClothing
         ClothingID = clothingId;
         CustomMaterialID = materialId;
 
-        PopulateColorInfo(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[materialId].color);
+        UpdateColorData(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[materialId].color);
     }
     #endregion
 
@@ -63,7 +64,7 @@ public class CharacterClothing
         return new Color(ColorR, ColorG, ColorB, ColorA);
     }
 
-    public void PopulateColorInfo(Color color)
+    public void UpdateColorData(Color color)
     {
         ColorR = color.r;
         ColorG = color.g;

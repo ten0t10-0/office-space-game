@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ClothingSlot { Costume, Upper, Lower, Head, LeftArm, RightArm }
-
 [CreateAssetMenu(fileName = "New Char Clothing DB", menuName = "Character Customization/Database")]
 public class CharacterCustomizationDatabaseSO : ScriptableObject
 {
@@ -17,7 +15,6 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
     public List<Material> CustomMaterials;
 
     private GameObject player;
-    private CharacterCustomizationScript playerCustomizationScript;
 
     /// <summary>
     /// Sets the specified object as the player object, and binds it with the specified clothing.
@@ -27,9 +24,8 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
     public void SetPlayer(GameObject playerObject, CharacterCustomizationData customizationData)
     {
         player = playerObject;
-        playerCustomizationScript = player.GetComponent<CharacterCustomizationScript>();
 
-        playerCustomizationScript.SetAppearanceByData(customizationData);
+        player.GetComponent<CharacterCustomizationScript>().SetAppearanceByData(customizationData);
     }
 
     /// <summary>
