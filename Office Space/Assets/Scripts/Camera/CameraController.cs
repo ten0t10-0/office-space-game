@@ -11,6 +11,10 @@ public class CameraController : MonoBehaviour
 
     [Range(2.25f, 3.75f)]
     public float OffsetY = 2.5f;
+    [Range(0f, 2f)]
+    public float OffsetX = 1.25f;
+
+    public bool orbitOTS = true;
 
     public float maxDistanceFromTarget, minDistanceFromTarget;
 
@@ -69,6 +73,8 @@ public class CameraController : MonoBehaviour
             {
                 case CameraMode.Orbit:
                     {
+                        Vector3 targetPosition;
+
                         Vector3 currentEulerAngles = targetController.transform.rotation.eulerAngles;
                         float currentXAngle = currentEulerAngles.x;
 
@@ -79,6 +85,16 @@ public class CameraController : MonoBehaviour
 
                         targetController.transform.position = Target.position + new Vector3(0, OffsetY, 0);
 
+                        if (orbitOTS)
+                        {
+                            targetPosition = targetController.transform.position + (targetController.transform.right * OffsetX);
+                            
+                        }
+                        else
+                        {
+                            targetPosition = targetController.transform.position;
+                        }
+
                         if ((currentXAngle % 360) > 180)
                             currentXAngle = currentXAngle - 360;
 
@@ -88,15 +104,15 @@ public class CameraController : MonoBehaviour
                         targetController.transform.rotation = newRotation;
 
                         //New position of the camera before taking collision into account:
-                        newPosition = targetController.transform.position - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
+                        newPosition = targetPosition - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
 
                         //Check for collision:
-                        if (Physics.SphereCast(targetController.transform.position, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetController.transform.position, newPosition)))
+                        if (Physics.SphereCast(targetPosition, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetPosition, newPosition)))
                             newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
 
                         transform.position = newPosition;
 
-                        transform.LookAt(targetController.transform.position);
+                        transform.LookAt(targetPosition);
 
                         break;
                     }
@@ -119,6 +135,9 @@ public class CameraController : MonoBehaviour
                 if (offset.z < maxDistanceFromTarget)
                     offset += Vector3.forward * zoomSpeed * Time.deltaTime;
             }
+
+            if (Input.GetKeyUp(KeyCode.Tab))
+                orbitOTS = !orbitOTS;
         }
     }
 }

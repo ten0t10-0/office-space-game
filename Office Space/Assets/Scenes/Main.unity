@@ -14124,8 +14124,10 @@ MonoBehaviour:
   horizontalSensitivity: 2
   zoomSpeed: 15
   OffsetY: 2.5
+  OffsetX: 1.25
+  orbitOTS: 1
   maxDistanceFromTarget: 10
-  minDistanceFromTarget: 6
+  minDistanceFromTarget: 5
 --- !u!114 &2015045692
 MonoBehaviour:
   m_ObjectHideFlags: 0
