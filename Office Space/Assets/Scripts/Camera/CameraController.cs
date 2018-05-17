@@ -85,16 +85,6 @@ public class CameraController : MonoBehaviour
 
                         targetController.transform.position = Target.position + new Vector3(0, OffsetY, 0);
 
-                        if (orbitOTS)
-                        {
-                            targetPosition = targetController.transform.position + (targetController.transform.right * OffsetX);
-                            
-                        }
-                        else
-                        {
-                            targetPosition = targetController.transform.position;
-                        }
-
                         if ((currentXAngle % 360) > 180)
                             currentXAngle = currentXAngle - 360;
 
@@ -102,6 +92,15 @@ public class CameraController : MonoBehaviour
 
                         newRotation = Quaternion.Euler(new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0));
                         targetController.transform.rotation = newRotation;
+
+                        if (orbitOTS)
+                        {
+                            targetPosition = targetController.transform.position + (targetController.transform.right * OffsetX);
+                        }
+                        else
+                        {
+                            targetPosition = targetController.transform.position;
+                        }
 
                         //New position of the camera before taking collision into account:
                         newPosition = targetPosition - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
