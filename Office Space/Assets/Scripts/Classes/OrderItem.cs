@@ -18,7 +18,7 @@ public class OrderItem : Item
         Quantity = quantity;
     }
 
-    public OrderItem(string itemType, string itemDescription, int quantity) : base(itemType, itemDescription)
+    public OrderItem(string itemName, int quantity) : base(itemName)
     {
         Quantity = quantity;
     }

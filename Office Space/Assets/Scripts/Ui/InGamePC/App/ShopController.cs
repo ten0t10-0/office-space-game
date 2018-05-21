@@ -40,8 +40,8 @@ public class ShopController : MonoBehaviour
 		AddSupplier ();
 
 		all.GetComponent<Button>().onClick.AddListener(delegate {SetCate("all");});
-		elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Electronics.ToString());});
-		furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
+		//elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Electronics.ToString());});
+		//furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
 	
 		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
 		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
@@ -111,7 +111,7 @@ public class ShopController : MonoBehaviour
 
 				newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(BuyOnClick);
 
-                Debug.Log(item.Category.ToString());
+                Debug.Log(item.Category.Name);
             }
         }
 	}
@@ -144,7 +144,7 @@ public class ShopController : MonoBehaviour
 				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
 					Item item = supplier.Inventory.Items [iItem];
 				
-					if (item.Category.ToString () == cat && allCat == false) {
+					if (item.Category.Name == cat && allCat == false) {
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
 						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
@@ -174,7 +174,7 @@ public class ShopController : MonoBehaviour
 				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
 					Item item = supplier.Inventory.Items [iItem];
 
-					if (item.Category.ToString () == cat && allCat == false) {
+					if (item.Category.Name == cat && allCat == false) {
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
 						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;

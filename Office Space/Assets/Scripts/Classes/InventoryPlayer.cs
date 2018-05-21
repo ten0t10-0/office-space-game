@@ -18,6 +18,10 @@ public class InventoryPlayer : Inventory
     #endregion
 
     #region <Methods>
+    /// <summary>
+    /// Returns the total space used by all items in this inventory.
+    /// </summary>
+    /// <returns></returns>
     public float TotalSpaceUsed()
     {
         float spaceUsed = 0;
@@ -39,38 +43,71 @@ public class InventoryPlayer : Inventory
         return value;
     }
 
-    public bool AddItem(InventoryItem inventoryItem, out string result)
+    /// <summary>
+    /// Adds items to the player's inventory. Validation will check if there is enough inventory space.
+    /// </summary>
+    /// <param name="inventoryItem">The item(s) to add.</param>
+    /// <param name="performValidation">Set to false only if Inventory space has already been validated.</param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool AddItem(InventoryItem inventoryItem, bool performValidation, out string result)
     {
-        bool added;
+        bool succeeded;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        float itemTotalSpaceUsed = inventoryItem.TotalSpaceUsed();
-        float totalSpaceUsed = TotalSpaceUsed();
-
-        if (totalSpaceUsed < MaximumSpace)
+        if (!performValidation)
         {
-            if (totalSpaceUsed + itemTotalSpaceUsed < MaximumSpace)
-            {
-                //bool itemFound = false; *
+            succeeded = true;
+        }
+        else
+        {
+            succeeded = ValidateAddItem(inventoryItem.TotalSpaceUsed(), out result);
+        }
 
-                Items.Add(inventoryItem);
-                added = true;
-                result = string.Format("{0} x '{1}' successfully added!", inventoryItem.Quantity.ToString(), inventoryItem.Name);
+        if (succeeded)
+        {
+            //bool itemFound = false; *Group with same items?
+
+            Items.Add(inventoryItem);
+
+            result = string.Format("{0} x '{1}' successfully added!", inventoryItem.Quantity.ToString(), inventoryItem.Name);
+        }
+
+        GameMaster.Instance.Log(result);
+        return succeeded;
+    }
+
+    /// <summary>
+    /// Checks if the player has enough inventory space to cater for the specified space amount.
+    /// </summary>
+    /// <param name="itemTotalSpaceUsed">The total space to be used by the item.</param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool ValidateAddItem(float itemTotalSpaceUsed, out string result)
+    {
+        bool valid = false;
+        result = GameMaster.MSG_ERR_DEFAULT;
+
+        float inventoryTotalSpaceUsed = TotalSpaceUsed();
+
+        if (inventoryTotalSpaceUsed < MaximumSpace)
+        {
+            if ((inventoryTotalSpaceUsed + itemTotalSpaceUsed) <= MaximumSpace)
+            {
+                valid = true;
+                result = "[INVENTORY VALIDATION PASSED]";
             }
             else
             {
-                added = false;
                 result = "You do not have enough Inventory space.";
             }
         }
         else
         {
-            added = false;
             result = "Your Inventory space is currently full.";
         }
 
-        GameMaster.Instance.Log(result);
-        return added;
+        return valid;
     }
 
     /// <summary>
@@ -81,61 +118,23 @@ public class InventoryPlayer : Inventory
     /// <returns></returns>
     public bool RemoveItem(int itemToRemoveId, out string result)
     {
-        bool itemRemoved;
+        bool itemRemoved = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        try
+        if (itemToRemoveId < Items.Count)
         {
             Items.RemoveAt(itemToRemoveId);
 
             itemRemoved = true;
             result = "Item removed!";
         }
-        catch
+        else
         {
-            itemRemoved = false;
             result = "Item does not exist.";
         }
 
         GameMaster.Instance.Log(result);
         return itemRemoved;
-    }
-
-    /// <summary>
-    /// Changes the Inventory Maximum Space to the specified number.
-    /// </summary>
-    /// <param name="newMaxSpaceAmount">The new Maximum Space value.</param>
-    /// <param name="message">String containing the result message.</param>
-    /// <returns></returns>
-    public bool ChangeMaximumSpace(float newMaxSpaceAmount, out string result)
-    {
-        bool changed;
-        result = GameMaster.MSG_ERR_DEFAULT;
-
-        if (newMaxSpaceAmount > 0)
-        {
-            float totalSpaceUsed = TotalSpaceUsed();
-
-            if (totalSpaceUsed < newMaxSpaceAmount)
-            {
-                MaximumSpace = newMaxSpaceAmount;
-                changed = true;
-                result = "Maximum space successfully changed!";
-            }
-            else
-            {
-                changed = false;
-                result = "Too many Items in Inventory.";
-            }
-        }
-        else
-        {
-            changed = false;
-            result = "New maximum space amount must be greater than or equal to 0.";
-        }
-
-        GameMaster.Instance.Log(result);
-        return changed;
     }
 
     /// <summary>
@@ -145,14 +144,13 @@ public class InventoryPlayer : Inventory
     /// <param name="message">String containing the result message.</param>
     public bool IncreaseMaximumSpace(float newMaxSpaceIncrement, out string result)
     {
-        bool changed;
+        bool changed = true;
         result = GameMaster.MSG_ERR_DEFAULT;
 
         if (newMaxSpaceIncrement > -1)
         {
             MaximumSpace += newMaxSpaceIncrement;
 
-            changed = true;
             result = "Maximum space successfully increased by " + newMaxSpaceIncrement.ToString() + "!";
         }
         else

@@ -6,7 +6,9 @@ using UnityEngine;
 public class SupplierAI : Supplier
 {
     public InventoryAI Inventory { get; set; }
-    public float MarkupPercentage { get; set; }
+    public float MarkupPercentage { get; private set; }
+
+    public float AcceptedMarkup { get; private set; }
 
     protected const float markupPercentage_DEFAULT = 0.00f;
 
@@ -15,7 +17,7 @@ public class SupplierAI : Supplier
     {
         Inventory = new InventoryAI();
 
-        MarkupPercentage = markupPercent;
+        SetMarkup(markupPercent);
     }
 
     //***(TEMP)
@@ -28,21 +30,20 @@ public class SupplierAI : Supplier
     #endregion
 
     #region <Methods>
-    /// <summary>
-    /// Executes a purchase for this supplier.
-    /// </summary>
-    /// <param name="item">The item to be purchased.</param>
-    /// <param name="quantity">The quantity of the item to be purchased.</param>
-    /// <param name="payment">The total value of the purchase.</param>
-    /// <param name="result">The result message.</param>
-    /// <returns></returns>
-    public override bool ExecutePurchase(Item item, int quantity, out float payment, out string result)
+    public bool PurchaseItem(Item item, out string result)
     {
         Inventory.AddItem(item, out result);
 
-        payment = item.UnitCost * quantity;
-        result = string.Format("{0} x '{1}' successfully purchased by {2}!", quantity.ToString(), item.Name, Name);
+        result = string.Format("{0} successfully purchased {1}!", Name, item.Name);
+
         return true;
+    }
+
+    public void SetMarkup(float markupPercent)
+    {
+        MarkupPercentage = markupPercent;
+
+        AcceptedMarkup = 0f; //*** TEMP
     }
     #endregion
 

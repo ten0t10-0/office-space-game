@@ -5,6 +5,7 @@ using System;
 
 public class OrderManager : MonoBehaviour
 {
+    [HideInInspector]
     [SerializeField]
     public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
 

@@ -18,39 +18,94 @@ public class SupplierPlayer : Supplier
 
     #region <Methods>
     /// <summary>
-    /// Executes a purchase for this player business.
+    /// Executes a purchase for the specified items. Validation will check if there is enough money AND inventory space. If both are true, deducts money and adds item to inventory.
     /// </summary>
-    /// <param name="item">The item to be purchased.</param>
-    /// <param name="quantity">The quantity of the item to be purchased.</param>
-    /// <param name="payment">The total value of the purchase.</param>
-    /// <param name="result">The result message.</param>
+    /// <param name="item">The item(s) to purchase.</param>
+    /// <param name="markup">The markup percentage on the price of the item(s).</param>
+    /// <param name="performValidation">Set to false only if money AND inventory space has already been validated.</param>
+    /// <param name="result"></param>
     /// <returns></returns>
-    public override bool ExecutePurchase(Item item, int quantity, out float payment, out string result)
+    public bool PurchaseItem(InventoryItem item, float markup, bool performValidation, out string result)
     {
-        bool success;
+        bool succeeded = false;
+        result = GameMaster.MSG_ERR_DEFAULT;
 
-        InventoryItem inventoryItem = new InventoryItem(item.ItemID, quantity);
+        float totalCost = item.TotalValue() * (1f + markup);
+        float totalSpaceUsed = item.TotalSpaceUsed();
 
-        payment = inventoryItem.TotalValue();
+        bool valid;
 
-        if (Money >= payment)
+        if (!performValidation)
         {
-            success = Inventory.AddItem(inventoryItem, out result);
-
-            if (success)
-            {
-                Money -= payment;
-                result = string.Format("Purchase for {0} x '{1}' completed!", quantity.ToString(), item.Name);
-            }
+            valid = true;
         }
         else
         {
-            success = false;
-            result = string.Format("You do not have enough money to purchase these items. Purchase for {0} x '{1}' cancelled.", quantity.ToString(), item.Name);
+            valid = ValidatePurchaseItem(totalCost, out result);
+
+            if (succeeded)
+            {
+                valid = Inventory.ValidateAddItem(totalSpaceUsed, out result);
+            }
         }
 
-        return success;
+        if (valid)
+        {
+            Money -= totalCost;
+            succeeded = Inventory.AddItem(item, false, out result);
+
+            result = string.Format("Purchase successful: {0}", result);
+        }
+
+        return succeeded;
     }
+
+    /// <summary>
+    /// Checks if the player has enough money to cater for the specified item cost.
+    /// </summary>
+    /// <param name="itemTotalCostWithMarkup">Total cost (with markup) of the item to be purchased.</param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool ValidatePurchaseItem(float itemTotalCostWithMarkup, out string result)
+    {
+        bool valid = false;
+        result = GameMaster.MSG_ERR_DEFAULT;
+
+        if (itemTotalCostWithMarkup <= Money)
+        {
+            valid = true;
+            result = "[MONEY VALIDATION PASSED]";
+        }
+        else
+        {
+            result = "You do not have enough money.";
+        }
+
+        return valid;
+    }
+
+    //public bool SellItem(int iItemToSell, float markup, bool skipValidation, out string result)
+    //{
+    //    bool succeeded = true;
+    //    result = GameMaster.MSG_ERR_DEFAULT;
+
+    //    if (performValidation)
+    //    {
+
+    //    }
+
+    //    if (succeeded)
+    //    {
+
+    //    }
+
+    //    return succeeded;
+    //}
+
+    //public bool ValidateSellItem()
+    //{
+
+    //}
     #endregion
 
     //TEMP:

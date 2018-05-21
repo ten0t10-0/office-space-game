@@ -20,7 +20,7 @@ public class Order
     /// Returns a float containing the total cost of this order.
     /// </summary>
     /// <returns></returns>
-    public float Cost()
+    public float Value()
     {
         float cost = 0f;
 

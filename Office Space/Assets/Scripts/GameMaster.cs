@@ -222,40 +222,38 @@ public class GameMaster : MonoBehaviour
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGenerateSuppliers);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("keyboard", "basic"), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("keyboard", "gaming"), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("bed", "modern"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("table", "MODERN"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("BeD", "CONTemporary"), out resultGeneric);
-            SupplierManager.Suppliers[2].Inventory.AddItem(new Item("keyboard", "backlit"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("CPU high"), out resultGeneric);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("GPU medium"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("GPU high"), out resultGeneric);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("gpu low"), out resultGeneric);
+            SupplierManager.Suppliers[2].Inventory.AddItem(new Item("cpu low"), out resultGeneric);
 
             //TEST: Adding player items
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));
-            Player.Business.Inventory.AddItem(new InventoryItem(SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5), out resultGeneric);
+            Player.Business.Inventory.AddItem(new InventoryItem(SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5), true, out resultGeneric);
             Debug.Log(resultGeneric);
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.Inventory.TotalSpaceUsed(), Player.Business.Inventory.MaximumSpace));
-            Player.Business.Inventory.AddItem(new InventoryItem("x", "x", 20), out resultGeneric);
+            Player.Business.Inventory.AddItem(new InventoryItem("nothing", 20), true, out resultGeneric);
             Debug.Log(resultGeneric);
 
             //TEST: PLAYER *purchasing* items from AI SUPPLIER
-            float paymentToSupplier;
-            Player.Business.ExecutePurchase(SupplierManager.Suppliers[0].Inventory.Items[1], 1000, out paymentToSupplier, out resultGeneric); //(Testing; too expensive)
+            SaleSupplierToPlayer(0, 1, 1000, true, out resultGeneric); //(Testing; too expensive)
             Debug.Log("*PURCHASE RESULT: " + resultGeneric);
             Debug.Log("Remaining Player money: " + Player.Business.Money);
-            Player.Business.ExecutePurchase(SupplierManager.Suppliers[0].Inventory.Items[1], 2, out paymentToSupplier, out resultGeneric);
+            SaleSupplierToPlayer(1, 1, 2, true, out resultGeneric); //Supplier 1; Item 1 (low-end GPU); x2
             Debug.Log("*PURCHASE RESULT: " + resultGeneric);
             Debug.Log("Remaining Player money: " + Player.Business.Money.ToString());
 
             //TEST: PLAYER *selling* items to AI SUPPLIER
-            float paymentToPlayer;
-            int playerItemId = 0;
-            int quantity = 1;
-            SupplierManager.Suppliers[1].ExecutePurchase(Player.Business.Inventory.Items[playerItemId].ToItem(), quantity, out paymentToPlayer, out resultGeneric);
-            Debug.Log(resultGeneric);
-            Player.Business.Inventory.Items[playerItemId].RemoveItems(quantity, out resultGeneric);
-            Debug.Log(resultGeneric);
-            Player.Business.Money += paymentToPlayer;
-            Debug.Log("Current Player money: " + Player.Business.Money.ToString());
+            //float paymentToPlayer;
+            //int playerItemId = 0;
+            //int quantity = 1;
+            //SupplierManager.Suppliers[1].ExecutePurchase(Player.Business.Inventory.Items[playerItemId].ToItem(), quantity, out paymentToPlayer, out resultGeneric);
+            //Debug.Log(resultGeneric);
+            //Player.Business.Inventory.Items[playerItemId].RemoveItems(quantity, out resultGeneric);
+            //Debug.Log(resultGeneric);
+            //Player.Business.Money += paymentToPlayer;
+            //Debug.Log("Current Player money: " + Player.Business.Money.ToString());
 
             //TEST: Adding orders
             List<OrderItem> orderItems = new List<OrderItem>();
@@ -273,9 +271,9 @@ public class GameMaster : MonoBehaviour
             CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
 
             //  ^ Adding office object:
-            GameObject newObject1 = CustomizationManager.Office.InitializeOfficeObject(0);
-            newObject1.transform.position = new Vector3(-4.33f, 0f, 10.39f);
-            newObject1.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
+            //GameObject newObject1 = CustomizationManager.Office.InitializeOfficeObject(0);
+            //newObject1.transform.position = new Vector3(-4.33f, 0f, 10.39f);
+            //newObject1.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
 
             //  ^ Adding office object:
             GameObject newObject2 = CustomizationManager.Office.InitializeOfficeObject(0);
@@ -373,8 +371,57 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    #region <PLAYER TO PLAYER SALES METHOD(S)>
-    // (online stuffs)***
+    #region <SALES METHOD(S)>
+    // SalePlayerToOnlinePlayer
+    // SaleOnlinePlayerToPlayer
+    // ^ Both would have to work hand-in-hand
+
+    /// <summary>
+    /// Executes a sale where the player purchases items from a supplier.
+    /// </summary>
+    /// <param name="iSupplier">The Supplier (index).</param>
+    /// <param name="iSupplierItem">The Supplier's Item (index).</param>
+    /// <param name="quantity">The quantity to be purchased.</param>
+    /// <param name="performValidation">Set to false only if Player money AND Player inventory space has already been validated.</param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool SaleSupplierToPlayer(int iSupplier, int iSupplierItem, int quantity, bool performValidation, out string result)
+    {
+        bool succeeded = false;
+        result = MSG_ERR_DEFAULT;
+
+        if (iSupplier < SupplierManager.Suppliers.Count)
+        {
+            if (iSupplierItem < SupplierManager.Suppliers[iSupplier].Inventory.Items.Count)
+            {
+                InventoryItem item = new InventoryItem(SupplierManager.Suppliers[iSupplier].Inventory.Items[iSupplierItem].ItemID, quantity);
+                float markup = SupplierManager.Suppliers[iSupplier].MarkupPercentage;
+
+                float itemTotalCost = item.TotalValue() * (1f + markup);
+
+                succeeded = Player.Business.PurchaseItem(item, markup, performValidation, out result);
+            }
+            else
+                Debug.Log("*INVALID SUPPLIER ITEM INDEX.");
+        }
+        else
+            Debug.Log("*INVALID SUPPLIER INDEX.");
+
+
+        return succeeded;
+    }
+
+    //public bool SalePlayerToSupplier(int iPlayerItem, int quantity, float markup, int iSupplier, out string result)
+    //{
+    //    bool succeeded = false;
+    //    result = MSG_ERR_DEFAULT;
+
+    //    Item item = Player.Business.Inventory.Items[iPlayerItem].ToItem();
+
+    //    float itemTotalCost = (item.TotalValue() * quantity) * (1f + markup);
+
+    //    return succeeded;
+    //}
     #endregion
 
     #region <GAME TIME METHODS>

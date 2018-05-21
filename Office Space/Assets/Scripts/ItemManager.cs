@@ -2,54 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemCategory { Special, Electronics, Furniture } //Add...
+//public enum ItemCategory { ComputerComponent, Computer, Gaming,  } //Add...
+//public enum ItemSubcategory { Motherboard, CPU, PowerSupply, GraphicsCard}
 public enum ItemQuality { None, Low, Medium, High }
 
 public class ItemManager : MonoBehaviour
 {
     public ItemDatabaseSO Database;
 
-    private string itemTypeLast, itemDescriptionLast;
-
     private const int INDEX_DEFAULT = 0;
 
-    private void Awake()
-    {
-        //ValidateItemDatabase();
-    }
-
     #region Queries
-    public ItemSO FetchItem(int itemId)
+    public ItemSO GetItemSO(int itemId)
     {
         return Database.Items[itemId];
     }
 
-    public int GetItemID(string itemType, string itemDescription)
+    public int GetItemID(string itemName)
     {
         int itemId = INDEX_DEFAULT;
 
-        bool itemTypeFound = false;
-
-        itemType = itemType.ToLower();
-        itemDescription = itemDescription.ToLower();
+        itemName = itemName.ToLower();
 
         for (int i = 0; i < Database.Items.Count; i++)
         {
-            if (!itemTypeFound && Database.Items[i].Type.Name.ToLower() == itemType)
+            string itemNameTemp = Database.Items[i].Name.ToLower();
+            string itemNameCurrent = "";
+
+            foreach (char c in itemNameTemp)
             {
-                itemTypeFound = true;
-
-                itemTypeLast = itemType;
-
-                itemId = i;
+                if (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))
+                    itemNameCurrent += c.ToString();
             }
 
-            if (itemTypeFound && Database.Items[i].Description.ToLower() == itemDescription)
+            if (itemNameCurrent != itemName)
+            {
+                string[] words = itemName.Split(' ');
+                bool found = true;
+
+                foreach (string word in words)
+                {
+                    if (!itemNameCurrent.Contains(word))
+                    {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    itemId = i;
+                }
+            }
+            else
             {
                 itemId = i;
-
-                itemDescriptionLast = itemDescription;
-
                 i = Database.Items.Count; //end
             }
         }
@@ -57,29 +64,4 @@ public class ItemManager : MonoBehaviour
         return itemId;
     }
     #endregion
-
-    private void ValidateItemDatabase()
-    {
-        List<ItemTypeSO> typesFound = new List<ItemTypeSO>();
-        List<int> typesItemCount = new List<int>();
-        List<ItemQuality[]> typesItemQualities = new List<ItemQuality[]>();
-
-        for (int i = 0; i < Database.Items.Count; i++)
-        {
-            //Pull Item Type:
-            ItemTypeSO typeFound = Database.Items[i].Type;
-
-            //If Item Type not in list, add it, and add/set its item count in parallel list to 1;
-            if (!typesFound.Contains(typeFound))
-            {
-                typesFound.Add(typeFound);
-                typesItemCount.Add(1);
-            }
-            //If Item Type already in list, increment its item count by 1;
-            else
-            {
-                typesItemCount[i]++;
-            }
-        }
-    }
 }

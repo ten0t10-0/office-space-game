@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5997cfe763b1ea49b797b0520f1ad74, type: 3}
-  m_Name: Nothing
+  m_Name: CPU
   m_EditorClassIdentifier: 
-  Category: {fileID: 11400000, guid: 9eb43da8af447e0468ffabcfa7c3ade9, type: 2}
-  Name: Nothing
+  Category: {fileID: 11400000, guid: 6d8d0d035c2f90a49a77641d31ca7e40, type: 2}
+  Name: CPU (Processors)

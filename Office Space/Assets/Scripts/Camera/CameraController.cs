@@ -55,7 +55,7 @@ public class CameraController : MonoBehaviour
         CameraMode = CameraMode.Orbit;
 
         //Set initial camera position.
-        transform.position = targetController.transform.position + new Vector3(0, 0, ((maxDistanceFromTarget + minDistanceFromTarget) / 2) * -1);
+        transform.position = targetController.transform.position + new Vector3(0, 0, (minDistanceFromTarget + zoomSpeed) * -1);
         offset = targetController.transform.position - transform.position;
 
         //Cursor.visible = false;
@@ -83,7 +83,9 @@ public class CameraController : MonoBehaviour
 
                         RaycastHit wallHit;
 
-                        targetController.transform.position = Target.position + new Vector3(0, OffsetY, 0);
+                        float offsetX;
+
+                        targetController.transform.position = Target.position + (Target.up * OffsetY);
 
                         if ((currentXAngle % 360) > 180)
                             currentXAngle = currentXAngle - 360;
@@ -95,7 +97,14 @@ public class CameraController : MonoBehaviour
 
                         if (orbitOTS)
                         {
-                            targetPosition = targetController.transform.position + (targetController.transform.right * OffsetX);
+                            offsetX = OffsetX;
+                            if (Physics.SphereCast(targetController.transform.position, physicsSphereRadius, targetController.transform.right, out wallHit, OffsetX))
+                            {
+                                float modifier = physicsSphereRadius - (physicsSphereRadius * (wallHit.distance / OffsetX));
+                                offsetX = wallHit.distance - modifier;
+                            }
+
+                            targetPosition = targetController.transform.position + (targetController.transform.right * offsetX);
                         }
                         else
                         {
@@ -127,15 +136,15 @@ public class CameraController : MonoBehaviour
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 if (offset.z > minDistanceFromTarget)
-                    offset -= Vector3.forward * zoomSpeed * Time.deltaTime;
+                    offset -= Vector3.forward * zoomSpeed;
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 if (offset.z < maxDistanceFromTarget)
-                    offset += Vector3.forward * zoomSpeed * Time.deltaTime;
+                    offset += Vector3.forward * zoomSpeed;
             }
 
-            if (Input.GetKeyUp(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Tab))
                 orbitOTS = !orbitOTS;
         }
     }

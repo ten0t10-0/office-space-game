@@ -6,5 +6,6 @@ using UnityEngine;
 public class ItemDatabaseSO : ScriptableObject
 {
     public List<ItemSO> Items;
-    public List<ItemTypeSO> Types;
+    public List<ItemCategorySO> Categories;
+    public List<ItemSubcategorySO> Subcategories;
 }

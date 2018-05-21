@@ -10,24 +10,19 @@ public class Item
     #region <Properties>
 
     #region [ItemSO Wrapping]
-    private string Description { get { return GetItemSO().Description; } }
-
-    public ItemTypeSO Type { get { return GetItemSO().Type; } }
+    public string Name { get { return GetItemSO().Name; } }
+    public ItemSubcategorySO Subcategory { get { return GetItemSO().Subcategory; } }
     public ItemQuality Quality { get { return GetItemSO().Quality; } }
     public float UnitCost { get { return GetItemSO().UnitCost; } }
     public float UnitSpace { get { return GetItemSO().UnitSpace; } }
     public Sprite Picture { get { return GetItemSO().Picture; } }
     #endregion
 
-    public ItemCategory Category
+    public ItemCategorySO Category
     {
-        get { return Type.Category; }
+        get { return Subcategory.Category; }
     }
 
-    public string Name
-    {
-        get { return Description + ' ' + Type.Name; }
-    }
     #endregion
 
     #region <Constructors>
@@ -36,17 +31,18 @@ public class Item
         ItemID = itemId;
     }
 
-    public Item(string itemType, string itemDescription)
+    public Item(string itemName)
     {
-        ItemID = GameMaster.Instance.ItemManager.GetItemID(itemType, itemDescription);
+        ItemID = GameMaster.Instance.ItemManager.GetItemID(itemName);
     }
     #endregion
 
     #region <Methods>
     private ItemSO GetItemSO()
     {
-        return GameMaster.Instance.ItemManager.FetchItem(ItemID);
+        return GameMaster.Instance.ItemManager.GetItemSO(ItemID);
     }
+
     /// <summary>
     /// Returns the cost per unit.
     /// </summary>
@@ -72,6 +68,6 @@ public class Item
     /// <returns></returns>
     public override string ToString()
     {
-        return string.Format("Name: {0}; Type: {1}; Category: {2}, Quality: {3}; UnitCost: {4}; UnitSpace: {5}", Name, Type.Name, Category.ToString(), Quality.ToString(), UnitCost.ToString(), UnitSpace.ToString());
+        return string.Format("Name: '{0}'; Category: '{1}'; Subcategory: '{2}', Quality: {3}; UnitCost: {4}; UnitSpace: {5}", Name, Category.Name, Subcategory.Name, Quality.ToString(), UnitCost.ToString(), UnitSpace.ToString());
     }
 }
