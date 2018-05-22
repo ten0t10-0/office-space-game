@@ -69,6 +69,7 @@ MonoBehaviour:
   initBusinessName: My Business
   initPlayerMoney: 10000
   initPlayerInventorySpace: 100
+  initPlayerShopSpace: 10
   initPlayerLevel: 1
   initPlayerExperience: 0
   SaveFileName: Game

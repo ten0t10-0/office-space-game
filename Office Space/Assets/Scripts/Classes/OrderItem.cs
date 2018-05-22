@@ -47,28 +47,64 @@ public class OrderItem : Item
     /// Reduces the quantity of these items by the specified number.
     /// </summary>
     /// <param name="quantityToRemove">The quantity of items to be removed.</param>
+    /// <param name="performValidation">Set to false only if quantity has already been validated.</param>
     /// <param name="result">String containing the result message.</param>
     /// <returns></returns>
-    public bool RemoveItems(int quantityToRemove, out string result)
+    public bool ReduceQuantity(int quantityToRemove, bool performValidation, out string result)
     {
-        bool itemsRemoved;
+        bool itemsRemoved = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        if (Quantity > quantityToRemove)
+        bool valid;
+
+        if (!performValidation)
+        {
+            valid = true;
+        }
+        else
+        {
+            valid = ValidateReduceQuantity(quantityToRemove, out result);
+        }
+
+        if (valid)
         {
             Quantity -= quantityToRemove;
 
             itemsRemoved = true;
             result = string.Format("{0} x '{1}' successfully removed! (New quantity: " + Quantity.ToString() + ")", quantityToRemove.ToString(), Name);
         }
-        else
-        {
-            itemsRemoved = false;
-            result = "Quantity to be removed is too high.";
-        }
 
         GameMaster.Instance.Log(result);
         return itemsRemoved;
+    }
+
+    /// <summary>
+    /// Checks if the specified quantity is low enough to be deducted from the item's quantity.
+    /// </summary>
+    /// <param name="quantityToRemove"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool ValidateReduceQuantity(int quantityToRemove, out string result)
+    {
+        bool valid = false;
+        result = GameMaster.MSG_ERR_DEFAULT;
+
+        if (quantityToRemove < Quantity)
+        {
+            valid = true;
+            result = "[QUANTITY VALIDATION PASSED]";
+        }
+        else if (quantityToRemove == Quantity)
+        {
+            valid = true;
+            result = "[**REMOVE ITEM METHOD!**]";
+        }
+        else
+        {
+            result = "Quantity to be removed is too high.";
+        }
+
+        return valid;
     }
 
     /// <summary>
@@ -78,6 +114,15 @@ public class OrderItem : Item
     public Item ToItem()
     {
         return new Item(ItemID);
+    }
+
+    /// <summary>
+    /// Returns a COPY of this as an Order Item.
+    /// </summary>
+    /// <returns></returns>
+    public OrderItem Clone()
+    {
+        return new OrderItem(ItemID, Quantity);
     }
     #endregion
 

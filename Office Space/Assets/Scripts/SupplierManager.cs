@@ -83,7 +83,7 @@ public class SupplierManager : MonoBehaviour
     private void ClearAllSupplierInventoryItems()
     {
         for (int i = 0; i < Suppliers.Count; i++)
-        { Suppliers[i].Inventory.Clear(); }
+        { Suppliers[i].Inventory.ClearInventory(); }
     }
 
     /// <summary>

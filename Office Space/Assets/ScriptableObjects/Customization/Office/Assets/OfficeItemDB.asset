@@ -17,7 +17,11 @@ MonoBehaviour:
     type: 2}
   MaterialCeilingDefault: {fileID: 2100000, guid: 72895f0d12bb70d46be5517d4e2f429e,
     type: 2}
+  MaterialWallsCurrent: {fileID: 0}
+  MaterialFloorCurrent: {fileID: 0}
+  MaterialCeilingCurrent: {fileID: 0}
   OfficeParentName: Office
+  RoomParentName: Room
   ObjectsParentName: Objects
   MaxNumberOfObjects: 15
   Items:

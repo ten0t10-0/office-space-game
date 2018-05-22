@@ -34,4 +34,9 @@ public class Customer
             return FirstName;
     }
     #endregion
+
+    public override string ToString()
+    {
+        return string.Format("First Name: {0}; Last Name: {1}", FirstName, LastName);
+    }
 }

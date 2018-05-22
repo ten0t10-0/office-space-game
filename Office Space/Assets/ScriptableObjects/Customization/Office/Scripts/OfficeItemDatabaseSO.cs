@@ -17,6 +17,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public Material MaterialCeilingCurrent;
 
     public string OfficeParentName;
+    public string RoomParentName;
     public string ObjectsParentName;
 
     public int MaxNumberOfObjects = 15;
@@ -26,9 +27,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     public List<int> DefaultOfficeItemIndexes;
 
-    //[HideInInspector]
-    //public OfficeCustomizationData CustomizationData;
-
+    private Transform officeRoomTransform;
     private Transform officeObjectTransform;
     private List<GameObject> currentObjects;
 
@@ -41,8 +40,15 @@ public class OfficeItemDatabaseSO : ScriptableObject
         MaterialFloorCurrent = new Material(MaterialFloorDefault);
         MaterialCeilingCurrent = new Material(MaterialCeilingDefault);
 
+        officeRoomTransform = GameObject.Find(OfficeParentName).transform.Find(RoomParentName);
         officeObjectTransform = GameObject.Find(OfficeParentName).transform.Find(ObjectsParentName);
+
         currentObjects = new List<GameObject>();
+
+        for (int i = 0; i < officeRoomTransform.Find("Walls").childCount; i++)
+        {
+            officeRoomTransform.Find("Walls").GetChild(i).gameObject.GetComponent<Renderer>().sharedMaterial = MaterialWallsCurrent;
+        }
     }
 
     /// <summary>
@@ -51,10 +57,6 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// <param name="customizationData"></param>
     public void SetUpOffice(OfficeCustomizationData data)
     {
-        //CustomizationData = customizationData;
-
-        //ReloadOffice();
-
         RemoveAllOfficeObjects();
 
         MaterialWallsCurrent.color = data.GetWallsColor();

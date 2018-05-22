@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//public enum ItemCategory { ComputerComponent, Computer, Gaming,  } //Add...
-//public enum ItemSubcategory { Motherboard, CPU, PowerSupply, GraphicsCard}
+public enum ItemCategory { Special, Hardware  } //Add...
+public enum ItemSubcategory { Nothing, CPU, GPU } //Add...
 public enum ItemQuality { None, Low, Medium, High }
 
 public class ItemManager : MonoBehaviour
@@ -18,6 +18,43 @@ public class ItemManager : MonoBehaviour
         return Database.Items[itemId];
     }
 
+    public ItemCategorySO GetCategorySO(ItemCategory enumId)
+    {
+        ItemCategorySO categorySO = null;
+
+        for (int i = 0; i < Database.Categories.Count; i++)
+        {
+            if (Database.Categories[i].EnumID == enumId)
+            {
+                categorySO = Database.Categories[i];
+                i = Database.Categories.Count; //end
+            }
+        }
+
+        return categorySO;
+    }
+
+    public ItemSubcategorySO GetSubcategorySO(ItemSubcategory enumId)
+    {
+        ItemSubcategorySO subcategorySO = null;
+
+        for (int i = 0; i < Database.Subcategories.Count; i++)
+        {
+            if (Database.Subcategories[i].EnumID == enumId)
+            {
+                subcategorySO = Database.Subcategories[i];
+                i = Database.Subcategories.Count; //end
+            }
+        }
+
+        return subcategorySO;
+    }
+
+    /// <summary>
+    /// Searches through all items for the specified word(s) and returns the found item's ID.
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <returns></returns>
     public int GetItemID(string itemName)
     {
         int itemId = INDEX_DEFAULT;

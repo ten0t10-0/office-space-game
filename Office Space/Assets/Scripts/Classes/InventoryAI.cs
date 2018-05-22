@@ -18,8 +18,9 @@ public class InventoryAI : Inventory
     #region <Methods>
     public void AddItem(Item item, out string result)
     {
-        bool itemFound = false;
         result = GameMaster.MSG_ERR_DEFAULT;
+
+        bool itemFound = false;
 
         if (Items.Count != 0)
         {
@@ -66,14 +67,17 @@ public class InventoryAI : Inventory
         }
         else
         {
-            result = "Item does not exist.";
+            result = "*INVALID AI INVENTORY ITEM INDEX";
         }
 
         GameMaster.Instance.Log(result);
         return itemRemoved;
     }
 
-    public override void Clear()
+    /// <summary>
+    /// Clears all items.
+    /// </summary>
+    public override void ClearInventory()
     {
         Items.Clear();
     }

@@ -6,6 +6,6 @@ using UnityEngine;
 public abstract class Inventory
 {
     #region <Methods>
-    public abstract void Clear();
+    public abstract void ClearInventory();
     #endregion
 }

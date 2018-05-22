@@ -20,7 +20,7 @@ public class PlayerItems : MonoBehaviour
 
 		ClearInventory ();
 
-		foreach (InventoryItem item in GameMaster.Instance.Player.Business.Inventory.Items) 
+		foreach (OrderItem item in GameMaster.Instance.Player.Business.WarehouseInventory.Items) 
 		{
 			GameObject newItem = Instantiate (itemContainer, scrollViewContent);
 			newItem.transform.Find("Panel/Name").GetComponent<TMP_Text>().text = item.Name;

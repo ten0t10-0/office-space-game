@@ -6,75 +6,66 @@ using UnityEngine;
 public class InventoryPlayer : Inventory
 {
     [SerializeField]
-    public List<InventoryItem> Items { get; set; }
+    public List<OrderItem> Items { get; set; }
     public float MaximumSpace { get; private set; }
 
     #region <Constructors>
     public InventoryPlayer(float maximumSpace)
     {
-        Items = new List<InventoryItem>();
+        Items = new List<OrderItem>();
         MaximumSpace = maximumSpace;
     }
     #endregion
 
     #region <Methods>
     /// <summary>
-    /// Returns the total space used by all items in this inventory.
-    /// </summary>
-    /// <returns></returns>
-    public float TotalSpaceUsed()
-    {
-        float spaceUsed = 0;
-
-        foreach (InventoryItem item in Items)
-            spaceUsed += item.TotalSpaceUsed();
-
-        return spaceUsed;
-    }
-
-    //*Inventory Valuation: research
-    public float Valuation()
-    {
-        float value = 0;
-
-        foreach (InventoryItem item in Items)
-            value += item.TotalValue();
-
-        return value;
-    }
-
-    /// <summary>
     /// Adds items to the player's inventory. Validation will check if there is enough inventory space.
     /// </summary>
-    /// <param name="inventoryItem">The item(s) to add.</param>
+    /// <param name="orderItem">The item(s) to add.</param>
     /// <param name="performValidation">Set to false only if Inventory space has already been validated.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public bool AddItem(InventoryItem inventoryItem, bool performValidation, out string result)
+    public bool AddItem(OrderItem orderItem, bool performValidation, out string result)
     {
-        bool succeeded;
+        bool successful = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        if (!performValidation)
+        bool valid = true;
+
+        if (performValidation)
         {
-            succeeded = true;
-        }
-        else
-        {
-            succeeded = ValidateAddItem(inventoryItem.TotalSpaceUsed(), out result);
+            valid = ValidateAddItem(orderItem.TotalSpaceUsed(), out result);
         }
 
-        if (succeeded)
+        if (valid)
         {
-            //bool itemFound = false; *Group with same items?
+            int iItemFound = -1;
 
-            Items.Add(inventoryItem);
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i].ItemID == orderItem.ItemID)
+                {
+                    iItemFound = i;
 
-            result = string.Format("{0} x '{1}' successfully added!", inventoryItem.Quantity.ToString(), inventoryItem.Name);
+                    i = Items.Count; //end
+                }
+            }
+
+            if (iItemFound == -1)
+            {
+                Items.Add(orderItem);
+            }
+            else
+            {
+                Items[iItemFound].Quantity += orderItem.Quantity;
+            }
+
+            successful = true;
+            result = string.Format("{0} x '{1}' successfully added!", orderItem.Quantity.ToString(), orderItem.Name);
         }
 
         GameMaster.Instance.Log(result);
-        return succeeded;
+        return successful;
     }
 
     /// <summary>
@@ -156,14 +147,42 @@ public class InventoryPlayer : Inventory
         else
         {
             changed = false;
-            result = "Increment must be a positive number.";
+            result = "*INVALID INCREMENT";
         }
 
         GameMaster.Instance.Log(result);
         return changed;
     }
 
-    public override void Clear()
+    /// <summary>
+    /// Returns the total space used by all items in this inventory.
+    /// </summary>
+    /// <returns></returns>
+    public float TotalSpaceUsed()
+    {
+        float spaceUsed = 0;
+
+        foreach (OrderItem item in Items)
+            spaceUsed += item.TotalSpaceUsed();
+
+        return spaceUsed;
+    }
+
+    //*Inventory Valuation: research
+    public float Valuation()
+    {
+        float value = 0;
+
+        foreach (OrderItem item in Items)
+            value += item.TotalValue();
+
+        return value;
+    }
+
+    /// <summary>
+    /// Removes all items from the player's inventory.
+    /// </summary>
+    public override void ClearInventory()
     {
         Items.Clear();
     }

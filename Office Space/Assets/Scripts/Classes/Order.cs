@@ -24,7 +24,7 @@ public class Order
     {
         float cost = 0f;
 
-        foreach (InventoryItem item in Items)
+        foreach (OrderItem item in Items)
         {
             cost += item.TotalValue();
         }
@@ -61,4 +61,21 @@ public class Order
         }
     }
     #endregion
+
+    public override string ToString()
+    {
+        string dateDueString, dateFilledString;
+
+        if (DateDue.HasValue)
+            dateDueString = DateDue.Value.ToShortDateString();
+        else
+            dateDueString = "<No due date>";
+
+        if (DateFilled.HasValue)
+            dateFilledString = DateFilled.Value.ToShortDateString();
+        else
+            dateFilledString = "<Not completed>";
+
+        return string.Format("Customer: {0}; DateReceived: {1}; DateDue: {2}; Filled?: {3}; DateFilled: {4}", Customer.FullName(), DateReceived.ToShortDateString(), dateDueString, Filled.ToString(), dateFilledString);
+    }
 }

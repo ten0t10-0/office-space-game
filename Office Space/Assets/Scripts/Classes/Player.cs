@@ -22,11 +22,11 @@ public class Player
     #region <Constructors>
 
     //Creates a new player. Default clothing unlocked & equipped. Default Office items unlocked.
-    public Player(string name, string businessName, float startingMoney, float maximumInventorySpace)
+    public Player(string name, string businessName, float startingMoney, float maximumInventorySpace, float maximumShopInventorySpace)
     {
         Name = name;
 
-        Business = new SupplierPlayer(businessName, startingMoney, maximumInventorySpace);
+        Business = new SupplierPlayer(businessName, startingMoney, maximumInventorySpace, maximumShopInventorySpace);
 
         PlayTime = 0f;
         Level = 1;
