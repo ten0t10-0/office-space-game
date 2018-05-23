@@ -224,15 +224,37 @@ public class GameMaster : MonoBehaviour
             Debug.Log("*SUPPLIER GENERATOR RESULT: " + resultGeneric);
 
             //TEST: Adding supplier items
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("CPU high"), out resultGeneric);
-            SupplierManager.Suppliers[0].Inventory.AddItem(new Item("GPU medium"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("GPU high"), out resultGeneric);
-            SupplierManager.Suppliers[1].Inventory.AddItem(new Item("gpu low"), out resultGeneric);
-            SupplierManager.Suppliers[2].Inventory.AddItem(new Item("cpu low"), out resultGeneric);
+            //SupplierManager.Suppliers[0].Inventory.AddItem(new Item("CPU high"), out resultGeneric);
+            //SupplierManager.Suppliers[0].Inventory.AddItem(new Item("GPU medium"), out resultGeneric);
+            //SupplierManager.Suppliers[1].Inventory.AddItem(new Item("GPU high"), out resultGeneric);
+            //SupplierManager.Suppliers[1].Inventory.AddItem(new Item("gpu low"), out resultGeneric);
+            //SupplierManager.Suppliers[2].Inventory.AddItem(new Item("cpu low"), out resultGeneric);
+
+            //TEST: Generating supplier items
+            SupplierManager.PopulateSupplierInventories();
+
+            //TEST: Checking for unique items for each supplier
+            for (int iSupplier = 0; iSupplier < SupplierManager.Suppliers.Count; iSupplier++)
+            {
+                int[] supplierUniqueItems = SupplierManager.GetSupplierUniqueItems(iSupplier);
+                if (supplierUniqueItems.Length != 0)
+                {
+                    Debug.Log(string.Format("*Supplier {0} unique items:", iSupplier.ToString()));
+
+                    foreach (int itemId in supplierUniqueItems)
+                    {
+                        Debug.Log(string.Format("- '{0}'", ItemManager.Database.Items[itemId].Name));
+                    }
+                }
+                else
+                {
+                    Debug.Log(string.Format("*Supplier {0} has no unique items.", iSupplier.ToString()));
+                }
+            }
+            Debug.Log("*<OK!>");
 
             //TEST: Adding player items
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.WarehouseInventory.TotalSpaceUsed(), Player.Business.WarehouseInventory.MaximumSpace));
-
             Player.Business.WarehouseInventory.AddItem(new OrderItem(SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5), true, out resultGeneric);
             Debug.Log(resultGeneric);
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.WarehouseInventory.TotalSpaceUsed(), Player.Business.WarehouseInventory.MaximumSpace));
@@ -244,36 +266,36 @@ public class GameMaster : MonoBehaviour
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.WarehouseInventory.TotalSpaceUsed(), Player.Business.WarehouseInventory.MaximumSpace));
 
             //TEST: PLAYER *purchasing* items from AI SUPPLIER
-            SaleSupplierToPlayer(0, 1, 1000, true, out resultGeneric); //(Testing; too expensive)
-            Debug.Log("*PURCHASE RESULT: " + resultGeneric);
-            Debug.Log("*Remaining Player money: " + Player.Business.Money);
-            SaleSupplierToPlayer(1, 1, 2, true, out resultGeneric); //Supplier 1; Item 1 (low-end GPU); x2
-            Debug.Log("*PURCHASE RESULT: " + resultGeneric);
-            Debug.Log("*Remaining Player money: " + Player.Business.Money.ToString());
+            //SaleSupplierToPlayer(0, 1, 1000, true, out resultGeneric); //(Testing; too expensive)
+            //Debug.Log("*PURCHASE RESULT: " + resultGeneric);
+            //Debug.Log("*Remaining Player money: " + Player.Business.Money);
+            //SaleSupplierToPlayer(1, 1, 2, true, out resultGeneric); //Supplier 1; Item 1 (low-end GPU); x2
+            //Debug.Log("*PURCHASE RESULT: " + resultGeneric);
+            //Debug.Log("*Remaining Player money: " + Player.Business.Money.ToString());
 
             //TEST: Sending items to shop inventory
-            Player.Business.MoveItemsToShop(0, 500, true, out resultGeneric); //quantity too high
-            Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
-            Player.Business.MoveItemsToShop(0, 3, true, out resultGeneric);
-            Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
-            Player.Business.MoveItemsToShop(1, 10, true, out resultGeneric);
-            Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
-            Player.Business.MoveItemsToShop(2, 2, true, out resultGeneric);
-            Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric); //quantity to be removed = item total quantity; item removed completely from warehouse inventory
+            //Player.Business.MoveItemsToShop(0, 500, true, out resultGeneric); //quantity too high
+            //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
+            //Player.Business.MoveItemsToShop(0, 3, true, out resultGeneric);
+            //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
+            //Player.Business.MoveItemsToShop(1, 10, true, out resultGeneric);
+            //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
+            //Player.Business.MoveItemsToShop(2, 2, true, out resultGeneric);
+            //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric); //quantity to be removed = item total quantity; item removed completely from warehouse inventory
 
             //TEST: Putting items up on special
-            Player.Business.ShopInventory.SetItemsOnSpecial(1, 0.5f, out resultGeneric);
-            Debug.Log("*ITEMS ON SPECIAL RESULT: " + resultGeneric);
+            //Player.Business.ShopInventory.SetItemsOnSpecial(1, 0.5f, out resultGeneric);
+            //Debug.Log("*ITEMS ON SPECIAL RESULT: " + resultGeneric);
 
             //TEST: Taking items off special
-            Player.Business.ShopInventory.UnsetItemsOnSpecial(0, out resultGeneric);
-            Debug.Log("*ITEMS OFF SPECIAL RESULT: " + resultGeneric);
+            //Player.Business.ShopInventory.UnsetItemsOnSpecial(0, out resultGeneric);
+            //Debug.Log("*ITEMS OFF SPECIAL RESULT: " + resultGeneric);
 
             //TEST Sending items back to warehouse
-            Player.Business.MoveItemsToWarehouse(0, 5, true, out resultGeneric); //quantity too high
-            Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
-            Player.Business.MoveItemsToWarehouse(0, 3, true, out resultGeneric); //quantity to be removed = item total quantity; item removed completely from shop inventory
-            Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
+            //Player.Business.MoveItemsToWarehouse(0, 5, true, out resultGeneric); //quantity too high
+            //Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
+            //Player.Business.MoveItemsToWarehouse(0, 3, true, out resultGeneric); //quantity to be removed = item total quantity; item removed completely from shop inventory
+            //Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
 
             //TEST: Adding orders ***
             List<OrderItem> orderItems = new List<OrderItem>();
@@ -329,7 +351,7 @@ public class GameMaster : MonoBehaviour
         CreateDebugLogs();
         #endregion
 
-        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.transform);
+        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
 
         tPlayerPlayTime = tGameTime = Time.time;
     }

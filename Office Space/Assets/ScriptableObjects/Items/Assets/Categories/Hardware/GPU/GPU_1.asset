@@ -15,5 +15,5 @@ MonoBehaviour:
   Subcategory: {fileID: 11400000, guid: 04c29416ff1056f4cbae5de4f263d4b3, type: 2}
   Quality: 2
   UnitCost: 5000
-  UnitSpace: 0.1
+  UnitSpace: 0.2
   Picture: {fileID: 0}

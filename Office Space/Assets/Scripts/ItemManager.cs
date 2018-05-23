@@ -18,15 +18,18 @@ public class ItemManager : MonoBehaviour
         return Database.Items[itemId];
     }
 
-    public ItemCategorySO GetCategorySO(ItemCategory enumId)
+    public ItemCategorySO GetCategorySO(ItemCategory enumId, out int index)
     {
         ItemCategorySO categorySO = null;
+        index = -1;
 
         for (int i = 0; i < Database.Categories.Count; i++)
         {
             if (Database.Categories[i].EnumID == enumId)
             {
                 categorySO = Database.Categories[i];
+                index = i;
+
                 i = Database.Categories.Count; //end
             }
         }
@@ -34,15 +37,18 @@ public class ItemManager : MonoBehaviour
         return categorySO;
     }
 
-    public ItemSubcategorySO GetSubcategorySO(ItemSubcategory enumId)
+    public ItemSubcategorySO GetSubcategorySO(ItemSubcategory enumId, out int index)
     {
         ItemSubcategorySO subcategorySO = null;
+        index = -1;
 
         for (int i = 0; i < Database.Subcategories.Count; i++)
         {
             if (Database.Subcategories[i].EnumID == enumId)
             {
                 subcategorySO = Database.Subcategories[i];
+                index = i;
+
                 i = Database.Subcategories.Count; //end
             }
         }
