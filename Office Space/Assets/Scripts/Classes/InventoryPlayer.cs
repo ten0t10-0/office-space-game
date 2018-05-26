@@ -168,6 +168,20 @@ public class InventoryPlayer : Inventory
         return spaceUsed;
     }
 
+	/// <summary>
+	/// Returns the avalible space. 
+	/// </summary>
+	/// <returns></returns>
+	public float AvailableSpace()
+	{
+		float avalibleSpace = 0;
+		float spaceUsed = TotalSpaceUsed();
+	
+		avalibleSpace = MaximumSpace - spaceUsed;
+
+		return avalibleSpace;
+	}
+
     //*Inventory Valuation: research
     public float Valuation()
     {

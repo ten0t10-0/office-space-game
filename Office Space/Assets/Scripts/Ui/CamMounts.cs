@@ -5,12 +5,14 @@ using UnityEngine;
 public class CamMounts : MonoBehaviour 
 {
 	public Transform currentMount;
+	public GameObject screen;
+
 
 	public float speed = 0.1f;
 	//public float duration = 3.0f;
 
 	float startTime, totalDistance;
-	float journeyFraction;
+	//float journeyFraction;
 
 	void Start () 
 	{
@@ -36,6 +38,8 @@ public class CamMounts : MonoBehaviour
 			//Ui.transform.position = Vector3.Lerp(Camera.main.transform.position, currentMount.position, speedFactor);
 			//Ui.transform.position = Quaternion.Slerp(transform.rotation, currentMount.rotation, speedFactor);
 			GameMaster.Instance.UIMode = true;
+			screen.SetActive (false);
+		
 		}
 	}
 

@@ -11,6 +11,10 @@ public class PlayerUiController : MonoBehaviour
 	public Button btnIncrease;
 	public TextMeshProUGUI totalText;
 	public TextMeshProUGUI nameText;
+	public TextMeshProUGUI playerMoney;
+
+	public GameObject buyPanel;
+	public GameObject moneyA;
 	//public GameObject pic;
 
 	public int max = 25;
@@ -21,6 +25,7 @@ public class PlayerUiController : MonoBehaviour
 	int currentAmount = 1;
 
 	public Item purchasedItem;
+	public int iSupplier,iItem;
 
 	void Start()
 	{
@@ -30,15 +35,15 @@ public class PlayerUiController : MonoBehaviour
 
 	}
 
-	public void SetItem(Item pi)
+	public void SetItem(Item pi,int iSupp,int iItm)
 	{
 		purchasedItem = pi;
+		iSupplier = iSupp;
+		iItem = iItm;
 
         nameText.SetText(purchasedItem.Name);
 
-        totalText.SetText(purchasedItem.UnitCost.ToString());
-
-      
+		totalText.SetText(CalculateMarkUp(pi).ToString());
     }
 
 	public void InputChanged(InputField at)
@@ -53,7 +58,7 @@ public class PlayerUiController : MonoBehaviour
 		currentAmount = Mathf.Clamp(currentAmount + (increase ? increasePerClick : -increasePerClick), min, max);
 		amount.text = currentAmount.ToString();
 
-		total = float.Parse(amount.text) * purchasedItem.UnitCost;
+		total = float.Parse(amount.text) * CalculateMarkUp(purchasedItem);
 		totalText.SetText(total.ToString());
 
 		// disable buttons i
@@ -61,23 +66,56 @@ public class PlayerUiController : MonoBehaviour
 		btnIncrease.interactable = currentAmount < max;
 	}
 
-
-
 	public void BuyItemOnClick()
 	{
-		//deduct the money from the player
 
+		bool valid=false;
+		float space = 0, avalibleSpace = 0;
+		string result;
 
-		//Update the balance in ui Somewhere
+		space = purchasedItem.UnitSpace * currentAmount; //space item takes up
 
-		//add the item to the players inventory
+		avalibleSpace = GameMaster.Instance.Player.Business.ShopInventory.AvailableSpace();
 
+		if (total > GameMaster.Instance.Player.Business.Money) 
+		{
+			//ui not enough money!
+		}
+		if (space > avalibleSpace) 
+		{
+			//ui not enough spaace!
+		}
+			
+		if ((total <= GameMaster.Instance.Player.Business.Money) && (space <= avalibleSpace))
+		{
+			valid = true;
+			GameMaster.Instance.SaleSupplierToPlayer(iSupplier, iItem, currentAmount,valid, out result);
 
-		//decrease the players inventory space
+			buyPanel.SetActive (false);
+			MoneyAnimation();
 
-		//deactivate panel
+			playerMoney.SetText(GameMaster.Instance.Player.Business.Money.ToString());
 
-
+		}
 	}
 
+	public float CalculateMarkUp(Item pi)
+	{
+		float itemPrice = 0;
+
+		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercentage);
+
+		return itemPrice;
+			
+	}
+
+	void MoneyAnimation()
+	{
+		GameObject tempText = Instantiate (moneyA) as GameObject;
+
+		tempText.GetComponent<Animator>().SetTrigger("buy");
+		tempText.GetComponent<TMP_Text> ().text = "-" + total.ToString();
+
+		Destroy (tempText, 4);
+	}
 }
