@@ -36,8 +36,6 @@ public class SupplierManager : MonoBehaviour
     [HideInInspector]
     public List<SupplierAI> Suppliers;
 
-    //private RangeAttribute markupPercent = new RangeAttribute(0.00f, 4.00f); //Up to 400%
-
     #region Methods
     
     /// <summary>
@@ -64,6 +62,10 @@ public class SupplierManager : MonoBehaviour
         float lowestMarkup = Random.Range(MinLowestMarkup, MaxLowestMarkup);
         float highestMarkup = Random.Range(MinHighestMarkup, MaxHighestMarkup);
         float markupInterval = (highestMarkup - lowestMarkup) / (supplierCount - 1);
+
+        lowestMarkup = Mathf.Round(lowestMarkup * 10) / 10;
+        highestMarkup = Mathf.Round(highestMarkup * 10) / 10;
+        markupInterval = Mathf.Round(markupInterval * 10) / 10;
 
         markups.Add(lowestMarkup);
         for (int i = 0; i < supplierCount - 2; i++)

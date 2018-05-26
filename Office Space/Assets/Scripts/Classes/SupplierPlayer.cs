@@ -32,7 +32,7 @@ public class SupplierPlayer : Supplier
         bool successful = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        float totalCost = item.TotalValue() * (1f + markup);
+        float totalCost = GameMaster.MarkupPrice(item.TotalValue(), markup);
         float totalSpaceUsed = item.TotalSpaceUsed();
 
         bool valid = true;
@@ -184,7 +184,7 @@ public class SupplierPlayer : Supplier
     //    OrderItem item = Inventory.Items[iItemToSell].Clone();
     //    item.Quantity = quantity;
 
-    //    float totalCost = item.TotalValue() * (1f + markup);
+    //    float totalCost = GameMaster.MarkupPrice(item.TotalValue(), markup);
 
     //    bool valid;
 

@@ -16,6 +16,11 @@ public class GameMaster : MonoBehaviour
         //Debug.Log(currentMessage);
     }
 
+    public static float MarkupPrice(float price, float markup)
+    {
+        return (price * (1f + markup));
+    }
+
     #region [Fields]
 
     #region <SCRIPTS>

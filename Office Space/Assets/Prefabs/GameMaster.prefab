@@ -137,9 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2754a5c338375419d450c49fe1e98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinNumberOfItemsPerSupplier: 1
-  MaxNumberOfItemsPerSupplier: 3
-  MaxGenerationsPerItem: 2
+  MinNumberOfItemsPerSupplier: 3
+  MaxNumberOfItemsPerSupplier: 10
+  MaxGenerationsPerItem: 3
   ExcludedItemSubcategories: 00000000
   MinLowestMarkup: 0.1
   MaxLowestMarkup: 0.25
