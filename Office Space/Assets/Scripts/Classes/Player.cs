@@ -6,10 +6,9 @@ using UnityEngine;
 public class Player
 {
     public string Name { get; private set; }
+    public int TotalScore { get; private set; }
     public SupplierPlayer Business { get; private set; }
     public float PlayTime { get; set; }
-    public int Level { get; set; }
-    public int Experience { get; set; }
 
     public CharacterCustomizationData CharacterCustomizationData;
     public OfficeCustomizationData OfficeCustomizationData;
@@ -28,9 +27,8 @@ public class Player
 
         Business = new SupplierPlayer(businessName, startingMoney, maximumInventorySpace, maximumShopInventorySpace);
 
+        TotalScore = 0;
         PlayTime = 0f;
-        Level = 1;
-        Experience = 0;
 
         CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
         UnlockedClothing = new List<int>();
@@ -50,27 +48,6 @@ public class Player
             UnlockedOfficeItems.Add(i);
         }
     }
-
-    ////Existing Player
-    //public Player(string name, float money, SupplierPlayer business, float playTime, int level, int experience)
-    //{
-    //    Name = name;
-    //    Money = money;
-    //    Business = business;
-    //    PlayTime = playTime;
-    //    Level = level;
-    //    Experience = experience;
-    //}
-    //
-    ////Existing Player
-    //public Player(string name, float money, float playTime, int level, int experience)
-    //{
-    //    Name = name;
-    //    Money = money;
-    //    PlayTime = playTime;
-    //    Level = level;
-    //    Experience = experience;
-    //}
     #endregion
 
     #region <Methods>
@@ -83,11 +60,16 @@ public class Player
     {
         return new Customer(this.Name);
     }
+
+    public void IncreaseScore(int increment)
+    {
+        TotalScore += increment;
+    }
     #endregion
 
     //TEMP:
     public override string ToString()
     {
-        return string.Format("Name: {0}; PlayTime: {1}; Level: {2}; Experience: {3}", Name, PlayTime.ToString(), Level.ToString(), Experience.ToString());
+        return string.Format("Name: {0}; Total Score {1}; PlayTime: {2}", Name, TotalScore.ToString(), PlayTime.ToString());
     }
 }

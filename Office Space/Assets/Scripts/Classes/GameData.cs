@@ -14,7 +14,7 @@ public class GameData
     public List<SupplierAI> Suppliers;
 
     [SerializeField]
-    public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
+    public List<Order> Orders;
 
     [SerializeField]
     public DateTime GameDateTime;
@@ -25,15 +25,13 @@ public class GameData
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> ordersOpen, List<Order> ordersFilled, List<Order> ordersFailed, DateTime gameDateTime, float gameTimeSpeed)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, DateTime gameDateTime, float gameTimeSpeed)
     {
         Suppliers = suppliers;
 
         Player = player;
 
-        OrdersOpen = ordersOpen;
-        OrdersFilled = ordersFilled;
-        OrdersFailed = ordersFailed;
+        Orders = orders;
 
         GameDateTime = gameDateTime;
         GameTimeSpeed = gameTimeSpeed;

@@ -56,6 +56,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09973a4b5c91074f982dc3c35537041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrencySymbol: $
   SupplierManager: {fileID: 0}
   CustomerManager: {fileID: 0}
   OrderManager: {fileID: 0}
@@ -67,7 +68,7 @@ MonoBehaviour:
   Player: {}
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 10000
+  initPlayerMoney: 1000000
   initPlayerInventorySpace: 100
   initPlayerShopSpace: 10
   initPlayerLevel: 1
@@ -111,9 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f301c4af3e6dc414999e861170decf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OrdersOpen: []
-  OrdersFilled: []
-  OrdersFailed: []
+  Orders: []
+  maxOrdersSaved: 50
 --- !u!114 &114553822043926498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,10 +141,8 @@ MonoBehaviour:
   MaxNumberOfItemsPerSupplier: 10
   MaxGenerationsPerItem: 3
   ExcludedItemSubcategories: 00000000
-  MinLowestMarkup: 0.1
-  MaxLowestMarkup: 0.25
-  MinHighestMarkup: 0.75
-  MaxHighestMarkup: 1.5
+  minSupplierLevel: 1
+  maxSupplierLevel: 10
   namesPre:
   - Galaxy
   - Hello

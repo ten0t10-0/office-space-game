@@ -37,6 +37,8 @@ public class GameMaster : MonoBehaviour
     public CustomizationManager CustomizationManager;
     #endregion
 
+    public string CurrencySymbol = "$";
+
     #region <PLAYER/NPC>
     public GameObject GenericCharacterObject;
     [HideInInspector]
@@ -304,16 +306,31 @@ public class GameMaster : MonoBehaviour
 
             //TEST: Adding orders ***
             List<OrderItem> orderItems = new List<OrderItem>();
-            foreach (Item item in SupplierManager.Suppliers[0].Inventory.Items)
+            //foreach (Item item in SupplierManager.Suppliers[0].Inventory.Items)
+            //{
+            //    int qty = UnityEngine.Random.Range(5, 21);
+            //    orderItems.Add(new OrderItem(item, qty));
+            //}
+            foreach (OrderItem item in Player.Business.WarehouseInventory.Items)
             {
-                int qty = UnityEngine.Random.Range(5, 21);
-                orderItems.Add(new OrderItem(item, qty));
+                int qty = item.Quantity;
+                orderItems.Add(new OrderItem(item.ItemID, qty));
             }
-            OrderManager.OrdersOpen.Add(new Order(CustomerManager.GenerateCustomer(), orderItems, GameDateTime, GameDateTime.AddHours(2)));
-            Debug.Log("*ORDER 1: " + OrderManager.OrdersOpen[0].ToString());
+            OrderManager.Orders.Add(new Order(CustomerManager.GenerateCustomer(), orderItems, GameDateTime, GameDateTime.AddHours(1.5)));
+            Debug.Log("*ORDER 1: " + OrderManager.Orders[0].ToString());
             Debug.Log("*ORDER 1 ITEMS:");
-            foreach (OrderItem orderItem in OrderManager.OrdersOpen[0].Items)
+            foreach (OrderItem orderItem in OrderManager.Orders[0].Items)
                 Debug.Log(orderItem.ToString());
+
+            //TEST: Completing order
+            Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
+            foreach (OrderItem item in Player.Business.WarehouseInventory.Items)
+            {
+                itemQuantities.Add(item.ItemID, item.Quantity);
+            }
+            CompleteOrder(0, itemQuantities, out resultGeneric);
+            Debug.Log(resultGeneric);
+            Debug.Log(OrderManager.Orders[0].ToString());
 
             //TEST: Spawn (NEW) player
             SpawnPlayer();
@@ -394,27 +411,21 @@ public class GameMaster : MonoBehaviour
     {
         currentTime = Time.time;
 
+        //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
+        if (currentTime >= (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+        {
+            AdvanceInGameTime(1);
+            tGameTime = currentTime;
+        }
+
         //Increase Player's play time by 1 second if 1 second has passed:
         if (currentTime >= tPlayerPlayTime + 1)
         {
-            tPlayerPlayTime = currentTime;
             Player.PlayTime += 1;
+            tPlayerPlayTime = currentTime;
 
             #region **DEBUG PLAY TIME**
             //Debug.Log("Play time (s): " + Player.PlayTime.ToString());
-            #endregion
-        }
-
-        //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
-        if (currentTime >= (tGameTime + 60/GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
-        {
-            tGameTime = currentTime;
-            AdvanceInGameTime(1);
-            
-            //<Adjust time in GUI with GameTimeString() string method>
-
-            #region **DEBUG GAME TIME**
-            //Debug.Log("Game Time: " + GameTimeString12());
             #endregion
         }
     }
@@ -443,7 +454,7 @@ public class GameMaster : MonoBehaviour
             if (iSupplierItem < SupplierManager.Suppliers[iSupplier].Inventory.Items.Count)
             {
                 OrderItem item = new OrderItem(SupplierManager.Suppliers[iSupplier].Inventory.Items[iSupplierItem], quantity);
-                float markup = SupplierManager.Suppliers[iSupplier].MarkupPercentage;
+                float markup = SupplierManager.Suppliers[iSupplier].GetMarkup();
 
                 successful = Player.Business.PurchaseItem(item, markup, performValidation, out result);
             }
@@ -457,18 +468,76 @@ public class GameMaster : MonoBehaviour
     }
     #endregion
 
+    #region <ORDER METHODS>
+    /// <summary>
+    /// Complete the specified order with the specified dictionary of items. (Quantities must be validated before this method is called)
+    /// </summary>
+    /// <param name="iOrderToComplete">The index of the order to complete.</param>
+    /// <param name="itemQuantities">Dictionary containing ItemID's as the key, and the quantity as the value.</param>
+    public void CompleteOrder(int iOrderToComplete, Dictionary<int, int> itemQuantities, out string result)
+    {
+        result = MSG_ERR_DEFAULT;
+
+        float payment;
+
+        List<OrderItem> items = new List<OrderItem>();
+
+        result = "";
+        string tempResult;
+
+        foreach (int itemID in itemQuantities.Keys)
+        {
+            items.Add(new OrderItem(itemID, itemQuantities[itemID]));
+
+            for (int iPlayerItem = 0; iPlayerItem < Player.Business.WarehouseInventory.Items.Count; iPlayerItem++)
+            {
+                if (Player.Business.WarehouseInventory.Items[iPlayerItem].ItemID == itemID)
+                {
+                    if (itemQuantities[itemID] < Player.Business.WarehouseInventory.Items[iPlayerItem].Quantity)
+                    {
+                        Player.Business.WarehouseInventory.Items[iPlayerItem].ReduceQuantity(itemQuantities[itemID], false, out tempResult);
+                    }
+                    else
+                    {
+                        Player.Business.WarehouseInventory.RemoveItem(iPlayerItem, out tempResult);
+                    }
+
+                    result += tempResult + "; ";
+                }
+            }
+        }
+
+        OrderManager.Orders[iOrderToComplete].CompleteOrder(items, GameDateTime, out payment);
+
+        Player.Business.Money += payment;
+    }
+    #endregion
+
     #region <GAME TIME METHODS>
     private void AdvanceInGameTime(int minutesToAdd)
     {
-        int previousGameTimeHour = GameDateTime.Hour;
+        //int previousGameTimeHour = GameDateTime.Hour;
 
         GameDateTime = GameDateTime.AddMinutes(minutesToAdd);
 
-        if (GameDateTime.Hour == 0 && previousGameTimeHour == 23)
-            NextDay();
+        //Check if orders should be closed (failed) *
+        if (OrderManager.Orders.Count > 0)
+        {
+            for (int i = 0; i < OrderManager.Orders.Count; i++)
+            {
+                if (OrderManager.Orders[i].Open)
+                {
+                    if (GameDateTime >= OrderManager.Orders[i].DateDue)
+                        OrderManager.Orders[i].CloseOrder();
+                }
+            }
+        }
+
+        //if (GameDateTime.Hour == 0 && previousGameTimeHour == 23) //***
+        //    NextDay();
     }
 
-    private void NextDay() //**Called ONCE from AdvanceGameTime() method, when the clock is set back to 00:00
+    private void NextDay() //**
     {
         #region **DEBUG NEXT DAY**
         //Debug.Log("NEXT DAY");
@@ -511,9 +580,7 @@ public class GameMaster : MonoBehaviour
 
                 Suppliers = SupplierManager.Suppliers,
 
-                OrdersOpen = OrderManager.OrdersOpen,
-                OrdersFilled = OrderManager.OrdersFilled,
-                OrdersFailed = OrderManager.OrdersFailed,
+                Orders = OrderManager.Orders,
 
                 GameDateTime = this.GameDateTime,
                 GameTimeSpeed = this.GameTimeSpeed
@@ -545,9 +612,7 @@ public class GameMaster : MonoBehaviour
 
         SupplierManager.Suppliers = loadData.Suppliers;
 
-        OrderManager.OrdersOpen = loadData.OrdersOpen;
-        OrderManager.OrdersFilled = loadData.OrdersFilled;
-        OrderManager.OrdersFailed = loadData.OrdersFailed;
+        OrderManager.Orders = loadData.Orders;
 
         GameDateTime = loadData.GameDateTime;
         GameTimeSpeed = loadData.GameTimeSpeed;

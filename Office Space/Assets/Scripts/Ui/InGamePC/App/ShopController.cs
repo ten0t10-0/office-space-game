@@ -271,7 +271,7 @@ public class ShopController : MonoBehaviour
 	{
 		float itemPrice = 0;
 
-		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercentage);
+		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].GetMarkup());
 
 		return itemPrice;
 

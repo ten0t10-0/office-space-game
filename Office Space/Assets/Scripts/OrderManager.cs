@@ -7,7 +7,9 @@ public class OrderManager : MonoBehaviour
 {
     [HideInInspector]
     [SerializeField]
-    public List<Order> OrdersOpen, OrdersFilled, OrdersFailed;
+    public List<Order> Orders;
+
+    public int maxOrdersSaved = 50;
 
     /// <summary>
     /// (WIP) Generates an Order based on the difficulty specified in the GameMaster instance.
@@ -46,39 +48,62 @@ public class OrderManager : MonoBehaviour
 
         #endregion
 
-        OrdersOpen.Add(new Order(customer, items, currentDate, dueDate));
-    }
-
-    /// <summary>
-    /// Removes the specified order from the Open Orders list and adds it to either the Filled Orders or Failed Orders list.
-    /// </summary>
-    /// <param name="orderToCloseId">The ID/index of the order in the Open Orders list.</param>
-    /// <param name="orderFilled">Was the order successful?</param>
-    public void CloseOrder(int orderToCloseId, bool orderFilled)
-    {
-        Order orderToClose = OrdersOpen[orderToCloseId];
-        OrdersOpen.RemoveAt(orderToCloseId);
-
-        if (orderFilled)
+        if (Orders.Count == maxOrdersSaved)
         {
-            DateTime filledDate = GameMaster.Instance.GameDateTime;
-            orderToClose.SetFilled(filledDate);
+            Orders.RemoveAt(0);
+        }
 
-            OrdersFilled.Add(orderToClose);
-        }
-        else
-        {
-            OrdersFailed.Add(orderToClose);
-        }
+        Orders.Add(new Order(customer, items, currentDate, dueDate));
     }
 
-    /// <summary>
-    /// Removes all orders from the Open, Filled and Failed Orders lists.
-    /// </summary>
-    private void ClearAllOrders()
+    //public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems)
+    //{
+        
+    //}
+
+    public void CloseOrder(int iOrderToClose)
     {
-        OrdersOpen.Clear();
-        OrdersFilled.Clear();
-        OrdersFailed.Clear();
+
     }
+
+    #region Lists
+    public List<Order> GetOpenOrders()
+    {
+        List<Order> orders = new List<Order>();
+
+        for (int i = 0; i < Orders.Count; i++)
+        {
+            if (Orders[i].Open)
+                orders.Add(Orders[i]);
+        }
+
+        return orders;
+    }
+
+    public List<Order> GetCompletedOrders()
+    {
+        List<Order> orders = new List<Order>();
+
+        for (int i = 0; i < Orders.Count; i++)
+        {
+            if (Orders[i].Completed)
+                orders.Add(Orders[i]);
+        }
+
+        return orders;
+    }
+
+    public List<Order> GetFailedOrders()
+    {
+        List<Order> orders = new List<Order>();
+
+        for (int i = 0; i < Orders.Count; i++)
+        {
+            if (!Orders[i].Completed)
+                orders.Add(Orders[i]);
+        }
+
+        return orders;
+    }
+    #endregion
 }
