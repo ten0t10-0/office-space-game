@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5997cfe763b1ea49b797b0520f1ad74, type: 3}
   m_Name: GamePC
   m_EditorClassIdentifier: 
-  EnumID: 6
+  EnumID: 8
   Category: {fileID: 11400000, guid: ea5259e337358b744823f0621602b5f1, type: 2}
   Name: Games (PC)

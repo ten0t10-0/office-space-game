@@ -26,35 +26,89 @@ public class ShopController : MonoBehaviour
 	public TextMeshProUGUI money;
 	public TextMeshProUGUI company;
 
-	string supp = "all";
-	string cate = "all";
+	public Sprite bronze, silver, gold;
 
-	public Button all,elec,furn;
+	string supplier = "all",category = "all",subCategory = "all";
 
 
+
+	Button computerBtn, allBtn, hardwareBtn, componentBtn, gamingBtn, merchBtn, 
+	//computers
+	desktopBtn,LaptopBtn,
+	//components
+	gpuBtn,CpuBtn,
+	//gaming
+	pcgameBtn,ConsoleBtn,
+	//merch
+	figurineBtn,
+	//hardware
+	keyboardBtn,MiceBtn
+	;
+
+
+	// time money other stuff new script
 
 	void Start () 
 	{
-        playerUI = this.gameObject.GetComponent<PlayerUiController>();
-		AddByCateSupp (cate, supp);
-		AddSupplier ();
+		playerUI = this.gameObject.GetComponent<PlayerUiController>();
+		AddByCateSupp (category, supplier, subCategory);
+		AddSupplier();
 
-		all.GetComponent<Button>().onClick.AddListener(delegate {SetCate("all");});
-		//elec.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Electronics.ToString());});
-		//furn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Furniture.ToString());});
-	
-		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
-		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
+		// intilise buttons
+		allBtn = transform.Find("CategoryPanel/catListPanel/allBtn").GetComponent<Button>();
+		computerBtn = transform.Find("CategoryPanel/catListPanel/ComputersBtn").GetComponent<Button>();
+		hardwareBtn = transform.Find("CategoryPanel/catListPanel/HardwareBtn").GetComponent<Button>();
+		componentBtn = transform.Find("CategoryPanel/catListPanel/ComponetsBtn").GetComponent<Button>();
+		gamingBtn = transform.Find("CategoryPanel/catListPanel/gamningBtn").GetComponent<Button>();
+		merchBtn = transform.Find("CategoryPanel/catListPanel/merchBtn").GetComponent<Button>();
 
+		desktopBtn = transform.Find("CategoryPanel/catListPanel/ComputersBtn/computerPanel/Computerbtn").GetComponent<Button>();
+		LaptopBtn = transform.Find("CategoryPanel/catListPanel/ComputersBtn/computerPanel/Laptopbtn").GetComponent<Button>();
+
+		gpuBtn = transform.Find("CategoryPanel/catListPanel/ComponetsBtn/componentsPanel/GPUbtn").GetComponent<Button>();
+		CpuBtn = transform.Find("CategoryPanel/catListPanel/ComponetsBtn/componentsPanel/CPUbtn").GetComponent<Button>();
+
+		pcgameBtn = transform.Find("CategoryPanel/catListPanel/gamningBtn/GamingPanel/PcGamesBtn").GetComponent<Button>();
+		ConsoleBtn = transform.Find("CategoryPanel/catListPanel/gamningBtn/GamingPanel/ConsoleGameBtn").GetComponent<Button>();
+
+		figurineBtn = transform.Find("CategoryPanel/catListPanel/merchBtn/MerchandicePanel/FigurineBtn").GetComponent<Button>();
+
+		keyboardBtn =  transform.Find("CategoryPanel/catListPanel/HardwareBtn/HardwarePanel/KeyboardBtn").GetComponent<Button>();
+		MiceBtn =  transform.Find("CategoryPanel/catListPanel/HardwareBtn/HardwarePanel/MiceBtn").GetComponent<Button>();
+
+		// When button clicked
+		allBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate("all");});
+		computerBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+		hardwareBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Hardware.ToString());});
+		componentBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Components.ToString());});
+		gamingBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Gaming.ToString());});
+		merchBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Merchandise.ToString());});
+		computerBtn.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+
+		desktopBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Computers.ToString(),ItemSubcategory.Desktop.ToString());});
+		LaptopBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Computers.ToString(),ItemSubcategory.Laptop.ToString());});
+
+		gpuBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Components.ToString(),ItemSubcategory.GPU.ToString());});
+		CpuBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Components.ToString(),ItemSubcategory.CPU.ToString());});
+
+		pcgameBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.PCGame.ToString());});
+		gamingBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.ConsoleGame.ToString());});
+
+		figurineBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Merchandise.ToString(),ItemSubcategory.figurines.ToString());});
+
+		keyboardBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Hardware.ToString(),ItemSubcategory.Keyboard.ToString());});
+		MiceBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Hardware.ToString(),ItemSubcategory.Mouse.ToString());});
+		//		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
+		//	company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 
 	}
 
 	void Update()
 	{
-		
+
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
 	}
-		
+
 	public void AddSupplier()
 	{
 		ClearSupp ();
@@ -75,136 +129,106 @@ public class ShopController : MonoBehaviour
 
 	public void SetSupp(string supplier)
 	{
-	    supp = supplier;  
-		AddByCateSupp (cate, supp);
+		supplier = supplier;  
+		AddByCateSupp (category, supplier,subCategory);
 	}
 
 	public void SetCate(string cat)
 	{
-		cate = cat;  
-		AddByCateSupp (cate, supp);
+		category = cat;
+		subCategory = "all";
+		AddByCateSupp (category, supplier, subCategory);
 	}
 
-//	public void AddAllItems()
-//	{
-//		ClearInventory();
-//
-//        int iSupplier, iItem;
-//
-//        for (iSupplier = 0; iSupplier < GameMaster.Instance.SupplierManager.Suppliers.Count; iSupplier++)
-//        {
-//            SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers[iSupplier];
-//
-//            for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++)
-//            {
-//                Item item = supplier.Inventory.Items[iItem];
-//
-//                GameObject newItem = Instantiate(ItemContainer, scrollViewContent);
-//
-//				newItem.GetComponent<ItemContainerScript>().SupplierIndex = iSupplier;
-//				newItem.GetComponent<ItemContainerScript>().ItemIndex = iItem;
-//
-//				newItem.transform.Find("Image").GetComponent<Image>().sprite = item.Picture;
-//				newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.Name;
-//				newItem.transform.Find("Price").GetComponent<TMP_Text>().text = "$"+item.UnitCost.ToString();
-//				newItem.transform.Find("Supplier").GetComponent<TMP_Text>().text = supplier.Name;
-//
-//				newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(BuyOnClick);
-//
-//                Debug.Log(item.Category.Name);
-//            }
-//        }
-//	}
+	public void SetSubCate(string cat,string Subcat)
+	{
+		subCategory = Subcat;
+		category = cat;
+		AddByCateSupp (category, supplier, subCategory);
 
-	public void AddByCateSupp(string cat,string supp)
+
+	}
+
+	public void AddByCateSupp(string cat,string supp,string subcat)
 	{
 		ClearInventory();
 
 		int iSupplier, iItem;
-		bool allSupp, allCat;
+		bool allSupp, allCat,allSubcat;
 
 		if (supp == "all")
 			allSupp = true;
 		else
 			allSupp = false;
 
-		if (cate == "all")
+		if (cat == "all")
 			allCat = true;
 		else
 			allCat = false;
 
-		
+		if (subcat == "all")
+			allSubcat = true;
+		else
+			allSubcat = false;
+
+		// gets SOs from suppliers and displays them based on categoryId and supplier
 		for ( iSupplier=0; iSupplier < GameMaster.Instance.SupplierManager.Suppliers.Count; iSupplier++)
 		{
 			SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers[iSupplier];
 
 			if (supplier.Name == supp && allSupp == false) 
 			{	
-			
-				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
-					Item item = supplier.Inventory.Items [iItem];
-				
-					if (item.Category.Name == cat && allCat == false) {
+
+				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) 
+				{
+					Item item = supplier.Inventory.Items[iItem];
+
+					if (item.Category.Name == cat && allCat == false && allSubcat == true) 
+					{
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
-						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-
-						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = CalculateMarkUp(item, iSupplier).ToString();
-
-						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
-					} else if (allCat == true) {
+						SetItem (newItem, iSupplier, iItem, item);
+					} 
+					else if (allSubcat == false && allCat == false && item.Subcategory.EnumID.ToString() == subcat ) 
+					{
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-
-						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-
-						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = CalculateMarkUp(item, iSupplier).ToString();
-
-						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
+						SetItem (newItem, iSupplier, iItem, item);
+					}
+					else if (allCat == true ) 
+					{
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+						SetItem (newItem, iSupplier, iItem, item);
 					}
 				}
 			} 
 			else if (allSupp == true) 
 			{
-				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
+				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) 
+				{
 					Item item = supplier.Inventory.Items [iItem];
 
-					if (item.Category.Name == cat && allCat == false) {
-						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-
-						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-
-						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = CalculateMarkUp(item, iSupplier).ToString();
-
-						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
-					} 
-					else if (allCat == true) 
+					if (item.Category.Name == cat && allCat == false && allSubcat == true) 
 					{
 						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
 
-						newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-						newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-
-						newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-						newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-						newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = CalculateMarkUp(item, iSupplier).ToString();
-
-						newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (BuyOnClick);
+						SetItem (newItem, iSupplier, iItem, item);
+					} 	
+					else if (allSubcat == false && allCat == false && item.Subcategory.EnumID.ToString() == subcat ) 
+					{
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+						SetItem (newItem, iSupplier, iItem, item);
 					}
+					else if (allCat == true ) 
+					{
+						GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+						SetItem (newItem, iSupplier, iItem, item);
+					}
+
+
 				}
 			} 
 		}
 	}
-		
-
 
 	/// Clears out any existing shop UI items
 	public void ClearInventory()
@@ -237,18 +261,18 @@ public class ShopController : MonoBehaviour
 
 	public void BuyOnClick()
 	{
-        int iSupplier, iItem;
+		int iSupplier, iItem;
 
-        ItemContainerScript selected = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemContainerScript>();
+		ItemContainerScript selected = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemContainerScript>();
 
-        iSupplier = selected.GetComponent<ItemContainerScript>().SupplierIndex;
-        iItem = selected.GetComponent<ItemContainerScript>().ItemIndex;
+		iSupplier = selected.GetComponent<ItemContainerScript>().SupplierIndex;
+		iItem = selected.GetComponent<ItemContainerScript>().ItemIndex;
 
 		purchasedItem = GameMaster.Instance.SupplierManager.Suppliers[iSupplier].Inventory.Items[iItem];
 		playerUI.SetItem(purchasedItem,iSupplier,iItem);
 
-        //Make sure we can find the item and a can afford it
-        if (purchasedItem == null)
+		//Make sure we can find the item and a can afford it
+		if (purchasedItem == null)
 		{
 			Debug.Log("Unable to find item");
 			return;
@@ -258,15 +282,42 @@ public class ShopController : MonoBehaviour
 			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
 			return;
 		}
-        else
-        {
-            Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.Name, purchasedItem.UnitCost.ToString(), (GameMaster.Instance.Player.Business.Money - purchasedItem.UnitCost).ToString()));
-        }
-			
+		else
+		{
+			Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.Name, purchasedItem.UnitCost.ToString(), (GameMaster.Instance.Player.Business.Money - purchasedItem.UnitCost).ToString()));
+		}			
 		qtyPanel.SetActive(true);
+	}
+		
 
-    }
+	void SetItem(GameObject newItem,int iSupplier,int iItem, Item item)
+	{
+		newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
+		newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
 
+		newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+		newItem.transform.Find ("Supplier").GetComponent<TMP_Text> ().text = GameMaster.Instance.SupplierManager.Suppliers [iSupplier].Name.ToString ();
+		newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = "$ " + CalculateMarkUp(item, iSupplier).ToString();
+
+		if (item.Quality == ItemQuality.Low)
+		{
+			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = bronze;;
+
+		}
+		else if (item.Quality == ItemQuality.Medium)
+		{
+			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = silver;;
+
+		}
+		else if (item.Quality == ItemQuality.High)
+		{
+			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = gold;;
+		}
+
+		newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(BuyOnClick);
+	}
+		
 	public float CalculateMarkUp(Item pi,int iSupplier)
 	{
 		float itemPrice = 0;

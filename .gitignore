@@ -33,3 +33,4 @@ sysinfo.txt
 *.apk
 *.unitypackage
 Office Space/Assets/Scenes/Main.unity
+Office Space/Assets/Scripts/Ui/InGamePC/App/ShopController.cs

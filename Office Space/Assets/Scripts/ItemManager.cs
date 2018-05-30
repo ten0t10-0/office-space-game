@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemCategory { Special, Components, Hardware, Gaming, Computers, Merchandise  } //Add...
-public enum ItemSubcategory { Nothing, CPU, GPU, Console, Desktop, Laptop, PCGame, ConsoleGame  } //Add...
+public enum ItemSubcategory { Nothing, CPU, GPU, MotherBoard, Ram, Console, Desktop, Laptop, PCGame, ConsoleGame,
+	Keyboard, Mouse,figurines,Tshirts,  } //Add...
 public enum ItemQuality { None, Low, Medium, High }
 
 public class ItemManager : MonoBehaviour

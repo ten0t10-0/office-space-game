@@ -1,31 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
-public class floatText : MonoBehaviour 
-{
-	public Animator animator;
-	private TextMeshProUGUI moneyText;
-	static public GameObject mText;
+public class floatText : MonoBehaviour {
 
-	void OnEnable()
-	{
-		AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
-
-		Destroy(gameObject, clipInfo[0].clip.length);
-
+	// Use this for initialization
+	void Start () {
+		
 	}
-
-	public void SetText(string text)
-	{
-		moneyText.SetText (text);
+	
+	// Update is called once per frame
+	void Update () {
+		
 	}
-	public static void CreateText(string text)
-	{
-		GameObject newSupp = Instantiate (mText);
-	}
-
-
 }
-

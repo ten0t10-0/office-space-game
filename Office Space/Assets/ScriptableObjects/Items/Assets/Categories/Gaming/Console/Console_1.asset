@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
   m_Name: Console_1
   m_EditorClassIdentifier: 
-  Name: Console (Handheld)
+  Name: Funstation Portable
   Subcategory: {fileID: 11400000, guid: 53acb4d6cbc446c4d99b2c3c9f0d6c65, type: 2}
   Quality: 2
   UnitCost: 3000
   UnitSpace: 0.3
-  Picture: {fileID: 0}
+  Picture: {fileID: 21300000, guid: dd23080ee4c90ee47a7522819aaaffbd, type: 3}
