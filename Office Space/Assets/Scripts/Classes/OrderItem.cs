@@ -26,7 +26,7 @@ public class OrderItem : Item
 
     #region <Methods>
     /// <summary>
-    /// Returns the total cost of these items.
+    /// Returns the total cost of these items. (Quantity * Unit Cost)
     /// </summary>
     /// <returns></returns>
     public override float TotalValue()
@@ -35,7 +35,7 @@ public class OrderItem : Item
     }
 
     /// <summary>
-    /// Returns the total capacity/space used by these items.
+    /// Returns the total capacity/space used by these items. (Quantity * Unit Space)
     /// </summary>
     /// <returns></returns>
     public override float TotalSpaceUsed()

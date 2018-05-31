@@ -111,8 +111,16 @@ public class Order
                 {
                     if (items[i].ItemID == itemIDRequired)
                     {
-                        paymentTotal += items[i].TotalValue();
-                        quantityTotal += items[i].Quantity;
+                        if (items[i].Quantity <= quantityRequired)
+                        {
+                            paymentTotal += items[i].TotalValue();
+                            quantityTotal += items[i].Quantity;
+                        }
+                        else
+                        {
+                            paymentTotal += items[i].UnitCost * quantityRequired;
+                            quantityTotal += quantityRequired;
+                        }
 
                         items.RemoveAt(i);
                         i = items.Count; //end
@@ -120,9 +128,9 @@ public class Order
                 }
             }
 
-            penaltyPercent = quantityTotal / TotalQuantity();
+            penaltyPercent = (float)quantityTotal / TotalQuantity();
 
-            score *= (int)penaltyPercent;
+            score = (int)(score * penaltyPercent);
         }
 
         return score;

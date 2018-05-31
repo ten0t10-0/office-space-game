@@ -313,7 +313,7 @@ public class GameMaster : MonoBehaviour
             //}
             foreach (OrderItem item in Player.Business.WarehouseInventory.Items)
             {
-                int qty = item.Quantity;
+                int qty = 1;
                 orderItems.Add(new OrderItem(item.ItemID, qty));
             }
             OrderManager.Orders.Add(new Order(CustomerManager.GenerateCustomer(), orderItems, GameDateTime, GameDateTime.AddHours(1.5)));
@@ -326,7 +326,8 @@ public class GameMaster : MonoBehaviour
             Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
             foreach (OrderItem item in Player.Business.WarehouseInventory.Items)
             {
-                itemQuantities.Add(item.ItemID, item.Quantity);
+                int qty = UnityEngine.Random.Range(1, 3);
+                itemQuantities.Add(item.ItemID, qty);
             }
             CompleteOrder(0, itemQuantities, out resultGeneric);
             Debug.Log(resultGeneric);
