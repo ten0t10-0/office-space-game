@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CustomerLevel { None, Low, Medium, High }
+
 public class CustomerManager : MonoBehaviour
 {
     #region <PRESET NAMES LISTS>

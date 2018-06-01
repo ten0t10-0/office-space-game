@@ -56,12 +56,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e09973a4b5c91074f982dc3c35537041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrencySymbol: $
   SupplierManager: {fileID: 0}
   CustomerManager: {fileID: 0}
   OrderManager: {fileID: 0}
   ItemManager: {fileID: 0}
   CustomizationManager: {fileID: 0}
+  CurrencySymbol: $
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
@@ -73,11 +73,17 @@ MonoBehaviour:
   initPlayerShopSpace: 10
   initPlayerLevel: 1
   initPlayerExperience: 0
+  PlayerExperienceBase: 100
   SaveFileName: Game
   SaveFileExtension: .gd
   UIMode: 0
   OfflineMode: 0
   TEMPSaveGame: 0
+  TutorialMode: 0
+  DayEnd: 0
+  initDifficulty: 0
+  DifficultySettings:
+  - {fileID: 11400000, guid: bbd3d6275a20ca84493df18dcfedf9c4, type: 2}
   Difficulty: 0
   DayStartHour: 8
   DayEndHour: 20
@@ -141,8 +147,10 @@ MonoBehaviour:
   MaxNumberOfItemsPerSupplier: 10
   MaxGenerationsPerItem: 3
   ExcludedItemSubcategories: 00000000
-  minSupplierLevel: 1
-  maxSupplierLevel: 10
+  MinLowestMarkup: 10
+  MaxLowestMarkup: 30
+  MinHighestMarkup: 70
+  MaxHighestMarkup: 100
   namesPre:
   - Galaxy
   - Hello

@@ -11,8 +11,10 @@ public class SupplierManager : MonoBehaviour
         {
             ItemSubcategory.Nothing
         };
-    public int minSupplierLevel = 1;
-    public int maxSupplierLevel = 10;
+    public int MinLowestMarkup = 10;
+    public int MaxLowestMarkup = 30;
+    public int MinHighestMarkup = 70;
+    public int MaxHighestMarkup = 100;
 
     #region <PRESET NAMES LISTS>
     public List<string> namesPre = new List<string>()
@@ -44,7 +46,8 @@ public class SupplierManager : MonoBehaviour
     public void GenerateSuppliers(int supplierCount, out string result)
     {
         string currentGeneratedName;
-        List<int> levels = new List<int>();
+        List<float> markups = new List<float>();
+        float currentMarkup;
 
         result = GameMaster.MSG_ERR_DEFAULT;
 
@@ -55,25 +58,34 @@ public class SupplierManager : MonoBehaviour
         for (int i = 0; i < namesPre.Count; i++)
         { namesPreRemaining.Add(namesPre[i]); }
 
-        int levelInterval = (maxSupplierLevel - minSupplierLevel) / (supplierCount - 1);
+        //<Generate markups>
+        float lowestMarkup = (float)Random.Range(MinLowestMarkup, MaxLowestMarkup + 1) / 100;
+        float highestMarkup = (float)Random.Range(MinHighestMarkup, MaxHighestMarkup + 1) / 100;
+        float markupInterval = (float)System.Math.Round((highestMarkup - lowestMarkup) / (supplierCount - 1), 2);
 
-        levels.Add(minSupplierLevel);
-        for (int i = 1; i <= supplierCount - 2; i++)
+        markups.Add(lowestMarkup);
+        for (int i = 0; i < supplierCount - 2; i++)
         {
-            levels.Add((1 + levelInterval) * i);
+            markups.Add(lowestMarkup + (markupInterval * (i + 1)));
         }
-        levels.Add(maxSupplierLevel);
+        markups.Add(highestMarkup);
 
-        //TEMP:
-        foreach (int level in levels)
-            Debug.Log(level.ToString());
+        //* TEMP:
+        foreach (float markup in markups)
+        {
+            Debug.Log(markup.ToString());
+        }
 
         for (int c = 1; c <= supplierCount; c++)
         {
             currentGeneratedName = GenerateName();
 
+            int iCurrentMarkup = Random.Range(0, markups.Count);
+            currentMarkup = markups[iCurrentMarkup];
+            markups.RemoveAt(iCurrentMarkup);
+
             if (currentGeneratedName != "")
-                Suppliers.Add(new SupplierAI(currentGeneratedName, levels[c - 1]));
+                Suppliers.Add(new SupplierAI(currentGeneratedName, currentMarkup));
             else
             {
                 c = supplierCount + 1; //set sentinel value to end the FOR loop

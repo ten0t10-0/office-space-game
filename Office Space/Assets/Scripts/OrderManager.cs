@@ -17,15 +17,34 @@ public class OrderManager : MonoBehaviour
     public void GenerateOrder()
     {
         DateTime currentDate = GameMaster.Instance.GameDateTime;
-        int difficulty = GameMaster.Instance.Difficulty;
+        DifficultySO diffSetting = GameMaster.Instance.GetDifficultySettings();
+        List<SupplierAI> suppliers = GameMaster.Instance.SupplierManager.Suppliers;
 
         #region [CUSTOMER]
         Customer customer = GameMaster.Instance.CustomerManager.GenerateCustomer();
         #endregion
 
-        #region [ORDER_ITEMS]
-        List<OrderItem> items = new List<OrderItem>();
+        #region [ORDER ITEMS]
         //<algorithm> (check current suppliers' inventories to ensure only items that are possible to buy get generated; make use of difficulty to determine item requirements such as number of Items and each of their quality & quantity values).*
+        List<OrderItem> items = new List<OrderItem>();
+        int numberOfItems = UnityEngine.Random.Range(1, diffSetting.MaxOrderItems + 1);
+
+        List<int> itemIDsAvailable = new List<int>();
+
+        for (int iSupplier = 0; iSupplier < suppliers.Count; iSupplier++)
+        {
+            for (int iItem = 0; iItem < suppliers[iSupplier].Inventory.Items.Count; iItem++)
+            {
+                itemIDsAvailable.Add(suppliers[iSupplier].Inventory.Items[iItem].ItemID);
+            }
+        }
+
+        for (int c = 1; c <= numberOfItems; c++)
+        {
+            int itemId = itemIDsAvailable[UnityEngine.Random.Range(0, itemIDsAvailable.Count)];
+            int quantity = 1; //***
+            items.Add(new OrderItem(itemId, quantity));
+        }
         #endregion
 
         #region [DUE DATE]
@@ -35,14 +54,13 @@ public class OrderManager : MonoBehaviour
         #region (Example)
         float hoursToAdd = 1;
 
-        if (difficulty != 0)
+        if (diffSetting.GenerateOrderDueDate)
         {
             //...
             dueDate = currentDate.AddHours(hoursToAdd);
         }
         else
             dueDate = null;
-
 
         #endregion
 
@@ -56,14 +74,14 @@ public class OrderManager : MonoBehaviour
         Orders.Add(new Order(customer, items, currentDate, dueDate));
     }
 
-    //public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems)
-    //{
-        
-    //}
+    public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment)
+    {
+        Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, out payment);
+    }
 
     public void CloseOrder(int iOrderToClose)
     {
-
+        Orders[iOrderToClose].CloseOrder();
     }
 
     #region Lists

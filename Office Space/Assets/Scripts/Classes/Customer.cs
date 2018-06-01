@@ -7,21 +7,22 @@ public class Customer
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public CustomerLevel Level { get; set; } //* not used
 
     #region <Constructors>
     public Customer(string firstName, string lastName)
     {
         FirstName = firstName;
         LastName = lastName;
-        //...
+
+        Level = CustomerLevel.None;
     }
 
-    //Players as customers:
-    public Customer(string userName)
+    public Customer(string firstName, string lastName, CustomerLevel level)
     {
-        FirstName = userName;
-        LastName = null;
-        //...
+        FirstName = firstName;
+        LastName = lastName;
+        Level = level;
     }
     #endregion
 
@@ -37,6 +38,6 @@ public class Customer
 
     public override string ToString()
     {
-        return string.Format("First Name: {0}; Last Name: {1}", FirstName, LastName);
+        return string.Format("First Name: {0}; Last Name: {1}; Level: <{2}>", FirstName, LastName, Level.ToString());
     }
 }

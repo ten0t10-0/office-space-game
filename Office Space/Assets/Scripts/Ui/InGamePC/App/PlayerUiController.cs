@@ -103,7 +103,7 @@ public class PlayerUiController : MonoBehaviour
 	{
 		float itemPrice = 0;
 
-		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].GetMarkup());
+		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
 
 		return itemPrice;
 			

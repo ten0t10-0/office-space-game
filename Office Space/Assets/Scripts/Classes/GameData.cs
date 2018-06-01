@@ -16,22 +16,26 @@ public class GameData
     [SerializeField]
     public List<Order> Orders;
 
+    public int Difficulty;
+
     [SerializeField]
     public DateTime GameDateTime;
     public float GameTimeSpeed;
 
-    //Difficulty?
+    public float ChanceNextOrder;
 
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, DateTime gameDateTime, float gameTimeSpeed)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder)
     {
         Suppliers = suppliers;
 
         Player = player;
 
         Orders = orders;
+
+        Difficulty = difficulty;
 
         GameDateTime = gameDateTime;
         GameTimeSpeed = gameTimeSpeed;

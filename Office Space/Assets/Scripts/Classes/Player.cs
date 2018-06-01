@@ -6,8 +6,9 @@ using UnityEngine;
 public class Player
 {
     public string Name { get; private set; }
-    public int TotalScore { get; private set; }
     public SupplierPlayer Business { get; private set; }
+    public int Level { get; private set; }
+    public int Experience { get; private set; }
     public float PlayTime { get; set; }
 
     public CharacterCustomizationData CharacterCustomizationData;
@@ -27,7 +28,8 @@ public class Player
 
         Business = new SupplierPlayer(businessName, startingMoney, maximumInventorySpace, maximumShopInventorySpace);
 
-        TotalScore = 0;
+        Level = 1;
+        Experience = 0;
         PlayTime = 0f;
 
         CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
@@ -51,25 +53,43 @@ public class Player
     #endregion
 
     #region <Methods>
-
-    /// <summary>
-    /// Returns a Customer object representing the player.
-    /// </summary>
-    /// <returns></returns>
-    public Customer ToCustomer()
+    public void IncreaseExperience(int amount)
     {
-        return new Customer(this.Name);
+        Experience += amount;
+
+        if (Experience >= GetExperienceRequiredForNextLevel())
+        {
+            //*
+        }
     }
 
-    public void IncreaseScore(int increment)
+    public int GetExperienceRequiredForNextLevel()
     {
-        TotalScore += increment;
+        int expRequired = 0;
+
+        //*
+
+        return expRequired;
+    }
+
+    private int GetLevelExperience(int level)
+    {
+        int expBase = GameMaster.Instance.PlayerExperienceBase;
+
+        //*
+
+        return -1;
+    }
+
+    private void IncreaseLevel()
+    {
+        //*
     }
     #endregion
 
     //TEMP:
     public override string ToString()
     {
-        return string.Format("Name: {0}; Total Score {1}; PlayTime: {2}", Name, TotalScore.ToString(), PlayTime.ToString());
+        return string.Format("Name: {0}; Level: {1}; Experience: {2}; PlayTime: {3}", Name, Level.ToString(), Experience.ToString(), PlayTime.ToString());
     }
 }

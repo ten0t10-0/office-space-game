@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class SupplierPlayer : Supplier
 {
-    public int Experience { get; set; }
     public float Money { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
     public InventoryPlayerShop ShopInventory { get; set; }
@@ -13,7 +12,6 @@ public class SupplierPlayer : Supplier
     #region <Constructor>
     public SupplierPlayer(string name, float money, float maximumInventorySpace, float maximumShopInventorySpace) : base(name)
     {
-        Experience = 0;
         Money = money;
         WarehouseInventory = new InventoryPlayer(maximumInventorySpace);
         ShopInventory = new InventoryPlayerShop(maximumShopInventorySpace);
@@ -222,6 +220,6 @@ public class SupplierPlayer : Supplier
     //TEMP:
     public override string ToString()
     {
-        return base.ToString() + "; Experience: " + Experience.ToString() + "; Money: " + Money.ToString();
+        return base.ToString() + "; Money: " + Money.ToString();
     }
 }
