@@ -23,15 +23,23 @@ public class CustomerManager : MonoBehaviour
     /// <returns></returns>
     public Customer GenerateCustomer()
     {
+        DifficultySO diffSetting = GameMaster.Instance.GetDifficultySetting();
+
         string firstName, lastName;
-        int iFirstName, iLastName;
+        CustomerLevel level;
+
+        int maxCustomerLevel = (int)diffSetting.MaxCustomerLevel;
+
+        int iFirstName, iLastName, iLevel;
 
         iFirstName = Random.Range(0, firstNames.Count);
         iLastName = Random.Range(0, lastNames.Count);
+        iLevel = Random.Range(1, maxCustomerLevel + 1);
 
         firstName = firstNames[iFirstName];
         lastName = lastNames[iLastName];
+        level = (CustomerLevel)iLevel;
 
-        return new Customer(firstName, lastName);
+        return new Customer(firstName, lastName, level);
     }
 }

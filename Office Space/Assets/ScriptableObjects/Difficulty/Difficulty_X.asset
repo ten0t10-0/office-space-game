@@ -13,8 +13,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Description: <Death Difficulty>
   MaxCustomerLevel: 3
-  MaxSimultaneousOpenOrders: 100
+  MaxSimultaneousOpenOrders: 50
   MaxOrderItems: 100
+  MaxOrderItemQuantity: 100
   GenerateOrderDueDate: 1
   OrderDelay: 0
   OrderGenerationRate: 0.2
+  IncludeCustomerTolerance: 1
+  CustomerToleranceIncrement: 0.2

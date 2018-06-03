@@ -7,7 +7,7 @@ public class Customer
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public CustomerLevel Level { get; set; } //* not used
+    public CustomerLevel Level { get; set; }
 
     #region <Constructors>
     public Customer(string firstName, string lastName)

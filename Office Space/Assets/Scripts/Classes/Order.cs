@@ -14,7 +14,6 @@ public class Order
     public bool Filled { get; set; }
     public DateTime? DateFilled { get; set; }
     public bool Open { get; set; }
-    public int Score { get; private set; }
 
     #region <Constructors>
     public Order (Customer customer, List<OrderItem> items, DateTime dateReceived, DateTime? dateDue) //*
@@ -27,8 +26,6 @@ public class Order
         Filled = false;
         DateFilled = null;
         Open = true;
-
-        Score = 0;
     }
     #endregion
 
@@ -40,16 +37,18 @@ public class Order
     /// <param name="items">The list of items to be used to fill the order.</param>
     /// <param name="dateFilled">The date the order was successfully completed.</param>
     /// <param name="paymentTotal">The resulting payment (base cost).</param>
-    public void CompleteOrder(List<OrderItem> items, DateTime dateFilled, out float paymentTotal)
+    public void CompleteOrder(List<OrderItem> items, DateTime dateFilled, out float paymentTotal, out int score, out float penaltyMultiplier)
     {
         paymentTotal = 0;
+        score = 0;
+        penaltyMultiplier = 1;
 
         if (Open && !Filled)
         {
             Filled = true;
             DateFilled = dateFilled;
 
-            Score = CalculateScore(items, out paymentTotal);
+            score = CalculateScore(items, out paymentTotal, out penaltyMultiplier);
 
             CloseOrder();
         }
@@ -78,28 +77,35 @@ public class Order
             return null;
     }
 
-    private int CalculateScore(List<OrderItem> items, out float paymentTotal)
+    private int CalculateScore(List<OrderItem> items, out float paymentTotal, out float penaltyMultiplier)
     {
         int score = 0;
         paymentTotal = 0;
+        penaltyMultiplier = 1;
 
-        if (Filled && DateDue.HasValue)
+        if (Filled)
         {
             int quantityTotal = 0;
-            float penaltyPercent;
 
             //*** Calculate score (based on time):
-            TimeSpan timeSpanCompleted = DateDue.Value.Subtract(DateFilled.Value);
-            TimeSpan timeSpanMax = DateDue.Value.Subtract(DateReceived);
+            if (DateDue.HasValue)
+            {
+                TimeSpan timeSpanCompleted = DateDue.Value.Subtract(DateFilled.Value);
+                TimeSpan timeSpanMax = DateDue.Value.Subtract(DateReceived);
 
-            float rate = (float)(timeSpanCompleted.TotalMilliseconds / timeSpanMax.TotalMilliseconds);
+                float rate = (float)(timeSpanCompleted.TotalMilliseconds / timeSpanMax.TotalMilliseconds);
 
-            if (rate >= 0.75f) //Bonus
-                score = 200;
-            else if (rate >= 0.5f)
-                score = 150;
+                if (rate >= 0.75f) //Bonus
+                    score = 200;
+                else if (rate >= 0.5f)
+                    score = 150;
+                else
+                    score = 100;
+            }
             else
-                score = 100;
+            {
+                score = 100; //*
+            }
 
             //*** Calculate penalty (based on accuracy/correctness of items):
             for (int iItems = 0; iItems < Items.Count; iItems++)
@@ -109,16 +115,19 @@ public class Order
 
                 for (int i = 0; i < items.Count; i++)
                 {
-                    if (items[i].ItemID == itemIDRequired)
+                    int itemIDGiven = items[i].ItemID;
+                    int quantityGiven = items[i].Quantity;
+
+                    if (itemIDGiven == itemIDRequired)
                     {
-                        if (items[i].Quantity <= quantityRequired)
+                        if (quantityGiven <= quantityRequired)
                         {
                             paymentTotal += items[i].TotalValue();
-                            quantityTotal += items[i].Quantity;
+                            quantityTotal += quantityGiven;
                         }
                         else
                         {
-                            paymentTotal += items[i].UnitCost * quantityRequired;
+                            paymentTotal += items[i].UnitCost * quantityRequired; //only pay for number of items requested in order.
                             quantityTotal += quantityRequired;
                         }
 
@@ -128,9 +137,9 @@ public class Order
                 }
             }
 
-            penaltyPercent = (float)quantityTotal / TotalQuantity();
+            penaltyMultiplier = (float)quantityTotal / TotalQuantity(); //*
 
-            score = (int)(score * penaltyPercent);
+            score = (int)(score * penaltyMultiplier);
         }
 
         return score;
@@ -191,6 +200,6 @@ public class Order
         else
             dateFilledString = "<Not completed>";
 
-        return string.Format("Customer: {0}; DateReceived: {1}; DateDue: {2}; Filled?: {3}; DateFilled: {4}; Open: {5}; Score: {6}; Total Value: {7}; Total Quantities: {8}", Customer.FullName(), DateReceived.ToString(), dateDueString, Filled.ToString(), dateFilledString, Open.ToString(), Score.ToString(), TotalValue().ToString(), TotalQuantity().ToString());
+        return string.Format("Customer: {0}; DateReceived: {1}; DateDue: {2}; Filled?: {3}; DateFilled: {4}; Open: {5}; Total Value: {6}; Total Quantities: {7}", Customer.FullName(), DateReceived.ToString(), dateDueString, Filled.ToString(), dateFilledString, Open.ToString(), TotalValue().ToString(), TotalQuantity().ToString());
     }
 }

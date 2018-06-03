@@ -9,7 +9,8 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     public List<Order> Orders;
 
-    public int maxOrdersSaved = 50;
+    public int MaxOrdersSaved = 50;
+    public int SecondsAllocatedPerOrderItem = 30;
 
     /// <summary>
     /// (WIP) Generates an Order based on the difficulty specified in the GameMaster instance.
@@ -17,7 +18,7 @@ public class OrderManager : MonoBehaviour
     public void GenerateOrder()
     {
         DateTime currentDate = GameMaster.Instance.GameDateTime;
-        DifficultySO diffSetting = GameMaster.Instance.GetDifficultySettings();
+        DifficultySO diffSetting = GameMaster.Instance.GetDifficultySetting();
         List<SupplierAI> suppliers = GameMaster.Instance.SupplierManager.Suppliers;
 
         #region [CUSTOMER]
@@ -42,7 +43,8 @@ public class OrderManager : MonoBehaviour
         for (int c = 1; c <= numberOfItems; c++)
         {
             int itemId = itemIDsAvailable[UnityEngine.Random.Range(0, itemIDsAvailable.Count)];
-            int quantity = 1; //***
+            int quantity = UnityEngine.Random.Range(1, diffSetting.MaxOrderItemQuantity + 1);
+
             items.Add(new OrderItem(itemId, quantity));
         }
         #endregion
@@ -52,12 +54,11 @@ public class OrderManager : MonoBehaviour
         //<algorithm> (make use of difficulty to determine the order due date; take into account number of items in order - add time to due date).*
 
         #region (Example)
-        float hoursToAdd = 1;
+        int minutesToAdd = SecondsAllocatedPerOrderItem * numberOfItems;
 
         if (diffSetting.GenerateOrderDueDate)
         {
-            //...
-            dueDate = currentDate.AddHours(hoursToAdd);
+            dueDate = currentDate.AddMinutes(minutesToAdd);
         }
         else
             dueDate = null;
@@ -66,7 +67,7 @@ public class OrderManager : MonoBehaviour
 
         #endregion
 
-        if (Orders.Count == maxOrdersSaved)
+        if (Orders.Count == MaxOrdersSaved)
         {
             Orders.RemoveAt(0);
         }
@@ -74,14 +75,17 @@ public class OrderManager : MonoBehaviour
         Orders.Add(new Order(customer, items, currentDate, dueDate));
     }
 
-    public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment)
+    public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment, out int score, out float penaltyMultiplier)
     {
-        Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, out payment);
+        Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, out payment, out score, out penaltyMultiplier);
     }
 
     public void CloseOrder(int iOrderToClose)
     {
         Orders[iOrderToClose].CloseOrder();
+
+        //*TEMP:
+        Debug.Log("*ORDER CLOSED");
     }
 
     #region Lists

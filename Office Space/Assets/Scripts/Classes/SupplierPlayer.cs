@@ -6,6 +6,7 @@ using UnityEngine;
 public class SupplierPlayer : Supplier
 {
     public float Money { get; set; }
+    public float CustomerTolerance { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
     public InventoryPlayerShop ShopInventory { get; set; }
 
@@ -13,6 +14,7 @@ public class SupplierPlayer : Supplier
     public SupplierPlayer(string name, float money, float maximumInventorySpace, float maximumShopInventorySpace) : base(name)
     {
         Money = money;
+        CustomerTolerance = 1;
         WarehouseInventory = new InventoryPlayer(maximumInventorySpace);
         ShopInventory = new InventoryPlayerShop(maximumShopInventorySpace);
     }
@@ -220,6 +222,6 @@ public class SupplierPlayer : Supplier
     //TEMP:
     public override string ToString()
     {
-        return base.ToString() + "; Money: " + Money.ToString();
+        return base.ToString() + "; Money: " + Money.ToString() + "; CustomerTolerance: " + CustomerTolerance.ToString();
     }
 }

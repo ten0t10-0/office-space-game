@@ -154,20 +154,6 @@ public class InventoryPlayer : Inventory
         return changed;
     }
 
-    /// <summary>
-    /// Returns the total space used by all items in this inventory.
-    /// </summary>
-    /// <returns></returns>
-    public float TotalSpaceUsed()
-    {
-        float spaceUsed = 0;
-
-        foreach (OrderItem item in Items)
-            spaceUsed += item.TotalSpaceUsed();
-
-        return spaceUsed;
-    }
-
 	/// <summary>
 	/// Returns the avalible space. 
 	/// </summary>
@@ -183,7 +169,7 @@ public class InventoryPlayer : Inventory
 	}
 
     //*Inventory Valuation: research
-    public float Valuation()
+    public virtual float Valuation()
     {
         float value = 0;
 
@@ -191,6 +177,20 @@ public class InventoryPlayer : Inventory
             value += item.TotalValue();
 
         return value;
+    }
+
+    /// <summary>
+    /// Returns the total space used by all items in this inventory.
+    /// </summary>
+    /// <returns></returns>
+    public virtual float TotalSpaceUsed()
+    {
+        float spaceUsed = 0;
+
+        foreach (OrderItem item in Items)
+            spaceUsed += item.TotalSpaceUsed();
+
+        return spaceUsed;
     }
 
     /// <summary>

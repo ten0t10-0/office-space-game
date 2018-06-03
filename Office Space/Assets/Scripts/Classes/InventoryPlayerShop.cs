@@ -6,7 +6,7 @@ using UnityEngine;
 public class InventoryPlayerShop : InventoryPlayer
 {
     [SerializeField]
-    public List<SpecialItem> ItemsOnSpecial;
+    public List<SpecialItem> ItemsOnSpecial { get; private set; }
 
     public InventoryPlayerShop(float maximumSpace) : base(maximumSpace)
     {
@@ -35,6 +35,26 @@ public class InventoryPlayerShop : InventoryPlayer
         ItemsOnSpecial.RemoveAt(iSpecialItem);
 
         result = string.Format("All '{0}' items are no longer on special!", item.Name);
+    }
+
+    public override float Valuation()
+    {
+        float value = base.Valuation();
+
+        foreach (OrderItem item in ItemsOnSpecial)
+            value += item.TotalValue();
+
+        return value;
+    }
+
+    public override float TotalSpaceUsed()
+    {
+        float spaceUsed = base.TotalSpaceUsed();
+
+        foreach (OrderItem item in ItemsOnSpecial)
+            spaceUsed += item.TotalSpaceUsed();
+
+        return spaceUsed;
     }
 
     /// <summary>

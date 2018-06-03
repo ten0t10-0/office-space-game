@@ -15,6 +15,9 @@ MonoBehaviour:
   MaxCustomerLevel: 1
   MaxSimultaneousOpenOrders: 1
   MaxOrderItems: 3
+  MaxOrderItemQuantity: 3
   GenerateOrderDueDate: 1
   OrderDelay: 0
   OrderGenerationRate: 0.03
+  IncludeCustomerTolerance: 1
+  CustomerToleranceIncrement: 0.2

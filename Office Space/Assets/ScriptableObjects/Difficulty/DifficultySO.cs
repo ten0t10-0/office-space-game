@@ -9,7 +9,10 @@ public class DifficultySO : ScriptableObject
     public CustomerLevel MaxCustomerLevel;
     public int MaxSimultaneousOpenOrders;
     public int MaxOrderItems;
+    public int MaxOrderItemQuantity;
     public bool GenerateOrderDueDate;
     public float OrderDelay;
     public float OrderGenerationRate;
+    public bool IncludeCustomerTolerance;
+    public float CustomerToleranceIncrement;
 }

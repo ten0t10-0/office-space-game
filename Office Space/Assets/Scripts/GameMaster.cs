@@ -16,6 +16,7 @@ public class GameMaster : MonoBehaviour
         //Debug.Log(currentMessage);
     }
 
+    #region [Static Methods]
     public static float MarkupPrice(float price, float markup)
     {
         return (price * (1f + markup));
@@ -28,6 +29,7 @@ public class GameMaster : MonoBehaviour
         else
             return true;
     }
+    #endregion
 
     #region [Fields]
 
@@ -44,8 +46,6 @@ public class GameMaster : MonoBehaviour
     [HideInInspector]
     public CustomizationManager CustomizationManager;
     #endregion
-
-    public string CurrencySymbol = "$";
 
     #region <PLAYER/NPC>
     public GameObject GenericCharacterObject;
@@ -75,7 +75,7 @@ public class GameMaster : MonoBehaviour
     public bool UIMode = false;
     public bool OfflineMode = false;
     public bool TEMPSaveGame = true;
-    public bool TutorialMode = false; //*
+    public bool TutorialMode = false; //* + Check save data
 
     [HideInInspector]
     public bool DayEnd = false; //Day at end - No more events until next day (order generation, random events (?), etc)
@@ -108,7 +108,14 @@ public class GameMaster : MonoBehaviour
     public int initGameTimeMinutes;
 
     public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
+
+    private int dayEndCurrent;
     #endregion
+
+    #region <Misc>
+    public string CurrencySymbol = "$";
+    #endregion
+
     #endregion
 
     #region <SUPPLIER MANAGER INFO>
@@ -247,7 +254,7 @@ public class GameMaster : MonoBehaviour
             Difficulty = initDifficulty;
 
             //TEST: Set events
-            chanceNextOrder = GetDifficultySettings().OrderGenerationRate;
+            chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
             Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerInventorySpace, initPlayerShopSpace);
@@ -298,7 +305,7 @@ public class GameMaster : MonoBehaviour
             Debug.Log(resultGeneric);
             Debug.Log(string.Format("Player Inventory space: {0}/{1}", Player.Business.WarehouseInventory.TotalSpaceUsed(), Player.Business.WarehouseInventory.MaximumSpace));
 
-            //TEST: PLAYER *purchasing* items from AI SUPPLIER
+            ////TEST: PLAYER *purchasing* items from AI SUPPLIER
             //SaleSupplierToPlayer(0, 1, 1000, true, out resultGeneric); //(Testing; too expensive)
             //Debug.Log("*PURCHASE RESULT: " + resultGeneric);
             //Debug.Log("*Remaining Player money: " + Player.Business.Money);
@@ -306,7 +313,7 @@ public class GameMaster : MonoBehaviour
             //Debug.Log("*PURCHASE RESULT: " + resultGeneric);
             //Debug.Log("*Remaining Player money: " + Player.Business.Money.ToString());
 
-            //TEST: Sending items to shop inventory
+            ////TEST: Sending items to shop inventory
             //Player.Business.MoveItemsToShop(0, 500, true, out resultGeneric); //quantity too high
             //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric);
             //Player.Business.MoveItemsToShop(0, 3, true, out resultGeneric);
@@ -316,21 +323,21 @@ public class GameMaster : MonoBehaviour
             //Player.Business.MoveItemsToShop(2, 2, true, out resultGeneric);
             //Debug.Log("*MOVE ITEMS TO SHOP RESULT: " + resultGeneric); //quantity to be removed = item total quantity; item removed completely from warehouse inventory
 
-            //TEST: Putting items up on special
+            ////TEST: Putting items up on special
             //Player.Business.ShopInventory.SetItemsOnSpecial(1, 0.5f, out resultGeneric);
             //Debug.Log("*ITEMS ON SPECIAL RESULT: " + resultGeneric);
 
-            //TEST: Taking items off special
+            ////TEST: Taking items off special
             //Player.Business.ShopInventory.UnsetItemsOnSpecial(0, out resultGeneric);
             //Debug.Log("*ITEMS OFF SPECIAL RESULT: " + resultGeneric);
 
-            //TEST Sending items back to warehouse
+            ////TEST: Sending items back to warehouse
             //Player.Business.MoveItemsToWarehouse(0, 5, true, out resultGeneric); //quantity too high
             //Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
             //Player.Business.MoveItemsToWarehouse(0, 3, true, out resultGeneric); //quantity to be removed = item total quantity; item removed completely from shop inventory
             //Debug.Log("*MOVE ITEMS TO WAREHOUSE RESULT: " + resultGeneric);
 
-            //TEST: Adding orders ***
+            ////TEST: Adding orders ***
             //List<OrderItem> orderItems = new List<OrderItem>();
             ////foreach (Item item in SupplierManager.Suppliers[0].Inventory.Items)
             ////{
@@ -348,14 +355,14 @@ public class GameMaster : MonoBehaviour
             //foreach (OrderItem orderItem in OrderManager.Orders[0].Items)
             //    Debug.Log(orderItem.ToString());
 
-            //*TEST: Generating order
+            ////*TEST: Generating order
             //OrderManager.GenerateOrder();
             //Debug.Log("*ORDER 1: " + OrderManager.Orders[0].ToString());
             //Debug.Log("*ORDER 1 ITEMS:");
             //foreach (OrderItem orderItem in OrderManager.Orders[0].Items)
             //    Debug.Log(orderItem.ToString());
 
-            //TEST: Completing order
+            ////TEST: Completing order
             //Dictionary<int, int> itemQuantities = new Dictionary<int, int>();
             //foreach (OrderItem item in Player.Business.WarehouseInventory.Items)
             //{
@@ -447,43 +454,69 @@ public class GameMaster : MonoBehaviour
 
         if (!TutorialMode)
         {
-            #region <Game time events>
             //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
             if (currentTime >= (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
             {
                 AdvanceInGameTime(1);
-                tGameTime = currentTime;
 
-                #region <Generate order>
-                if (OrderManager.GetOpenOrders().Count < GetDifficultySettings().MaxSimultaneousOpenOrders)
+                if (!DayEnd)
                 {
-                    Debug.Log(chanceNextOrder.ToString());
-                    if (Roll(chanceNextOrder))
+                    #region <Generate order>
+                    if (OrderManager.GetOpenOrders().Count < GetDifficultySetting().MaxSimultaneousOpenOrders)
                     {
-                        Debug.Log(string.Format("*ORDER GENERATE!"));
-                        chanceNextOrder = GetDifficultySettings().OrderGenerationRate;
+                        Debug.Log(chanceNextOrder.ToString());
+                        if (Roll(chanceNextOrder))
+                        {
+                            if (Roll(Player.Business.CustomerTolerance))
+                            {
+                                //***
+                                OrderManager.GenerateOrder();
+
+                                Debug.Log("*ORDER GENERATED!");
+                            }
+                            else
+                            {
+                                //TEMP:
+                                Debug.Log("*TOLERANCE*");
+                            }
+
+                            chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+                        }
+                        else
+                        {
+                            chanceNextOrder += GetDifficultySetting().OrderGenerationRate; //keep increasing chance, otherwise player could potentially wait forever :p
+                        }
                     }
-                    else
+                    #endregion
+
+                    #region <Random events, etc>
+                    //*
+                    #endregion
+                }
+                else
+                {
+                    //Checks before next day starts: *
+                    if (OrderManager.GetOpenOrders().Count == 0) //Once all orders are closed...
                     {
-                        chanceNextOrder += GetDifficultySettings().OrderGenerationRate;
+                        NextDay(); //*
                     }
                 }
-                #endregion
 
-                #region <Close overdue orders> *
+                #region <Close overdue orders> ***
                 for (int i = 0; i < OrderManager.Orders.Count; i++)
                 {
                     if (OrderManager.Orders[i].Open)
                     {
                         if (GameDateTime >= OrderManager.Orders[i].DateDue)
-                            OrderManager.CloseOrder(i); //* Maybe rather penalize player score if orders are late?
+                            CancelOrder(i); //* Maybe rather penalize player score if orders are late?
+                        else
+                            Debug.Log("*Time remaining: " + OrderManager.Orders[i].GetTimeRemaining().ToString());
                     }
                 }
                 #endregion
 
-                //*<Random event, etc>
+                tGameTime = currentTime;
             }
-            #endregion
         }
 
         //*<Check for new notifications> (Pop ups) ?
@@ -500,6 +533,13 @@ public class GameMaster : MonoBehaviour
             #endregion
         }
         #endregion
+    }
+
+    private void FixedUpdate()
+    {
+        //TEST: Saving during gameplay
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
+            SaveGame();
     }
 
     #region <SALES METHOD(S)>
@@ -551,6 +591,8 @@ public class GameMaster : MonoBehaviour
         result = MSG_ERR_DEFAULT;
 
         float payment;
+        int score;
+        float penaltyMult;
 
         List<OrderItem> items = new List<OrderItem>();
 
@@ -579,37 +621,66 @@ public class GameMaster : MonoBehaviour
             }
         }
 
-        OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, out payment);
+        OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, out payment, out score, out penaltyMult);
 
         Player.Business.Money += payment;
+        Player.IncreaseExperience(score);
+        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
+    }
+
+    /// <summary>
+    /// Cancels (Fails) an order. Decreases Player Business reputation (Customer Tolerance).
+    /// </summary>
+    /// <param name="iOrderToCancel"></param>
+    public void CancelOrder(int iOrderToCancel)
+    {
+        OrderManager.CloseOrder(iOrderToCancel);
+        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceIncrement, 0f, 1f);
     }
     #endregion
 
     #region <GAME TIME METHODS>
     private void AdvanceInGameTime(int minutesToAdd)
     {
-        //int previousGameTimeHour = GameDateTime.Hour;
-
         GameDateTime = GameDateTime.AddMinutes(minutesToAdd);
 
-        //if (GameDateTime.Hour == 0 && previousGameTimeHour == 23) //***
-        //    NextDay();
+        if (!DayEnd && GameDateTime.Hour >= DayEndHour)
+        {
+            DayEnd = true;
+            dayEndCurrent = GameDateTime.Day;
+        }
+    }
+
+    private void NewDay()
+    {
+        if (GameDateTime.Day == dayEndCurrent)
+            GameDateTime = GameDateTime.AddDays(1);
+
+        GameDateTime = new DateTime(GameDateTime.Year, GameDateTime.Month, GameDateTime.Day, DayStartHour, 0, 0);
+
+        chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+
+        DayEnd = false;
     }
 
     private void NextDay() //**
     {
         #region **DEBUG NEXT DAY**
-        //Debug.Log("NEXT DAY");
+        Debug.Log("NEXT DAY");
         #endregion
+
+        //*** TEMP:
+        NewDay();
     }
 
+    #region <Time Display format methods>
     public string GameTimeString12()
     {
-        return GameDateTime.ToShortTimeString();
+        return TimeString12(GameDateTime);
     }
     public string GameTimeString24()
     {
-        return GameDateTime.ToString("HH:mm");
+        return TimeString24(GameDateTime);
     }
 
     public string TimeString12(DateTime dateTime)
@@ -622,8 +693,10 @@ public class GameMaster : MonoBehaviour
     }
     #endregion
 
+    #endregion
+
     #region <MISC METHODS>
-    public DifficultySO GetDifficultySettings()
+    public DifficultySO GetDifficultySetting()
     {
         return DifficultySettings[Difficulty];
     }
@@ -653,7 +726,12 @@ public class GameMaster : MonoBehaviour
                 GameDateTime = this.GameDateTime,
                 GameTimeSpeed = this.GameTimeSpeed,
 
-                ChanceNextOrder = this.chanceNextOrder
+                ChanceNextOrder = this.chanceNextOrder,
+
+                TutorialMode = this.TutorialMode,
+                DayEnd = this.DayEnd,
+
+                DayEndCurrent = this.dayEndCurrent
             };
 
             FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
@@ -690,6 +768,11 @@ public class GameMaster : MonoBehaviour
         GameTimeSpeed = loadData.GameTimeSpeed;
 
         chanceNextOrder = loadData.ChanceNextOrder;
+
+        TutorialMode = loadData.TutorialMode;
+        DayEnd = loadData.DayEnd;
+
+        dayEndCurrent = loadData.DayEndCurrent;
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");

@@ -24,14 +24,19 @@ public class GameData
 
     public float ChanceNextOrder;
 
+    public bool TutorialMode;
+    public bool DayEnd;
+
+    public int DayEndCurrent;
+
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool tutorialMode, bool dayEnd, int dayEndCurrent)
     {
-        Suppliers = suppliers;
-
         Player = player;
+
+        Suppliers = suppliers;
 
         Orders = orders;
 
@@ -39,5 +44,12 @@ public class GameData
 
         GameDateTime = gameDateTime;
         GameTimeSpeed = gameTimeSpeed;
+
+        ChanceNextOrder = chanceNextOrder;
+
+        TutorialMode = tutorialMode;
+        DayEnd = dayEnd;
+
+        DayEndCurrent = dayEndCurrent;
     }
 }

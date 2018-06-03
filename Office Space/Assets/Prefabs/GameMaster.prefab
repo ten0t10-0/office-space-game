@@ -61,7 +61,6 @@ MonoBehaviour:
   OrderManager: {fileID: 0}
   ItemManager: {fileID: 0}
   CustomizationManager: {fileID: 0}
-  CurrencySymbol: $
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
@@ -90,9 +89,10 @@ MonoBehaviour:
   initGameDateYear: 0
   initGameDateMonth: 0
   initGameDateDay: 0
-  initGameTimeHour: 23
-  initGameTimeMinutes: 55
+  initGameTimeHour: 19
+  initGameTimeMinutes: 47
   GameTimeSpeed: 60
+  CurrencySymbol: $
   initNumberOfSuppliers: 4
 --- !u!114 &114180071435077334
 MonoBehaviour:
@@ -119,7 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Orders: []
-  maxOrdersSaved: 50
+  MaxOrdersSaved: 50
+  SecondsAllocatedPerOrderItem: 30
 --- !u!114 &114553822043926498
 MonoBehaviour:
   m_ObjectHideFlags: 1
