@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class SpecialItem : OrderItem
 {
     public float DiscountPercentage { get; set; }

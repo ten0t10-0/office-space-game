@@ -98,7 +98,11 @@ public class CameraController : MonoBehaviour
                         if (orbitOTS)
                         {
                             offsetX = OffsetX;
-                            if (Physics.SphereCast(targetController.transform.position, physicsSphereRadius, targetController.transform.right, out wallHit, OffsetX))
+
+                            Vector3 tempOrigin = targetController.transform.position;
+                            tempOrigin.y = (tempOrigin - (newRotation * offset)).y ;
+
+                            if (Physics.SphereCast(tempOrigin, physicsSphereRadius, targetController.transform.right, out wallHit, OffsetX))
                             {
                                 float modifier = physicsSphereRadius - (physicsSphereRadius * (wallHit.distance / OffsetX));
                                 offsetX = wallHit.distance - modifier;

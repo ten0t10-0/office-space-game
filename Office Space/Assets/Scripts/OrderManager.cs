@@ -10,7 +10,6 @@ public class OrderManager : MonoBehaviour
     public List<Order> Orders;
 
     public int MaxOrdersSaved = 50;
-    public int SecondsAllocatedPerOrderItem = 30;
 
     /// <summary>
     /// (WIP) Generates an Order based on the difficulty specified in the GameMaster instance.
@@ -54,7 +53,7 @@ public class OrderManager : MonoBehaviour
         //<algorithm> (make use of difficulty to determine the order due date; take into account number of items in order - add time to due date).*
 
         #region (Example)
-        int minutesToAdd = SecondsAllocatedPerOrderItem * numberOfItems;
+        int minutesToAdd = diffSetting.SecondsAllocatedPerOrderItem * numberOfItems;
 
         if (diffSetting.GenerateOrderDueDate)
         {

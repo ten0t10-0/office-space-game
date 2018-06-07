@@ -635,7 +635,8 @@ public class GameMaster : MonoBehaviour
     public void CancelOrder(int iOrderToCancel)
     {
         OrderManager.CloseOrder(iOrderToCancel);
-        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceIncrement, 0f, 1f);
+
+        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
     }
     #endregion
 

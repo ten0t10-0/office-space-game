@@ -17,7 +17,8 @@ MonoBehaviour:
   MaxOrderItems: 100
   MaxOrderItemQuantity: 100
   GenerateOrderDueDate: 1
-  OrderDelay: 0
+  SecondsAllocatedPerOrderItem: 30
   OrderGenerationRate: 0.2
   IncludeCustomerTolerance: 1
-  CustomerToleranceIncrement: 0.2
+  CustomerToleranceIncrement: 0.05
+  CustomerToleranceDecrement: 0.33

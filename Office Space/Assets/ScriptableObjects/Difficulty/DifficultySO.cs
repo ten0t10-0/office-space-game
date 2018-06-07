@@ -11,8 +11,10 @@ public class DifficultySO : ScriptableObject
     public int MaxOrderItems;
     public int MaxOrderItemQuantity;
     public bool GenerateOrderDueDate;
-    public float OrderDelay;
+    public int SecondsAllocatedPerOrderItem = 30;
+    //public float OrderDelay;
     public float OrderGenerationRate;
     public bool IncludeCustomerTolerance;
     public float CustomerToleranceIncrement;
+    public float CustomerToleranceDecrement;
 }
