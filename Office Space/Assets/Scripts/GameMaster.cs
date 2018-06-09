@@ -45,6 +45,8 @@ public class GameMaster : MonoBehaviour
     public ItemManager ItemManager;
     [HideInInspector]
     public CustomizationManager CustomizationManager;
+    [HideInInspector]
+    public GUIManager GUIManager;
     #endregion
 
     #region <PLAYER/NPC>
@@ -188,6 +190,7 @@ public class GameMaster : MonoBehaviour
         OrderManager = GetComponent<OrderManager>();
         ItemManager = GetComponent<ItemManager>();
         CustomizationManager = GetComponent<CustomizationManager>();
+        GUIManager = GetComponent<GUIManager>();
 
         #region <Validate Game Save File Name & Extension>
         string tempSaveFileName, tempSaveFileExtension;
@@ -246,9 +249,9 @@ public class GameMaster : MonoBehaviour
     private void Start()
     {
         //***<TEST NEW GAME METHOD>***
-        //NewGameTEST();
+        NewGameTEST();
 
-		Demo();
+		//Demo();
     }
 
 	private void Demo()
