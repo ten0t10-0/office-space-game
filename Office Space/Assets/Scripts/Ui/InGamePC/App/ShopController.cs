@@ -22,10 +22,6 @@ public class ShopController : MonoBehaviour
 	[HideInInspector]
 	public Item purchasedItem;
 
-	public TextMeshProUGUI time;
-	public TextMeshProUGUI money;
-	public TextMeshProUGUI company;
-
 	public Sprite bronze, silver, gold;
 
 	string supplier = "all",category = "all",subCategory = "all";
@@ -98,15 +94,13 @@ public class ShopController : MonoBehaviour
 
 		keyboardBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Hardware.ToString(),ItemSubcategory.Keyboard.ToString());});
 		MiceBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Hardware.ToString(),ItemSubcategory.Mouse.ToString());});
-		//		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
-		//	company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
+
 
 	}
 
 	void Update()
 	{
 
-		time.SetText (GameMaster.Instance.GameTimeString12 ());
 	}
 
 	public void AddSupplier()

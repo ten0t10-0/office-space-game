@@ -27,12 +27,18 @@ public class PlayerUiController : MonoBehaviour
 	public Item purchasedItem;
 	public int iSupplier,iItem;
 
+	private Animator animator;
+
 	void Start()
 	{
 		//disable decrease btn on start up
 
 		//GameObject sp = GameObject.Find("StockPanel");
 
+	}
+	void Awake()
+	{
+		animator = GetComponentInChildren<Animator> ();
 	}
 
 	public void SetItem(Item pi,int iSupp,int iItm)
@@ -92,10 +98,10 @@ public class PlayerUiController : MonoBehaviour
 			GameMaster.Instance.SaleSupplierToPlayer(iSupplier, iItem, currentAmount,valid, out result);
 
 			buyPanel.SetActive (false);
-			MoneyAnimation();
 
-			playerMoney.SetText(GameMaster.Instance.Player.Business.Money.ToString());
-
+			//animator.SetBool ("buy", true);
+			MoneyAnimation ();
+	
 		}
 	}
 
@@ -113,7 +119,7 @@ public class PlayerUiController : MonoBehaviour
 	{
 		GameObject tempText = Instantiate (moneyA) as GameObject;
 
-		tempText.GetComponent<Animator>().SetTrigger("buy");
+		tempText.GetComponent<Animator> ().SetBool ("buy", true);
 		tempText.GetComponent<TMP_Text> ().text = "-" + total.ToString();
 
 		Destroy (tempText, 4);

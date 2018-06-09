@@ -13,6 +13,10 @@ public class PlayerItems : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		//AddItems ();
+	}
+	void Update () 
+	{
 		AddItems ();
 	}
 	public void AddItems()

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PcTrigger : MonoBehaviour {
 
-	public Canvas ComputerCanvas;
+	//public Canvas ComputerCanvas;
+	public GameObject hud;
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -25,6 +26,7 @@ public class PcTrigger : MonoBehaviour {
 		//ComputerCanvas.enabled = false;
         GameMaster.Instance.UIMode = false;
         //Time.timeScale = 1;
+		hud.SetActive(true);
     }
 
 

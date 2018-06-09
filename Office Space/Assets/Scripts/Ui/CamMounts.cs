@@ -6,12 +6,12 @@ public class CamMounts : MonoBehaviour
 {
 	public Transform currentMount;
 	public GameObject screen;
-
+	public GameObject hud;
 
 	public float speed = 0.1f;
 	//public float duration = 3.0f;
 
-	float startTime, totalDistance;
+	float totalDistance;
 	//float journeyFraction;
 
 	void Start () 
@@ -39,6 +39,7 @@ public class CamMounts : MonoBehaviour
 			//Ui.transform.position = Quaternion.Slerp(transform.rotation, currentMount.rotation, speedFactor);
 			GameMaster.Instance.UIMode = true;
 			screen.SetActive (false);
+			hud.SetActive (false);
 		
 		}
 	}
