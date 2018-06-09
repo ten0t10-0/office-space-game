@@ -14,3 +14,4 @@ MonoBehaviour:
   EnumID: 2
   Category: {fileID: 11400000, guid: 6d8d0d035c2f90a49a77641d31ca7e40, type: 2}
   Name: Graphics Cards
+  BaseShippingTime: 10

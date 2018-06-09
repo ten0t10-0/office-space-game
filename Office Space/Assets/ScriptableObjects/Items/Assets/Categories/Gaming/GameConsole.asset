@@ -14,3 +14,4 @@ MonoBehaviour:
   EnumID: 9
   Category: {fileID: 11400000, guid: ea5259e337358b744823f0621602b5f1, type: 2}
   Name: Games (Console)
+  BaseShippingTime: 10

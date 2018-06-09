@@ -11,6 +11,11 @@ public class OrderManager : MonoBehaviour
 
     public int MaxOrdersSaved = 50;
 
+    public List<ItemSubcategory> ExcludedItemSubcategories = new List<ItemSubcategory>
+        {
+            ItemSubcategory.Nothing
+        };
+
     /// <summary>
     /// (WIP) Generates an Order based on the difficulty specified in the GameMaster instance.
     /// </summary>
@@ -18,7 +23,6 @@ public class OrderManager : MonoBehaviour
     {
         DateTime currentDate = GameMaster.Instance.GameDateTime;
         DifficultySO diffSetting = GameMaster.Instance.GetDifficultySetting();
-        List<SupplierAI> suppliers = GameMaster.Instance.SupplierManager.Suppliers;
 
         #region [CUSTOMER]
         Customer customer = GameMaster.Instance.CustomerManager.GenerateCustomer();
@@ -29,22 +33,18 @@ public class OrderManager : MonoBehaviour
         List<OrderItem> items = new List<OrderItem>();
         int numberOfItems = UnityEngine.Random.Range(1, diffSetting.MaxOrderItems + 1);
 
-        List<int> itemIDsAvailable = new List<int>();
-
-        for (int iSupplier = 0; iSupplier < suppliers.Count; iSupplier++)
-        {
-            for (int iItem = 0; iItem < suppliers[iSupplier].Inventory.Items.Count; iItem++)
-            {
-                itemIDsAvailable.Add(suppliers[iSupplier].Inventory.Items[iItem].ItemID);
-            }
-        }
+        List<int> itemIDsAvailable = GetAvailableItemIDs();
 
         for (int c = 1; c <= numberOfItems; c++)
         {
-            int itemId = itemIDsAvailable[UnityEngine.Random.Range(0, itemIDsAvailable.Count)];
+            int itemIdIndex = UnityEngine.Random.Range(0, itemIDsAvailable.Count);
+
+            int itemId = itemIDsAvailable[itemIdIndex];
             int quantity = UnityEngine.Random.Range(1, diffSetting.MaxOrderItemQuantity + 1);
 
             items.Add(new OrderItem(itemId, quantity));
+
+            itemIDsAvailable.RemoveAt(itemIdIndex);
         }
         #endregion
 
@@ -53,10 +53,23 @@ public class OrderManager : MonoBehaviour
         //<algorithm> (make use of difficulty to determine the order due date; take into account number of items in order - add time to due date).*
 
         #region (Example)
-        int minutesToAdd = diffSetting.SecondsAllocatedPerOrderItem * numberOfItems;
-
+        //Loop through each generated order item, get the highest shipping time and add that time, multiplied by the multiplier in the difficulty setting, to the order due date.
+        //Also, take into account the number of items in the order, and add a set amount of time to the order using the value in the difficulty setting.
         if (diffSetting.GenerateOrderDueDate)
         {
+            int minutesToAdd = 0;
+
+            int highestShippingTime = 0;
+
+            for (int iItem = 0; iItem < items.Count; iItem++)
+            {
+                if (items[iItem].BaseShippingTime > highestShippingTime)
+                    highestShippingTime = items[iItem].BaseShippingTime;
+            }
+
+            minutesToAdd += (int)(highestShippingTime * diffSetting.OrderTimeShippingTimeMultiplier);
+            minutesToAdd += (int)(numberOfItems * diffSetting.OrderTimeSecondsAddedPerItem);
+
             dueDate = currentDate.AddMinutes(minutesToAdd);
         }
         else
@@ -85,6 +98,59 @@ public class OrderManager : MonoBehaviour
 
         //*TEMP:
         Debug.Log("*ORDER CLOSED");
+    }
+
+    private List<int> GetAvailableItemIDs()
+    {
+        List<int> itemIDsAvailable = new List<int>();
+
+        List<SupplierAI> suppliers = GameMaster.Instance.SupplierManager.Suppliers;
+        InventoryPlayer playerInventory = GameMaster.Instance.Player.Business.WarehouseInventory;
+
+        //Loop through all items for all suppliers
+        for (int iSupplier = 0; iSupplier < suppliers.Count; iSupplier++)
+        {
+            for (int iItem = 0; iItem < suppliers[iSupplier].Inventory.Items.Count; iItem++)
+            {
+                bool exclude = false;
+
+                Item item = suppliers[iSupplier].Inventory.Items[iItem];
+
+                foreach (ItemSubcategory excludedSubcategory in ExcludedItemSubcategories)
+                {
+                    if (item.Subcategory.EnumID == excludedSubcategory)
+                    {
+                        exclude = true;
+                        break;
+                    }
+                }
+
+                if (!exclude)
+                    itemIDsAvailable.Add(item.ItemID);
+            }
+        }
+
+        //Loop through all player warehouse items
+        for (int iPlayerItem = 0; iPlayerItem < playerInventory.Items.Count; iPlayerItem++)
+        {
+            bool exclude = false;
+
+            OrderItem item = playerInventory.Items[iPlayerItem];
+
+            foreach (ItemSubcategory excludedSubcategory in ExcludedItemSubcategories)
+            {
+                if (item.Subcategory.EnumID == excludedSubcategory)
+                {
+                    exclude = true;
+                    break;
+                }
+            }
+
+            if (!exclude)
+                itemIDsAvailable.Add(item.ItemID);
+        }
+
+        return itemIDsAvailable;
     }
 
     #region Lists

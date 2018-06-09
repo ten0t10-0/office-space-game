@@ -23,6 +23,11 @@ public class Item
         get { return Subcategory.Category; }
     }
 
+    public int BaseShippingTime
+    {
+        get { return Subcategory.BaseShippingTime; }
+    }
+
     #endregion
 
     #region <Constructors>

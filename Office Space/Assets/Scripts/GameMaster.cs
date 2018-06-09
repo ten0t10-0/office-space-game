@@ -133,7 +133,11 @@ public class GameMaster : MonoBehaviour
     private float chanceNextOrder;
     #endregion
 
-    #region <MESSAGES>
+    #region <MESSAGES/NOTIFCATIONS>
+    public int MaxStoredNotifications = 50;
+    [HideInInspector]
+    public NotificationList Notifications;
+
     private string currentMessage;
 
     public const string MSG_ERR_DEFAULT = "Uh oh.";
@@ -235,12 +239,36 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         currentMessage = MSG_GEN_NA;
+
+        Notifications = new NotificationList();
     }
 
     private void Start()
     {
         //***<TEST NEW GAME METHOD>***
-        NewGameTEST();
+        //NewGameTEST();
+
+		Demo();
+    }
+
+	private void Demo()
+	{
+        string result;
+
+        Difficulty = 0;
+
+        Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerInventorySpace, initPlayerShopSpace);
+
+        SupplierManager.GenerateSuppliers(5, out result);
+        SupplierManager.PopulateSupplierInventories();
+
+        SpawnPlayer();
+
+        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+
+        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
+
+        tPlayerPlayTime = tGameTime = Time.time;
     }
 
     private void NewGameTEST()
@@ -250,6 +278,20 @@ public class GameMaster : MonoBehaviour
 
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
         {
+            //TEST: Adding Notifications
+            for (int c = 1; c <= 3; c++)
+            {
+                Notifications.Add("TEST Notification " + c.ToString() + ".");
+            }
+
+            //TEST: Displaying Notifications
+            //List<Notification> notifications = Notifications.GetAll();
+
+            //for (int i = notifications.Count - 1; i >= 0; i--)
+            //{
+            //    Debug.Log(notifications[i].Text);
+            //}
+
             //TEST: Set difficulty
             Difficulty = initDifficulty;
 
@@ -462,29 +504,36 @@ public class GameMaster : MonoBehaviour
                 if (!DayEnd)
                 {
                     #region <Generate order>
-                    if (OrderManager.GetOpenOrders().Count < GetDifficultySetting().MaxSimultaneousOpenOrders)
+                    if (GetDifficultySetting().GenerateOrders)
                     {
-                        Debug.Log(chanceNextOrder.ToString());
-                        if (Roll(chanceNextOrder))
+                        if (OrderManager.GetOpenOrders().Count < GetDifficultySetting().MaxSimultaneousOpenOrders)
                         {
-                            if (Roll(Player.Business.CustomerTolerance))
+                            Debug.Log(chanceNextOrder.ToString());
+                            if (Roll(chanceNextOrder))
                             {
-                                //***
-                                OrderManager.GenerateOrder();
+                                if (Roll(Player.Business.CustomerTolerance))
+                                {
+                                    //***
+                                    OrderManager.GenerateOrder();
 
-                                Debug.Log("*ORDER GENERATED!");
+                                    Debug.Log("*ORDER GENERATED!");
+
+                                    Debug.Log("ORDER:");
+                                    foreach (OrderItem item in OrderManager.Orders[0].Items)
+                                        Debug.Log(string.Format("{0} x {1}", item.Quantity.ToString(), item.Name));
+                                }
+                                else
+                                {
+                                    //TEMP:
+                                    Debug.Log("*TOLERANCE*");
+                                }
+
+                                chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
                             }
                             else
                             {
-                                //TEMP:
-                                Debug.Log("*TOLERANCE*");
+                                chanceNextOrder += GetDifficultySetting().OrderGenerationRate; //keep increasing chance, otherwise player could potentially wait forever :p
                             }
-
-                            chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
-                        }
-                        else
-                        {
-                            chanceNextOrder += GetDifficultySetting().OrderGenerationRate; //keep increasing chance, otherwise player could potentially wait forever :p
                         }
                     }
                     #endregion
@@ -625,7 +674,9 @@ public class GameMaster : MonoBehaviour
 
         Player.Business.Money += payment;
         Player.IncreaseExperience(score);
-        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
+
+        if (GetDifficultySetting().IncludeCustomerTolerance)
+            Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
     }
 
     /// <summary>
@@ -636,7 +687,8 @@ public class GameMaster : MonoBehaviour
     {
         OrderManager.CloseOrder(iOrderToCancel);
 
-        Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
+        if (GetDifficultySetting().IncludeCustomerTolerance)
+            Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
     }
     #endregion
 
@@ -703,7 +755,7 @@ public class GameMaster : MonoBehaviour
     }
     #endregion
 
-    #region <SAVING/LOADING>
+    #region <SAVING & LOADING METHODS>
     private void SaveGame()
     {
         if (TEMPSaveGame)
@@ -732,7 +784,9 @@ public class GameMaster : MonoBehaviour
                 TutorialMode = this.TutorialMode,
                 DayEnd = this.DayEnd,
 
-                DayEndCurrent = this.dayEndCurrent
+                DayEndCurrent = this.dayEndCurrent,
+
+                Notifications = this.Notifications
             };
 
             FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
@@ -774,6 +828,8 @@ public class GameMaster : MonoBehaviour
         DayEnd = loadData.DayEnd;
 
         dayEndCurrent = loadData.DayEndCurrent;
+
+        Notifications = loadData.Notifications;
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");

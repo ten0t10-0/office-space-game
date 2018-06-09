@@ -11,14 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa5ba75d09497341baeeff1ff71f792, type: 3}
   m_Name: Difficulty_0
   m_EditorClassIdentifier: 
-  Description: <First Difficulty>
-  MaxCustomerLevel: 1
-  MaxSimultaneousOpenOrders: 1
-  MaxOrderItems: 3
-  MaxOrderItemQuantity: 3
-  GenerateOrderDueDate: 1
-  SecondsAllocatedPerOrderItem: 30
-  OrderGenerationRate: 0.03
-  IncludeCustomerTolerance: 1
-  CustomerToleranceIncrement: 0.2
-  CustomerToleranceDecrement: 0.1
+  Description: <Tutorial>
+  MaxCustomerLevel: 0
+  MaxSimultaneousOpenOrders: 0
+  MaxOrderItems: 0
+  MaxOrderItemQuantity: 0
+  GenerateOrderDueDate: 0
+  OrderTimeMultiplier: 0
+  OrderGenerationRate: 0
+  IncludeCustomerTolerance: 0
+  CustomerToleranceIncrement: 0
+  CustomerToleranceDecrement: 0

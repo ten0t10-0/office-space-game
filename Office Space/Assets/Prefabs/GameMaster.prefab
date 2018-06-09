@@ -80,20 +80,24 @@ MonoBehaviour:
   TEMPSaveGame: 0
   TutorialMode: 0
   DayEnd: 0
-  initDifficulty: 0
+  initDifficulty: 1
   DifficultySettings:
   - {fileID: 11400000, guid: bbd3d6275a20ca84493df18dcfedf9c4, type: 2}
+  - {fileID: 11400000, guid: bb1eb96067bca2e4abbd2c64d01c906a, type: 2}
   Difficulty: 0
   DayStartHour: 8
   DayEndHour: 20
   initGameDateYear: 0
   initGameDateMonth: 0
   initGameDateDay: 0
-  initGameTimeHour: 19
-  initGameTimeMinutes: 47
+  initGameTimeHour: 8
+  initGameTimeMinutes: 0
   GameTimeSpeed: 60
   CurrencySymbol: $
   initNumberOfSuppliers: 4
+  MaxStoredNotifications: 50
+  Notifications:
+    AllNotificationsRead: 1
 --- !u!114 &114180071435077334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -120,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Orders: []
   MaxOrdersSaved: 50
-  SecondsAllocatedPerOrderItem: 30
+  ExcludedItemSubcategories: 00000000
 --- !u!114 &114553822043926498
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -29,10 +29,12 @@ public class GameData
 
     public int DayEndCurrent;
 
+    public NotificationList Notifications;
+
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool tutorialMode, bool dayEnd, int dayEndCurrent)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool tutorialMode, bool dayEnd, int dayEndCurrent, NotificationList notifications)
     {
         Player = player;
 
@@ -51,5 +53,7 @@ public class GameData
         DayEnd = dayEnd;
 
         DayEndCurrent = dayEndCurrent;
+
+        Notifications = notifications;
     }
 }

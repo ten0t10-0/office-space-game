@@ -21,7 +21,14 @@ public class Player
 
     #region <Constructors>
 
-    //Creates a new player. Default clothing unlocked & equipped. Default Office items unlocked.
+    /// <summary>
+    /// Creates a NEW player. Default clothing unlocked and activated in customization data. Default Office items unlocked.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="businessName"></param>
+    /// <param name="startingMoney"></param>
+    /// <param name="maximumInventorySpace"></param>
+    /// <param name="maximumShopInventorySpace"></param>
     public Player(string name, string businessName, float startingMoney, float maximumInventorySpace, float maximumShopInventorySpace)
     {
         Name = name;

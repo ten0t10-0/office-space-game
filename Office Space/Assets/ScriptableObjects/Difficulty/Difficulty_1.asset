@@ -9,18 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eaa5ba75d09497341baeeff1ff71f792, type: 3}
-  m_Name: Difficulty_X
+  m_Name: Difficulty_1
   m_EditorClassIdentifier: 
-  Description: <Death Difficulty>
+  Description: <First Difficulty>
   GenerateOrders: 1
-  MaxCustomerLevel: 3
-  MaxSimultaneousOpenOrders: 50
-  MaxOrderItems: 100
-  MaxOrderItemQuantity: 100
+  MaxCustomerLevel: 1
+  MaxSimultaneousOpenOrders: 1
+  MaxOrderItems: 3
+  MaxOrderItemQuantity: 5
   GenerateOrderDueDate: 1
-  OrderTimeShippingTimeMultiplier: 1.5
-  OrderTimeSecondsAddedPerItem: 3
-  OrderGenerationRate: 0.2
+  OrderTimeShippingTimeMultiplier: 3
+  OrderTimeSecondsAddedPerItem: 15
+  OrderGenerationRate: 0.03
   IncludeCustomerTolerance: 1
-  CustomerToleranceIncrement: 0.05
-  CustomerToleranceDecrement: 0.33
+  CustomerToleranceIncrement: 0.2
+  CustomerToleranceDecrement: 0.1

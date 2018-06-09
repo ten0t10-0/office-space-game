@@ -14,3 +14,4 @@ MonoBehaviour:
   EnumID: 11
   Category: {fileID: 11400000, guid: 9f16a8696d69d624289cc8c6dc0d1e03, type: 2}
   Name: Mice
+  BaseShippingTime: 10

@@ -8,4 +8,5 @@ public class ItemSubcategorySO : ScriptableObject
     public ItemSubcategory EnumID;
     public ItemCategorySO Category;
     public string Name;
+    public int BaseShippingTime;
 }

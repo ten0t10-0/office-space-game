@@ -34,7 +34,11 @@ public class CustomerManager : MonoBehaviour
 
         iFirstName = Random.Range(0, firstNames.Count);
         iLastName = Random.Range(0, lastNames.Count);
-        iLevel = Random.Range(1, maxCustomerLevel + 1);
+
+        if (maxCustomerLevel > 0)
+            iLevel = Random.Range(1, maxCustomerLevel + 1);
+        else
+            iLevel = 0;
 
         firstName = firstNames[iFirstName];
         lastName = lastNames[iLastName];
