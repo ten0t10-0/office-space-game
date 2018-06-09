@@ -32,7 +32,7 @@ public class OrderUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		DisplayOrders ();
+		//DisplayOrders ();
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 	}
 
