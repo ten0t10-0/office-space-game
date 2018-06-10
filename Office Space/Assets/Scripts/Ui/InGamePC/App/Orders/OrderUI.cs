@@ -31,6 +31,8 @@ public class OrderUI : MonoBehaviour {
 	public InputField amount;
 	public Button btnDecrease,btnIncrease,confirm;
 
+	public GameObject purchase;
+
 	GameObject selectcontainer;
 	OrderItem selectOrder;
 
@@ -202,6 +204,16 @@ public class OrderUI : MonoBehaviour {
 		string a;
 
 		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder,out a);
+
+		purchase.SetActive(true);
+		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + GameMaster.Instance.OrderManager.Orders[ordersNum].TotalValue().ToString();
+
+		StartCoroutine(moneyPopUp());
+	}
+	IEnumerator moneyPopUp()
+	{
+		yield return new WaitForSeconds(2);
+		purchase.SetActive (false);
 	}
 
 }
