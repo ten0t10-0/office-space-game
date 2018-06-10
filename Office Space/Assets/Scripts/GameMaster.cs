@@ -434,8 +434,8 @@ public class GameMaster : MonoBehaviour
 
             //  ^ Adding office object:
             GameObject newObject2 = CustomizationManager.Office.InitializeOfficeObject(0);
-            newObject2.transform.position = new Vector3(0, 0f, -7.63f);
-            newObject2.transform.rotation = Quaternion.Euler(-90f, 90f, 0);
+            newObject2.transform.position = new Vector3(0f, 0f, 7.63f);
+            newObject2.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
 
             //TEST: Save Game
             SaveGame();
