@@ -22,7 +22,7 @@ public class OrderUI : MonoBehaviour {
 
 	Dictionary <int,int> completeOrder = new Dictionary<int,int>();
 
-	public Sprite bronze, silver, gold, tick;
+	public Sprite bronze, silver, gold, tick,plus;
 
 	public GameObject qtyPanel,inventoryPanel;
 
@@ -35,6 +35,9 @@ public class OrderUI : MonoBehaviour {
 
 	GameObject selectcontainer;
 	OrderItem selectOrder;
+	OrderItem tempitem;
+
+	List<Item> tempItem = new List<Item> ();
 
 	// Use this for initialization
 	void Start () 
@@ -84,6 +87,7 @@ public class OrderUI : MonoBehaviour {
 		timeRemaining.SetText(order[i].GetTimeRemaining().ToString());
 		total.SetText("$" + order[i].TotalValue().ToString());
 
+
 		foreach (OrderItem item in order[i].Items)
 		{
 			GameObject newItems = Instantiate (ItemContainer, scrollContent);
@@ -112,19 +116,33 @@ public class OrderUI : MonoBehaviour {
 
 	public void AddInventory()
 	{
-
-		ClearInventory ();
-
+		tempItem.Clear ();
 		foreach (OrderItem item in GameMaster.Instance.Player.Business.WarehouseInventory.Items) 
 		{
-			GameObject newItem = Instantiate (inventoryContainer, iscrollContent);
-			newItem.transform.Find("Panel/Name").GetComponent<TMP_Text>().text = item.Name;
-			newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-			newItem.transform.Find("qty").GetComponent<TMP_Text>().text = item.Quantity.ToString();
+			tempItem.Add(item);
+		}
+			
+		TempInventory ();
 
-			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {quantityPanel( item);});
+	}
+	public void TempInventory()
+	{
+		ClearInventory ();
+
+		foreach(OrderItem item in tempItem)
+		{
+			
+
+				GameObject newItem = Instantiate (inventoryContainer, iscrollContent);
+				newItem.transform.Find ("Panel/Name").GetComponent<TMP_Text> ().text = item.Name;
+				newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+				newItem.transform.Find ("qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
+
+				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (delegate {quantityPanel (item);});
+
 		}
 	}
+
 	public void selectItem(OrderItem item,GameObject newitem, int orderNum )
 	{
 		inventoryPanel.SetActive (true);
@@ -138,10 +156,15 @@ public class OrderUI : MonoBehaviour {
 	{
 		max = item.Quantity;
 		qtyPanel.SetActive (true);
+		tempitem = item;
 	}
 
 	public void AddItem()
 	{
+		
+		selectcontainer.transform.Find ("Button").GetComponent<Button> ().interactable = false;
+		tempitem.Quantity = tempitem.Quantity - currentAmount;
+
 		completeOrder.Add (selectOrder.ItemID,currentAmount);
 		qtyPanel.SetActive (false);
 		inventoryPanel.SetActive (false);
@@ -207,13 +230,22 @@ public class OrderUI : MonoBehaviour {
 
 		purchase.SetActive(true);
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + GameMaster.Instance.OrderManager.Orders[ordersNum].TotalValue().ToString();
-
 		StartCoroutine(moneyPopUp());
+
+		customer.SetText ("");
+		Date.SetText("");
+		timeRemaining.SetText("");
+		total.SetText("");
+		ClearItems ();
 	}
 	IEnumerator moneyPopUp()
 	{
 		yield return new WaitForSeconds(2);
 		purchase.SetActive (false);
 	}
+	public void Reset()
+	{
+		
 
+	}
 }
