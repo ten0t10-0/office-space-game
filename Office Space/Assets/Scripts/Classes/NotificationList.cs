@@ -7,6 +7,7 @@ public class NotificationList
 {
     public bool AllNotificationsRead;
 
+    [SerializeField]
     private List<Notification> notifications;
 
     #region <Properties>

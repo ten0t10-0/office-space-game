@@ -100,6 +100,7 @@ MonoBehaviour:
   MaxStoredNotifications: 50
   Notifications:
     AllNotificationsRead: 1
+    notifications: []
 --- !u!114 &114180071435077334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,4 +214,4 @@ MonoBehaviour:
   goCompCanvas: ComputerCanvas
   goApps: AppPanelScreen
   goOrdersPanel: OrdersPanel
-  OrdersPanel: {fileID: 0}
+  OrdersPanelScript: {fileID: 0}

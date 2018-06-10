@@ -98,6 +98,8 @@ public class OrderManager : MonoBehaviour
     {
         Orders[iOrderToClose].CloseOrder();
 
+        GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
+
         //*TEMP:
         Debug.Log("*ORDER CLOSED");
     }

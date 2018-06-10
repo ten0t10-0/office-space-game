@@ -178,7 +178,7 @@ public class Order
     }
 
     /// <summary>
-    /// Returns true if the order is closed AND completed.
+    /// Returns true if the order is closed AND filled.
     /// </summary>
     public bool Completed
     {

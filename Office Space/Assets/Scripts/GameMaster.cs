@@ -522,7 +522,7 @@ public class GameMaster : MonoBehaviour
                                     Debug.Log("*ORDER GENERATED!");
 
                                     Debug.Log("ORDER:");
-                                    foreach (OrderItem item in OrderManager.Orders[0].Items)
+                                    foreach (OrderItem item in OrderManager.Orders[OrderManager.Orders.Count - 1].Items)
                                         Debug.Log(string.Format("{0} x {1}", item.Quantity.ToString(), item.Name));
                                 }
                                 else
@@ -562,7 +562,7 @@ public class GameMaster : MonoBehaviour
                         if (GameDateTime >= OrderManager.Orders[i].DateDue)
                             CancelOrder(i); //* Maybe rather penalize player score if orders are late?
                         else
-                            Debug.Log("*Time remaining: " + OrderManager.Orders[i].GetTimeRemaining().ToString());
+                            Debug.Log("*Time remaining: " + OrderManager.Orders[i].GetTimeRemaining().ToString()); //***TEMP!
                     }
                 }
                 #endregion
