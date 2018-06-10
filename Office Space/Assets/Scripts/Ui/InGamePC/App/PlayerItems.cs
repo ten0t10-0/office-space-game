@@ -29,6 +29,7 @@ public class PlayerItems : MonoBehaviour
 			GameObject newItem = Instantiate (itemContainer, scrollViewContent);
 			newItem.transform.Find("Panel/Name").GetComponent<TMP_Text>().text = item.Name;
 			newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+			newItem.transform.Find("qty").GetComponent<TMP_Text>().text = item.Quantity.ToString();
 		}
 	}
 

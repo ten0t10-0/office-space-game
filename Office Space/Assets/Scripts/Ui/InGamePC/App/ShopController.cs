@@ -26,7 +26,7 @@ public class ShopController : MonoBehaviour
 
 	string supplier = "all",category = "all",subCategory = "all";
 
-
+	public GameObject moneyMsg;
 
 	Button computerBtn, allBtn, hardwareBtn, componentBtn, gamingBtn, merchBtn, 
 	//computers
@@ -273,6 +273,9 @@ public class ShopController : MonoBehaviour
 		}
 		else if (purchasedItem.UnitCost >= GameMaster.Instance.Player.Business.Money)
 		{
+			moneyMsg.transform.Find ("noMoneyText").GetComponent<TMP_Text> ().text = "You Do Not Have Enough Money!";
+			moneyMsg.SetActive (true);
+			StartCoroutine(moneyError());
 			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
 			return;
 		}
@@ -320,5 +323,10 @@ public class ShopController : MonoBehaviour
 
 		return itemPrice;
 
+	}
+	IEnumerator moneyError()
+	{
+		yield return new WaitForSeconds(2);
+		moneyMsg.SetActive (false);
 	}
 }

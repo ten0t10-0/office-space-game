@@ -14,7 +14,7 @@ public class PlayerUiController : MonoBehaviour
 	public TextMeshProUGUI playerMoney;
 
 	public GameObject buyPanel;
-	public GameObject moneyA;
+	public GameObject moneyA,moneyMsg;
 	//public GameObject pic;
 
 	public int max = 25;
@@ -79,17 +79,25 @@ public class PlayerUiController : MonoBehaviour
 		float space = 0, avalibleSpace = 0;
 		string result;
 
+		total = float.Parse(amount.text) * CalculateMarkUp(purchasedItem);
+
 		space = purchasedItem.UnitSpace * currentAmount; //space item takes up
 
 		avalibleSpace = GameMaster.Instance.Player.Business.ShopInventory.AvailableSpace();
 
 		if (total > GameMaster.Instance.Player.Business.Money) 
 		{
-			//ui not enough money!
+			moneyMsg.transform.Find ("noMoneyText").GetComponent<TMP_Text> ().text = "You Do Not Have Enough Money!";
+			moneyMsg.SetActive (true);
+
+			StartCoroutine(moneyErrors());
 		}
 		if (space > avalibleSpace) 
 		{
-			//ui not enough spaace!
+			moneyMsg.transform.Find("noMoneyText").GetComponent<TMP_Text> ().text = "You Do Not Have Enough Space!";
+			moneyMsg.SetActive (true);
+
+			StartCoroutine(moneyErrors());
 		}
 			
 		if ((total <= GameMaster.Instance.Player.Business.Money) && (space <= avalibleSpace))
@@ -99,8 +107,10 @@ public class PlayerUiController : MonoBehaviour
 
 			buyPanel.SetActive (false);
 
-			//animator.SetBool ("buy", true);
-			MoneyAnimation ();
+			moneyA.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "- "+ total.ToString();
+			moneyA.SetActive (true);
+
+			StartCoroutine(moneyPopUp());
 	
 		}
 	}
@@ -114,14 +124,25 @@ public class PlayerUiController : MonoBehaviour
 		return itemPrice;
 			
 	}
-
-	void MoneyAnimation()
+	IEnumerator moneyPopUp()
 	{
-		GameObject tempText = Instantiate (moneyA) as GameObject;
-
-		tempText.GetComponent<Animator> ().SetBool ("buy", true);
-		tempText.GetComponent<TMP_Text> ().text = "-" + total.ToString();
-
-		Destroy (tempText, 4);
+		yield return new WaitForSeconds(2);
+		moneyA.SetActive (false);
 	}
+
+	IEnumerator moneyErrors()
+	{
+		yield return new WaitForSeconds(2);
+		moneyMsg.SetActive (false);
+	}
+
+//	void MoneyAnimation()
+//	{
+//		GameObject tempText = Instantiate (moneyA) as GameObject;
+//
+//		tempText.GetComponent<Animator> ().SetBool ("buy", true);
+//		tempText.GetComponent<TMP_Text> ().text = "-" + total.ToString();
+//
+//		Destroy (tempText, 4);
+//	}
 }

@@ -6,33 +6,47 @@ using TMPro;
 
 public class OrderUI : MonoBehaviour {
 
-	public TextMeshProUGUI companyName, customer, timeRemaining, Date,total;
+	public TextMeshProUGUI companyName, customer, timeRemaining, Date,total, timerem;
 
 	[SerializeField] //Orders
 	private GameObject OrderContainer;
 	private Transform scrollViewContent;
 
-	[SerializeField] //Orders
+	[SerializeField] //items
 	private GameObject ItemContainer;
 	private Transform scrollContent;
 
-	[HideInInspector]
-	public Item purchasedItem;
+	[SerializeField] //items
+	private GameObject inventoryContainer;
+	private Transform iscrollContent;
 
-	public Sprite bronze, silver, gold;
+	Dictionary <int,int> completeOrder = new Dictionary<int,int>();
+
+	public Sprite bronze, silver, gold, tick;
+
+	public GameObject qtyPanel,inventoryPanel;
+
+	int qty, currentAmount = 1, increasePerClick = 1, min = 1, max = 25,ordersNum;
+
+	public InputField amount;
+	public Button btnDecrease,btnIncrease,confirm;
+
+	GameObject selectcontainer;
+	OrderItem selectOrder;
 
 	// Use this for initialization
 	void Start () 
 	{
 		
 		DisplayOrders ();
+		AddInventory ();
 
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		//DisplayOrders ();
+		
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 	}
 
@@ -46,31 +60,34 @@ public class OrderUI : MonoBehaviour {
 		{
 			GameObject newItem = Instantiate (OrderContainer, scrollViewContent);
 
-			newItem.transform.Find ("time").GetComponent<TMP_Text> ().text = order[i].GetTimeRemaining().ToString();
-			newItem.transform.Find ("Customer").GetComponent<TMP_Text> ().text = order[i].Customer.FullName();
+			newItem.transform.Find ("Button/time").GetComponent<TMP_Text> ().text = order[i].GetTimeRemaining().ToString();
+			newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order[i].Customer.FullName();
 
-			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetOrder(order,i);});
+			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetOrder( order, i);});
 
 		}
 	}
 
 	void SetOrder(List<Order> order,int i)
 	{
-		Debug.Log ("Blooooooooooooop");
+		i = i - 1;
 
 		ClearItems();
 
-		customer.SetText (order [i].Customer.FullName ());
-		Date.SetText(order[i].DateDue.ToString());
-		total.SetText(order[i].TotalValue().ToString());
+		Debug.Log (order [0].DateDue.ToString ());
+		customer.SetText (order [i].Customer.FullName().ToString());
 
+		Date.SetText(order[i].DateDue.ToString());
+
+		timeRemaining.SetText(order[i].GetTimeRemaining().ToString());
+		total.SetText("$" + order[i].TotalValue().ToString());
 
 		foreach (OrderItem item in order[i].Items)
 		{
 			GameObject newItems = Instantiate (ItemContainer, scrollContent);
 			newItems.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
 			newItems.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-			//newItems.transform.Find ("Qty").GetComponent<TMP_Text> ().text = order[i].
+			newItems.transform.Find ("Supplier").GetComponent<TMP_Text> ().text = item.Quantity.ToString();
 
 			if (item.Quality == ItemQuality.Low)
 			{
@@ -86,62 +103,51 @@ public class OrderUI : MonoBehaviour {
 			{
 				newItems.transform.Find ("Quality").GetComponent<Image> ().sprite = gold;;
 			}
-				
+			newItems.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {selectItem(item,newItems,i);});
 		}
 			
-
-
-
 	}
-//	public void AddByCateSupp (string cat, string supp, string subcat)
-//	{
-//		ClearInventory ();
-//
-//
-//		// gets SOs from suppliers and displays them based on categoryId and supplier
-//		for (iSupplier = 0; iSupplier < GameMaster.Instance.SupplierManager.Suppliers.Count; iSupplier++) {
-//			SupplierAI supplier = GameMaster.Instance.SupplierManager.Suppliers [iSupplier];
-//
-//			if (supplier.Name == supp && allSupp == false) {	
-//
-//				for (iItem = 0; iItem < supplier.Inventory.Items.Count; iItem++) {
-//					Item item = supplier.Inventory.Items [iItem];
-//
-//					GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-//
-//					SetItem (newItem, iSupplier, iItem, item);
-//				}
-//			}
-//		}
-//	}
-//	void SetItem(GameObject newItem,int iSupplier,int iItem, Item item)
-//	{
-//		newItem.GetComponent<ItemContainerScript> ().SupplierIndex = iSupplier;
-//		newItem.GetComponent<ItemContainerScript> ().ItemIndex = iItem;
-//
-//		newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-//		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-//		newItem.transform.Find ("Supplier").GetComponent<TMP_Text> ().text = GameMaster.Instance.SupplierManager.Suppliers [iSupplier].Name.ToString ();
-//		newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = "$ " + CalculateMarkUp(item, iSupplier).ToString();
-//
-//		if (item.Quality == ItemQuality.Low)
-//		{
-//			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = bronze;;
-//
-//		}
-//		else if (item.Quality == ItemQuality.Medium)
-//		{
-//			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = silver;;
-//
-//		}
-//		else if (item.Quality == ItemQuality.High)
-//		{
-//			newItem.transform.Find ("Quality").GetComponent<Image> ().sprite = gold;;
-//		}
-//
-//		newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(BuyOnClick);
-//	}
-//
+
+	public void AddInventory()
+	{
+
+		ClearInventory ();
+
+		foreach (OrderItem item in GameMaster.Instance.Player.Business.WarehouseInventory.Items) 
+		{
+			GameObject newItem = Instantiate (inventoryContainer, iscrollContent);
+			newItem.transform.Find("Panel/Name").GetComponent<TMP_Text>().text = item.Name;
+			newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
+			newItem.transform.Find("qty").GetComponent<TMP_Text>().text = item.Quantity.ToString();
+
+
+
+			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {quantityPanel( item);});
+		}
+	}
+	public void selectItem(OrderItem item,GameObject newitem, int orderNum )
+	{
+		inventoryPanel.SetActive (true);
+		selectOrder = item;
+		selectcontainer = newitem;
+		ordersNum = orderNum; 
+		AddInventory ();
+	}
+
+	public void quantityPanel(OrderItem item)
+	{
+		max = item.Quantity;
+		qtyPanel.SetActive (true);
+	}
+
+	public void AddItem()
+	{
+		completeOrder.Add (selectOrder.ItemID,currentAmount);
+		qtyPanel.SetActive (false);
+		inventoryPanel.SetActive (false);
+		selectcontainer.transform.Find ("Button").GetComponent<Button> ().image.sprite = tick;
+	}
+
 	public void ClearOrders()
 	{
 		if (scrollViewContent == null)
@@ -164,6 +170,17 @@ public class OrderUI : MonoBehaviour {
 			Destroy(childs.gameObject);
 		}
 	}
+	public void ClearInventory()
+	{
+		if (iscrollContent == null)
+		{
+			iscrollContent = transform.Find("orderInventory/Scroll View/Viewport/Content");
+		}
+		foreach (Transform childs in iscrollContent)
+		{
+			Destroy(childs.gameObject);
+		}
+	}
 	public float CalculateMarkUp(Item pi,int iSupplier)
 	{
 		float itemPrice = 0;
@@ -171,15 +188,22 @@ public class OrderUI : MonoBehaviour {
 		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
 
 		return itemPrice;
-
 	}
-//	public float CalculateMarkUp(Item pi,int iSupplier)
-//	{
-//		float itemPrice = 0;
-//
-//		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
-//
-//		return itemPrice;
-//
-//	}
+	public void ChangeAmount(bool increase)
+	{
+		// clamp current value between min-max
+		currentAmount = Mathf.Clamp(currentAmount + (increase ? increasePerClick : -increasePerClick), min, max);
+		amount.text = currentAmount.ToString();
+
+		// disable buttons i
+		btnDecrease.interactable = currentAmount > min;
+		btnIncrease.interactable = currentAmount < max;
+	}
+	public void CompleteOrders()
+	{
+		string a;
+
+		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder,out a);
+	}
+
 }
