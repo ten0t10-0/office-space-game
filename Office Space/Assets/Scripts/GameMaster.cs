@@ -281,13 +281,13 @@ public class GameMaster : MonoBehaviour
 
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
         {
-            //TEST: Adding Notifications
-            for (int c = 1; c <= 3; c++)
-            {
-                Notifications.Add("TEST Notification " + c.ToString() + ".");
-            }
+            ////TEST: Adding Notifications
+            //for (int c = 1; c <= 3; c++)
+            //{
+            //    Notifications.Add("TEST Notification " + c.ToString() + ".");
+            //}
 
-            //TEST: Displaying Notifications
+            ////TEST: Displaying Notifications
             //List<Notification> notifications = Notifications.GetAll();
 
             //for (int i = notifications.Count - 1; i >= 0; i--)

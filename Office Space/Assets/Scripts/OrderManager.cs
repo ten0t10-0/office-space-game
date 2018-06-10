@@ -92,6 +92,11 @@ public class OrderManager : MonoBehaviour
     public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment, out int score, out float penaltyMultiplier)
     {
         Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, out payment, out score, out penaltyMultiplier);
+
+        string result = "Order for " + Orders[iOrderToComplete].Customer.FullName() + " completed!";
+        GameMaster.Instance.Notifications.Add(result);
+
+        GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
     }
 
     public void CloseOrder(int iOrderToClose)
