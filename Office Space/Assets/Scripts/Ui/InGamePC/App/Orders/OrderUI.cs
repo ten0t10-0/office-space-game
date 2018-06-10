@@ -120,8 +120,6 @@ public class OrderUI : MonoBehaviour {
 			newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
 			newItem.transform.Find("qty").GetComponent<TMP_Text>().text = item.Quantity.ToString();
 
-
-
 			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {quantityPanel( item);});
 		}
 	}
