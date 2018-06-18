@@ -4,26 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Phone : MonoBehaviour {
+public class Phone : MonoBehaviour 
+{
 
 	public GameObject phone;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () 
+	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.C)) 
+		if (Input.GetKeyDown (KeyCode.B)) 
 		{
-			OpenPhone ();
+			phone.SetActive (true);
+		}
+		if (Input.GetKeyDown(KeyCode.N)) 
+		{
+			phone.SetActive (false);
 		}
 	}
-
-	public void OpenPhone()
-	{
-		phone.SetActive (true);
-	}
 }
+

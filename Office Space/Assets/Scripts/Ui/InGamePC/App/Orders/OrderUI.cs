@@ -26,7 +26,7 @@ public class OrderUI : MonoBehaviour {
 
 	public GameObject qtyPanel,inventoryPanel;
 
-	int qty, currentAmount = 1, increasePerClick = 1, min = 1, max = 25,ordersNum;
+	int qty, currentAmount = 1, increasePerClick = 1, min = 1, max = 25,ordersNum,i;
 
 	public InputField amount;
 	public Button btnDecrease,btnIncrease,confirm;
@@ -36,6 +36,8 @@ public class OrderUI : MonoBehaviour {
 	GameObject selectcontainer;
 	OrderItem selectOrder;
 	OrderItem tempitem;
+	float currCountdownValue;
+
 
 	List<Item> tempItem = new List<Item> ();
 
@@ -53,6 +55,8 @@ public class OrderUI : MonoBehaviour {
 	{
 		
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
+
+
 	}
 
 	public void DisplayOrders()
@@ -69,9 +73,10 @@ public class OrderUI : MonoBehaviour {
 			newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order[i].Customer.FullName();
 
 			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetOrder( order, i);});
-
+			StartCoroutine(CountdownTimer(i,newItem));
 		}
 	}
+
 
 	void SetOrder(List<Order> order,int i)
 	{
@@ -82,7 +87,7 @@ public class OrderUI : MonoBehaviour {
 		Debug.Log (order [0].DateDue.ToString ());
 		customer.SetText (order [i].Customer.FullName().ToString());
 
-		Date.SetText(order[i].DateDue.ToString());
+		//Date.SetText(order[i].DateDue.ToString());
 
 		timeRemaining.SetText(order[i].GetTimeRemaining().ToString());
 		total.SetText("$" + order[i].TotalValue().ToString());
@@ -131,7 +136,6 @@ public class OrderUI : MonoBehaviour {
 
 		foreach(OrderItem item in tempItem)
 		{
-			
 
 				GameObject newItem = Instantiate (inventoryContainer, iscrollContent);
 				newItem.transform.Find ("Panel/Name").GetComponent<TMP_Text> ().text = item.Name;
@@ -139,7 +143,7 @@ public class OrderUI : MonoBehaviour {
 				newItem.transform.Find ("qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
 
 				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (delegate {quantityPanel (item);});
-
+		
 		}
 	}
 
@@ -243,9 +247,20 @@ public class OrderUI : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		purchase.SetActive (false);
 	}
-	public void Reset()
+	IEnumerator CountdownTimer(int ordersNum,GameObject newItem)
 	{
-		
-
+		while (GameMaster.Instance.OrderManager.Orders [ordersNum].Open && newItem != null)
+		{
+			yield return new WaitForSeconds (1);
+			newItem.transform.Find ("Button/time").GetComponent<TMP_Text> ().text = GameMaster.Instance.OrderManager.Orders [ordersNum].GetTimeRemaining().ToString();
+			timeRemaining.SetText(GameMaster.Instance.OrderManager.Orders [ordersNum].GetTimeRemaining().ToString());
+		}
+		timeRemaining.SetText (" ");
 	}
+//	public void Reset()
+//	{
+//		
+//
+//	}
+
 }

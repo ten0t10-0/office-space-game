@@ -261,4 +261,6 @@ MonoBehaviour:
   goCompCanvas: ComputerCanvas
   goApps: AppPanelScreen
   goOrdersPanel: OrdersPanel
+  HudCanvas: HudCanvas
   OrdersPanelScript: {fileID: 0}
+  hudScript: {fileID: 0}

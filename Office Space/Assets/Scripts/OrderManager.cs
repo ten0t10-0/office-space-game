@@ -87,6 +87,7 @@ public class OrderManager : MonoBehaviour
         Orders.Add(new Order(customer, items, currentDate, dueDate));
 
         GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
+		GameMaster.Instance.GUIManager.hudScript.orderNotifiation ();
     }
 
     public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment, out int score, out float penaltyMultiplier)
