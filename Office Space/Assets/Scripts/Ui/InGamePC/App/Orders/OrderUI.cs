@@ -56,7 +56,10 @@ public class OrderUI : MonoBehaviour {
 		
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 
-
+		if (GameMaster.Instance.OrderManager.Orders [i].Open == false) 
+		{
+			clearInvoice ();
+		}
 	}
 
 	public void DisplayOrders()
@@ -236,11 +239,7 @@ public class OrderUI : MonoBehaviour {
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + GameMaster.Instance.OrderManager.Orders[ordersNum].TotalValue().ToString();
 		StartCoroutine(moneyPopUp());
 
-		customer.SetText ("");
-		Date.SetText("");
-		timeRemaining.SetText("");
-		total.SetText("");
-		ClearItems ();
+		clearInvoice ();
 	}
 	IEnumerator moneyPopUp()
 	{
@@ -262,5 +261,13 @@ public class OrderUI : MonoBehaviour {
 //		
 //
 //	}
+	public void clearInvoice()
+	{
+		customer.SetText ("");
+		Date.SetText("");
+		timeRemaining.SetText("");
+		total.SetText("");
+		ClearItems ();
+	}
 
 }
