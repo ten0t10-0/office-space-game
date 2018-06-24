@@ -6,6 +6,8 @@ using UnityEngine;
 public class CharacterClothingSO : ScriptableObject
 {
     public string Name;
+    public float Price;
+    public int LevelRequirement;
     public CharacterClothingSlotSO ClothingSlot;
 
     /// <summary>

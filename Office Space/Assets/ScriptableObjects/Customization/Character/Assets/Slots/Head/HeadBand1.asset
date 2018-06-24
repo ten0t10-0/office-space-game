@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Name: HeadBand1
   m_EditorClassIdentifier: 
   Name: Head band
+  Price: 60
+  LevelRequirement: 5
   ClothingSlot: {fileID: 11400000, guid: 4b8d4a6e5ffecfa4384bca03deb82661, type: 2}
   Meshes:
   - {fileID: 0}

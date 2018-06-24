@@ -226,7 +226,7 @@ public class CharacterCustomizationScript : MonoBehaviour
                     bodyObjectSMR.sharedMesh = charClothingSO.Meshes[1];
 
                     //Set Material (if needed):
-                    if (bodyObject.GetComponent<Renderer>().sharedMaterial == MaterialBlank)
+                    if (bodyObjectRenderer.sharedMaterial == MaterialBlank)
                     {
                         bodyObject.GetComponent<Renderer>().sharedMaterial = MaterialBody;
                     }
@@ -262,7 +262,7 @@ public class CharacterCustomizationScript : MonoBehaviour
                 bodyObjectSMR.sharedMesh = charBody.Mesh;
 
                 //Set Material (if needed):
-                if (bodyObject.GetComponent<Renderer>().sharedMaterial == MaterialBlank)
+                if (bodyObjectRenderer.sharedMaterial == MaterialBlank)
                 {
                     bodyObject.GetComponent<Renderer>().sharedMaterial = MaterialBody;
                 }

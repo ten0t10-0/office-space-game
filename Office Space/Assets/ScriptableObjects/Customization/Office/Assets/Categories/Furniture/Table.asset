@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866bc56147420c940a261d41a48322f9, type: 3}
   m_Name: Table
   m_EditorClassIdentifier: 
-  Name: Table
+  Name: Tables
   Category: 0

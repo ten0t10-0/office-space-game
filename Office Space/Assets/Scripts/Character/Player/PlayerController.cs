@@ -43,18 +43,6 @@ public class PlayerController : MonoBehaviour
             StopAnimations();
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        { grounded = true; Debug.Log("Grounded!"); }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        { grounded = false; Debug.Log("Airborne!"); }
-    }
-
     private void Move(float h, float v)
     {
         Vector3 currentPostion, newPosition;
@@ -128,5 +116,17 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool("IsWalking", false);
         animator.SetBool("IsRunning", false);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        { grounded = true; Debug.Log("Grounded!"); }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        { grounded = false; Debug.Log("Airborne!"); }
     }
 }

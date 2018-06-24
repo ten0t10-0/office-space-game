@@ -17,15 +17,25 @@ MonoBehaviour:
     type: 2}
   MaterialCeilingDefault: {fileID: 2100000, guid: 72895f0d12bb70d46be5517d4e2f429e,
     type: 2}
+  MaterialInvalidPlacement: {fileID: 2100000, guid: 87abbd164281efb4aaa51f443c04cca4,
+    type: 2}
+  MaterialHighlighted: {fileID: 2100000, guid: 607e9c9ecdac7ee4d9450a271526408a, type: 2}
+  LightLampDefault: {fileID: 1268886436010040, guid: 7a0ac125b6a6299439a3f1e45b46e59a,
+    type: 2}
+  OfficeItemLayer: 8
+  ObjectPlacementDistance: 10
   MaterialWallsCurrent: {fileID: 0}
   MaterialFloorCurrent: {fileID: 0}
   MaterialCeilingCurrent: {fileID: 0}
+  SelectedObjectIndex: -1
   OfficeParentName: Office
   RoomParentName: Room
   ObjectsParentName: Objects
-  MaxNumberOfObjects: 15
+  MaxNumberOfObjects: 25
   Items:
   - {fileID: 11400000, guid: c6a5117425a2d5e4fb37cf6a294e5348, type: 2}
+  - {fileID: 11400000, guid: 3ffe20ae191503049bb40c0d4697cc38, type: 2}
+  - {fileID: 11400000, guid: fffd17d5b5902004a9df5fd169aa006a, type: 2}
   Types:
   - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
   DefaultOfficeItemIndexes: 00000000

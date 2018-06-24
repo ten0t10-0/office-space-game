@@ -6,6 +6,10 @@ using UnityEngine;
 public class OfficeItemSO : ScriptableObject
 {
     public string Name;
+    public float Price;
+    public bool Essential;
+    public int LevelRequirement;
+    public OfficeItemPosition Placement;
     public OfficeItemTypeSO Type;
     public GameObject Object;
 }

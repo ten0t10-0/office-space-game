@@ -28,22 +28,6 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
         player.GetComponent<CharacterCustomizationScript>().SetAppearanceByData(customizationData);
     }
 
-    /// <summary>
-    /// Returns a list of clothing items based on the default indexes defined in GameMaster.
-    /// </summary>
-    /// <returns></returns>
-    private List<CharacterClothing> GetDefaultClothing()
-    {
-        List<CharacterClothing> defaultClothing = new List<CharacterClothing>();
-
-        foreach (int i in DefaultClothingIndexes)
-        {
-            defaultClothing.Add(new CharacterClothing(i));
-        }
-
-        return defaultClothing;
-    }
-
     public CharacterClothingSlotSO GetClothingSlotSO(ClothingSlot slot)
     {
         CharacterClothingSlotSO slotSO = ClothingSlots[0];

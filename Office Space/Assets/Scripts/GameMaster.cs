@@ -75,6 +75,7 @@ public class GameMaster : MonoBehaviour
 
     #region <Bools>
     public bool UIMode = false;
+    public bool BuildMode = false;
     public bool OfflineMode = false;
     public bool TEMPSaveGame = true;
     public bool TutorialMode = false; //* + Check save data
@@ -192,6 +193,10 @@ public class GameMaster : MonoBehaviour
         CustomizationManager = GetComponent<CustomizationManager>();
         GUIManager = GetComponent<GUIManager>();
 
+        #region <Manager-specific initializations>
+        CustomizationManager.Office.Initialize();
+        #endregion
+
         #region <Validate Game Save File Name & Extension>
         string tempSaveFileName, tempSaveFileExtension;
 
@@ -250,28 +255,6 @@ public class GameMaster : MonoBehaviour
     {
         //***<TEST NEW GAME METHOD>***
         NewGameTEST();
-
-		//Demo();
-    }
-
-	private void Demo()
-	{
-        string result;
-
-        Difficulty = 0;
-
-        Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerInventorySpace, initPlayerShopSpace);
-
-        SupplierManager.GenerateSuppliers(5, out result);
-        SupplierManager.PopulateSupplierInventories();
-
-        SpawnPlayer();
-
-        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
-
-        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
-
-        tPlayerPlayTime = tGameTime = Time.time;
     }
 
     private void NewGameTEST()
@@ -433,9 +416,17 @@ public class GameMaster : MonoBehaviour
             //newObject1.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
 
             //  ^ Adding office object:
-            GameObject newObject2 = CustomizationManager.Office.InitializeOfficeObject(0);
+            int iObject;
+            CustomizationManager.Office.InitializeOfficeObject(0, out iObject);
+            GameObject newObject2 = CustomizationManager.Office.GetOfficeObject(iObject);
             newObject2.transform.position = new Vector3(0f, 0f, 7.63f);
-            newObject2.transform.rotation = Quaternion.Euler(-90f, 90f, 0f);
+            newObject2.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+            CustomizationManager.Office.InitializeOfficeObject(1, out iObject);
+            CustomizationManager.Office.GetOfficeObject(iObject).transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+            CustomizationManager.Office.InitializeOfficeObject(2, out iObject);
+            CustomizationManager.Office.GetOfficeObject(iObject).transform.position = new Vector3(1.71f, 2.089318f, 7.24f);
 
             //TEST: Save Game
             SaveGame();
@@ -585,13 +576,21 @@ public class GameMaster : MonoBehaviour
             #endregion
         }
         #endregion
-    }
 
-    private void FixedUpdate()
-    {
+        #region <INPUTS>
         //TEST: Saving during gameplay
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
             SaveGame();
+
+        //TEST: Lock & Unlock cursor
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (Cursor.lockState == CursorLockMode.None)
+                Cursor.lockState = CursorLockMode.Locked;
+            else
+                Cursor.lockState = CursorLockMode.None;
+        }
+        #endregion
     }
 
     #region <SALES METHOD(S)>
@@ -693,6 +692,20 @@ public class GameMaster : MonoBehaviour
         if (GetDifficultySetting().IncludeCustomerTolerance)
             Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
     }
+    #endregion
+
+    #region <CUSTOMIZATION METHODS>
+    //public void PurchaseOfficeItem(int iOfficeItem)
+    //{
+    //    int iObject;
+
+    //    OfficeItemSO officeItem = CustomizationManager.Office.Items[iOfficeItem];
+
+    //    Player.Business.Money -= officeItem.Price;
+
+    //    CustomizationManager.Office.InitializeOfficeObject(iOfficeItem, out iObject);
+    //    CustomizationManager.Office.SelectObject(iObject);
+    //}
     #endregion
 
     #region <GAME TIME METHODS>

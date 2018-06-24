@@ -136,6 +136,18 @@ public class OrderManager : MonoBehaviour
                 }
 
                 if (!exclude)
+                {
+                    foreach (int itemId in itemIDsAvailable)
+                    {
+                        if (item.ItemID == itemId)
+                        {
+                            exclude = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!exclude)
                     itemIDsAvailable.Add(item.ItemID);
             }
         }
@@ -153,6 +165,18 @@ public class OrderManager : MonoBehaviour
                 {
                     exclude = true;
                     break;
+                }
+            }
+
+            if (!exclude)
+            {
+                foreach (int itemId in itemIDsAvailable)
+                {
+                    if (item.ItemID == itemId)
+                    {
+                        exclude = true;
+                        break;
+                    }
                 }
             }
 

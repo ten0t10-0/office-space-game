@@ -8,6 +8,14 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public Material MaterialWallsDefault;
     public Material MaterialFloorDefault;
     public Material MaterialCeilingDefault;
+    public Material MaterialInvalidPlacement;
+    public Material MaterialHighlighted;
+
+    public GameObject LightLampDefault;
+
+    public int OfficeItemLayer = 8;
+
+    public float ObjectPlacementDistance = 7f;
 
     [HideInInspector]
     public Material MaterialWallsCurrent;
@@ -15,6 +23,9 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public Material MaterialFloorCurrent;
     [HideInInspector]
     public Material MaterialCeilingCurrent;
+
+    [HideInInspector]
+    public int SelectedObjectIndex = -1;
 
     public string OfficeParentName;
     public string RoomParentName;
@@ -29,6 +40,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
+
     private List<GameObject> currentObjects;
 
     /// <summary>
@@ -45,9 +57,11 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
         currentObjects = new List<GameObject>();
 
-        for (int i = 0; i < officeRoomTransform.Find("Walls").childCount; i++)
+        Transform wallsTransform = officeRoomTransform.Find("Walls");
+
+        for (int i = 0; i < wallsTransform.childCount; i++)
         {
-            officeRoomTransform.Find("Walls").GetChild(i).gameObject.GetComponent<Renderer>().sharedMaterial = MaterialWallsCurrent;
+            wallsTransform.GetChild(i).gameObject.GetComponent<Renderer>().sharedMaterial = MaterialWallsCurrent;
         }
     }
 
@@ -67,8 +81,11 @@ public class OfficeItemDatabaseSO : ScriptableObject
         {
             foreach(OfficeItem officeItem in data.OfficeItems)
             {
-                GameObject newOfficeObject = InitializeOfficeObject(officeItem.ItemID);
+                int iObject;
 
+                InitializeOfficeObject(officeItem.ItemID, out iObject);
+
+                GameObject newOfficeObject = currentObjects[iObject];
                 newOfficeObject.transform.position = officeItem.GetPosition();
                 newOfficeObject.transform.rotation = officeItem.GetRotation();
             }
@@ -76,30 +93,45 @@ public class OfficeItemDatabaseSO : ScriptableObject
     }
 
     /// <summary>
-    /// (Call from UI?) Instantiates a new office object with DEFAULT position and rotation, and sets its held values for office item ID and object list index.
+    /// Instantiates a new office object with DEFAULT position and rotation, and sets its held values for office item ID and object list index.
     /// </summary>
     /// <param name="officeItemId"></param>
     /// <returns></returns>
-    public GameObject InitializeOfficeObject(int officeItemId)
+    public void InitializeOfficeObject(int officeItemId, out int objectIndex)
     {
         if (currentObjects.Count <= MaxNumberOfObjects)
         {
             GameObject officeObject = Instantiate(Items[officeItemId].Object, officeObjectTransform);
 
-            officeObject.GetComponent<OfficeObjectScript>().OfficeItemID = officeItemId;
-            officeObject.GetComponent<OfficeObjectScript>().ObjectIndex = currentObjects.Count;
+            objectIndex = currentObjects.Count;
+
+            officeObject.GetComponent<OfficeObjectScript>().Initialize(officeItemId, objectIndex);
 
             currentObjects.Add(officeObject);
-
-            return officeObject;
         }
         else
         {
             //TEMP:
+            objectIndex = -1;
             Debug.Log("*Maximum number of items placed.");
-
-            return null;
         }
+    }
+
+    public void SelectObject(int objectIndex)
+    {
+        currentObjects[objectIndex].GetComponent<OfficeObjectScript>().Select();
+        SelectedObjectIndex = objectIndex;
+    }
+
+    public void PlaceObject()
+    {
+        currentObjects[SelectedObjectIndex].GetComponent<OfficeObjectScript>().Deselect();
+        SelectedObjectIndex = -1;
+    }
+
+    public GameObject GetOfficeObject(int objectIndex)
+    {
+        return currentObjects[objectIndex];
     }
 
     /// <summary>

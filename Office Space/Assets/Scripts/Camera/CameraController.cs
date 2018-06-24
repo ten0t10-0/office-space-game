@@ -27,7 +27,8 @@ public class CameraController : MonoBehaviour
     private GameObject targetController;
     private string targetControllerName = "CameraTargetController";
 
-    private Vector3 offset;
+    [HideInInspector]
+    public Vector3 Offset;
 
     private float physicsSphereRadius = 0.5f;
 
@@ -56,7 +57,7 @@ public class CameraController : MonoBehaviour
 
         //Set initial camera position.
         transform.position = targetController.transform.position + new Vector3(0, 0, (minDistanceFromTarget + zoomSpeed) * -1);
-        offset = targetController.transform.position - transform.position;
+        Offset = targetController.transform.position - transform.position;
 
         //Cursor.visible = false;
     }
@@ -68,6 +69,9 @@ public class CameraController : MonoBehaviour
         {
             float horizontal = Input.GetAxisRaw("Mouse X") * horizontalSensitivity; //*
             float vertical = Input.GetAxisRaw("Mouse Y") * verticalSensitivity * -1; //*
+
+            int layerMask = 1 << GameMaster.Instance.CustomizationManager.Office.OfficeItemLayer | 1 << 2;
+            layerMask = ~layerMask;
 
             switch (CameraMode)
             {
@@ -100,9 +104,9 @@ public class CameraController : MonoBehaviour
                             offsetX = OffsetX;
 
                             Vector3 tempOrigin = targetController.transform.position;
-                            tempOrigin.y = (tempOrigin - (newRotation * offset)).y ;
+                            tempOrigin.y = (tempOrigin - (newRotation * Offset)).y ;
 
-                            if (Physics.SphereCast(tempOrigin, physicsSphereRadius, targetController.transform.right, out wallHit, OffsetX))
+                            if (Physics.SphereCast(tempOrigin, physicsSphereRadius, targetController.transform.right, out wallHit, OffsetX, layerMask))
                             {
                                 float modifier = physicsSphereRadius - (physicsSphereRadius * (wallHit.distance / OffsetX));
                                 offsetX = wallHit.distance - modifier;
@@ -116,10 +120,10 @@ public class CameraController : MonoBehaviour
                         }
 
                         //New position of the camera before taking collision into account:
-                        newPosition = targetPosition - (newRotation * offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
+                        newPosition = targetPosition - (newRotation * Offset); //<Quaternion> * <Vector3> applies the rotation (Quaternion) to the Vector3. Not sure how this works...
 
                         //Check for collision:
-                        if (Physics.SphereCast(targetPosition, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetPosition, newPosition)))
+                        if (Physics.SphereCast(targetPosition, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetPosition, newPosition), layerMask))
                             newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
 
                         transform.position = newPosition;
@@ -132,20 +136,20 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         //***Might need to change Input method for this to work on all devices.
         if (!GameMaster.Instance.UIMode)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (offset.z > minDistanceFromTarget)
-                    offset -= Vector3.forward * zoomSpeed;
+                if (Offset.z > minDistanceFromTarget)
+                    Offset -= Vector3.forward * zoomSpeed;
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (offset.z < maxDistanceFromTarget)
-                    offset += Vector3.forward * zoomSpeed;
+                if (Offset.z < maxDistanceFromTarget)
+                    Offset += Vector3.forward * zoomSpeed;
             }
 
             if (Input.GetKeyDown(KeyCode.Tab))

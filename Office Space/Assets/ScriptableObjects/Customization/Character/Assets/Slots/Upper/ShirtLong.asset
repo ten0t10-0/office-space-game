@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: ShirtLong
   m_EditorClassIdentifier: 
   Name: Shirt (Long sleeves)
+  Price: 120
   ClothingSlot: {fileID: 11400000, guid: 6cfdc29132020944183c578f0e761579, type: 2}
   Meshes:
   - {fileID: 4300006, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}

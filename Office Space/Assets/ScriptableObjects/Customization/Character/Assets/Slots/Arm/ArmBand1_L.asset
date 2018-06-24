@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Name: ArmBand1_L
   m_EditorClassIdentifier: 
   Name: Left Arm band
+  Price: 50
+  LevelRequirement: 5
   ClothingSlot: {fileID: 11400000, guid: 7de66848f69064b40993fc639bd154c5, type: 2}
   Meshes:
   - {fileID: 0}
