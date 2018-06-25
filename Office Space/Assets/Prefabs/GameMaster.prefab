@@ -115,8 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
   Office: {fileID: 11400000, guid: 26d39428fe603c648918aa2e55f31bbc, type: 2}
-  SelectedOfficeObject: {fileID: 0}
-  OfficeObjectPlacementDistance: 10
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1

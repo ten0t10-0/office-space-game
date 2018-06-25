@@ -8,6 +8,9 @@ public class OfficeCustomizationData
     [SerializeField]
     public List<OfficeItem> OfficeItems { get; set; }
 
+    [SerializeField]
+    public List<OfficeObjectDependency> Dependencies { get; set; }
+
     public float ColorWallsR { get; set; }
     public float ColorWallsG { get; set; }
     public float ColorWallsB { get; set; }
@@ -27,6 +30,7 @@ public class OfficeCustomizationData
     public OfficeCustomizationData(Color colorWalls, Color colorFloor, Color colorCeiling)
     {
         OfficeItems = new List<OfficeItem>();
+        Dependencies = new List<OfficeObjectDependency>();
 
         UpdateWallsColorData(colorWalls);
         UpdateFloorColorData(colorFloor);

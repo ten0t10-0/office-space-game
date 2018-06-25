@@ -418,15 +418,21 @@ public class GameMaster : MonoBehaviour
             //  ^ Adding office object:
             int iObject;
             CustomizationManager.Office.InitializeOfficeObject(0, out iObject);
-            GameObject newObject2 = CustomizationManager.Office.GetOfficeObject(iObject);
+            GameObject newObject2 = CustomizationManager.Office.CurrentObjects[iObject];
             newObject2.transform.position = new Vector3(0f, 0f, 7.63f);
             newObject2.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
             CustomizationManager.Office.InitializeOfficeObject(1, out iObject);
-            CustomizationManager.Office.GetOfficeObject(iObject).transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            CustomizationManager.Office.CurrentObjects[iObject].transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
             CustomizationManager.Office.InitializeOfficeObject(2, out iObject);
-            CustomizationManager.Office.GetOfficeObject(iObject).transform.position = new Vector3(1.71f, 2.089318f, 7.24f);
+            CustomizationManager.Office.CurrentObjects[iObject].transform.position = new Vector3(1.71f, 2.089318f, 7.24f);
+            CustomizationManager.Office.CurrentObjects[iObject].GetComponent<OfficeObjectScript>().SetParent(0);
+
+            CustomizationManager.Office.InitializeOfficeObject(2, out iObject);
+
+            CustomizationManager.Office.InitializeOfficeObject(2, out iObject);
+            CustomizationManager.Office.CurrentObjects[iObject].transform.position = new Vector3(2f, 0f, 0f);
 
             //TEST: Save Game
             SaveGame();

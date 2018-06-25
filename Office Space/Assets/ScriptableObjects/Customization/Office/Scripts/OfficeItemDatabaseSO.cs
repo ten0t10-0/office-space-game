@@ -41,7 +41,12 @@ public class OfficeItemDatabaseSO : ScriptableObject
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
 
-    private List<GameObject> currentObjects;
+    public List<GameObject> CurrentObjects;
+
+    public bool ObjectSelected
+    {
+        get { return SelectedObjectIndex > -1; }
+    }
 
     /// <summary>
     /// Sets up a reference to the correct parent object for instantiating office items and creates walls, floor and ceiling materials.
@@ -55,7 +60,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
         officeRoomTransform = GameObject.Find(OfficeParentName).transform.Find(RoomParentName);
         officeObjectTransform = GameObject.Find(OfficeParentName).transform.Find(ObjectsParentName);
 
-        currentObjects = new List<GameObject>();
+        CurrentObjects = new List<GameObject>();
 
         Transform wallsTransform = officeRoomTransform.Find("Walls");
 
@@ -85,9 +90,27 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
                 InitializeOfficeObject(officeItem.ItemID, out iObject);
 
-                GameObject newOfficeObject = currentObjects[iObject];
+                GameObject newOfficeObject = CurrentObjects[iObject];
                 newOfficeObject.transform.position = officeItem.GetPosition();
                 newOfficeObject.transform.rotation = officeItem.GetRotation();
+            }
+
+            int iCurrentObjectsStart = 0;
+
+            foreach (OfficeObjectDependency dependency in data.Dependencies)
+            {
+                for (int iCurrentObjects = iCurrentObjectsStart; iCurrentObjects < CurrentObjects.Count; iCurrentObjects++)
+                {
+                    OfficeObjectScript objScript = CurrentObjects[iCurrentObjects].GetComponent<OfficeObjectScript>();
+
+                    if (objScript.ObjectIndex == dependency.ObjectIndexChild)
+                    {
+                        objScript.SetParent(dependency.ObjectIndexParent);
+
+                        iCurrentObjectsStart++;
+                        iCurrentObjects = CurrentObjects.Count; //break;
+                    }
+                }
             }
         }
     }
@@ -99,15 +122,15 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// <returns></returns>
     public void InitializeOfficeObject(int officeItemId, out int objectIndex)
     {
-        if (currentObjects.Count <= MaxNumberOfObjects)
+        if (CurrentObjects.Count <= MaxNumberOfObjects)
         {
             GameObject officeObject = Instantiate(Items[officeItemId].Object, officeObjectTransform);
 
-            objectIndex = currentObjects.Count;
+            objectIndex = CurrentObjects.Count;
 
             officeObject.GetComponent<OfficeObjectScript>().Initialize(officeItemId, objectIndex);
 
-            currentObjects.Add(officeObject);
+            CurrentObjects.Add(officeObject);
         }
         else
         {
@@ -119,31 +142,34 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     public void SelectObject(int objectIndex)
     {
-        currentObjects[objectIndex].GetComponent<OfficeObjectScript>().Select();
+        CurrentObjects[objectIndex].GetComponent<OfficeObjectScript>().Select();
         SelectedObjectIndex = objectIndex;
     }
 
-    public void PlaceObject()
+    public void PlaceObject(GameObject parentObj)
     {
-        currentObjects[SelectedObjectIndex].GetComponent<OfficeObjectScript>().Deselect();
+        if (parentObj != null && parentObj.GetComponent<OfficeObjectScript>() != null)
+        {
+            CurrentObjects[SelectedObjectIndex].GetComponent<OfficeObjectScript>().SetParent(parentObj.GetComponent<OfficeObjectScript>().ObjectIndex);
+        }
+        else
+        {
+            CurrentObjects[SelectedObjectIndex].GetComponent<OfficeObjectScript>().ParentIndex = -1;
+            CurrentObjects[SelectedObjectIndex].transform.parent = officeObjectTransform;
+        }
+        
+        CurrentObjects[SelectedObjectIndex].GetComponent<OfficeObjectScript>().Deselect();
         SelectedObjectIndex = -1;
-    }
-
-    public GameObject GetOfficeObject(int objectIndex)
-    {
-        return currentObjects[objectIndex];
     }
 
     /// <summary>
     /// (Call after user selects to remove an object from their office?)
     /// </summary>
     /// <param name="objectIndex"></param>
-    public void RemoveOfficeObject(GameObject obj)
+    public void RemoveOfficeObject(int objectIndex)
     {
-        int objectIndex = obj.GetComponent<OfficeObjectScript>().ObjectIndex;
-
-        Destroy(currentObjects[objectIndex]);
-        currentObjects.RemoveAt(objectIndex);
+        Destroy(CurrentObjects[objectIndex]);
+        CurrentObjects.RemoveAt(objectIndex);
 
         UpdateObjectIndexes();
     }
@@ -153,14 +179,14 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// </summary>
     public void RemoveAllOfficeObjects()
     {
-        if (currentObjects.Count > 0)
+        if (CurrentObjects.Count > 0)
         {
-            for (int i = 0; i < currentObjects.Count; i++)
+            for (int i = 0; i < CurrentObjects.Count; i++)
             {
-                Destroy(currentObjects[i]);
+                Destroy(CurrentObjects[i]);
             }
 
-            currentObjects.Clear();
+            CurrentObjects.Clear();
         }
     }
 
@@ -172,19 +198,55 @@ public class OfficeItemDatabaseSO : ScriptableObject
     {
         OfficeCustomizationData data = new OfficeCustomizationData(MaterialWallsCurrent.color, MaterialFloorCurrent.color, MaterialCeilingCurrent.color);
 
-        if (currentObjects.Count > 0)
+        UnsetAllObjectParents();
+
+        if (CurrentObjects.Count > 0)
         {
             OfficeItem officeItem;
 
-            for (int i = 0; i < currentObjects.Count; i++)
+            foreach (GameObject obj in CurrentObjects)
             {
-                officeItem = new OfficeItem(currentObjects[i].GetComponent<OfficeObjectScript>().OfficeItemID, currentObjects[i].transform.position, currentObjects[i].transform.rotation);
+                OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
+
+                officeItem = new OfficeItem(objScript.OfficeItemID, obj.transform.position, obj.transform.rotation);
 
                 data.OfficeItems.Add(officeItem);
+
+                if (objScript.ParentIndex != -1)
+                {
+                    data.Dependencies.Add(new OfficeObjectDependency(objScript.ObjectIndex, objScript.ParentIndex));
+                }
             }
         }
 
+        ResetAllObjectParents();
+
         return data;
+    }
+
+    public void UnsetAllObjectParents()
+    {
+        foreach (GameObject obj in CurrentObjects)
+        {
+            obj.transform.parent = officeObjectTransform;
+        }
+    }
+
+    public void ResetAllObjectParents()
+    {
+        foreach (GameObject obj in CurrentObjects)
+        {
+            OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
+
+            if (objScript.ParentIndex != -1)
+            {
+                objScript.SetParent(objScript.ParentIndex);
+            }
+            else
+            {
+                obj.transform.parent = officeObjectTransform;
+            }
+        }
     }
 
     public void ResetRoomColors()
@@ -196,9 +258,19 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     private void UpdateObjectIndexes()
     {
-        for (int i = 0; i < currentObjects.Count; i++)
+        for (int i = 0; i < CurrentObjects.Count; i++)
         {
-            currentObjects[i].GetComponent<OfficeObjectScript>().ObjectIndex = i;
+            int oldIndex = CurrentObjects[i].GetComponent<OfficeObjectScript>().ObjectIndex;
+
+            CurrentObjects[i].GetComponent<OfficeObjectScript>().ObjectIndex = i;
+
+            for (int x = i + 1; x < CurrentObjects.Count; x++)
+            {
+                if (CurrentObjects[i].GetComponent<OfficeObjectScript>().ParentIndex == oldIndex)
+                {
+                    CurrentObjects[i].GetComponent<OfficeObjectScript>().ParentIndex = i;
+                }
+            }
         }
     }
 }
