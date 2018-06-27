@@ -32,13 +32,13 @@ public class PauseMenu : MonoBehaviour {
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1f;
 		isPaused = false;
-		GameMaster.Instance.UIMode = false;
+
 	}
       void Pause()
 	{
 		pauseMenu.SetActive (true);
 		Time.timeScale = 0f;
 		isPaused = true;
-		GameMaster.Instance.UIMode = true;
+
 	}
 }

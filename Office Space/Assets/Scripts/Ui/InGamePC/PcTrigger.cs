@@ -7,19 +7,24 @@ public class PcTrigger : MonoBehaviour {
 	//public Canvas ComputerCanvas;
 	public GameObject hud;
 
-	void OnTriggerEnter(Collider other)
+	public GameObject OpenPanel = null;
+	private bool isInsideTrigger = false;
+
+	public GameObject screen;
+
+	void Update ()
 	{
-		//if (other.gameObject.CompareTag("Player"))
-            //OpenShop();
-			
+		if (IsOpenPanelActive && isInsideTrigger) 
+		{
+			if (Input.GetKeyDown (KeyCode.E)) 
+			{
+				OpenPanel.SetActive (false);
+				GameMaster.Instance.UIMode = true;
+				screen.SetActive (false);
+				hud.SetActive (false);
+			}
+		}
 	}
-//	void OpenShop()
-//	{
-//		ComputerCanvas.enabled = true;
-//        GameMaster.Instance.UIMode = true;
-//		//Time.timeScale = 0;
-//		Cursor.visible = (ComputerCanvas.gameObject.activeInHierarchy);
-//	}
 
 	public void CloseShop()
 	{
@@ -29,5 +34,28 @@ public class PcTrigger : MonoBehaviour {
 		hud.SetActive(true);
     }
 
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			isInsideTrigger = true;
+			OpenPanel.SetActive(true);
+		}
+	}
+	void OnTriggerExit(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			isInsideTrigger = false;
+			OpenPanel.SetActive(false);
+		}
+	}
 
+	private bool IsOpenPanelActive
+	{
+		get
+		{
+			return OpenPanel.activeInHierarchy;
+		}
+	}
 }

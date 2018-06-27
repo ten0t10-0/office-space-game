@@ -15,4 +15,13 @@ public class MainMenu : MonoBehaviour
 		Application.Quit ();
 	}
 
+	public void NewGame()
+	{
+		
+	}
+
+	public void Continue ()
+	{
+		
+	}
 }
