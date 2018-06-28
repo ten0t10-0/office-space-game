@@ -9,14 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eaa5ba75d09497341baeeff1ff71f792, type: 3}
-  m_Name: Difficulty_1
+  m_Name: Difficulty_2
   m_EditorClassIdentifier: 
-  Description: <1st Difficulty>
-  LevelRequirement: 1
+  Description: <2nd Difficulty>
+  LevelRequirement: 5
   GenerateOrders: 1
-  MaxSimultaneousOpenOrders: 1
-  MaxOrderItems: 3
-  MaxOrderItemQuantity: 5
+  MaxSimultaneousOpenOrders: 2
+  MaxOrderItems: 6
+  MaxOrderItemQuantity: 10
   GenerateOrderDueDate: 1
   OrderTimeShippingTimeMultiplier: 3
   OrderTimeAddedPerItem: 15

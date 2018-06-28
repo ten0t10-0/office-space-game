@@ -70,6 +70,7 @@ MonoBehaviour:
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 1000000
+  initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerShopSpace: 10
   initPlayerLevel: 1
@@ -81,13 +82,15 @@ MonoBehaviour:
   BuildMode: 1
   OfflineMode: 0
   TEMPSaveGame: 0
-  TutorialMode: 0
+  StaticMode: 0
   DayEnd: 0
-  initDifficulty: 1
+  initDifficulty: 3
   DifficultySettings:
   - {fileID: 11400000, guid: bbd3d6275a20ca84493df18dcfedf9c4, type: 2}
   - {fileID: 11400000, guid: bb1eb96067bca2e4abbd2c64d01c906a, type: 2}
-  Difficulty: 0
+  - {fileID: 11400000, guid: 41a18cec0e4b6ed4599115030ba705b7, type: 2}
+  - {fileID: 11400000, guid: 2ad7052845d016844a1d3d047febf6d1, type: 2}
+  - {fileID: 11400000, guid: 49b4b58ecca7a864da4a47343e5003dc, type: 2}
   DayStartHour: 8
   DayEndHour: 20
   initGameDateYear: 0
@@ -97,7 +100,7 @@ MonoBehaviour:
   initGameTimeMinutes: 0
   GameTimeSpeed: 60
   CurrencySymbol: $
-  initNumberOfSuppliers: 4
+  initNumberOfSuppliers: 5
   MaxStoredNotifications: 50
   Notifications:
     AllNotificationsRead: 1
@@ -156,10 +159,8 @@ MonoBehaviour:
   MaxNumberOfItemsPerSupplier: 10
   MaxGenerationsPerItem: 3
   ExcludedItemSubcategories: 00000000
-  MinLowestMarkup: 10
-  MaxLowestMarkup: 30
-  MinHighestMarkup: 70
-  MaxHighestMarkup: 100
+  LowestDiscount: 5
+  HighestDiscount: 50
   namesPre:
   - Galaxy
   - Hello

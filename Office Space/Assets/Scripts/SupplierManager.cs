@@ -11,10 +11,8 @@ public class SupplierManager : MonoBehaviour
         {
             ItemSubcategory.Nothing
         };
-    public int MinLowestMarkup = 10;
-    public int MaxLowestMarkup = 30;
-    public int MinHighestMarkup = 70;
-    public int MaxHighestMarkup = 100;
+    public int LowestDiscount = 5;
+    public int HighestDiscount = 50;
 
     #region <PRESET NAMES LISTS>
     public List<string> namesPre = new List<string>()
@@ -46,8 +44,8 @@ public class SupplierManager : MonoBehaviour
     public void GenerateSuppliers(int supplierCount, out string result)
     {
         string currentGeneratedName;
-        List<float> markups = new List<float>();
-        float currentMarkup;
+        List<float> discounts = new List<float>();
+        float currentDiscount;
 
         result = GameMaster.MSG_ERR_DEFAULT;
 
@@ -58,34 +56,34 @@ public class SupplierManager : MonoBehaviour
         for (int i = 0; i < namesPre.Count; i++)
         { namesPreRemaining.Add(namesPre[i]); }
 
-        //<Generate markups>
-        float lowestMarkup = (float)Random.Range(MinLowestMarkup, MaxLowestMarkup + 1) / 100;
-        float highestMarkup = (float)Random.Range(MinHighestMarkup, MaxHighestMarkup + 1) / 100;
-        float markupInterval = (float)System.Math.Round((highestMarkup - lowestMarkup) / (supplierCount - 1), 2);
+        //<Generate discounts>
+        float discountHighest = (float)HighestDiscount / 100;
+        float discountLowest = (float)LowestDiscount / 100;
+        float discountInterval = (float)System.Math.Round((discountHighest - discountLowest) / (supplierCount - 1), 2);
 
-        markups.Add(lowestMarkup);
+        discounts.Add(discountLowest);
         for (int i = 0; i < supplierCount - 2; i++)
         {
-            markups.Add(lowestMarkup + (markupInterval * (i + 1)));
+            discounts.Add(discountLowest + (discountInterval * (i + 1)));
         }
-        markups.Add(highestMarkup);
+        discounts.Add(discountHighest);
 
         //* TEMP:
-        foreach (float markup in markups)
+        foreach (float discount in discounts)
         {
-            Debug.Log(markup.ToString());
+            Debug.Log(discount.ToString());
         }
 
         for (int c = 1; c <= supplierCount; c++)
         {
             currentGeneratedName = GenerateName();
 
-            int iCurrentMarkup = Random.Range(0, markups.Count);
-            currentMarkup = markups[iCurrentMarkup];
-            markups.RemoveAt(iCurrentMarkup);
+            int iCurrentDiscount = Random.Range(0, discounts.Count);
+            currentDiscount = discounts[iCurrentDiscount];
+            discounts.RemoveAt(iCurrentDiscount);
 
             if (currentGeneratedName != "")
-                Suppliers.Add(new SupplierAI(currentGeneratedName, currentMarkup));
+                Suppliers.Add(new SupplierAI(currentGeneratedName, currentDiscount));
             else
             {
                 c = supplierCount + 1; //set sentinel value to end the FOR loop

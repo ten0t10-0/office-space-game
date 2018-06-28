@@ -55,6 +55,7 @@ public class OrderManager : MonoBehaviour
         #region (Example)
         //Loop through each generated order item, get the highest shipping time and add that time, multiplied by the multiplier in the difficulty setting, to the order due date.
         //Also, take into account the number of items in the order, and add a set amount of time to the order using the value in the difficulty setting.
+        //************Also, take into account the number of current open orders?
         if (diffSetting.GenerateOrderDueDate)
         {
             int minutesToAdd = 0;
@@ -68,7 +69,7 @@ public class OrderManager : MonoBehaviour
             }
 
             minutesToAdd += (int)(highestShippingTime * diffSetting.OrderTimeShippingTimeMultiplier);
-            minutesToAdd += (int)(numberOfItems * diffSetting.OrderTimeSecondsAddedPerItem);
+            minutesToAdd += (int)(numberOfItems * diffSetting.OrderTimeAddedPerItem);
 
             dueDate = currentDate.AddMinutes(minutesToAdd);
         }
@@ -88,14 +89,24 @@ public class OrderManager : MonoBehaviour
 
         GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
 		GameMaster.Instance.GUIManager.hudScript.orderNotifiation ();
+
+        Debug.Log("*ORDER ITEMS:");
+        foreach (OrderItem orderItem in Orders[Orders.Count - 1].Items)
+            Debug.Log(orderItem.ToString());
+
+        Debug.Log("Order value - base item costs: " + Orders[Orders.Count - 1].TotalValue().ToString());
+        Debug.Log("Order value (with player markup): " + GameMaster.MarkupPrice(Orders[Orders.Count - 1].TotalValue(), GameMaster.Instance.Player.Business.MarkupPercentage).ToString());
     }
 
-    public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, out float payment, out int score, out float penaltyMultiplier)
+    public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, float markup, out float payment, out int score, out float penaltyMultiplier)
     {
-        Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, out payment, out score, out penaltyMultiplier);
+        Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, markup, out payment, out score, out penaltyMultiplier);
 
         string result = "Order for " + Orders[iOrderToComplete].Customer.FullName() + " completed!";
         GameMaster.Instance.Notifications.Add(result);
+
+        Debug.Log(result);
+        Debug.Log("Total payment: " + payment.ToString());
 
         GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
     }
@@ -104,10 +115,9 @@ public class OrderManager : MonoBehaviour
     {
         Orders[iOrderToClose].CloseOrder();
 
-        GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
+        GameMaster.Instance.Notifications.Add("Order for " + Orders[iOrderToClose].Customer.FullName() + " closed.");
 
-        //*TEMP:
-        Debug.Log("*ORDER CLOSED");
+        GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
     }
 
     private List<int> GetAvailableItemIDs()

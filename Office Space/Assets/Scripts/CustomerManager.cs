@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CustomerLevel { None, Low, Medium, High }
-
 public class CustomerManager : MonoBehaviour
 {
     #region <PRESET NAMES LISTS>
@@ -23,27 +21,16 @@ public class CustomerManager : MonoBehaviour
     /// <returns></returns>
     public Customer GenerateCustomer()
     {
-        DifficultySO diffSetting = GameMaster.Instance.GetDifficultySetting();
-
         string firstName, lastName;
-        CustomerLevel level;
 
-        int maxCustomerLevel = (int)diffSetting.MaxCustomerLevel;
-
-        int iFirstName, iLastName, iLevel;
+        int iFirstName, iLastName;
 
         iFirstName = Random.Range(0, firstNames.Count);
         iLastName = Random.Range(0, lastNames.Count);
 
-        if (maxCustomerLevel > 0)
-            iLevel = Random.Range(1, maxCustomerLevel + 1);
-        else
-            iLevel = 0;
-
         firstName = firstNames[iFirstName];
         lastName = lastNames[iLastName];
-        level = (CustomerLevel)iLevel;
 
-        return new Customer(firstName, lastName, level);
+        return new Customer(firstName, lastName);
     }
 }

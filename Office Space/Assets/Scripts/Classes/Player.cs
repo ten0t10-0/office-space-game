@@ -29,11 +29,11 @@ public class Player
     /// <param name="startingMoney"></param>
     /// <param name="maximumInventorySpace"></param>
     /// <param name="maximumShopInventorySpace"></param>
-    public Player(string name, string businessName, float startingMoney, float maximumInventorySpace, float maximumShopInventorySpace)
+    public Player(string name, string businessName, float startingMoney, float initialMarkup, float maximumInventorySpace, float maximumShopInventorySpace)
     {
         Name = name;
 
-        Business = new SupplierPlayer(businessName, startingMoney, maximumInventorySpace, maximumShopInventorySpace);
+        Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, maximumShopInventorySpace);
 
         Level = 1;
         Experience = 0;
@@ -91,6 +91,8 @@ public class Player
     private void IncreaseLevel()
     {
         //*
+
+        GameMaster.Instance.CheckDifficulty();
     }
     #endregion
 

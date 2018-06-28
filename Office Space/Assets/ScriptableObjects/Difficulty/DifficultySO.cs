@@ -6,14 +6,14 @@ using UnityEngine;
 public class DifficultySO : ScriptableObject
 {
     public string Description;
+    public int LevelRequirement;
     public bool GenerateOrders;
-    public CustomerLevel MaxCustomerLevel;
     public int MaxSimultaneousOpenOrders;
     public int MaxOrderItems;
     public int MaxOrderItemQuantity;
     public bool GenerateOrderDueDate;
     public float OrderTimeShippingTimeMultiplier;
-    public float OrderTimeSecondsAddedPerItem;
+    public float OrderTimeAddedPerItem;
     //public float OrderDelay;
     public float OrderGenerationRate;
     public bool IncludeCustomerTolerance;

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Name: Difficulty_X
   m_EditorClassIdentifier: 
   Description: <Death Difficulty>
+  LevelRequirement: 0
   GenerateOrders: 1
-  MaxCustomerLevel: 3
   MaxSimultaneousOpenOrders: 50
   MaxOrderItems: 100
   MaxOrderItemQuantity: 100
   GenerateOrderDueDate: 1
   OrderTimeShippingTimeMultiplier: 1.5
-  OrderTimeSecondsAddedPerItem: 3
+  OrderTimeAddedPerItem: 0
   OrderGenerationRate: 0.2
   IncludeCustomerTolerance: 1
   CustomerToleranceIncrement: 0.05
-  CustomerToleranceDecrement: 0.33
+  CustomerToleranceDecrement: 0.25

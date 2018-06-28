@@ -211,11 +211,11 @@ public class OrderUI : MonoBehaviour {
 			Destroy(childs.gameObject);
 		}
 	}
-	public float CalculateMarkUp(Item pi,int iSupplier)
+	public float CalculateDiscount(Item pi,int iSupplier)
 	{
-		float itemPrice = 0;
+		float itemPrice;
 
-		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
+        itemPrice = GameMaster.DiscountPrice(pi.UnitCost, GameMaster.Instance.SupplierManager.Suppliers[iSupplier].DiscountPercentage);
 
 		return itemPrice;
 	}
@@ -232,11 +232,12 @@ public class OrderUI : MonoBehaviour {
 	public void CompleteOrders()
 	{
 		string a;
+        float paymentTotal;
 
-		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder,out a);
+		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
 
 		purchase.SetActive(true);
-		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + GameMaster.Instance.OrderManager.Orders[ordersNum].TotalValue().ToString();
+		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + paymentTotal.ToString();
 		StartCoroutine(moneyPopUp());
 
 		clearInvoice ();

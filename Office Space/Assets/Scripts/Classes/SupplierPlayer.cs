@@ -7,14 +7,16 @@ public class SupplierPlayer : Supplier
 {
     public float Money { get; set; }
     public float CustomerTolerance { get; set; }
+    public float MarkupPercentage { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
     public InventoryPlayerShop ShopInventory { get; set; }
 
     #region <Constructor>
-    public SupplierPlayer(string name, float money, float maximumInventorySpace, float maximumShopInventorySpace) : base(name)
+    public SupplierPlayer(string name, float money, float markup, float maximumInventorySpace, float maximumShopInventorySpace) : base(name)
     {
         Money = money;
-        CustomerTolerance = 1;
+        MarkupPercentage = markup;
+        CustomerTolerance = 1f;
         WarehouseInventory = new InventoryPlayer(maximumInventorySpace);
         ShopInventory = new InventoryPlayerShop(maximumShopInventorySpace);
     }
@@ -25,16 +27,16 @@ public class SupplierPlayer : Supplier
     /// Executes a purchase for the specified items. Validation will check if there is enough money AND inventory space. If both are true, deducts money and adds item to inventory.
     /// </summary>
     /// <param name="item">The item(s) to purchase.</param>
-    /// <param name="markup">The markup percentage on the price of the item(s).</param>
+    /// <param name="discount">The discount percentage on the price of the item(s).</param>
     /// <param name="performValidation">Set to false only if money AND inventory space has already been validated.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public bool PurchaseItem(OrderItem item, float markup, bool performValidation, out string result)
+    public bool PurchaseItem(OrderItem item, float discount, bool performValidation, out string result)
     {
         bool successful = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        float totalCost = GameMaster.MarkupPrice(item.TotalValue(), markup);
+        float totalCost = GameMaster.DiscountPrice(item.TotalValue(), discount);
         float totalSpaceUsed = item.TotalSpaceUsed();
 
         bool valid = true;
@@ -64,15 +66,15 @@ public class SupplierPlayer : Supplier
     /// <summary>
     /// Checks if the player has enough money to cater for the specified item cost.
     /// </summary>
-    /// <param name="itemTotalCostWithMarkup">Total cost (with markup) of the item to be purchased.</param>
+    /// <param name="itemTotalCostWithDiscount">Total cost (with discount) of the item to be purchased.</param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public bool ValidatePurchaseItem(float itemTotalCostWithMarkup, out string result)
+    public bool ValidatePurchaseItem(float itemTotalCostWithDiscount, out string result)
     {
         bool valid = false;
         result = GameMaster.MSG_ERR_DEFAULT;
 
-        if (itemTotalCostWithMarkup <= Money)
+        if (itemTotalCostWithDiscount <= Money)
         {
             valid = true;
             result = "[MONEY VALIDATION PASSED]";
@@ -168,6 +170,11 @@ public class SupplierPlayer : Supplier
     public float TotalValuation()
     {
         return WarehouseInventory.Valuation() + ShopInventory.Valuation();
+    }
+
+    public float GetTotalMarkup()
+    {
+        return MarkupPercentage * CustomerTolerance;
     }
 
     ///// <summary>

@@ -295,7 +295,7 @@ public class ShopController : MonoBehaviour
 		newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
 		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
 		newItem.transform.Find ("Supplier").GetComponent<TMP_Text> ().text = GameMaster.Instance.SupplierManager.Suppliers [iSupplier].Name.ToString ();
-		newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = "$ " + CalculateMarkUp(item, iSupplier).ToString();
+		newItem.transform.Find ("Price").GetComponent<TMP_Text> ().text = GameMaster.Instance.CurrencySymbol + CalculateDiscount(item, iSupplier).ToString();
 
 		if (item.Quality == ItemQuality.Low)
 		{
@@ -315,11 +315,11 @@ public class ShopController : MonoBehaviour
 		newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(BuyOnClick);
 	}
 		
-	public float CalculateMarkUp(Item pi,int iSupplier)
+	public float CalculateDiscount(Item pi,int iSupplier)
 	{
 		float itemPrice = 0;
 
-		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
+        itemPrice = GameMaster.DiscountPrice(pi.UnitCost, GameMaster.Instance.SupplierManager.Suppliers[iSupplier].DiscountPercentage);
 
 		return itemPrice;
 

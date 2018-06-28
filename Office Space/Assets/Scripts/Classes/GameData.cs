@@ -24,7 +24,7 @@ public class GameData
 
     public float ChanceNextOrder;
 
-    public bool TutorialMode;
+    public bool StaticMode;
     public bool DayEnd;
 
     public int DayEndCurrent;
@@ -34,7 +34,7 @@ public class GameData
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool tutorialMode, bool dayEnd, int dayEndCurrent, NotificationList notifications)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool staticMode, bool dayEnd, int dayEndCurrent, NotificationList notifications)
     {
         Player = player;
 
@@ -49,7 +49,7 @@ public class GameData
 
         ChanceNextOrder = chanceNextOrder;
 
-        TutorialMode = tutorialMode;
+        StaticMode = staticMode;
         DayEnd = dayEnd;
 
         DayEndCurrent = dayEndCurrent;

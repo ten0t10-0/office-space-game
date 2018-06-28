@@ -49,7 +49,7 @@ public class PlayerUiController : MonoBehaviour
 
         nameText.SetText(purchasedItem.Name);
 
-		totalText.SetText(CalculateMarkUp(pi).ToString());
+		totalText.SetText(CalculateDiscount(pi).ToString());
     }
 
 	public void InputChanged(InputField at)
@@ -64,7 +64,7 @@ public class PlayerUiController : MonoBehaviour
 		currentAmount = Mathf.Clamp(currentAmount + (increase ? increasePerClick : -increasePerClick), min, max);
 		amount.text = currentAmount.ToString();
 
-		total = float.Parse(amount.text) * CalculateMarkUp(purchasedItem);
+		total = float.Parse(amount.text) * CalculateDiscount(purchasedItem);
 		totalText.SetText(total.ToString());
 
 		// disable buttons i
@@ -79,7 +79,7 @@ public class PlayerUiController : MonoBehaviour
 		float space = 0, avalibleSpace = 0;
 		string result;
 
-		total = float.Parse(amount.text) * CalculateMarkUp(purchasedItem);
+		total = float.Parse(amount.text) * CalculateDiscount(purchasedItem);
 
 		space = purchasedItem.UnitSpace * currentAmount; //space item takes up
 
@@ -115,11 +115,11 @@ public class PlayerUiController : MonoBehaviour
 		}
 	}
 
-	public float CalculateMarkUp(Item pi)
+	public float CalculateDiscount(Item pi)
 	{
 		float itemPrice = 0;
 
-		itemPrice = pi.UnitCost * (1 + GameMaster.Instance.SupplierManager.Suppliers[iSupplier].MarkupPercent);
+        itemPrice = GameMaster.DiscountPrice(pi.UnitCost, GameMaster.Instance.SupplierManager.Suppliers[iSupplier].DiscountPercentage);
 
 		return itemPrice;
 			

@@ -37,7 +37,7 @@ public class Order
     /// <param name="items">The list of items to be used to fill the order.</param>
     /// <param name="dateFilled">The date the order was successfully completed.</param>
     /// <param name="paymentTotal">The resulting payment (base cost).</param>
-    public void CompleteOrder(List<OrderItem> items, DateTime dateFilled, out float paymentTotal, out int score, out float penaltyMultiplier)
+    public void CompleteOrder(List<OrderItem> items, DateTime dateFilled, float markup, out float paymentTotal, out int score, out float penaltyMultiplier)
     {
         paymentTotal = 0;
         score = 0;
@@ -49,6 +49,8 @@ public class Order
             DateFilled = dateFilled;
 
             score = CalculateScore(items, out paymentTotal, out penaltyMultiplier);
+
+            paymentTotal = GameMaster.MarkupPrice(paymentTotal, markup);
 
             CloseOrder();
         }
@@ -86,6 +88,7 @@ public class Order
         if (Filled)
         {
             int quantityTotal = 0;
+            int quantityExcess = 0;
 
             //*** Calculate score (based on time):
             if (DateDue.HasValue)
@@ -93,18 +96,31 @@ public class Order
                 TimeSpan timeSpanCompleted = DateDue.Value.Subtract(DateFilled.Value);
                 TimeSpan timeSpanMax = DateDue.Value.Subtract(DateReceived);
 
+                Debug.Log("TimeSpan completed: " + timeSpanCompleted.ToString());
+                Debug.Log("TimeSpan max: " + timeSpanMax.ToString());
+
                 float rate = (float)(timeSpanCompleted.TotalMilliseconds / timeSpanMax.TotalMilliseconds);
 
                 if (rate >= 0.75f) //Bonus
+                {
                     score = 200;
+                    Debug.Log("Time bonus: x2");
+                }
                 else if (rate >= 0.5f)
+                {
                     score = 150;
+                    Debug.Log("Time bonus: x1.5");
+                }
                 else
+                {
                     score = 100;
+                    Debug.Log("Time bonus: <none>");
+                }
             }
             else
             {
                 score = 100; //*
+                Debug.Log("Time bonus: <none>");
             }
 
             //*** Calculate penalty (based on accuracy/correctness of items):
@@ -129,6 +145,8 @@ public class Order
                         {
                             paymentTotal += items[i].UnitCost * quantityRequired; //only pay for number of items requested in order.
                             quantityTotal += quantityRequired;
+
+                            quantityExcess += quantityGiven - quantityRequired;
                         }
 
                         items.RemoveAt(i);
@@ -136,6 +154,9 @@ public class Order
                     }
                 }
             }
+
+            Debug.Log("Items correct: " + quantityTotal.ToString() + "/" + TotalQuantity());
+            Debug.Log("Items in excess: " + quantityExcess.ToString());
 
             penaltyMultiplier = (float)quantityTotal / TotalQuantity(); //*
 

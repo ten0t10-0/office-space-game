@@ -21,6 +21,10 @@ public class GameMaster : MonoBehaviour
     {
         return (price * (1f + markup));
     }
+    public static float DiscountPrice(float price, float discount)
+    {
+        return (price * (1f - discount));
+    }
 
     public static bool Roll(float chance)
     {
@@ -53,11 +57,13 @@ public class GameMaster : MonoBehaviour
     public GameObject GenericCharacterObject;
     [HideInInspector]
     public GameObject CurrentPlayerObject;
+
     [HideInInspector]
     public Player Player;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
     public float initPlayerMoney = 10000;
+    public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
     public float initPlayerShopSpace = 10;
     public int initPlayerLevel = 1;
@@ -78,7 +84,7 @@ public class GameMaster : MonoBehaviour
     public bool BuildMode = false;
     public bool OfflineMode = false;
     public bool TEMPSaveGame = true;
-    public bool TutorialMode = false; //* + Check save data
+    public bool StaticMode = false; //* + Check save data
 
     [HideInInspector]
     public bool DayEnd = false; //Day at end - No more events until next day (order generation, random events (?), etc)
@@ -88,7 +94,7 @@ public class GameMaster : MonoBehaviour
     public int initDifficulty = 0; //0 = First
     public List<DifficultySO> DifficultySettings;
     [HideInInspector]
-    public int Difficulty;
+    public int Difficulty { get; private set; }
     #endregion
 
     #region <Date & Time>
@@ -228,37 +234,91 @@ public class GameMaster : MonoBehaviour
         saveFileDirString = "/" + SaveFileName + SaveFileExtension;
         #endregion
 
-        #region <Initialize Date & Time>
+        #region <Validate Init Date & Time>
         if (initGameDateYear == 0)
             initGameDateYear = DateTime.Today.Year;
         if (initGameDateMonth == 0)
             initGameDateMonth = DateTime.Today.Month;
         if (initGameDateDay == 0)
             initGameDateDay = DateTime.Today.Day;
+        #endregion
 
-        //if invalid init date entered, default to today's date:
-        try
-        { GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0); }
-        catch
-        { GameDateTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 0, 0, 0); }
+        currentMessage = MSG_GEN_NA;
+    }
+
+    private void Start()
+    {
+        //NewGameTEST();
+
+        NewGame();
+    }
+
+    public void InitializeGame()
+    {
+        //UIMode = false;
+        //BuildMode = false;
+        //OfflineMode = false;
+        //TutorialMode = false;
+
+        tPlayerPlayTime = tGameTime = Time.time;
+    }
+
+    public void NewGame()
+    {
+        string message;
+
+        //Initialize game
+        InitializeGame();
+
+        //Initialize Date & Time
+        GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
+        GameDateTime = GameDateTime.AddHours(initGameTimeHour);
+        GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
+
+        //Clear notifications
+        Notifications = new NotificationList();
+
+        //Set Difficulty
+        Difficulty = initDifficulty;
+
+        //Set events
+        chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+
+        //Initialize Player
+        Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
+
+        //Generate Suppliers
+        SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out message);
+
+        //TEST: Generating supplier items *
+        SupplierManager.PopulateSupplierInventories();
+
+        //Spawn player
+        SpawnPlayer();
+
+        //Set Camera target
+        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
+
+        //Set up area
+        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+
+        //Finally, save the game
+        SaveGame();
+    }
+
+    private void NewGameTEST()
+    {
+        InitializeGame();
+
+        #region <Initialize Date & Time>
+        GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
 
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
         GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
         #endregion
 
-        currentMessage = MSG_GEN_NA;
-
         Notifications = new NotificationList();
-    }
 
-    private void Start()
-    {
-        //***<TEST NEW GAME METHOD>***
-        NewGameTEST();
-    }
-
-    private void NewGameTEST()
-    {
         //out Messages (GUI/Debug purposes)
         string resultGeneric;
 
@@ -285,7 +345,7 @@ public class GameMaster : MonoBehaviour
             chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerInventorySpace, initPlayerShopSpace);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGeneric);
@@ -457,8 +517,6 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
-
-        tPlayerPlayTime = tGameTime = Time.time;
     }
 
     /// <summary>
@@ -494,10 +552,12 @@ public class GameMaster : MonoBehaviour
     {
         currentTime = Time.time;
 
-        if (!TutorialMode)
+        if (!StaticMode)
         {
+            float timeAdvance = (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+
             //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
-            if (currentTime >= (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime) // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+            if (currentTime >= timeAdvance) 
             {
                 AdvanceInGameTime(1);
 
@@ -508,7 +568,8 @@ public class GameMaster : MonoBehaviour
                     {
                         if (OrderManager.GetOpenOrders().Count < GetDifficultySetting().MaxSimultaneousOpenOrders)
                         {
-                            Debug.Log(chanceNextOrder.ToString());
+                            //Debug.Log(chanceNextOrder.ToString());
+
                             if (Roll(chanceNextOrder))
                             {
                                 if (Roll(Player.Business.CustomerTolerance))
@@ -516,11 +577,11 @@ public class GameMaster : MonoBehaviour
                                     //***
                                     OrderManager.GenerateOrder();
 
-                                    Debug.Log("*ORDER GENERATED!");
+                                    Debug.Log("*ORDER GENERATED*");
 
-                                    Debug.Log("ORDER:");
-                                    foreach (OrderItem item in OrderManager.Orders[OrderManager.Orders.Count - 1].Items)
-                                        Debug.Log(string.Format("{0} x {1}", item.Quantity.ToString(), item.Name));
+                                    //Debug.Log("ORDER:");
+                                    //foreach (OrderItem item in OrderManager.Orders[OrderManager.Orders.Count - 1].Items)
+                                    //    Debug.Log(string.Format("{0} x {1}", item.Quantity.ToString(), item.Name));
                                 }
                                 else
                                 {
@@ -544,11 +605,12 @@ public class GameMaster : MonoBehaviour
                 }
                 else
                 {
-                    //Checks before next day starts: *
+                    #region <Next day & checks>
                     if (OrderManager.GetOpenOrders().Count == 0) //Once all orders are closed...
                     {
                         NextDay(); //*
                     }
+                    #endregion
                 }
 
                 #region <Close overdue orders> ***
@@ -557,9 +619,7 @@ public class GameMaster : MonoBehaviour
                     if (OrderManager.Orders[i].Open)
                     {
                         if (GameDateTime >= OrderManager.Orders[i].DateDue)
-                            CancelOrder(i); //* Maybe rather penalize player score if orders are late?
-                        else
-                            Debug.Log("*Time remaining: " + OrderManager.Orders[i].GetTimeRemaining().ToString()); //***TEMP!
+                            CancelOrder(i);
                     }
                 }
                 #endregion
@@ -623,9 +683,9 @@ public class GameMaster : MonoBehaviour
             if (iSupplierItem < SupplierManager.Suppliers[iSupplier].Inventory.Items.Count)
             {
                 OrderItem item = new OrderItem(SupplierManager.Suppliers[iSupplier].Inventory.Items[iSupplierItem], quantity);
-                float markup = SupplierManager.Suppliers[iSupplier].MarkupPercent;
+                float discount = SupplierManager.Suppliers[iSupplier].DiscountPercentage;
 
-                successful = Player.Business.PurchaseItem(item, markup, performValidation, out result);
+                successful = Player.Business.PurchaseItem(item, discount, performValidation, out result);
             }
             else
                 Debug.Log("*INVALID SUPPLIER ITEM INDEX.");
@@ -643,11 +703,10 @@ public class GameMaster : MonoBehaviour
     /// </summary>
     /// <param name="iOrderToComplete">The index of the order to complete.</param>
     /// <param name="itemQuantities">Dictionary containing ItemID's as the key, and the quantity as the value.</param>
-    public void CompleteOrder(int iOrderToComplete, Dictionary<int, int> itemQuantities, out string result)
+    public void CompleteOrder(int iOrderToComplete, Dictionary<int, int> itemQuantities, out float payment, out string result)
     {
         result = MSG_ERR_DEFAULT;
 
-        float payment;
         int score;
         float penaltyMult;
 
@@ -678,10 +737,12 @@ public class GameMaster : MonoBehaviour
             }
         }
 
-        OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, out payment, out score, out penaltyMult);
+        OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, Player.Business.GetTotalMarkup(), out payment, out score, out penaltyMult);
 
         Player.Business.Money += payment;
         Player.IncreaseExperience(score);
+
+        Debug.Log("Order score: " + score.ToString());
 
         if (GetDifficultySetting().IncludeCustomerTolerance)
             Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
@@ -735,6 +796,9 @@ public class GameMaster : MonoBehaviour
 
         chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
+        //TEST: Generating supplier items
+        SupplierManager.PopulateSupplierInventories();
+
         DayEnd = false;
     }
 
@@ -775,10 +839,21 @@ public class GameMaster : MonoBehaviour
     {
         return DifficultySettings[Difficulty];
     }
+
+    public void CheckDifficulty()
+    {
+        if (Difficulty != -1 && Difficulty < 3)
+        {
+            if (Player.Level >= DifficultySettings[Difficulty + 1].LevelRequirement)
+            {
+                Difficulty++;
+            }
+        }
+    }
     #endregion
 
     #region <SAVING & LOADING METHODS>
-    private void SaveGame()
+    public void SaveGame()
     {
         if (TEMPSaveGame)
         {
@@ -803,7 +878,7 @@ public class GameMaster : MonoBehaviour
 
                 ChanceNextOrder = this.chanceNextOrder,
 
-                TutorialMode = this.TutorialMode,
+                StaticMode = this.StaticMode,
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
@@ -822,7 +897,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    private void LoadGame()
+    public void LoadGame()
     {
         BinaryFormatter bf = new BinaryFormatter();
 
@@ -846,7 +921,7 @@ public class GameMaster : MonoBehaviour
 
         chanceNextOrder = loadData.ChanceNextOrder;
 
-        TutorialMode = loadData.TutorialMode;
+        StaticMode = loadData.StaticMode;
         DayEnd = loadData.DayEnd;
 
         dayEndCurrent = loadData.DayEndCurrent;
@@ -857,7 +932,7 @@ public class GameMaster : MonoBehaviour
         Debug.Log("GAME DATA LOADED!");
     }
 
-    private void DeleteSave()
+    public void DeleteSave()
     {
         File.Delete(Application.persistentDataPath + saveFileDirString);
     }

@@ -7,22 +7,12 @@ public class Customer
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public CustomerLevel Level { get; set; }
 
     #region <Constructors>
     public Customer(string firstName, string lastName)
     {
         FirstName = firstName;
         LastName = lastName;
-
-        Level = CustomerLevel.None;
-    }
-
-    public Customer(string firstName, string lastName, CustomerLevel level)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        Level = level;
     }
     #endregion
 
@@ -38,6 +28,6 @@ public class Customer
 
     public override string ToString()
     {
-        return string.Format("First Name: {0}; Last Name: {1}; Level: <{2}>", FirstName, LastName, Level.ToString());
+        return string.Format("First Name: {0}; Last Name: {1}", FirstName, LastName);
     }
 }
