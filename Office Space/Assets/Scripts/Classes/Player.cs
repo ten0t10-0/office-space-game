@@ -46,7 +46,7 @@ public class Player
         {
             UnlockedClothing.Add(i);
 
-            CharacterCustomizationData.CurrentClothing.Add(new CharacterClothing(i));
+            CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
 
         OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);

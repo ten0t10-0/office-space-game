@@ -13,9 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Upper
   Slot: 1
-  IsAccessory: 0
   MaterialDefault: {fileID: 2100000, guid: e6a8404019c466649b05fa61bb18d741, type: 2}
-  PlaceholderNames:
-  - C_Upper
-  - B_Upper
-  Body: {fileID: 11400000, guid: 69b4fce29be477649aa174a83886f6ec, type: 2}
+  BodyMesh: {fileID: 4300012, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}

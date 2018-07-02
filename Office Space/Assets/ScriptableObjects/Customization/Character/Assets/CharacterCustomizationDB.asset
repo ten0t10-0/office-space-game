@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed35c22b0de3b6345a66d3c5e17e629c, type: 3}
   m_Name: CharacterCustomizationDB
   m_EditorClassIdentifier: 
+  MaterialBlank: {fileID: 0}
   MaterialBodyDefault: {fileID: 2100000, guid: 67854ed261cd1fb41b2624148f20cfa5, type: 2}
   Clothing:
   - {fileID: 11400000, guid: 7a6fe24bf6845a641b2869c3333be32d, type: 2}
@@ -26,5 +27,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7de66848f69064b40993fc639bd154c5, type: 2}
   - {fileID: 11400000, guid: 5b3e278bc66ca824a992d44b838f8367, type: 2}
   - {fileID: 11400000, guid: bf236a2c91b8c684b897bde4340a5076, type: 2}
-  DefaultClothingIndexes: 0400000005000000
+  DefaultClothingIndexes: 0500000004000000
   CustomMaterials: []

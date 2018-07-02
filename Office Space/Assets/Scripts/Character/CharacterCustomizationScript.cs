@@ -4,358 +4,222 @@ using UnityEngine;
 
 public class CharacterCustomizationScript : MonoBehaviour
 {
-    public Material MaterialBlank;
     [HideInInspector]
     public Material MaterialBody;
 
-    [HideInInspector]
-    public CharacterCustomizationData CustomizationData;
+    /// <summary>
+    /// Key = Clothing Slot; Value = childIndex
+    /// </summary>
+    private Dictionary<ClothingSlot, int> ClothingObjects;
+    /// <summary>
+    /// Key = Clothing Slot; Value = childIndex
+    /// </summary>
+    private Dictionary<ClothingSlot, int> BodyObjects;
 
     private void Awake()
     {
-        //Get & use default body material (and color)
+        ClothingObjects = new Dictionary<ClothingSlot, int>();
+        BodyObjects = new Dictionary<ClothingSlot, int>();
+
+        //Get & use a copy of the default body material (and color)
         MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);
+        MaterialBody.name += " (copy)";
 
-        //Remove placeholder objects:
-        for (int i = 0; i < GameMaster.Instance.CustomizationManager.Character.ClothingSlots.Count; i++)
+        //Set up dictionaries & initialize all Clothing & Body placeholder objects
+        for (int i = 0; i < transform.childCount; i++)
         {
-            UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].PlaceholderNames[0]).gameObject);
+            ClothingSlotScript clothingSlotScript = GetClothingSlotScript(i);
 
-            if (!GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].IsAccessory)
+            if (clothingSlotScript != null)
             {
-                UnsetObject(transform.Find(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[i].PlaceholderNames[1]).gameObject);
+                clothingSlotScript.Initialize(this);
+
+                if (!clothingSlotScript.IsBodyObject)
+                {
+                    ClothingObjects.Add(clothingSlotScript.ClothingSlot, i);
+                }
+                else
+                {
+                    BodyObjects.Add(clothingSlotScript.ClothingSlot, i);
+                }
             }
+        }
+
+        //Remove all clothing (in this case, will remove/clear placeholder objects)
+        UnsetAllClothing();
+    }
+
+    public void SetClothing(int clothingId)
+    {
+        CharacterClothingSO clothingSO = GameMaster.Instance.CustomizationManager.Character.Clothing[clothingId];
+
+        GetClothingSlotScript(ClothingObjects[clothingSO.ClothingSlot.Slot]).Set(clothingId);
+
+        if (clothingSO.HasBodyMesh)
+        {
+            GetClothingSlotScript(BodyObjects[clothingSO.ClothingSlot.Slot]).Set(clothingId);
+
+            SetUpBodyObjects();
+        }
+    }
+
+    public void UnsetClothing(ClothingSlot slot)
+    {
+        GetClothingSlotScript(ClothingObjects[slot]).Unset();
+
+        if (BodyObjects.ContainsKey(slot))
+        {
+            GetClothingSlotScript(BodyObjects[slot]).Unset();
+
+            SetUpBodyObjects();
         }
     }
 
     /// <summary>
-    /// Replaces the customization data with specified customization data, and reloads the character.
+    /// Sets up the characters appearance according to the specified customization data.
     /// </summary>
     /// <param name="clothingList"></param>
     public void SetAppearanceByData(CharacterCustomizationData customizationData)
     {
-        CustomizationData = customizationData;
+        Dictionary<ClothingSlot, CharacterClothing> clothingDictionary = customizationData.GetDictionary();
 
-        ReloadCharacterAppearance();
-    }
+        MaterialBody.color = customizationData.GetBodyColor();
 
-    /// <summary>
-    /// Binds clothing to the character based on the CurrentClothing list in the customization data.
-    /// </summary>
-    public void ReloadCharacterAppearance()
-    {
-        MaterialBody.color = CustomizationData.GetBodyColor();
+        UnsetAllClothing();
 
-        if (CustomizationData.CurrentClothing.Count > 0)
+        foreach (ClothingSlot slot in clothingDictionary.Keys)
         {
-            UnsetAllClothing();
+            SetClothing(clothingDictionary[slot].ClothingID);
 
-            bool isSlotUsedCostume = IsClothingSlotUsed(ClothingSlot.Costume);
-            bool isSlotUsedUpper = IsClothingSlotUsed(ClothingSlot.Upper);
-            bool isSlotUsedLower = IsClothingSlotUsed(ClothingSlot.Lower);
-
-            if (!isSlotUsedCostume && !isSlotUsedUpper && !isSlotUsedLower)
-            {
-                SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Costume).Body);
-            }
-            else if (!isSlotUsedCostume)
-            {
-                if (isSlotUsedLower && !isSlotUsedUpper)
-                {
-                    SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Upper).Body);
-                }
-                else if (isSlotUsedUpper && !isSlotUsedLower)
-                {
-                    SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Lower).Body);
-                }
-            }
-
-            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
-            {
-                ClothingSlot clothingSlot = CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot;
-
-                if (!isSlotUsedCostume)
-                {
-                    SetObject(CustomizationData.CurrentClothing[i]);
-                }
-                else
-                {
-                    if (clothingSlot == ClothingSlot.Costume || clothingSlot == ClothingSlot.Head)
-                        SetObject(CustomizationData.CurrentClothing[i]);
-                }
-            }
+            UpdateClothingColor(slot, clothingDictionary[slot].GetColor());
         }
-        else
-        {
-            SetObjectBody(GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(ClothingSlot.Costume).Body);
-        }
+
+        //ReloadCharacterAppearance();
     }
 
     /// <summary>
-    /// Adds the specified clothing item onto the list and refreshes the character.
-    /// </summary>
-    /// <param name="charClothing"></param>
-    public void AddClothing(CharacterClothing charClothing)
-    {
-        AddClothingToList(charClothing);
-
-        ReloadCharacterAppearance();
-    }
-
-    /// <summary>
-    /// Removes the clothing item in the specified slot from the list and refreshes the character.
-    /// </summary>
-    /// <param name="clothingSlot"></param>
-    public void RemoveClothing(CharacterClothingSlotSO clothingSlot)
-    {
-        RemoveClothingFromList(clothingSlot);
-
-        ReloadCharacterAppearance();
-    }
-
-    /// <summary>
-    /// Updates the character's body (skin) color to the specified color and updates customization data.
+    /// Sets the character's body (skin) color to the specified color.
     /// </summary>
     /// <param name="newBodyColor"></param>
     public void UpdateBodyColor(Color newBodyColor)
     {
         MaterialBody.color = newBodyColor;
-
-        CustomizationData.UpdateBodyColorInfo(newBodyColor);
-    }
-
-    private void AddClothingToList(CharacterClothing clothing)
-    {
-        int iClothing;
-
-        if (IsClothingSlotUsed(clothing.GetClothingSO().ClothingSlot.Slot, out iClothing))
-            CustomizationData.CurrentClothing.RemoveAt(iClothing);
-
-        CustomizationData.CurrentClothing.Add(clothing);
-    }
-
-    private void RemoveClothingFromList(CharacterClothingSlotSO clothingSlot)
-    {
-        int iClothing;
-
-        if (IsClothingSlotUsed(clothingSlot.Slot, out iClothing))
-        {
-            CustomizationData.CurrentClothing.RemoveAt(iClothing);
-        }
-        else
-        {
-            Debug.Log(string.Format("*Clothing slot '{0}' not in use.", clothingSlot.Name));
-        }
     }
 
     /// <summary>
-    /// Removes all clothing from all placeholder objects according to the list.
+    /// Sets the color of clothing in the specified clothing slot to the specified color.
     /// </summary>
+    /// <param name="slot"></param>
+    /// <param name="newClothingColor"></param>
+    public void UpdateClothingColor(ClothingSlot slot, Color newClothingColor)
+    {
+        transform.GetChild(ClothingObjects[slot]).gameObject.GetComponent<Renderer>().sharedMaterial.color = newClothingColor;
+    }
+
+    public CharacterCustomizationData GetCustomizationData()
+    {
+        CharacterCustomizationData data = new CharacterCustomizationData(MaterialBody.color);
+
+        Dictionary<ClothingSlot, CharacterClothing> dictionary = new Dictionary<ClothingSlot, CharacterClothing>();
+
+        foreach (ClothingSlot slot in ClothingObjects.Keys)
+        {
+            if (IsClothingSlotUsed(slot))
+            {
+                GameObject clothingObj = transform.GetChild(ClothingObjects[slot]).gameObject;
+
+                CharacterClothing characterClothing = new CharacterClothing(clothingObj.GetComponent<ClothingSlotScript>().ClothingIndex, clothingObj.GetComponent<Renderer>().sharedMaterial.color);
+
+                dictionary.Add(slot, characterClothing);
+            }
+        }
+
+        data.SetUpLists(dictionary);
+
+        //TEMP:
+        Debug.Log("GENERATE CUSTOMIZATION DATA:");
+        Debug.Log("Body Color: " + data.GetBodyColor().ToString());
+        for (int i = 0; i < data.CurrentClothing_Keys.Count; i++)
+        {
+            Debug.Log("*" + data.CurrentClothing_Keys[i].ToString() + "* - Clothing ID: " + data.CurrentClothing_Values[i].ClothingID.ToString() + "; Color: " + data.CurrentClothing_Values[i].GetColor().ToString());
+        }
+
+        return data;
+    }
+
     private void UnsetAllClothing()
     {
-        if (CustomizationData.CurrentClothing.Count > 0)
+        foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)
         {
-            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
+            UnsetClothing(slot.Slot);
+        }
+    }
+
+    private void SetUpBodyObjects()
+    {
+        bool isSlotUsedCostume = IsClothingSlotUsed(ClothingSlot.Costume);
+        bool isSlotUsedUpper = IsClothingSlotUsed(ClothingSlot.Upper);
+        bool isSlotUsedLower = IsClothingSlotUsed(ClothingSlot.Lower);
+
+        if (!isSlotUsedCostume && !isSlotUsedLower && !isSlotUsedUpper)
+        {
+            SetBody(ClothingSlot.Costume);
+
+            UnsetBody(ClothingSlot.Upper);
+            UnsetBody(ClothingSlot.Lower);
+        }
+        else if (!isSlotUsedCostume)
+        {
+            UnsetBody(ClothingSlot.Costume);
+
+            if (isSlotUsedLower && !isSlotUsedUpper)
             {
-                UnsetClothing(CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot);
+                SetBody(ClothingSlot.Upper);
+
+                //UnsetBody(ClothingSlot.Lower);
+            }
+            else if (isSlotUsedUpper && !isSlotUsedLower)
+            {
+                SetBody(ClothingSlot.Lower);
+
+                //UnsetBody(ClothingSlot.Upper);
             }
         }
     }
 
-    /// <summary>
-    /// Sets/Enables the Mesh, Material and SkinnedMeshRenderer component of the GameObject found using the specified clothing item.
-    /// </summary>
-    /// <param name="charClothing"></param>
-    private void SetObject(CharacterClothing charClothing)
+    private void SetBody(ClothingSlot slot)
     {
-        CharacterClothingSO charClothingSO = charClothing.GetClothingSO();
+        GameObject bodyObj = transform.GetChild(BodyObjects[slot]).gameObject;
 
-        GameObject clothingObject = null;
-
-        if (charClothingSO.ClothingSlot.PlaceholderNames[0] != "")
-        {
-            clothingObject = transform.Find(charClothingSO.ClothingSlot.PlaceholderNames[0]).gameObject;
-
-            if (clothingObject != null)
-            {
-                SkinnedMeshRenderer clothingObjectSMR = clothingObject.GetComponent<SkinnedMeshRenderer>();
-                Renderer clothingObjectRenderer = clothingObject.GetComponent<Renderer>();
-
-                //Set Mesh:
-                clothingObjectSMR.sharedMesh = charClothingSO.Meshes[0];
-
-                //Set Material (if needed):
-                if (clothingObjectRenderer.sharedMaterial == MaterialBlank)
-                {
-                    Material newMaterial;
-
-                    if (!charClothing.HasCustomMaterial()) //if no custom material
-                    {
-                        newMaterial = new Material(charClothingSO.ClothingSlot.MaterialDefault) { color = charClothing.GetColor() };
-                    }
-                    else
-                    {
-                        newMaterial = new Material(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[charClothing.CustomMaterialID]);
-                    }
-
-                    clothingObject.GetComponent<Renderer>().sharedMaterial = newMaterial;
-                }
-
-                //Enable SkinnedMeshRenderer component (if needed)
-                if (!clothingObjectSMR.enabled)
-                    clothingObjectSMR.enabled = true;
-            }
-            else
-            { Debug.Log(string.Format("*Failed to set Clothing object for '{0}': No placeholder object found.", charClothingSO.Name)); }
-        }
-
-        if (!charClothingSO.ClothingSlot.IsAccessory)
-        {
-            GameObject bodyObject = null;
-
-            if (charClothingSO.ClothingSlot.PlaceholderNames[1] != "")
-            {
-                bodyObject = transform.Find(charClothingSO.ClothingSlot.PlaceholderNames[1]).gameObject;
-
-                if (bodyObject != null)
-                {
-                    SkinnedMeshRenderer bodyObjectSMR = bodyObject.GetComponent<SkinnedMeshRenderer>();
-                    Renderer bodyObjectRenderer = bodyObject.GetComponent<Renderer>();
-
-                    //Set Mesh:
-                    bodyObjectSMR.sharedMesh = charClothingSO.Meshes[1];
-
-                    //Set Material (if needed):
-                    if (bodyObjectRenderer.sharedMaterial == MaterialBlank)
-                    {
-                        bodyObject.GetComponent<Renderer>().sharedMaterial = MaterialBody;
-                    }
-
-                    //Enable SkinnedMeshRenderer component (if needed)
-                    if (!bodyObjectSMR.enabled)
-                        bodyObjectSMR.enabled = true;
-                }
-                else
-                { Debug.Log(string.Format("*Failed to set Body object for '{0}': No placeholder object found.", charClothingSO.Name)); }
-            }
-        }
+        bodyObj.GetComponent<SkinnedMeshRenderer>().sharedMesh = GameMaster.Instance.CustomizationManager.Character.GetClothingSlotSO(slot).BodyMesh;
+        bodyObj.GetComponent<SkinnedMeshRenderer>().enabled = true;
     }
 
-    /// <summary>
-    /// Sets/Enables the Mesh, Material and SkinnedMeshRenderer component of the GameObject found using the specified body item.
-    /// </summary>
-    /// <param name="charClothing"></param>
-    private void SetObjectBody(CharacterBodySO charBody)
+    private void UnsetBody(ClothingSlot slot)
     {
-        GameObject bodyObject = null;
+        GameObject bodyObj = transform.GetChild(BodyObjects[slot]).gameObject;
 
-        if (charBody.ClothingSlot.PlaceholderNames[1] != "")
-        {
-            bodyObject = transform.Find(charBody.ClothingSlot.PlaceholderNames[1]).gameObject;
-
-            if (bodyObject != null)
-            {
-                SkinnedMeshRenderer bodyObjectSMR = bodyObject.GetComponent<SkinnedMeshRenderer>();
-                Renderer bodyObjectRenderer = bodyObject.GetComponent<Renderer>();
-
-                //Set Mesh:
-                bodyObjectSMR.sharedMesh = charBody.Mesh;
-
-                //Set Material (if needed):
-                if (bodyObjectRenderer.sharedMaterial == MaterialBlank)
-                {
-                    bodyObject.GetComponent<Renderer>().sharedMaterial = MaterialBody;
-                }
-
-                //Enable SkinnedMeshRenderer component (if needed)
-                if (!bodyObjectSMR.enabled)
-                    bodyObjectSMR.enabled = true;
-            }
-            else
-            { Debug.Log(string.Format("*Failed to set Body '{0}': No placeholder object found.", charBody.Name)); }
-        }
-    }
-
-    /// <summary>
-    /// Unsets the clothing placeholder object and, if applicable, the body placeholder object of the specified clothing slot.
-    /// </summary>
-    /// <param name="clothing"></param>
-    private void UnsetClothing(CharacterClothingSlotSO clothingSlot)
-    {
-        UnsetObject(transform.Find(clothingSlot.PlaceholderNames[0]).gameObject);
-
-        if (!clothingSlot.IsAccessory)
-        {
-            UnsetObject(transform.Find(clothingSlot.PlaceholderNames[1]).gameObject);
-        }
-    }
-
-    /// <summary>
-    /// Removes/disables the Mesh, Material and SkinnedMeshRenderer component of the specified GameObject.
-    /// </summary>
-    /// <param name="obj"></param>
-    private void UnsetObject(GameObject obj)
-    {
-        if (obj != null)
-        {
-            obj.GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
-            obj.GetComponent<SkinnedMeshRenderer>().enabled = false;
-            obj.GetComponent<Renderer>().sharedMaterial = MaterialBlank;
-        }
-        else
-            Debug.Log(string.Format("*Failed to unset object: '{0}' not found.", obj.name));
+        bodyObj.GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
+        bodyObj.GetComponent<SkinnedMeshRenderer>().enabled = false;
     }
 
     /// <summary>
     /// Checks if the specified clothing slot is currently filled/in use.
     /// </summary>
-    /// <param name="clothingSlot">The clothing slot to use in the search.</param>
-    /// <param name="iClothing">The index of the found clothing item in the CurrentClothing list.</param>
-    /// <returns></returns>
-    private bool IsClothingSlotUsed(ClothingSlot clothingSlot, out int iClothing)
-    {
-        bool clothingFound = false;
-        iClothing = -1;
-
-        if (CustomizationData.CurrentClothing.Count > 0)
-        {
-            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
-            {
-                if (CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
-                {
-                    clothingFound = true;
-                    iClothing = i;
-
-                    i = CustomizationData.CurrentClothing.Count; //end
-                }
-            }
-        }
-
-        return clothingFound;
-    }
-
-    /// <summary>
-    /// Checks if the specified clothing slot is currently filled/in use.
-    /// </summary>
-    /// <param name="clothingSlot">The clothing slot to use in the search.</param>
+    /// <param name="clothingSlot"></param>
     /// <returns></returns>
     private bool IsClothingSlotUsed(ClothingSlot clothingSlot)
     {
-        bool clothingFound = false;
+        return GetClothingSlotScript(ClothingObjects[clothingSlot]).IsSet;
+    }
 
-        if (CustomizationData.CurrentClothing.Count > 0)
-        {
-            for (int i = 0; i < CustomizationData.CurrentClothing.Count; i++)
-            {
-                if (CustomizationData.CurrentClothing[i].GetClothingSO().ClothingSlot.Slot == clothingSlot)
-                {
-                    clothingFound = true;
+    private ClothingSlotScript GetClothingSlotScript(int childIndex)
+    {
+        return transform.GetChild(childIndex).gameObject.GetComponent<ClothingSlotScript>();
+    }
 
-                    i = CustomizationData.CurrentClothing.Count; //end
-                }
-            }
-        }
-
-        return clothingFound;
+    private void OnDestroy()
+    {
+        Destroy(MaterialBody);
     }
 }

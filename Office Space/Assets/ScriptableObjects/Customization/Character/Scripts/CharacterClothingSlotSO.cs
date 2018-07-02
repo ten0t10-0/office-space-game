@@ -9,14 +9,7 @@ public class CharacterClothingSlotSO : ScriptableObject
 
     public ClothingSlot Slot;
 
-    public bool IsAccessory;
-
     public Material MaterialDefault;
 
-    /// <summary>
-    /// Index 0 = Clothing, Index 1 = Body.
-    /// </summary>
-    public string[] PlaceholderNames;
-
-    public CharacterBodySO Body;
+    public Mesh BodyMesh;
 }

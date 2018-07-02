@@ -13,9 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Outfits
   Slot: 0
-  IsAccessory: 0
   MaterialDefault: {fileID: 2100000, guid: 7a717510d62628546a5f6d93309c9316, type: 2}
-  PlaceholderNames:
-  - C_Costume
-  - B_Costume
-  Body: {fileID: 11400000, guid: 041f0974b9b0e32498c77ac2150731c5, type: 2}
+  BodyMesh: {fileID: 4300016, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}

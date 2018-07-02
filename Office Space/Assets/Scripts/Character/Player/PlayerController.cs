@@ -30,14 +30,17 @@ public class PlayerController : MonoBehaviour
 
         if (!GameMaster.Instance.UIMode)
         {
-            float horizontal = Input.GetAxisRaw("Horizontal");
-            float vertical = Input.GetAxisRaw("Vertical");
+            if (!Input.GetKey(KeyCode.RightShift))
+            {
+                float horizontal = Input.GetAxisRaw("Horizontal");
+                float vertical = Input.GetAxisRaw("Vertical");
 
-            // Move the player around the scene.
-            Move(horizontal, vertical);
+                // Move the player around the scene.
+                Move(horizontal, vertical);
 
-            // Animate the player.
-            AnimateMoving(horizontal, vertical);
+                // Animate the player.
+                AnimateMoving(horizontal, vertical);
+            }
         }
         else
             StopAnimations();

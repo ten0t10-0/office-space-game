@@ -250,7 +250,30 @@ public class GameMaster : MonoBehaviour
     {
         //NewGameTEST();
 
-        NewGame();
+        if (!File.Exists(Application.persistentDataPath + saveFileDirString))
+        {
+            NewGame();
+        }
+        else
+        {
+            LoadGame();
+        }
+
+        #region
+        //Spawn player
+        SpawnPlayer();
+
+        //Set Camera target
+        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
+
+        //Set up area
+        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+        #endregion
+
+        //**TEST**
+        //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Upper);
+        //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Lower);
+        //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetClothing(4);
     }
 
     public void InitializeGame()
@@ -292,18 +315,6 @@ public class GameMaster : MonoBehaviour
 
         //TEST: Generating supplier items *
         SupplierManager.PopulateSupplierInventories();
-
-        //Spawn player
-        SpawnPlayer();
-
-        //Set Camera target
-        Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
-
-        //Set up area
-        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
-
-        //Finally, save the game
-        SaveGame();
     }
 
     private void NewGameTEST()
@@ -531,20 +542,7 @@ public class GameMaster : MonoBehaviour
             CurrentPlayerObject.AddComponent<PlayerController>();
             CurrentPlayerObject.tag = "Player";
 
-            //TEST: Body color change (Before setting player char - changing color in customization data in player class)
-            //Player.CharacterCustomizationData.UpdateBodyColorInfo(new Color(0f, 0f, 0f));
-
             CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CharacterCustomizationData);
-
-            //TEST A: (OK) Body color change (After setting player char - changing color in customization data held by player object customization script component - REQUIRES ReloadCharacterAppearance() method to be called!)
-            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData.UpdateBodyColorInfo(new Color(0f, 0f, 0f));
-            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().ReloadCharacterAppearance();
-
-            //TEST B: (-Nope-) Body color change (After setting player char - directly changing color of MaterialBody field in player object customization script component - *Does NOT update customization data - will not be saved*)
-            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().MaterialBody.color = new Color(0f, 0f, 0f);
-
-            //TEST C: (*Preferred!*) Body color change (After setting player char - Using custom method UpdateBodyColor() )
-            //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateBodyColor(new Color(0f, 0f, 0f));
         }
     }
 
@@ -649,12 +647,24 @@ public class GameMaster : MonoBehaviour
             SaveGame();
 
         //TEST: Lock & Unlock cursor
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
         {
             if (Cursor.lockState == CursorLockMode.None)
                 Cursor.lockState = CursorLockMode.Locked;
             else
                 Cursor.lockState = CursorLockMode.None;
+        }
+
+        //TEST: Player customization stuff
+        if (Input.GetKey(KeyCode.RightShift))
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateBodyColor(new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+
+                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateClothingColor(ClothingSlot.Upper, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateClothingColor(ClothingSlot.Lower, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+            }
         }
         #endregion
     }
@@ -859,7 +869,7 @@ public class GameMaster : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
 
-            Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().CustomizationData;
+            Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
             Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
 
             //Save data to GameData object (saveData):

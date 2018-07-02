@@ -5,6 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Char Clothing DB", menuName = "Character Customization/Database")]
 public class CharacterCustomizationDatabaseSO : ScriptableObject
 {
+    [HideInInspector]
+    public Material MaterialBlank;
+
     public Material MaterialBodyDefault;
 
     public List<CharacterClothingSO> Clothing;

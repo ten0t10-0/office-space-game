@@ -14,4 +14,9 @@ public class CharacterClothingSO : ScriptableObject
     /// Index 0 = Clothing mesh, Index 1 = Body mesh.
     /// </summary>
     public Mesh[] Meshes;
+
+    public bool HasBodyMesh
+    {
+        get { return Meshes.Length == 2; }
+    }
 }
