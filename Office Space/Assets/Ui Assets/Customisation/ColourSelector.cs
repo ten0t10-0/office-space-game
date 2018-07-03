@@ -36,10 +36,10 @@ public class ColourSelector : MonoBehaviour
 		if (Input.GetMouseButton (0)) {
 
 			Vector3 screenPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);    
-			screenPos = new Vector2(screenPos.x, screenPos.y);
+			screenPos = new Vector3(screenPos.x, screenPos.y);
 
 			//check if we clicked this picker control
-			RaycastHit2D[] ray = Physics2D.RaycastAll(screenPos, Vector2.zero, 0.01f);
+			RaycastHit2D[] ray = Physics2D.RaycastAll(screenPos, Vector3.zero, 0.01f);
 			for (int i = 0; i < ray.Length; i++)
 			{
 				if (ray[i].collider == Collider)
