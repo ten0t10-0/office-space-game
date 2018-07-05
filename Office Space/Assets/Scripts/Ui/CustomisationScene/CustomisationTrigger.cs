@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PcTrigger : MonoBehaviour {
-
-	//public Canvas ComputerCanvas;
-	public GameObject hud;
+public class CustomisationTrigger : MonoBehaviour {
 
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
-
-	public GameObject screen;
-	public Transform pcMount;
+	public GameObject cube,hud,custom;
+	public Transform bodyMount;
+	Vector3 pos,rot;
 	CamMounts cam;
 
 	void Update ()
@@ -20,27 +17,34 @@ public class PcTrigger : MonoBehaviour {
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				SetMount ();
 				OpenPanel.SetActive (false);
+
+				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().transform.position = pos;
+				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().transform.Rotate(rot);
+				SetMount ();
 				GameMaster.Instance.UIMode = true;
-				screen.SetActive (false);
+
 				hud.SetActive (false);
+				custom.SetActive (true);
+
 			}
 		}
 	}
 
+
+
 	public void SetMount()
 	{
-		FindObjectOfType<CamMounts> ().setMount(pcMount);
+		FindObjectOfType<CamMounts> ().setMount(bodyMount);
 	}
 
-	public void CloseShop()
+
+	void Start () 
 	{
-		//ComputerCanvas.enabled = false;
-        GameMaster.Instance.UIMode = false;
-        //Time.timeScale = 1;
-		hud.SetActive(true);
-    }
+		pos = cube.transform.position;
+		rot = cube.transform.eulerAngles;
+	}
+
 
 	void OnTriggerEnter(Collider other)
 	{

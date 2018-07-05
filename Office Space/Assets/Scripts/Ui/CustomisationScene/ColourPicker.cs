@@ -11,14 +11,14 @@ public class ColourPicker : MonoBehaviour
 
 	public Color textureColour;
 
-	private Rect textureRect = new Rect (140,240,250,100);
+	private Rect textureRect = new Rect (120,190,220,100);
 
 	void Start()
 	{
 
 		sprite = GetComponent<SpriteRenderer>();
 
-
+		sprite.color = Color.black;
 	}
 
 

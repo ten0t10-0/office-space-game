@@ -17,8 +17,8 @@ public class GUIManager : MonoBehaviour
 
     private void Awake()
     {
-        OrdersPanelScript = GameObject.Find(goOffice).transform.Find(goObjects).Find(goUIScreen).Find(goCompCanvas).Find(goApps).Find(goOrdersPanel).gameObject.GetComponent<OrderUI>();
-		hudScript = GameObject.Find("HudCanvas").GetComponent<HudMain>();
+       // OrdersPanelScript = GameObject.Find(goOffice).transform.Find(goObjects).Find(goUIScreen).Find(goCompCanvas).Find(goApps).Find(goOrdersPanel).gameObject.GetComponent<OrderUI>();
+		//hudScript = GameObject.Find("HudCanvas").GetComponent<HudMain>();
 			
 
     }

@@ -24,4 +24,9 @@ public class CamMounts : MonoBehaviour
 		Camera.main.transform.rotation = Quaternion.Slerp (transform.rotation, currentMount.rotation, speed);
 
 	}
+
+	public void  setMount ( Transform newMount  )
+	{
+		currentMount = newMount;
+	}﻿
 }
