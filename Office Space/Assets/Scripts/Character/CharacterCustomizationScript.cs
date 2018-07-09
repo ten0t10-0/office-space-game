@@ -58,9 +58,45 @@ public class CharacterCustomizationScript : MonoBehaviour
         if (clothingSO.HasBodyMesh)
         {
             GetClothingSlotScript(BodyObjects[clothingSO.ClothingSlot.Slot]).Set(clothingId);
-
-            SetUpBodyObjects();
         }
+
+        switch (clothingSO.ClothingSlot.Slot)
+        {
+            case ClothingSlot.Costume:
+                {
+                    if (GetClothingSlotScript(ClothingObjects[ClothingSlot.Upper]).IsSet)
+                        UnsetClothing(ClothingSlot.Upper);
+
+                    if (GetClothingSlotScript(ClothingObjects[ClothingSlot.Lower]).IsSet)
+                        UnsetClothing(ClothingSlot.Lower);
+
+                    if (GetClothingSlotScript(ClothingObjects[ClothingSlot.LeftArm]).IsSet)
+                        UnsetClothing(ClothingSlot.LeftArm);
+
+                    if (GetClothingSlotScript(ClothingObjects[ClothingSlot.RightArm]).IsSet)
+                        UnsetClothing(ClothingSlot.RightArm);
+
+                    break;
+                }
+
+            case ClothingSlot.Upper:
+            case ClothingSlot.Lower:
+            case ClothingSlot.LeftArm:
+            case ClothingSlot.RightArm:
+                {
+                    if (GetClothingSlotScript(ClothingObjects[ClothingSlot.Costume]).IsSet)
+                        UnsetClothing(ClothingSlot.Costume);
+
+                    break;
+                }
+
+            case ClothingSlot.Head:
+                {
+                    break;
+                }
+        }
+
+        SetUpBodyObjects();
     }
 
     public void UnsetClothing(ClothingSlot slot)
@@ -147,6 +183,26 @@ public class CharacterCustomizationScript : MonoBehaviour
         return data;
     }
 
+    /// <summary>
+    /// Checks if the specified clothing slot is currently filled/in use.
+    /// </summary>
+    /// <param name="clothingSlot"></param>
+    /// <returns></returns>
+    public bool IsClothingSlotUsed(ClothingSlot clothingSlot)
+    {
+        return GetClothingSlotScript(ClothingObjects[clothingSlot]).IsSet;
+    }
+
+    /// <summary>
+    /// Returns the Index/ID of the clothing on the specified slot. A value of -1 being returned indicates there is no clothing.
+    /// </summary>
+    /// <param name="clothingSlot"></param>
+    /// <returns></returns>
+    public int GetClothingIndexBySlot(ClothingSlot clothingSlot)
+    {
+        return GetClothingSlotScript(ClothingObjects[clothingSlot]).ClothingIndex;
+    }
+
     private void UnsetAllClothing()
     {
         foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)
@@ -161,29 +217,23 @@ public class CharacterCustomizationScript : MonoBehaviour
         bool isSlotUsedUpper = IsClothingSlotUsed(ClothingSlot.Upper);
         bool isSlotUsedLower = IsClothingSlotUsed(ClothingSlot.Lower);
 
-        if (!isSlotUsedCostume && !isSlotUsedLower && !isSlotUsedUpper)
+        if (isSlotUsedCostume)
         {
-            SetBody(ClothingSlot.Costume);
-
             UnsetBody(ClothingSlot.Upper);
             UnsetBody(ClothingSlot.Lower);
         }
-        else if (!isSlotUsedCostume)
+        else
         {
             UnsetBody(ClothingSlot.Costume);
 
-            if (isSlotUsedLower && !isSlotUsedUpper)
-            {
+            if (!isSlotUsedUpper)
                 SetBody(ClothingSlot.Upper);
 
-                //UnsetBody(ClothingSlot.Lower);
-            }
-            else if (isSlotUsedUpper && !isSlotUsedLower)
-            {
-                SetBody(ClothingSlot.Lower);
+            //if (!isSlotUsedLower)
+            //    SetBody(ClothingSlot.Lower);
 
-                //UnsetBody(ClothingSlot.Upper);
-            }
+            if (!isSlotUsedLower)
+                SetClothing(GameMaster.Instance.CustomizationManager.Character.GetDefaultClothingBySlot(ClothingSlot.Lower).Value);
         }
     }
 
@@ -201,16 +251,6 @@ public class CharacterCustomizationScript : MonoBehaviour
 
         bodyObj.GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
         bodyObj.GetComponent<SkinnedMeshRenderer>().enabled = false;
-    }
-
-    /// <summary>
-    /// Checks if the specified clothing slot is currently filled/in use.
-    /// </summary>
-    /// <param name="clothingSlot"></param>
-    /// <returns></returns>
-    private bool IsClothingSlotUsed(ClothingSlot clothingSlot)
-    {
-        return GetClothingSlotScript(ClothingObjects[clothingSlot]).IsSet;
     }
 
     private ClothingSlotScript GetClothingSlotScript(int childIndex)

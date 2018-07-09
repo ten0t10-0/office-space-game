@@ -48,7 +48,6 @@ public class ClothingSlotScript : MonoBehaviour
         {
             GetComponent<SkinnedMeshRenderer>().sharedMesh = clothingSO.Meshes[1];
             GetComponent<SkinnedMeshRenderer>().enabled = true;
-            
 
             ClothingIndex = clothingIndex;
         }

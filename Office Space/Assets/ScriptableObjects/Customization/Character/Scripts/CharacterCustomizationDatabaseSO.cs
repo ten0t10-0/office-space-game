@@ -47,4 +47,31 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
 
         return slotSO;
     }
+
+    public List<int> GetClothingIDsBySlot(ClothingSlot slot)
+    {
+        List<int> clothing = new List<int>();
+
+        for (int i = 0; i < Clothing.Count; i++)
+        {
+            if (Clothing[i].ClothingSlot.Slot == slot)
+                clothing.Add(i);
+        }
+
+        return clothing;
+    }
+
+    public int? GetDefaultClothingBySlot(ClothingSlot slot)
+    {
+        int? clothingIndex = null;
+
+        foreach (int iDefaultClothing in DefaultClothingIndexes)
+            if (Clothing[iDefaultClothing].ClothingSlot.Slot == slot)
+            {
+                clothingIndex = iDefaultClothing;
+                break;
+            }
+
+        return clothingIndex;
+    }
 }

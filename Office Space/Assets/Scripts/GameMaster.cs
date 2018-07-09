@@ -6,6 +6,8 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+public enum NPCType { Test, Customer }
+
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
@@ -55,8 +57,11 @@ public class GameMaster : MonoBehaviour
 
     #region <PLAYER/NPC>
     public GameObject GenericCharacterObject;
+
     [HideInInspector]
     public GameObject CurrentPlayerObject;
+    [HideInInspector]
+    public List<GameObject> CurrentNPCObjects;
 
     [HideInInspector]
     public Player Player;
@@ -282,6 +287,8 @@ public class GameMaster : MonoBehaviour
         //BuildMode = false;
         //OfflineMode = false;
         //TutorialMode = false;
+
+        DestroyAllNPCs();
 
         tPlayerPlayTime = tGameTime = Time.time;
     }
@@ -538,12 +545,18 @@ public class GameMaster : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("Player") == null)
         {
             CurrentPlayerObject = Instantiate(GenericCharacterObject, Vector3.up, Quaternion.Euler(Vector3.zero));
+            CurrentPlayerObject.name = "Character (PLAYER)";
 
             CurrentPlayerObject.AddComponent<PlayerController>();
             CurrentPlayerObject.tag = "Player";
 
             CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CharacterCustomizationData);
         }
+    }
+
+    private void SpawnNPC(NPCType npcType)
+    {
+        //*
     }
 
     private void Update()
@@ -660,10 +673,47 @@ public class GameMaster : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
-                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateBodyColor(new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
 
-                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateClothingColor(ClothingSlot.Upper, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
-                CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UpdateClothingColor(ClothingSlot.Lower, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+                //player.UpdateBodyColor(new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+
+                //player.UpdateClothingColor(ClothingSlot.Upper, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+                //player.UpdateClothingColor(ClothingSlot.Lower, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
+
+                //if (player.IsClothingSlotUsed(ClothingSlot.Costume))
+                //    player.UnsetClothing(ClothingSlot.Costume);
+                //else if (player.IsClothingSlotUsed(ClothingSlot.Upper) && player.IsClothingSlotUsed(ClothingSlot.Lower))
+                //{
+                //    player.UnsetClothing(ClothingSlot.Upper);
+                //    player.UnsetClothing(ClothingSlot.Lower);
+                //}
+                //else
+                //{
+                //    player.SetClothing(3);
+                //}
+
+                ClothingSlot slot = (ClothingSlot)UnityEngine.Random.Range(0, 3);
+
+                switch (slot)
+                {
+                    case ClothingSlot.Costume:
+                        player.SetClothing(3); break;
+                    case ClothingSlot.Upper:
+                        player.SetClothing(5); break;
+                    case ClothingSlot.Lower:
+                        player.SetClothing(4); break;
+                    default:
+                        break;
+                }
+
+                Debug.Log("*" + slot.ToString());
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+
+                player.UnsetClothing(ClothingSlot.Costume);
             }
         }
         #endregion
@@ -859,6 +909,17 @@ public class GameMaster : MonoBehaviour
                 Difficulty++;
             }
         }
+    }
+
+    public void DestroyAllNPCs()
+    {
+        if (CurrentNPCObjects.Count > 0)
+        {
+            for (int i = 0; i < CurrentNPCObjects.Count; i++)
+                Destroy(CurrentNPCObjects[i]);
+        }
+
+        CurrentNPCObjects = new List<GameObject>();
     }
     #endregion
 

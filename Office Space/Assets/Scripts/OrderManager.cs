@@ -102,10 +102,8 @@ public class OrderManager : MonoBehaviour
     {
         Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, markup, out payment, out score, out penaltyMultiplier);
 
-        string result = "Order for " + Orders[iOrderToComplete].Customer.FullName() + " completed!";
-        GameMaster.Instance.Notifications.Add(result);
+        GameMaster.Instance.Notifications.Add("Order for " + Orders[iOrderToComplete].Customer.FullName() + " completed!");
 
-        Debug.Log(result);
         Debug.Log("Total payment: " + payment.ToString());
 
         GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
