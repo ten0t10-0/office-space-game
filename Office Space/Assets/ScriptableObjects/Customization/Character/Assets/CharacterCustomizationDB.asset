@@ -20,6 +20,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dff920947b7d2ad41969623e27ba1c6a, type: 2}
   - {fileID: 11400000, guid: b1acdfe744961cf4f87299a2e6a55b05, type: 2}
   - {fileID: 11400000, guid: 0b36466b06756d242acc4191ff86963e, type: 2}
+  - {fileID: 11400000, guid: 99801b1c44ca88248b1b492c52b9e75b, type: 2}
+  - {fileID: 11400000, guid: 941177848f3b50f49a2b08d132704b80, type: 2}
+  - {fileID: 11400000, guid: 0a026697f14849b47af6c08d12cb1244, type: 2}
   ClothingSlots:
   - {fileID: 11400000, guid: 9ca95f108f2155042948915067794a09, type: 2}
   - {fileID: 11400000, guid: 4b8d4a6e5ffecfa4384bca03deb82661, type: 2}
@@ -27,5 +30,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7de66848f69064b40993fc639bd154c5, type: 2}
   - {fileID: 11400000, guid: 5b3e278bc66ca824a992d44b838f8367, type: 2}
   - {fileID: 11400000, guid: bf236a2c91b8c684b897bde4340a5076, type: 2}
-  DefaultClothingIndexes: 0500000004000000
+  DefaultClothingIndexes: 0600000008000000
   CustomMaterials: []

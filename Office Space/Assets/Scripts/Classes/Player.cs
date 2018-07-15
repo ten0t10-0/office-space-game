@@ -17,6 +17,8 @@ public class Player
     [SerializeField]
     public List<int> UnlockedClothing { get; set; }
     [SerializeField]
+    public List<int> PurchasedClothing { get; set; }
+    [SerializeField]
     public List<int> UnlockedOfficeItems { get; set; }
 
     #region <Constructors>
@@ -41,10 +43,12 @@ public class Player
 
         CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
         UnlockedClothing = new List<int>();
+        PurchasedClothing = new List<int>();
 
         foreach (int i in GameMaster.Instance.CustomizationManager.Character.DefaultClothingIndexes)
         {
             UnlockedClothing.Add(i);
+            PurchasedClothing.Add(i);
 
             CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
@@ -93,6 +97,28 @@ public class Player
         //*
 
         GameMaster.Instance.CheckDifficulty();
+
+        for (int i = 0; i < GameMaster.Instance.CustomizationManager.Character.Clothing.Count; i++)
+        {
+            if (GameMaster.Instance.CustomizationManager.Character.Clothing[i].LevelRequirement <= Level)
+            {
+                if (!UnlockedClothing.Contains(i))
+                {
+                    UnlockedClothing.Add(i);
+                }
+            }
+        }
+
+        for (int i = 0; i < GameMaster.Instance.CustomizationManager.Office.Items.Count; i++)
+        {
+            if (GameMaster.Instance.CustomizationManager.Office.Items[i].LevelRequirement <= Level)
+            {
+                if (!UnlockedOfficeItems.Contains(i))
+                {
+                    UnlockedOfficeItems.Add(i);
+                }
+            }
+        }
     }
     #endregion
 

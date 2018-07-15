@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
                 // Animate the player.
                 AnimateMoving(horizontal, vertical);
             }
+            else
+                StopAnimations();
         }
         else
             StopAnimations();

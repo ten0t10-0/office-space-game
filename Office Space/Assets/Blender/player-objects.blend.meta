@@ -33,6 +33,12 @@ ModelImporter:
     100050: Spine
     100052: Thigh_L
     100054: Thigh_R
+    100056: B_PantsShort
+    100058: C_PantsShort
+    100060: B_ShirtShort
+    100062: C_ShirtShort
+    100064: B_ShirtNon
+    100066: C_ShirtNon
     400000: Arm1_L
     400002: Arm1_R
     400004: Arm2_L
@@ -61,6 +67,12 @@ ModelImporter:
     400050: Spine
     400052: Thigh_L
     400054: Thigh_R
+    400056: B_PantsShort
+    400058: C_PantsShort
+    400060: B_ShirtShort
+    400062: C_ShirtShort
+    400064: B_ShirtNon
+    400066: C_ShirtNon
     2100000: B_Default
     2100002: C_Default
     4300000: B_Onesie
@@ -72,6 +84,12 @@ ModelImporter:
     4300012: BODY_UPPER
     4300014: BODY_LOWER
     4300016: BODY_FULL
+    4300018: B_PantsShort
+    4300020: C_PantsShort
+    4300022: B_ShirtShort
+    4300024: C_ShirtShort
+    4300026: B_ShirtNon
+    4300028: C_ShirtNon
     7400000: Default Take
     7400002: Idle01
     7400004: Run01
@@ -86,6 +104,12 @@ ModelImporter:
     13700012: C_Onesie
     13700014: C_PantsLong
     13700016: C_ShirtLong
+    13700018: B_PantsShort
+    13700020: C_PantsShort
+    13700022: B_ShirtShort
+    13700024: C_ShirtShort
+    13700026: B_ShirtNon
+    13700028: C_ShirtNon
   externalObjects: {}
   materials:
     importMaterials: 1
