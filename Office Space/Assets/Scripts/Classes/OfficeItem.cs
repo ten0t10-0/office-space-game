@@ -7,6 +7,8 @@ public class OfficeItem
 {
     public int ItemID { get; set; }
 
+    public string ObjectName { get; set; }
+
     public float PositionX { get; set; }
     public float PositionY { get; set; }
     public float PositionZ { get; set; }
@@ -20,6 +22,19 @@ public class OfficeItem
     {
         ItemID = itemId;
 
+        ObjectName = null;
+
+        UpdatePositionData(position);
+
+        UpdateRotationData(rotation);
+    }
+
+    public OfficeItem(string essentialObjectName, Vector3 position, Quaternion rotation)
+    {
+        ItemID = -1;
+
+        ObjectName = essentialObjectName;
+
         UpdatePositionData(position);
 
         UpdateRotationData(rotation);
@@ -29,7 +44,10 @@ public class OfficeItem
     #region <Methods>
     public OfficeItemSO GetSO()
     {
-        return GameMaster.Instance.CustomizationManager.Office.Items[ItemID];
+        if (ItemID > -1)
+            return GameMaster.Instance.CustomizationManager.Office.Items[ItemID];
+        else
+            return null;
     }
 
     public void UpdatePositionData(Vector3 position)

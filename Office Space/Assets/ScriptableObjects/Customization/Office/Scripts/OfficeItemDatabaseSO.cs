@@ -41,6 +41,12 @@ public class OfficeItemDatabaseSO : ScriptableObject
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
 
+    public List<string> EssentialObjectNames;
+
+    [HideInInspector]
+    public Dictionary<string, Material[]> MaterialEssentialObjectsDefault;
+
+    [HideInInspector]
     public List<GameObject> CurrentObjects;
 
     public bool ObjectSelected
@@ -49,7 +55,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
     }
 
     /// <summary>
-    /// Sets up a reference to the correct parent object for instantiating office items and creates walls, floor and ceiling materials.
+    /// (CALL ONCE!) Sets up a reference to the correct parent object for instantiating office items and creates walls, floor and ceiling materials.
     /// </summary>
     public void Initialize()
     {
@@ -60,7 +66,24 @@ public class OfficeItemDatabaseSO : ScriptableObject
         officeRoomTransform = GameObject.Find(OfficeParentName).transform.Find(RoomParentName);
         officeObjectTransform = GameObject.Find(OfficeParentName).transform.Find(ObjectsParentName);
 
+        MaterialEssentialObjectsDefault = new Dictionary<string, Material[]>();
+
         CurrentObjects = new List<GameObject>();
+
+        if (EssentialObjectNames.Count > 0)
+        {
+            for (int i = 0; i < EssentialObjectNames.Count; i++)
+            {
+                GameObject essentialObject = GameObject.Find(EssentialObjectNames[i]);
+
+                essentialObject.GetComponent<OfficeObjectScript>().Essential = true;
+                essentialObject.GetComponent<OfficeObjectScript>().ObjectIndex = CurrentObjects.Count;
+
+                MaterialEssentialObjectsDefault.Add(essentialObject.name, essentialObject.GetComponent<Renderer>().sharedMaterials);
+
+                CurrentObjects.Add(essentialObject);
+            }
+        }
 
         Transform wallsTransform = officeRoomTransform.Find("Walls");
 
@@ -84,13 +107,31 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
         if (data.OfficeItems.Count > 0)
         {
-            foreach(OfficeItem officeItem in data.OfficeItems)
+            for (int i = 0; i < data.OfficeItems.Count; i++)
             {
-                int iObject;
+                OfficeItem officeItem = data.OfficeItems[i];
+                GameObject newOfficeObject = null;
 
-                InitializeOfficeObject(officeItem.ItemID, out iObject);
+                if (officeItem.ItemID > -1)
+                {
+                    int iObject;
 
-                GameObject newOfficeObject = CurrentObjects[iObject];
+                    InitializeOfficeObject(officeItem.ItemID, out iObject);
+
+                    newOfficeObject = CurrentObjects[iObject];
+                }
+                else
+                {
+                    foreach (GameObject obj in CurrentObjects)
+                    {
+                        if (obj.name == officeItem.ObjectName)
+                        {
+                            newOfficeObject = obj;
+                            break;
+                        }
+                    }
+                }
+
                 newOfficeObject.transform.position = officeItem.GetPosition();
                 newOfficeObject.transform.rotation = officeItem.GetRotation();
             }
@@ -168,10 +209,15 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// <param name="objectIndex"></param>
     public void RemoveOfficeObject(int objectIndex)
     {
-        Destroy(CurrentObjects[objectIndex]);
-        CurrentObjects.RemoveAt(objectIndex);
+        if (!CurrentObjects[objectIndex].GetComponent<OfficeObjectScript>().Essential)
+        {
+            Destroy(CurrentObjects[objectIndex]);
+            CurrentObjects.RemoveAt(objectIndex);
 
-        UpdateObjectIndexes();
+            UpdateObjectIndexes();
+        }
+        else
+            Debug.Log("Cannot remove essential office items!");
     }
 
     /// <summary>
@@ -179,14 +225,27 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// </summary>
     public void RemoveAllOfficeObjects()
     {
+        List<GameObject> essentialObjects = new List<GameObject>();
+
         if (CurrentObjects.Count > 0)
         {
             for (int i = 0; i < CurrentObjects.Count; i++)
             {
-                Destroy(CurrentObjects[i]);
+                if (!CurrentObjects[i].GetComponent<OfficeObjectScript>().Essential)
+                    Destroy(CurrentObjects[i]);
+                else
+                    essentialObjects.Add(CurrentObjects[i]);
             }
 
             CurrentObjects.Clear();
+
+            if (essentialObjects.Count > 0)
+            {
+                for (int i = 0; i < essentialObjects.Count; i++)
+                {
+                    CurrentObjects.Add(essentialObjects[i]);
+                }
+            }
         }
     }
 
@@ -208,7 +267,14 @@ public class OfficeItemDatabaseSO : ScriptableObject
             {
                 OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
 
-                officeItem = new OfficeItem(objScript.OfficeItemID, obj.transform.position, obj.transform.rotation);
+                if (objScript.OfficeItemID > -1)
+                {
+                    officeItem = new OfficeItem(objScript.OfficeItemID, obj.transform.position, obj.transform.rotation);
+                }
+                else
+                {
+                    officeItem = new OfficeItem(obj.name, obj.transform.position, obj.transform.rotation);
+                }
 
                 data.OfficeItems.Add(officeItem);
 

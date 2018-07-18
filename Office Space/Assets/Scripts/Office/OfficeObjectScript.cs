@@ -10,6 +10,10 @@ public class OfficeObjectScript : MonoBehaviour
     public int ParentIndex = -1;
     public bool ParentSelected = false;
 
+    public bool Essential = false;
+    public bool UseCustomPlacement = false;
+    public OfficeItemPosition CustomPlacement;
+
     private bool selected = false;
     private bool highlighted = false;
     private bool placementValid = true;
@@ -34,9 +38,9 @@ public class OfficeObjectScript : MonoBehaviour
 
     public void Select()
     {
-        GameObject[] children = GetChildren();
+        List<GameObject> children = GetChildren();
 
-        for (int i = 0; i < children.Length; i++)
+        for (int i = 0; i < children.Count; i++)
         {
             children[i].GetComponent<OfficeObjectScript>().ParentSelected = true;
         }
@@ -49,9 +53,9 @@ public class OfficeObjectScript : MonoBehaviour
 
     public void Deselect()
     {
-        GameObject[] children = GetChildren();
+        List<GameObject> children = GetChildren();
 
-        for (int i = 0; i < children.Length; i++)
+        for (int i = 0; i < children.Count; i++)
         {
             children[i].GetComponent<OfficeObjectScript>().ParentSelected = false;
         }
@@ -104,7 +108,22 @@ public class OfficeObjectScript : MonoBehaviour
             {
                 float objectPlacementDistance = GameMaster.Instance.CustomizationManager.Office.ObjectPlacementDistance;
 
-                OfficeItemPosition placement = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Placement;
+                OfficeItemPosition placement;
+
+                if (!UseCustomPlacement)
+                {
+                    if (OfficeItemID > -1)
+                        placement = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Placement;
+                    else
+                    {
+                        placement = OfficeItemPosition.Floor;
+                        Debug.Log("OfficeItemID = -1!");
+                    }
+                }
+                else
+                {
+                    placement = CustomPlacement;
+                }
 
                 Vector3 newPos;
 
@@ -241,16 +260,26 @@ public class OfficeObjectScript : MonoBehaviour
 
     private void ResetObjectMaterials()
     {
-        GetComponent<Renderer>().sharedMaterials = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Object.GetComponent<Renderer>().sharedMaterials;
+        if (OfficeItemID > -1)
+            GetComponent<Renderer>().sharedMaterials = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Object.GetComponent<Renderer>().sharedMaterials;
+        else
+            GetComponent<Renderer>().sharedMaterials = GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault[name];
     }
 
-    private GameObject[] GetChildren()
+    private List<GameObject> GetChildren()
     {
-        GameObject[] children = new GameObject[transform.childCount];
+        List<GameObject> children = new List<GameObject>();
 
-        for (int i = 0; i < children.Length; i++)
+        int childCount = transform.childCount;
+
+        for (int i = 0; i < childCount; i++)
         {
-            children[i] = transform.GetChild(i).gameObject;
+            GameObject child = transform.GetChild(i).gameObject;
+
+            if (child.GetComponent<OfficeObjectScript>() != null)
+            {
+                children.Add(child);
+            }
         }
 
         return children;
@@ -260,11 +289,11 @@ public class OfficeObjectScript : MonoBehaviour
     {
         List<GameObject> family = new List<GameObject>();
 
-        GameObject[] children = GetChildren();
+        List<GameObject> children = GetChildren();
 
-        if (children.Length > 0)
+        if (children.Count > 0)
         {
-            for (int iChild = 0; iChild < children.Length; iChild++)
+            for (int iChild = 0; iChild < children.Count; iChild++)
             {
                 family.Add(children[iChild]);
 

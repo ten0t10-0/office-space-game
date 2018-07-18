@@ -38,4 +38,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fffd17d5b5902004a9df5fd169aa006a, type: 2}
   Types:
   - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
+  - {fileID: 11400000, guid: ad89eda27dd31004e94b3c4b17731495, type: 2}
+  - {fileID: 11400000, guid: 3739d0f0e1813b64ba0ffecd65121766, type: 2}
   DefaultOfficeItemIndexes: 00000000
+  EssentialObjectNames:
+  - monitor
+  CurrentObjects:
+  - {fileID: 0}

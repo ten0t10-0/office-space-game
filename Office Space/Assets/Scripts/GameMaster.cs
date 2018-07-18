@@ -253,15 +253,17 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        //NewGameTEST();
-
         if (!File.Exists(Application.persistentDataPath + saveFileDirString))
         {
             NewGame();
+            //NewGameTEST();
         }
         else
         {
             LoadGame();
+
+            //Set up area
+            CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
         }
 
         #region
@@ -270,9 +272,6 @@ public class GameMaster : MonoBehaviour
 
         //Set Camera target
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
-
-        //Set up area
-        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
         #endregion
 
         //**TEST**
@@ -322,6 +321,15 @@ public class GameMaster : MonoBehaviour
 
         //TEST: Generating supplier items *
         SupplierManager.PopulateSupplierInventories();
+
+        //  ^ Adding office object:
+        int iObject;
+        CustomizationManager.Office.InitializeOfficeObject(0, out iObject);
+        GameObject newObject2 = CustomizationManager.Office.CurrentObjects[iObject];
+        newObject2.transform.position = new Vector3(0f, 0f, 7.63f);
+        newObject2.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+
+        GameObject.Find("monitor").GetComponent<OfficeObjectScript>().SetParent(iObject);
     }
 
     private void NewGameTEST()

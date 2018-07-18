@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: PantsShort
   m_EditorClassIdentifier: 
   Name: Pants (Short)
-  Price: 100
+  Price: 120
   LevelRequirement: 5
   ClothingSlot: {fileID: 11400000, guid: bf236a2c91b8c684b897bde4340a5076, type: 2}
   Meshes:
