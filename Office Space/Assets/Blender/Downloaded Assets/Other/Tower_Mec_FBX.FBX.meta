@@ -1,0 +1,169 @@
+fileFormatVersion: 2
+guid: 5554997cdd6e44845ae64584f2395157
+timeCreated: 1532097395
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Camera01
+    100002: Camera01.Target
+    100004: Camera02
+    100006: Camera02.Target
+    100008: Camera03
+    100010: Camera03.Target
+    100012: Case Mec
+    100014: Case Mec 1
+    100016: Front_panel
+    100018: Line02
+    100020: Object001
+    100022: Plane001
+    100024: Plane002
+    100026: Plane003
+    100028: //RootNode
+    100030: TPhotometricLight001
+    100032: TPhotometricLight001.Target
+    100034: TPhotometricLight002
+    100036: TPhotometricLight002.Target
+    100038: TPhotometricLight003
+    100040: TPhotometricLight003.Target
+    100042: TPhotometricLight004
+    100044: TPhotometricLight004.Target
+    400000: Camera01
+    400002: Camera01.Target
+    400004: Camera02
+    400006: Camera02.Target
+    400008: Camera03
+    400010: Camera03.Target
+    400012: Case Mec
+    400014: Case Mec 1
+    400016: Front_panel
+    400018: Line02
+    400020: Object001
+    400022: Plane001
+    400024: Plane002
+    400026: Plane003
+    400028: //RootNode
+    400030: TPhotometricLight001
+    400032: TPhotometricLight001.Target
+    400034: TPhotometricLight002
+    400036: TPhotometricLight002.Target
+    400038: TPhotometricLight003
+    400040: TPhotometricLight003.Target
+    400042: TPhotometricLight004
+    400044: TPhotometricLight004.Target
+    2000000: Camera01
+    2000002: Camera02
+    2000004: Camera03
+    2100000: 15 - Default
+    2100002: 14 - Default
+    2100004: 13 - Default
+    2100006: 'Material #53'
+    2100008: 01 - Default
+    2100010: 07 - Default
+    2100012: 'Material #50'
+    2100014: 'Material #60'
+    2100016: 'Material #67'
+    2300000: Case Mec 1
+    2300002: Front_panel
+    2300004: Object001
+    2300006: Plane001
+    2300008: Plane002
+    2300010: Plane003
+    3300000: Case Mec 1
+    3300002: Front_panel
+    3300004: Object001
+    3300006: Plane001
+    3300008: Plane002
+    3300010: Plane003
+    4300000: Plane001
+    4300002: Plane002
+    4300004: Plane003
+    4300006: Case Mec
+    4300008: Object001
+    4300010: Front_panel
+    7400000: Take 001
+    9500000: //RootNode
+    10800000: TPhotometricLight001
+    10800002: TPhotometricLight002
+    10800004: TPhotometricLight003
+    10800006: TPhotometricLight004
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
