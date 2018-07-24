@@ -30,5 +30,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7de66848f69064b40993fc639bd154c5, type: 2}
   - {fileID: 11400000, guid: 5b3e278bc66ca824a992d44b838f8367, type: 2}
   - {fileID: 11400000, guid: bf236a2c91b8c684b897bde4340a5076, type: 2}
-  DefaultClothingIndexes: 0400000008000000
+  DefaultClothingIndexes: 0400000005000000
   CustomMaterials: []

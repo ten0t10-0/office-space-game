@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private bool isRunning;
     private bool grounded;
 
+    private int groundCount = 0;
+
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()
     {
@@ -126,12 +128,24 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        { grounded = true; Debug.Log("Grounded!"); }
+        {
+            groundCount++;
+            grounded = true;
+            Debug.Log("Grounded!");
+        }
     }
 
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        { grounded = false; Debug.Log("Airborne!"); }
+        {
+            groundCount--;
+
+            if (groundCount > 0)
+            {
+                grounded = false;
+                Debug.Log("Airborne!");
+            }
+        }
     }
 }

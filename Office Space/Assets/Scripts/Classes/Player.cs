@@ -53,7 +53,7 @@ public class Player
             CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
 
-        OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);
+        OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);
         UnlockedOfficeItems = new List<int>();
 
         foreach (int i in GameMaster.Instance.CustomizationManager.Office.DefaultOfficeItemIndexes)

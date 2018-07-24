@@ -23,6 +23,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public Material MaterialFloorCurrent;
     [HideInInspector]
     public Material MaterialCeilingCurrent;
+    [HideInInspector]
+    public Material MaterialWallsShopCurrent;
 
     [HideInInspector]
     public int SelectedObjectIndex = -1;
@@ -30,6 +32,9 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public string OfficeParentName;
     public string RoomParentName;
     public string ObjectsParentName;
+    public string ShopParentName;
+    public string ShopRoomParentName;
+    //public string ShopObjectsParentName;
 
     public int MaxNumberOfObjects = 15;
 
@@ -40,6 +45,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
+    private Transform shopRoomTransform;
+    //private Transform shopObjectTransform;
 
     public List<string> EssentialObjectNames;
 
@@ -62,9 +69,15 @@ public class OfficeItemDatabaseSO : ScriptableObject
         MaterialWallsCurrent = new Material(MaterialWallsDefault);
         MaterialFloorCurrent = new Material(MaterialFloorDefault);
         MaterialCeilingCurrent = new Material(MaterialCeilingDefault);
+        MaterialWallsShopCurrent = new Material(MaterialWallsDefault);
+
+        MaterialWallsCurrent.name += " (Office)";
+        MaterialWallsShopCurrent.name += " (Shop)";
 
         officeRoomTransform = GameObject.Find(OfficeParentName).transform.Find(RoomParentName);
         officeObjectTransform = GameObject.Find(OfficeParentName).transform.Find(ObjectsParentName);
+        shopRoomTransform = GameObject.Find(ShopParentName).transform.Find(ShopRoomParentName);
+        //shopObjectTransform = GameObject.Find(ShopParentName).transform.Find(ShopObjectParentName);
 
         MaterialEssentialObjectsDefault = new Dictionary<string, Material[]>();
 
@@ -90,6 +103,13 @@ public class OfficeItemDatabaseSO : ScriptableObject
         for (int i = 0; i < wallsTransform.childCount; i++)
         {
             wallsTransform.GetChild(i).gameObject.GetComponent<Renderer>().sharedMaterial = MaterialWallsCurrent;
+        }
+
+        wallsTransform = shopRoomTransform.Find("Walls");
+
+        for (int i = 0; i < wallsTransform.childCount; i++)
+        {
+            wallsTransform.GetChild(i).gameObject.GetComponent<Renderer>().sharedMaterial = MaterialWallsShopCurrent;
         }
     }
 
@@ -255,7 +275,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// <returns></returns>
     public OfficeCustomizationData GetCustomizationData()
     {
-        OfficeCustomizationData data = new OfficeCustomizationData(MaterialWallsCurrent.color, MaterialFloorCurrent.color, MaterialCeilingCurrent.color);
+        OfficeCustomizationData data = new OfficeCustomizationData(MaterialWallsCurrent.color, MaterialWallsShopCurrent.color, MaterialFloorCurrent.color, MaterialCeilingCurrent.color);
 
         UnsetAllObjectParents();
 

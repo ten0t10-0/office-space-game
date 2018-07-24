@@ -27,10 +27,13 @@ MonoBehaviour:
   MaterialWallsCurrent: {fileID: 0}
   MaterialFloorCurrent: {fileID: 0}
   MaterialCeilingCurrent: {fileID: 0}
+  MaterialWallsShopCurrent: {fileID: 0}
   SelectedObjectIndex: -1
   OfficeParentName: Office
   RoomParentName: Room
   ObjectsParentName: Objects
+  ShopParentName: Shop
+  ShopRoomParentName: Room
   MaxNumberOfObjects: 25
   Items:
   - {fileID: 11400000, guid: c6a5117425a2d5e4fb37cf6a294e5348, type: 2}

@@ -16,6 +16,11 @@ public class OfficeCustomizationData
     public float ColorWallsB { get; set; }
     public float ColorWallsA { get; set; }
 
+    public float ColorWallsShopR { get; set; }
+    public float ColorWallsShopG { get; set; }
+    public float ColorWallsShopB { get; set; }
+    public float ColorWallsShopA { get; set; }
+
     public float ColorFloorR { get; set; }
     public float ColorFloorG { get; set; }
     public float ColorFloorB { get; set; }
@@ -27,7 +32,7 @@ public class OfficeCustomizationData
     public float ColorCeilingA { get; set; }
 
     #region <Constructors>
-    public OfficeCustomizationData(Color colorWalls, Color colorFloor, Color colorCeiling)
+    public OfficeCustomizationData(Color colorWalls, Color colorWallsShop, Color colorFloor, Color colorCeiling)
     {
         OfficeItems = new List<OfficeItem>();
         Dependencies = new List<OfficeObjectDependency>();
@@ -45,6 +50,14 @@ public class OfficeCustomizationData
         ColorWallsG = colorWalls.g;
         ColorWallsB = colorWalls.b;
         ColorWallsA = colorWalls.a;
+    }
+
+    public void UpdateWallsShopColorData(Color colorWalls)
+    {
+        ColorWallsShopR = colorWalls.r;
+        ColorWallsShopG = colorWalls.g;
+        ColorWallsShopB = colorWalls.b;
+        ColorWallsShopA = colorWalls.a;
     }
 
     public void UpdateFloorColorData(Color colorFloor)
@@ -66,6 +79,11 @@ public class OfficeCustomizationData
     public Color GetWallsColor()
     {
         return new Color(ColorWallsR, ColorWallsG, ColorWallsB, ColorWallsA);
+    }
+
+    public Color GetWallsShopColor()
+    {
+        return new Color(ColorWallsShopR, ColorWallsShopG, ColorWallsShopB, ColorWallsShopA);
     }
 
     public Color GetFloorColor()
