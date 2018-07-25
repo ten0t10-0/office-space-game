@@ -15,6 +15,7 @@ public class PlayerCustShop : MonoBehaviour
 
 	List<int> currentOutfit;
 
+
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
 
 	[SerializeField] 
@@ -26,7 +27,7 @@ public class PlayerCustShop : MonoBehaviour
 	void Start () 
 	{
 		AddUpper ();
-//		CurrentOutfit();
+		CurrentOutfit();
 //		headband1 = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/HeadBand/Button").GetComponent<Button>();
 //		armL = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmL/Button").GetComponent<Button>();
 //		armR = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmR/Button").GetComponent<Button>();
@@ -114,7 +115,6 @@ public class PlayerCustShop : MonoBehaviour
 	}
 	public void AddAcess()
 	{
-
 		ClearScroll ();
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
@@ -127,7 +127,6 @@ public class PlayerCustShop : MonoBehaviour
 	}
 	void SetItem(GameObject newItem, CharacterClothingSO item)
 	{
-
 		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
 
 		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
@@ -154,16 +153,17 @@ public class PlayerCustShop : MonoBehaviour
 			i++;
 		}
 	}
-//	void CurrentOutfit()
-//	{
-//		 currentOutfit = new List<int>();
-//		foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)
-//		{
-//			playerCus.GetClothingIndexBySlot(slot);
-//			//currentOutfit.Add(playerCus.GetClothingIndexBySlot(item));
-//		}
-//			
-//	}
+	void CurrentOutfit()
+	{
+		 currentOutfit = new List<int>();
+
+		for(int x = 0; x >= 5; x++)
+		{
+			currentOutfit.Add(playerCus.GetClothingIndexBySlot(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[x].Slot));
+			x++;
+		}
+			
+	}
 	public void updateBodyColor()
 	{
 		playerCus.UpdateBodyColor (colour.textureColour);
@@ -174,7 +174,7 @@ public class PlayerCustShop : MonoBehaviour
 		{
 			if (clothing != -1) 
 			{
-				playerCus.SetClothing (clothing);
+//				SetClothing(clothing,)
 			}
 		}
 	}
@@ -182,5 +182,10 @@ public class PlayerCustShop : MonoBehaviour
 	{
 		playerCus.UnsetAllClothing ();
 		SetClothing (4, ClothingSlot.Lower);
+	}
+
+	public void selectedItems(CharacterClothingSO item)
+	{
+		//h
 	}
 }
