@@ -13,6 +13,8 @@ public class PlayerCustShop : MonoBehaviour
 
 	public Sprite locked;
 
+	List<int> currentOutfit;
+
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
 
 	[SerializeField] 
@@ -24,6 +26,7 @@ public class PlayerCustShop : MonoBehaviour
 	void Start () 
 	{
 		AddUpper ();
+//		CurrentOutfit();
 //		headband1 = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/HeadBand/Button").GetComponent<Button>();
 //		armL = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmL/Button").GetComponent<Button>();
 //		armR = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmR/Button").GetComponent<Button>();
@@ -76,25 +79,22 @@ public class PlayerCustShop : MonoBehaviour
 
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
-			GameObject newItem = Instantiate (Container, Upperscroll);
-
 			if (item.ClothingSlot.Slot == ClothingSlot.Upper) 
 			{
+				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
 			}
 		}
 	}
 	public void AddLower()
 	{
+		ClearScroll ();
 
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
-			ClearScroll ();
-
-			GameObject newItem = Instantiate (Container, Upperscroll);
-
 			if (item.ClothingSlot.Slot == ClothingSlot.Lower) 
 			{
+				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
 			}
 		}
@@ -102,44 +102,85 @@ public class PlayerCustShop : MonoBehaviour
 	public void AddCostume()
 	{
 		ClearScroll ();
+
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
-			GameObject newItem = Instantiate (Container, Upperscroll);
-
 			if (item.ClothingSlot.Slot == ClothingSlot.Costume) 
 			{
+				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
 			}
 		}
 	}
 	public void AddAcess()
 	{
+
 		ClearScroll ();
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
-			GameObject newItem = Instantiate (Container, Upperscroll);
-
 			if (item.ClothingSlot.Slot == ClothingSlot.LeftArm || item.ClothingSlot.Slot == ClothingSlot.RightArm || item.ClothingSlot.Slot == ClothingSlot.Head) 
 			{
+				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
 			}
 		}
 	}
-
 	void SetItem(GameObject newItem, CharacterClothingSO item)
 	{
-		
-		if (item.LevelRequirement <= GameMaster.Instance.Player.Level) 
+
+		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+
+		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
 		{
-			//newItem.transform.Find ("Image").GetComponent<Image> ().sprite = item.Picture;
-			newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
-			price.SetText(item.Price.ToString());
+			newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = locked;
+			newItem.transform.Find ("Button").GetComponent<Button> ().enabled = false;
 		}
-		else
+		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
+	}
+
+	void slots(CharacterClothingSO clothing)
+	{
+		int i = 0;
+
+		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
-			 newItem.transform.Find ("Button/Image").GetComponent<Image>().sprite = locked;
-			 newItem.transform.Find ("Button").GetComponent<Button>().enabled = false;
+			if (item == clothing)
+			{
+				SetClothing (i, item.ClothingSlot.Slot);
+				price.SetText(item.Price.ToString());
+				Debug.Log("Bloooooooopo");
+				break;
+			}
+			i++;
 		}
-		//newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{SetClothing(item.ClothingSlot,item.ClothingSlot.Slot);});
+	}
+//	void CurrentOutfit()
+//	{
+//		 currentOutfit = new List<int>();
+//		foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)
+//		{
+//			playerCus.GetClothingIndexBySlot(slot);
+//			//currentOutfit.Add(playerCus.GetClothingIndexBySlot(item));
+//		}
+//			
+//	}
+	public void updateBodyColor()
+	{
+		playerCus.UpdateBodyColor (colour.textureColour);
+	}
+	public void Cancel()
+	{
+		foreach (int clothing in currentOutfit) 
+		{
+			if (clothing != -1) 
+			{
+				playerCus.SetClothing (clothing);
+			}
+		}
+	}
+	public void unsetClothing()
+	{
+		playerCus.UnsetAllClothing ();
+		SetClothing (4, ClothingSlot.Lower);
 	}
 }

@@ -11,7 +11,9 @@ public class ColourPicker : MonoBehaviour
 
 	public Color textureColour;
 
-	private Rect textureRect = new Rect (120,190,220,100);
+	private Rect textureRect = new Rect (160,400,220,100);
+
+	Rect newRect;
 
 	void Start()
 	{
@@ -24,23 +26,34 @@ public class ColourPicker : MonoBehaviour
 
 	void OnGUI()
 	{
-		GUI.DrawTexture (textureRect, colourSprite);
+		newRect = ResizeGUI (textureRect);
+		GUI.DrawTexture (newRect, colourSprite);
 
 		if (Event.current.type == EventType.MouseUp)
 		{
 			Vector2 mousePostion = Event.current.mousePosition;
 
-			if (mousePostion.x < textureRect.x || mousePostion.x > textureRect.xMax || mousePostion.y < textureRect.y || mousePostion.y > textureRect.yMax)
+			if (mousePostion.x < newRect.x || mousePostion.x > newRect.xMax || mousePostion.y < newRect.y || mousePostion.y > newRect.yMax)
 			{
 				return;
 			}
 
-			float textureUPosition = (mousePostion.x - textureRect.x) / textureRect.width;
-			float textureVPosition = 1.0f - ((mousePostion.y - textureRect.y) / textureRect.height);
+			float textureUPosition = (mousePostion.x - newRect.x) / newRect.width;
+			float textureVPosition = 1.0f - ((mousePostion.y - newRect.y) / newRect.height);
 
 			textureColour = colourSprite.GetPixelBilinear (textureUPosition, textureVPosition);
 			sprite.color = textureColour;
 		}
 	}
+	Rect ResizeGUI(Rect _rect)
+	{
+		float FilScreenWidth = _rect.width / 800;
+		float rectWidth = FilScreenWidth * Screen.width;
+		float FilScreenHeight = _rect.height / 600;
+		float rectHeight = FilScreenHeight * Screen.height;
+		float rectX = (_rect.x / 800) * Screen.width;
+		float rectY = (_rect.y / 600) * Screen.height;
 
+		return new Rect (rectX, rectY, rectWidth, rectHeight);
+	}
 }

@@ -271,7 +271,7 @@ public class CharacterCustomizationScript : MonoBehaviour
         }
     }
 
-    private void UnsetAllClothing()
+    public void UnsetAllClothing()
     {
         foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)
         {
