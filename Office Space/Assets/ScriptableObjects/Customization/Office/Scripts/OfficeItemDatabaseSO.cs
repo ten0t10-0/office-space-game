@@ -41,8 +41,6 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public List<OfficeItemSO> Items;
     public List<OfficeItemTypeSO> Types;
 
-    public List<int> DefaultOfficeItemIndexes;
-
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
     private Transform shopRoomTransform;
@@ -340,6 +338,28 @@ public class OfficeItemDatabaseSO : ScriptableObject
         MaterialWallsCurrent.color = MaterialWallsDefault.color;
         MaterialFloorCurrent.color = MaterialFloorDefault.color;
         MaterialCeilingCurrent.color = MaterialCeilingDefault.color;
+    }
+
+    public float GetValue()
+    {
+        float value = 0;
+
+        foreach (GameObject obj in CurrentObjects)
+        {
+            OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
+
+            if (objScript != null)
+            {
+                if (!objScript.Essential)
+                    value += Items[objScript.OfficeItemID].Price;
+            }
+            else
+            {
+                Debug.Log("*INVALID ITEM IN OFFICE ITEMS*");
+            }
+        }
+
+        return value;
     }
 
     private void UpdateObjectIndexes()

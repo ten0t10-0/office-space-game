@@ -45,21 +45,21 @@ public class Player
         UnlockedClothing = new List<int>();
         PurchasedClothing = new List<int>();
 
-        foreach (int i in GameMaster.Instance.CustomizationManager.Character.DefaultClothingIndexes)
+        OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);
+        UnlockedOfficeItems = new List<int>();
+
+        GetLevelUnlocks();
+
+        foreach (int i in UnlockedClothing)
         {
-            UnlockedClothing.Add(i);
             PurchasedClothing.Add(i);
 
             CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
 
-        OfficeCustomizationData = new OfficeCustomizationData(GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialWallsDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialFloorDefault.color, GameMaster.Instance.CustomizationManager.Office.MaterialCeilingDefault.color);
-        UnlockedOfficeItems = new List<int>();
-
-        foreach (int i in GameMaster.Instance.CustomizationManager.Office.DefaultOfficeItemIndexes)
-        {
-            UnlockedOfficeItems.Add(i);
-        }
+        //TEMP:
+        for (int i = 1; i <= 20; i++)
+            Debug.Log("Level " + i + ": " + GetLevelExperience(i));
     }
     #endregion
 
@@ -68,36 +68,30 @@ public class Player
     {
         Experience += amount;
 
-        if (Experience >= GetExperienceRequiredForNextLevel())
+        while (Experience >= GetLevelExperience(Level + 1))
         {
-            //*
+            IncreaseLevel();
         }
     }
 
-    public int GetExperienceRequiredForNextLevel()
+    private int GetLevelExperience(float level)
     {
-        int expRequired = 0;
+        float expBase = GameMaster.Instance.PlayerExperienceBase;
 
-        //*
-
-        return expRequired;
-    }
-
-    private int GetLevelExperience(int level)
-    {
-        int expBase = GameMaster.Instance.PlayerExperienceBase;
-
-        //*
-
-        return -1;
+        return (int)((expBase * level) * (1 + (level / 2) - 0.5) - expBase);
     }
 
     private void IncreaseLevel()
     {
-        //*
+        Level++;
+
+        GetLevelUnlocks();
 
         GameMaster.Instance.CheckDifficulty();
+    }
 
+    private void GetLevelUnlocks()
+    {
         for (int i = 0; i < GameMaster.Instance.CustomizationManager.Character.Clothing.Count; i++)
         {
             if (GameMaster.Instance.CustomizationManager.Character.Clothing[i].LevelRequirement <= Level)
@@ -105,6 +99,8 @@ public class Player
                 if (!UnlockedClothing.Contains(i))
                 {
                     UnlockedClothing.Add(i);
+
+                    GameMaster.Instance.Notifications.Add(string.Format("Clothing unlocked: '{0}'", GameMaster.Instance.CustomizationManager.Character.Clothing[i].Name));
                 }
             }
         }
@@ -116,6 +112,8 @@ public class Player
                 if (!UnlockedOfficeItems.Contains(i))
                 {
                     UnlockedOfficeItems.Add(i);
+
+                    GameMaster.Instance.Notifications.Add(string.Format("Office item unlocked: '{0}'", GameMaster.Instance.CustomizationManager.Office.Items[i].Name));
                 }
             }
         }

@@ -203,6 +203,74 @@ public class CharacterCustomizationScript : MonoBehaviour
         return GetClothingSlotScript(ClothingObjects[clothingSlot]).ClothingIndex;
     }
 
+    public void RandomizeAppearance()
+    {
+        CharacterCustomizationDatabaseSO db = GameMaster.Instance.CustomizationManager.Character;
+
+        UnsetAllClothing();
+
+        List<int> clothingToApply = new List<int>();
+
+        bool setOutfit = GameMaster.Roll(0.15f);
+        bool setHead = GameMaster.Roll(0.15f);
+
+        bool setArmLeft = false;
+        bool setArmRight = false;
+
+        if (!setOutfit)
+        {
+            clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Lower));
+            clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Upper));
+
+            setArmLeft = GameMaster.Roll(0.05f);
+            setArmRight = GameMaster.Roll(0.05f);
+
+            if (setArmLeft)
+            {
+                clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.LeftArm));
+            }
+            if (setArmRight)
+            {
+                clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.RightArm));
+            }
+        }
+        else
+        {
+            clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Costume));
+        }
+
+        if (setHead)
+        {
+            clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Head));
+        }
+
+        foreach (int id in clothingToApply)
+        {
+            SetClothing(id);
+            Debug.Log(id);
+        }
+
+        foreach (ClothingSlot slot in ClothingObjects.Keys)
+        {
+            if (IsClothingSlotUsed(slot))
+            {
+                Color newColor = new Color
+                {
+                    r = Random.Range(0f, 1f),
+                    g = Random.Range(0f, 1f),
+                    b = Random.Range(0f, 1f)
+                };
+
+                UpdateClothingColor(slot, newColor);
+            }
+        }
+
+        if (db.SkinColors.Count > 0)
+        {
+            UpdateBodyColor(db.SkinColors[Random.Range(0, db.SkinColors.Count)]);
+        }
+    }
+
     private void UnsetAllClothing()
     {
         foreach (CharacterClothingSlotSO slot in GameMaster.Instance.CustomizationManager.Character.ClothingSlots)

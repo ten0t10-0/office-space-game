@@ -30,10 +30,12 @@ public class GameMaster : MonoBehaviour
 
     public static bool Roll(float chance)
     {
-        if (chance < 1f)
+        if (chance < 1f && chance > 0f)
             return UnityEngine.Random.Range(0f, 1f) <= chance;
-        else
+        else if (chance >= 1f)
             return true;
+        else
+            return false;
     }
     #endregion
 
@@ -81,7 +83,9 @@ public class GameMaster : MonoBehaviour
     #region <Game Data file info>
     public string SaveFileName = "Game";
     public string SaveFileExtension = ".gd";
-    private string saveFileDirString;
+    public int SaveCountMax = 10;
+    public int SaveSlotDefault = 0;
+    private int SaveSlotCurrent;
     #endregion
 
     #region <Bools>
@@ -235,8 +239,6 @@ public class GameMaster : MonoBehaviour
         //FINALLY:
         SaveFileName = tempSaveFileName;
         SaveFileExtension = tempSaveFileExtension;
-
-        saveFileDirString = "/" + SaveFileName + SaveFileExtension;
         #endregion
 
         #region <Validate Init Date & Time>
@@ -249,18 +251,32 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         currentMessage = MSG_GEN_NA;
+
+        SaveSlotCurrent = SaveSlotDefault;
     }
 
-    private void Start()
+    private void Start() //***
     {
-        if (!File.Exists(Application.persistentDataPath + saveFileDirString))
+        bool saveSlotFound = false;
+
+        for (int i = 0; i < SaveCountMax; i++)
+        {
+            if (File.Exists(GetSaveFilePath(i)))
+            {
+                saveSlotFound = true;
+                SaveSlotCurrent = i;
+                i = SaveCountMax; //break
+            }
+        }
+
+        if (!saveSlotFound)
         {
             NewGame();
             //NewGameTEST();
         }
         else
         {
-            LoadGame();
+            LoadGame(SaveSlotCurrent);
 
             //Set up area
             CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
@@ -348,7 +364,7 @@ public class GameMaster : MonoBehaviour
         //out Messages (GUI/Debug purposes)
         string resultGeneric;
 
-        if (!File.Exists(Application.persistentDataPath + saveFileDirString))
+        if (!File.Exists(GetSaveFilePath(SaveSlotDefault)))
         {
             ////TEST: Adding Notifications
             //for (int c = 1; c <= 3; c++)
@@ -521,7 +537,7 @@ public class GameMaster : MonoBehaviour
             CustomizationManager.Office.CurrentObjects[iObject].transform.position = new Vector3(2f, 0f, 0f);
 
             //TEST: Save Game
-            SaveGame();
+            SaveGame(SaveSlotDefault);
         }
         else
         {
@@ -529,7 +545,7 @@ public class GameMaster : MonoBehaviour
             //DeleteSave();
 
             //TEST: Load Game
-            LoadGame();
+            LoadGame(SaveSlotDefault);
 
             //TEST: Spawn (EXISTING) player
             SpawnPlayer();
@@ -665,7 +681,7 @@ public class GameMaster : MonoBehaviour
         #region <INPUTS>
         //TEST: Saving during gameplay
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
-            SaveGame();
+            SaveGame(SaveSlotCurrent);
 
         //TEST: Lock & Unlock cursor
         if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
@@ -719,9 +735,12 @@ public class GameMaster : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+                //CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
 
-                player.UnsetClothing(ClothingSlot.Costume);
+                //player.UnsetClothing(ClothingSlot.Costume);
+
+                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+                player.RandomizeAppearance();
             }
         }
         #endregion
@@ -932,7 +951,7 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <SAVING & LOADING METHODS>
-    public void SaveGame()
+    public void SaveGame(int saveSlot)
     {
         if (TEMPSaveGame)
         {
@@ -942,7 +961,7 @@ public class GameMaster : MonoBehaviour
             Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
 
             //Save data to GameData object (saveData):
-            GameData saveData = new GameData
+            GameData gameData = new GameData
             {
                 Player = this.Player,
 
@@ -965,7 +984,13 @@ public class GameMaster : MonoBehaviour
                 Notifications = this.Notifications
             };
 
-            FileStream file = File.Create(Application.persistentDataPath + saveFileDirString);
+            SaveData saveData = new SaveData
+            {
+                Date = DateTime.Now,
+                GameData = gameData
+            };
+
+            FileStream file = File.Create(GetSaveFilePath(saveSlot));
 
             bf.Serialize(file, saveData);
 
@@ -976,44 +1001,51 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public void LoadGame()
+    public void LoadGame(int saveSlot)
     {
         BinaryFormatter bf = new BinaryFormatter();
 
-        FileStream file = File.Open(Application.persistentDataPath + saveFileDirString, FileMode.Open);
+        FileStream file = File.Open(GetSaveFilePath(saveSlot), FileMode.Open);
 
-        GameData loadData = (GameData)bf.Deserialize(file);
+        SaveData loadData = (SaveData)bf.Deserialize(file);
 
         file.Close();
 
+        GameData gameData = loadData.GameData;
+
         //Load data from GameData object (loadData):
-        Player = loadData.Player;
+        Player = gameData.Player;
 
-        SupplierManager.Suppliers = loadData.Suppliers;
+        SupplierManager.Suppliers = gameData.Suppliers;
 
-        OrderManager.Orders = loadData.Orders;
+        OrderManager.Orders = gameData.Orders;
 
-        Difficulty = loadData.Difficulty;
+        Difficulty = gameData.Difficulty;
 
-        GameDateTime = loadData.GameDateTime;
-        GameTimeSpeed = loadData.GameTimeSpeed;
+        GameDateTime = gameData.GameDateTime;
+        GameTimeSpeed = gameData.GameTimeSpeed;
 
-        chanceNextOrder = loadData.ChanceNextOrder;
+        chanceNextOrder = gameData.ChanceNextOrder;
 
-        StaticMode = loadData.StaticMode;
-        DayEnd = loadData.DayEnd;
+        StaticMode = gameData.StaticMode;
+        DayEnd = gameData.DayEnd;
 
-        dayEndCurrent = loadData.DayEndCurrent;
+        dayEndCurrent = gameData.DayEndCurrent;
 
-        Notifications = loadData.Notifications;
+        Notifications = gameData.Notifications;
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");
     }
 
-    public void DeleteSave()
+    //public void DeleteSave()
+    //{
+    //    File.Delete(Application.persistentDataPath + saveFileDirString);
+    //}
+
+    public string GetSaveFilePath(int saveSlot)
     {
-        File.Delete(Application.persistentDataPath + saveFileDirString);
+        return Application.persistentDataPath + "/" + SaveFileName + Convert.ToString(saveSlot).PadLeft(3, '0') + SaveFileExtension;
     }
     #endregion
 

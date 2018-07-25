@@ -17,6 +17,8 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
 
     public List<Material> CustomMaterials;
 
+    public List<Color> SkinColors;
+
     private GameObject player;
 
     /// <summary>
@@ -73,5 +75,12 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
             }
 
         return clothingIndex;
+    }
+
+    public int GetRandomClothingBySlot(ClothingSlot slot)
+    {
+        List<int> clothing = GetClothingIDsBySlot(slot);
+
+        return clothing[Random.Range(0, clothing.Count)];
     }
 }

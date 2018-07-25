@@ -58,7 +58,7 @@ public class NotificationList
         AllNotificationsRead = false;
 
         //TEMP:
-        Debug.Log("*New Notification: '" + notificationText + "'");
+        Debug.Log("*New Notification: \"" + notificationText + "\"");
     }
     #endregion
 }

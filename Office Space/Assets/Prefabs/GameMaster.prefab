@@ -66,6 +66,7 @@ MonoBehaviour:
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
+  CurrentNPCObjects: []
   Player: {}
   initPlayerName: New Player
   initBusinessName: My Business
@@ -78,6 +79,8 @@ MonoBehaviour:
   PlayerExperienceBase: 100
   SaveFileName: Game
   SaveFileExtension: .gd
+  SaveCountMax: 10
+  SaveSlotDefault: 0
   UIMode: 0
   BuildMode: 1
   OfflineMode: 0
