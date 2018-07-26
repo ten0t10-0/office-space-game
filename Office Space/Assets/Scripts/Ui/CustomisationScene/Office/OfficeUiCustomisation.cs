@@ -11,6 +11,8 @@ public class OfficeUiCustomisation : MonoBehaviour {
 	public TextMeshProUGUI date;
 	public TextMeshProUGUI time;
 
+	public GameObject tablet;
+
 	[SerializeField] 
 	private GameObject Container;
 
@@ -49,17 +51,51 @@ public class OfficeUiCustomisation : MonoBehaviour {
 	{
 		if (scrollView == null)
 		{
-			scrollView = transform.Find("CustomisationPanel/CustomisationPanel/whiteScreenPanel/Scroll View/Viewport/Content");
+			scrollView = transform.Find("whiteScreenPanel/Scroll View/Viewport/Content");
 		}
 		foreach (Transform child in scrollView)
 		{
 			Destroy(child.gameObject);
 		}
 	}
+
 	void SetItem(GameObject newItem, OfficeItemSO item)
 	{
 		newItem.transform.Find("Name").GetComponent<TMP_Text> ().text = item.Name;
-		newItem.transform.Find("PriceText").GetComponent<TMP_Text> ().text = "$" + item.Price.ToString();
+		newItem.transform.Find("Button/PriceText").GetComponent<TMP_Text> ().text = "$" + item.Price.ToString();
 
+		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{buyItem(item);});
+	}
+
+	void buyItem(OfficeItemSO item)
+	{
+		if (GameMaster.Instance.CustomizationManager.Office.MaxNumberOfObjects > GameMaster.Instance.CustomizationManager.Office.CurrentObjects.Count) 
+		{
+			//money and animation
+			GetItem (item);
+		} 
+		else 
+		{
+			//gui to many items
+			Debug.Log("too many items");
+		}
+	}
+	void GetItem(OfficeItemSO officeitem)
+	{
+		int i = 0;
+		int random;
+
+		foreach (OfficeItemSO item in GameMaster.Instance.CustomizationManager.Office.Items) 
+		{
+			if (item == officeitem)
+			{
+				GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
+				GameMaster.Instance.CustomizationManager.Office.SelectObject (i);
+				tablet.SetActive (false);
+				Debug.Log("Bloooooooopo");
+				break;
+			}
+			i++;
+		}
 	}
 }
