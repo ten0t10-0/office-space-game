@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 3f;
     public float runSpeed = 6f;
 
+    [HideInInspector]
+    public Transform HeadTransform;
+
     private Animator animator;                  // Reference to the animator component.
     private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
 
@@ -21,6 +24,11 @@ public class PlayerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
+    }
+
+    public void Initialize()
+    {
+        HeadTransform = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip").Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
     }
 
     // FixedUpdate() is called before performing any physics calculations
@@ -61,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
         //float slerpTimeStart = Time.time;
 
+        CameraMode cameraMode = Camera.main.GetComponent<CameraController>().CameraMode;
+
         if (h != 0 || v != 0)
         {
             if (Input.GetKey(KeyCode.LeftShift))
@@ -86,8 +96,22 @@ public class PlayerController : MonoBehaviour
             //NB: Rigidbody gets moved so that collisions work properly.
             //Move
             playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
-            //Turn
-            playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
+
+            if (cameraMode == CameraMode.ThirdPerson)
+            {
+                playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
+            }
+        }
+
+        if (cameraMode == CameraMode.FirstPerson)
+        {
+            cameraForward = Camera.main.transform.forward;
+            cameraRight = Camera.main.transform.right;
+            cameraForward.y = cameraRight.y = 0;    //Prevent player from moving up or down.
+
+            newPosition = cameraForward;
+
+            playerRigidbody.MoveRotation(Quaternion.LookRotation(newPosition, Vector3.up));
         }
     }
 

@@ -73,7 +73,7 @@ public class GameMaster : MonoBehaviour
     public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
     public float initPlayerShopSpace = 10;
-    public int initPlayerLevel = 100;
+    public int initPlayerLevel = 1;
     public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
     #endregion
@@ -330,7 +330,7 @@ public class GameMaster : MonoBehaviour
         chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
+        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
 
         //Generate Suppliers
         SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out message);
@@ -387,7 +387,7 @@ public class GameMaster : MonoBehaviour
             chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGeneric);
@@ -574,6 +574,8 @@ public class GameMaster : MonoBehaviour
             CurrentPlayerObject.AddComponent<PlayerController>();
             CurrentPlayerObject.tag = "Player";
 
+            CurrentPlayerObject.GetComponent<PlayerController>().Initialize();
+
             CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CharacterCustomizationData);
         }
     }
@@ -740,7 +742,9 @@ public class GameMaster : MonoBehaviour
                 //player.UnsetClothing(ClothingSlot.Costume);
 
                 CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+
                 player.RandomizeAppearance();
+                player.GetCustomizationData();
             }
         }
         #endregion

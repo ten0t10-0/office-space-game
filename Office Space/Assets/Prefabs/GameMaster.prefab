@@ -74,7 +74,7 @@ MonoBehaviour:
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerShopSpace: 10
-  initPlayerLevel: 1
+  initPlayerLevel: 100
   initPlayerExperience: 0
   PlayerExperienceBase: 100
   SaveFileName: Game

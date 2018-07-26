@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CameraMode { Orbit, Build, Static }
+public enum CameraMode { ThirdPerson, FirstPerson, Static }
 
 public class CameraController : MonoBehaviour
 {
@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour
     // Use this method for initialization
     void Start()
     {
-        CameraMode = CameraMode.Orbit;
+        CameraMode = CameraMode.ThirdPerson;
 
         //Set initial camera position.
         transform.position = targetController.transform.position + new Vector3(0, 0, (minDistanceFromTarget + zoomSpeed) * -1);
@@ -75,7 +75,7 @@ public class CameraController : MonoBehaviour
 
             switch (CameraMode)
             {
-                case CameraMode.Orbit:
+                case CameraMode.ThirdPerson:
                     {
                         Vector3 targetPosition;
 
@@ -132,6 +132,44 @@ public class CameraController : MonoBehaviour
 
                         break;
                     }
+                case CameraMode.FirstPerson:
+                    {
+                        Vector3 targetControllerPosition = Target.gameObject.GetComponent<PlayerController>().HeadTransform.position;
+                        targetControllerPosition.y += Target.gameObject.GetComponent<PlayerController>().HeadTransform.gameObject.GetComponent<SphereCollider>().radius;
+
+                        Vector3 targetPosition;
+
+                        Vector3 currentEulerAngles = targetController.transform.rotation.eulerAngles;
+                        float currentXAngle = currentEulerAngles.x;
+
+                        Quaternion newRotation;
+                        Vector3 newPosition;
+
+                        targetController.transform.position = targetControllerPosition;
+
+                        if ((currentXAngle % 360) > 180)
+                            currentXAngle = currentXAngle - 360;
+
+                        currentXAngle = Mathf.Clamp(currentXAngle + vertical, maxTargetAngle * -1, minTargetAngle * -1);
+
+                        newRotation = Quaternion.Euler(new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0));
+                        targetController.transform.rotation = newRotation;
+
+                        targetPosition = targetController.transform.position;
+
+                        //New position of the camera before taking collision into account:
+                        newPosition = targetPosition;
+
+                        ////Check for collision:
+                        //if (Physics.SphereCast(targetPosition, physicsSphereRadius, targetController.transform.forward * -1, out wallHit, Vector3.Distance(targetPosition, newPosition), layerMask))
+                        //    newPosition = (wallHit.point + (wallHit.normal * physicsSphereRadius)); //Set the camera's new position to the point where the sphere touched the wall, then a bit away from it
+
+                        transform.position = newPosition;
+
+                        transform.rotation = targetController.transform.rotation;
+
+                        break;
+                    }
             }
         }
     }
@@ -143,17 +181,36 @@ public class CameraController : MonoBehaviour
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (Offset.z > minDistanceFromTarget)
-                    Offset -= Vector3.forward * zoomSpeed;
+                if (CameraMode == CameraMode.ThirdPerson)
+                {
+                    if (Offset.z > minDistanceFromTarget)
+                        Offset -= Vector3.forward * zoomSpeed;
+                }
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (Offset.z < maxDistanceFromTarget)
-                    Offset += Vector3.forward * zoomSpeed;
+                if (CameraMode == CameraMode.ThirdPerson)
+                {
+                    if (Offset.z < maxDistanceFromTarget)
+                        Offset += Vector3.forward * zoomSpeed;
+                }
+                else if (CameraMode == CameraMode.FirstPerson)
+                {
+                    Offset.z = minDistanceFromTarget;
+                    CameraMode = CameraMode.ThirdPerson;
+                }
             }
 
+            //if (Input.GetKeyDown(KeyCode.Tab))
+            //    orbitOTS = !orbitOTS;
+
             if (Input.GetKeyDown(KeyCode.Tab))
-                orbitOTS = !orbitOTS;
+            {
+                if (CameraMode == CameraMode.ThirdPerson)
+                    CameraMode = CameraMode.FirstPerson;
+                else if (CameraMode == CameraMode.FirstPerson)
+                    CameraMode = CameraMode.ThirdPerson;
+            }
         }
     }
 }

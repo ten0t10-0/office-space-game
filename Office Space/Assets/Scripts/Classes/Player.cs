@@ -31,14 +31,15 @@ public class Player
     /// <param name="startingMoney"></param>
     /// <param name="maximumInventorySpace"></param>
     /// <param name="maximumShopInventorySpace"></param>
-    public Player(string name, string businessName, float startingMoney, float initialMarkup, float maximumInventorySpace, float maximumShopInventorySpace)
+    public Player(string name, string businessName, int initialLevel, int initialExperience, float startingMoney, float initialMarkup, float maximumInventorySpace, float maximumShopInventorySpace)
     {
         Name = name;
 
         Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, maximumShopInventorySpace);
 
-        Level = 100;
-        Experience = 0;
+        Level = initialLevel;
+        Experience = initialExperience;
+
         PlayTime = 0f;
 
         CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
@@ -50,16 +51,16 @@ public class Player
 
         GetLevelUnlocks();
 
-        foreach (int i in UnlockedClothing)
+        foreach (int i in GameMaster.Instance.CustomizationManager.Character.DefaultClothingIndexes)
         {
             PurchasedClothing.Add(i);
 
             CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
 
-        //TEMP:
-        for (int i = 1; i <= 20; i++)
-            Debug.Log("Level " + i + ": " + GetLevelExperience(i));
+        ////TEMP:
+        //for (int i = 1; i <= 20; i++)
+        //    Debug.Log("Level " + i + ": " + GetLevelExperience(i));
     }
     #endregion
 

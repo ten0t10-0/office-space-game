@@ -247,7 +247,7 @@ public class CharacterCustomizationScript : MonoBehaviour
         foreach (int id in clothingToApply)
         {
             SetClothing(id);
-            Debug.Log(id);
+            //Debug.Log(id);
         }
 
         foreach (ClothingSlot slot in ClothingObjects.Keys)
