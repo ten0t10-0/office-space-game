@@ -23,11 +23,15 @@ public class Phone : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.Z)) 
 		{
 			tablet.SetActive (true);
+
+            GameMaster.Instance.BuildMode = false;
 		}
 		if (Input.GetKeyDown(KeyCode.X)) 
 		{
 			tablet.SetActive (false);
-		}
+
+            GameMaster.Instance.BuildMode = false;
+        }
 	}
 }
 

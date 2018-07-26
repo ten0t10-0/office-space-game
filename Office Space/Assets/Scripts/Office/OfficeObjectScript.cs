@@ -192,6 +192,15 @@ public class OfficeObjectScript : MonoBehaviour
                 transform.position = newPos;
             }
         }
+        else
+        {
+            if (highlighted)
+            {
+                highlighted = false;
+
+                Dehighlight();
+            }
+        }
     }
 
     private void OnMouseEnter()

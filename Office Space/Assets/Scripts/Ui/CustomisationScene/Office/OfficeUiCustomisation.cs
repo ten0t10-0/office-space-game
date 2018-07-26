@@ -89,8 +89,10 @@ public class OfficeUiCustomisation : MonoBehaviour {
 		{
 			if (item == officeitem)
 			{
-				GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
-				GameMaster.Instance.CustomizationManager.Office.SelectObject (i);
+                GameMaster.Instance.BuildMode = true;
+
+                GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
+				GameMaster.Instance.CustomizationManager.Office.SelectObject (random);
 				tablet.SetActive (false);
 				Debug.Log("Bloooooooopo");
 				break;

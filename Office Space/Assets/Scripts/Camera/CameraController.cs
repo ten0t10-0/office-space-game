@@ -185,6 +185,10 @@ public class CameraController : MonoBehaviour
                 {
                     if (Offset.z > minDistanceFromTarget)
                         Offset -= Vector3.forward * zoomSpeed;
+                    else
+                    {
+                        CameraMode = CameraMode.FirstPerson;
+                    }
                 }
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
