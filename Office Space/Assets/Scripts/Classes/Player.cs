@@ -37,7 +37,7 @@ public class Player
 
         Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, maximumShopInventorySpace);
 
-        Level = 1;
+        Level = 100;
         Experience = 0;
         PlayTime = 0f;
 

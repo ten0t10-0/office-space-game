@@ -73,7 +73,7 @@ public class GameMaster : MonoBehaviour
     public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
     public float initPlayerShopSpace = 10;
-    public int initPlayerLevel = 1;
+    public int initPlayerLevel = 100;
     public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
     #endregion

@@ -10,7 +10,7 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// <summary>
     /// Key = Clothing Slot; Value = childIndex
     /// </summary>
-    private Dictionary<ClothingSlot, int> ClothingObjects;
+	public Dictionary<ClothingSlot, int> ClothingObjects;
     /// <summary>
     /// Key = Clothing Slot; Value = childIndex
     /// </summary>

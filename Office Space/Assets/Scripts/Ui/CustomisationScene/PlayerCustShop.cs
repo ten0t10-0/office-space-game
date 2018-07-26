@@ -6,14 +6,18 @@ using TMPro;
 
 public class PlayerCustShop : MonoBehaviour 
 {
+	CharacterCustomizationData Char;
 	CharacterCustomizationScript playerCus;
 	ColourPicker colour;
 
 	public TextMeshProUGUI price;
 
 	public Sprite locked;
+	public Sprite equipped;
 
 	List<int> currentOutfit;
+
+	bool purchased = false;
 
 
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
@@ -27,7 +31,7 @@ public class PlayerCustShop : MonoBehaviour
 	void Start () 
 	{
 		AddUpper ();
-		CurrentOutfit();
+//		CurrentOutfit();
 //		headband1 = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/HeadBand/Button").GetComponent<Button>();
 //		armL = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmL/Button").GetComponent<Button>();
 //		armR = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmR/Button").GetComponent<Button>();
@@ -127,14 +131,25 @@ public class PlayerCustShop : MonoBehaviour
 	}
 	void SetItem(GameObject newItem, CharacterClothingSO item)
 	{
+		
 		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
 
+		if (item == PurchasedItems (item)) 
+		{
+			newItem.transform.Find ("BuyButton").GetComponent<Button> ().enabled = false;
+		}
+//		if (item == selectedItems(item)) 
+//		{
+//			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
+//		}
+			
 		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
 		{
 			newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = locked;
-			newItem.transform.Find ("Button").GetComponent<Button> ().enabled = false;
+			//newItem.transform.Find ("Button").GetComponent<Button> ().enabled = false;
 		}
 		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
+		//newItem.transform.Find("BuyButton").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
 	}
 
 	void slots(CharacterClothingSO clothing)
@@ -153,39 +168,48 @@ public class PlayerCustShop : MonoBehaviour
 			i++;
 		}
 	}
-	void CurrentOutfit()
-	{
-		 currentOutfit = new List<int>();
-
-		for(int x = 0; x >= 5; x++)
-		{
-			currentOutfit.Add(playerCus.GetClothingIndexBySlot(GameMaster.Instance.CustomizationManager.Character.ClothingSlots[x].Slot));
-			x++;
-		}
-			
-	}
+//	void CurrentOutfit()
+//	{
+//    	Char = playerCus.GetCustomizationData ();
+//	}
 	public void updateBodyColor()
 	{
 		playerCus.UpdateBodyColor (colour.textureColour);
 	}
 	public void Cancel()
 	{
-		foreach (int clothing in currentOutfit) 
-		{
-			if (clothing != -1) 
-			{
-//				SetClothing(clothing,)
-			}
-		}
+		playerCus.SetAppearanceByData (Char);
 	}
 	public void unsetClothing()
 	{
 		playerCus.UnsetAllClothing ();
-		SetClothing (4, ClothingSlot.Lower);
 	}
 
-	public void selectedItems(CharacterClothingSO item)
+//	public CharacterClothingSO selectedItems(CharacterClothingSO item)
+//	{
+//		foreach (int current in playerCus.ClothingObjects.Values)
+//		{
+//			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item) {
+//				return item;
+//				break;
+//			} else
+//				return null;
+//		}
+//		return null;
+//	}
+		
+	public CharacterClothingSO PurchasedItems(CharacterClothingSO item)
 	{
-		//h
+		foreach(var purchase in GameMaster.Instance.Player.PurchasedClothing)
+		{
+			if (GameMaster.Instance.CustomizationManager.Character.Clothing [purchase] == item) 
+			{
+				return item;
+				break;
+			} else
+				return null;
+		}
+		return null;
 	}
+	
 }
