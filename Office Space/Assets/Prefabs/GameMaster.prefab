@@ -260,8 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214141ec025a9dd468ad7d6076a89e56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goOffice: Office
-  goObjects: Objects
+  goMonitor: monitor
   goUIScreen: UI Screen
   goCompCanvas: ComputerCanvas
   goApps: AppPanelScreen

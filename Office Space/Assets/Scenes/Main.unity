@@ -3218,7 +3218,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00007926732, y: 0.00008553812}
+  m_AnchoredPosition: {x: -0.00007926732, y: -0.000050371174}
   m_SizeDelta: {x: 16.399994, y: 18}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &168158905
@@ -26210,7 +26210,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000018407796, y: 0.000014167191}
+  m_AnchoredPosition: {x: 0.000018407796, y: -0.00026331728}
   m_SizeDelta: {x: 0, y: 15}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1364382724
@@ -26963,7 +26963,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000004253549, y: 0.00017323626}
+  m_AnchoredPosition: {x: -0.000034769168, y: 0.00009341947}
   m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427374988
@@ -27704,7 +27704,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1474296965
 RectTransform:
   m_ObjectHideFlags: 0
@@ -40874,7 +40874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2133892352
 RectTransform:
   m_ObjectHideFlags: 0
@@ -40954,7 +40954,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2133892351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4014eea51d39c1c4f9cc9a0a2df4486a, type: 3}
+  m_Script: {fileID: 11500000, guid: 48bf74c1c50a2c34b8c79153c678d968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   companyName: {fileID: 211206568}
@@ -40976,6 +40976,7 @@ MonoBehaviour:
   plus: {fileID: 21300000, guid: 2b3d5905769491945baf3ad6efdc7309, type: 3}
   qtyPanel: {fileID: 1792772503}
   inventoryPanel: {fileID: 800731229}
+  orderPanel: {fileID: 2133892351}
   amount: {fileID: 1006820309}
   btnDecrease: {fileID: 344302830}
   btnIncrease: {fileID: 1921581627}

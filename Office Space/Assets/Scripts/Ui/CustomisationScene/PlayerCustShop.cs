@@ -30,8 +30,7 @@ public class PlayerCustShop : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		AddUpper ();
-//		CurrentOutfit();
+		
 //		headband1 = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/HeadBand/Button").GetComponent<Button>();
 //		armL = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmL/Button").GetComponent<Button>();
 //		armR = transform.Find("AccessoriesPanel/Scroll View/Viewport/Content/ArmR/Button").GetComponent<Button>();
@@ -52,6 +51,8 @@ public class PlayerCustShop : MonoBehaviour
 //
 		playerCus = GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ();
 		colour = transform.Find ("Refresh").GetComponent<ColourPicker> ();
+		CurrentOutfit();
+		AddUpper ();
 	}
 
 	void SetClothing(int index,ClothingSlot slot)
@@ -138,10 +139,10 @@ public class PlayerCustShop : MonoBehaviour
 		{
 			newItem.transform.Find ("BuyButton").GetComponent<Button> ().enabled = false;
 		}
-//		if (item == selectedItems(item)) 
-//		{
-//			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
-//		}
+		if (item == selectedItems(item)) 
+		{
+			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
+		}
 			
 		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
 		{
@@ -168,10 +169,10 @@ public class PlayerCustShop : MonoBehaviour
 			i++;
 		}
 	}
-//	void CurrentOutfit()
-//	{
-//    	Char = playerCus.GetCustomizationData ();
-//	}
+	void CurrentOutfit()
+	{
+    	Char = playerCus.GetCustomizationData ();
+	}
 	public void updateBodyColor()
 	{
 		playerCus.UpdateBodyColor (colour.textureColour);
@@ -185,18 +186,18 @@ public class PlayerCustShop : MonoBehaviour
 		playerCus.UnsetAllClothing ();
 	}
 
-//	public CharacterClothingSO selectedItems(CharacterClothingSO item)
-//	{
-//		foreach (int current in playerCus.ClothingObjects.Values)
-//		{
-//			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item) {
-//				return item;
-//				break;
-//			} else
-//				return null;
-//		}
-//		return null;
-//	}
+	public CharacterClothingSO selectedItems(CharacterClothingSO item)
+	{
+		foreach (int current in playerCus.ClothingObjects.Values)
+		{
+			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item) {
+				return item;
+				break;
+			} else
+				return null;
+		}
+		return null;
+	}
 		
 	public CharacterClothingSO PurchasedItems(CharacterClothingSO item)
 	{

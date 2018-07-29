@@ -87,8 +87,8 @@ public class OrderManager : MonoBehaviour
 
         Orders.Add(new Order(customer, items, currentDate, dueDate));
 
-       // GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
-	   //GameMaster.Instance.GUIManager.hudScript.orderNotifiation ();
+		GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders ();
+	    GameMaster.Instance.GUIManager.hudScript.orderNotifiation ();
 
         Debug.Log("*ORDER ITEMS:");
         foreach (OrderItem orderItem in Orders[Orders.Count - 1].Items)
