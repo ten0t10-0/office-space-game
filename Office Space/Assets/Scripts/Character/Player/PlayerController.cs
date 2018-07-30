@@ -58,6 +58,20 @@ public class PlayerController : MonoBehaviour
             StopAnimations();
     }
 
+    private void Update()
+    {
+        if (!GameMaster.Instance.UIMode)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (animator.GetBool("IsIdling") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"))
+                {
+                    animator.SetTrigger("Interact 01");
+                } 
+            }
+        }
+    }
+
     private void Move(float h, float v)
     {
         Vector3 currentPostion, newPosition;
@@ -93,9 +107,12 @@ public class PlayerController : MonoBehaviour
             else
                 speed = walkSpeed;
 
-            //NB: Rigidbody gets moved so that collisions work properly.
-            //Move
-            playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"))
+            {
+                //NB: Rigidbody gets moved so that collisions work properly.
+                //Move
+                playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
+            }
 
             if (cameraMode == CameraMode.ThirdPerson)
             {
@@ -135,11 +152,15 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("IsRunning", false);
                 animator.SetBool("IsWalking", true);
             }
+
+            animator.SetBool("IsIdling", false);
         }
         else
         {
             animator.SetBool("IsWalking", false);
             animator.SetBool("IsRunning", false);
+
+            animator.SetBool("IsIdling", true);
         }
     }
 
@@ -165,7 +186,7 @@ public class PlayerController : MonoBehaviour
         {
             groundCount--;
 
-            if (groundCount > 0)
+            if (groundCount == 0)
             {
                 grounded = false;
                 Debug.Log("Airborne!");
