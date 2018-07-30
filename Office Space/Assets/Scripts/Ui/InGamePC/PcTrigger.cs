@@ -25,6 +25,7 @@ public class PcTrigger : MonoBehaviour {
 				GameMaster.Instance.UIMode = true;
 				screen.SetActive (false);
 				hud.SetActive (false);
+				FindObjectOfType<SoundManager>().Play("Pc");
 			}
 		}
 	}
@@ -43,6 +44,14 @@ public class PcTrigger : MonoBehaviour {
     }
 
 	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			isInsideTrigger = true;
+			OpenPanel.SetActive(true);
+		}
+	}
+	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Player")
 		{

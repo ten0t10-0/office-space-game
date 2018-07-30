@@ -21,11 +21,13 @@ public class LightSwitch : MonoBehaviour {
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
+				FindObjectOfType<SoundManager>().Play("Switch");
 				OpenPanel.SetActive (false);
 
 				if (lights.activeSelf) 
 				{
 					lights.SetActive(false);
+
 				} 
 				else 
 				{
@@ -36,6 +38,14 @@ public class LightSwitch : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Player")
+		{
+			isInsideTrigger = true;
+			OpenPanel.SetActive(true);
+		}
+	}
+	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Player")
 		{

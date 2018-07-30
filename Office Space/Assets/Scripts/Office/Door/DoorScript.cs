@@ -9,6 +9,7 @@ public class DoorScript : MonoBehaviour {
     public GameObject OpenPanel = null;
 
     private bool isInsideTrigger = false;
+	bool doorOpend=false;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +32,12 @@ public class DoorScript : MonoBehaviour {
             isInsideTrigger = false;
             animator.SetBool("open", false);
             OpenPanel.SetActive(false);
+			if (doorOpend == true)
+			{
+				StartCoroutine (DoorCloseSound());
+				doorOpend = false;
+			}
+
         }
     }
 
@@ -42,6 +49,12 @@ public class DoorScript : MonoBehaviour {
         }
     }
 
+	IEnumerator DoorCloseSound()
+	{
+		yield return new WaitForSeconds(1.5f);
+		FindObjectOfType<SoundManager>().Play("DoorClosed");
+	}
+
     // Update is called once per frame
     void Update () 
 	{
@@ -51,7 +64,9 @@ public class DoorScript : MonoBehaviour {
             if(Input.GetKeyDown(KeyCode.E))
             {
                 OpenPanel.SetActive(false);
-                animator.SetBool("open", true);  
+                animator.SetBool("open", true); 
+				FindObjectOfType<SoundManager>().Play("DoorOpen");
+				doorOpend = true;
             }
         }
 	}
