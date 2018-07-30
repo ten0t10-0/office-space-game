@@ -20,6 +20,10 @@ public class OrderUI : MonoBehaviour {
 	private GameObject inventoryContainer;
 	private Transform iscrollContent;
 
+	[SerializeField] //items
+	private GameObject TimeContainer;
+	private Transform TimeScrollContent;
+
 	Dictionary <int,int> completeOrder = new Dictionary<int,int>();
 
 	public Sprite bronze, silver, gold, tick,plus;
@@ -38,10 +42,6 @@ public class OrderUI : MonoBehaviour {
 	OrderItem tempitem;
 	float currCountdownValue;
 
-	string test;
-
-
-
 	List<Item> tempItem = new List<Item> ();
 
 	// Use this for initialization
@@ -56,12 +56,12 @@ public class OrderUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
-		
+		DisplayTime ();
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 
 //	if (GameMaster.Instance.OrderManager.Orders [i].Open == false) 
 //	{
-//		
+//			clearInvoice ();
 //	}
 
 	}
@@ -75,17 +75,22 @@ public class OrderUI : MonoBehaviour {
 		for (int i = 0; i < order.Count; i++)
 		{
 			GameObject newItem = Instantiate (OrderContainer, scrollViewContent);
-
-			newItem.transform.Find ("Button/time").GetComponent<TMP_Text> ().text = order[i].GetTimeRemaining().ToString();
-			newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = 
-				test = order[i].Customer.FullName();
+			newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order[i].Customer.FullName();
 			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetOrder( order, i,newItem);});
+		}
+	}
+		
+	public void DisplayTime()
+	{
+		ClearTime ();
+		List<Order> order = GameMaster.Instance.OrderManager.GetOpenOrders ();
 
-			if (orderPanel.activeInHierarchy) 
-			{
-				StartCoroutine(CountdownTimer(i,newItem));
-				Debug.Log("Coroutine Start");
-			}
+		for (int i = 0; i < order.Count; i++) 
+		{
+			GameObject newItem = Instantiate (TimeContainer, TimeScrollContent);
+			if (order [i].Open)
+				newItem.transform.Find ("Button/Time").GetComponent<TMP_Text> ().text = order [i].GetTimeRemaining ().ToString ();
+
 		}
 	}
 
@@ -95,11 +100,9 @@ public class OrderUI : MonoBehaviour {
 		i = i - 1;
 
 		ClearItems();
-		Debug.Log (test);
 		selectedOrder = setOrder;
 
 		customer.SetText (order [i].Customer.FullName().ToString());
-
 		//Date.SetText(order[i].DateDue.ToString());
 
 		timeRemaining.SetText(order[i].GetTimeRemaining().ToString());
@@ -221,6 +224,17 @@ public class OrderUI : MonoBehaviour {
 			Destroy(childs.gameObject);
 		}
 	}
+	public void ClearTime()
+	{
+		if (TimeScrollContent == null)
+		{
+			TimeScrollContent = transform.Find("Scroll ViewTime/Viewport/Content");
+		}
+		foreach (Transform childs in TimeScrollContent)
+		{
+				Destroy(childs.gameObject);
+		}
+	}
 	public float CalculateDiscount(Item pi,int iSupplier)
 	{
 		float itemPrice;
@@ -249,7 +263,6 @@ public class OrderUI : MonoBehaviour {
 		purchase.SetActive(true);
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + paymentTotal.ToString();
 		StartCoroutine(moneyPopUp());
-		StopCoroutine(CountdownTimer(ordersNum,selectedOrder));
 		Destroy (selectedOrder);
 		clearInvoice ();
 	}
@@ -258,17 +271,7 @@ public class OrderUI : MonoBehaviour {
 		yield return new WaitForSeconds(2);
 		purchase.SetActive (false);
 	}
-	IEnumerator CountdownTimer(int ordersNum,GameObject newItem)
-	{
 
-		while (GameMaster.Instance.OrderManager.Orders [ordersNum].Open && newItem != null && newItem.activeInHierarchy )
-		{
-				yield return new WaitForSeconds (1);
-				updateText( ordersNum, newItem);
-		}
-
-		//timeRemaining.SetText (" ");
-	}
 //	public void Reset()
 //	{
 //		
