@@ -70,13 +70,16 @@ public class OrderUI : MonoBehaviour {
 	{
 		ClearOrders ();
 
-		List<Order> order = GameMaster.Instance.OrderManager.GetOpenOrders();
+		List<Order> order = GameMaster.Instance.OrderManager.Orders;
 
 		for (int i = 0; i < order.Count; i++)
 		{
-			GameObject newItem = Instantiate (OrderContainer, scrollViewContent);
-			newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order[i].Customer.FullName();
-			newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {SetOrder( order, i,newItem);});
+			if (order [i].Open) 
+			{
+				GameObject newItem = Instantiate (OrderContainer, scrollViewContent);
+				newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order [i].Customer.FullName ();
+				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (delegate {SetOrder (order, i, newItem);});
+			}
 		}
 	}
 		
@@ -98,6 +101,8 @@ public class OrderUI : MonoBehaviour {
 	void SetOrder(List<Order> order,int i, GameObject setOrder)
 	{
 		i = i - 1;
+
+		ordersNum = i; 
 
 		ClearItems();
 		selectedOrder = setOrder;
@@ -168,7 +173,7 @@ public class OrderUI : MonoBehaviour {
 		inventoryPanel.SetActive (true);
 		selectOrder = item;
 		selectcontainer = newitem;
-		ordersNum = orderNum; 
+	
 		AddInventory ();
 	}
 
@@ -257,7 +262,7 @@ public class OrderUI : MonoBehaviour {
 	{
 		string a;
         float paymentTotal;
-
+		Debug.Log ("Bloooooooooooop"+ ordersNum);
 		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
 
 		purchase.SetActive(true);
@@ -265,6 +270,7 @@ public class OrderUI : MonoBehaviour {
 		StartCoroutine(moneyPopUp());
 		Destroy (selectedOrder);
 		clearInvoice ();
+		completeOrder.Clear();
 	}
 	IEnumerator moneyPopUp()
 	{
