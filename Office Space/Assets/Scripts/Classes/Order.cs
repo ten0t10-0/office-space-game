@@ -52,6 +52,9 @@ public class Order
 
             paymentTotal = GameMaster.MarkupPrice(paymentTotal, markup);
 
+            if (score == 0)
+                Filled = false;
+
             CloseOrder();
         }
     }

@@ -70,7 +70,7 @@ public class OfficeObjectScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (GameMaster.Instance.BuildMode)
+            if (GameMaster.Instance.BuildMode && !GameMaster.Instance.UIMode)
             {
                 if (highlighted && !selected)
                 {

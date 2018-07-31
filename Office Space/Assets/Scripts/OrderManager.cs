@@ -9,8 +9,6 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     public List<Order> Orders;
 
-    public int MaxOrdersSaved = 50;
-
     public List<ItemSubcategory> ExcludedItemSubcategories = new List<ItemSubcategory>
         {
             ItemSubcategory.Nothing
@@ -79,11 +77,6 @@ public class OrderManager : MonoBehaviour
         #endregion
 
         #endregion
-
-        if (Orders.Count == MaxOrdersSaved)
-        {
-            Orders.RemoveAt(0);
-        }
 
         Orders.Add(new Order(customer, items, currentDate, dueDate));
 
@@ -228,7 +221,7 @@ public class OrderManager : MonoBehaviour
 
         for (int i = 0; i < Orders.Count; i++)
         {
-            if (!Orders[i].Completed)
+            if (!Orders[i].Open && !Orders[i].Filled)
                 orders.Add(Orders[i]);
         }
 

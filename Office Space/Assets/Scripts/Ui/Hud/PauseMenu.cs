@@ -32,6 +32,7 @@ public class PauseMenu : MonoBehaviour {
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1f;
 		isPaused = false;
+        GameMaster.Instance.ModeSetPlay();
 
 	}
       void Pause()
@@ -39,6 +40,6 @@ public class PauseMenu : MonoBehaviour {
 		pauseMenu.SetActive (true);
 		Time.timeScale = 0f;
 		isPaused = true;
-
+        GameMaster.Instance.ModeSetUI();
 	}
 }

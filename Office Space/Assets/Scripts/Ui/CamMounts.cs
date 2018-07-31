@@ -16,10 +16,11 @@ public class CamMounts : MonoBehaviour
 	void Update ()
 	{
 
-
-		Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, currentMount.position, speed);
-		Camera.main.transform.rotation = Quaternion.Slerp (transform.rotation, currentMount.rotation, speed);
-
+        if (GameMaster.Instance.CameraLock)
+        {
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, currentMount.position, speed);
+            Camera.main.transform.rotation = Quaternion.Slerp(transform.rotation, currentMount.rotation, speed);
+        }
 	}
 
 	public void  setMount ( Transform newMount  )

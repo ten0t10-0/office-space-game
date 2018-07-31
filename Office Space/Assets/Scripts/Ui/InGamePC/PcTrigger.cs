@@ -22,7 +22,8 @@ public class PcTrigger : MonoBehaviour {
 			{
 				SetMount ();
 				OpenPanel.SetActive (false);
-				GameMaster.Instance.UIMode = true;
+                GameMaster.Instance.ModeSetUI();
+                GameMaster.Instance.CameraLock = true;
 				screen.SetActive (false);
 				hud.SetActive (false);
 				FindObjectOfType<SoundManager>().Play("Pc");
@@ -37,8 +38,9 @@ public class PcTrigger : MonoBehaviour {
 
 	public void CloseShop()
 	{
-		//ComputerCanvas.enabled = false;
-        GameMaster.Instance.UIMode = false;
+        //ComputerCanvas.enabled = false;
+        GameMaster.Instance.ModeSetPlay();
+        GameMaster.Instance.CameraLock = false;
         //Time.timeScale = 1;
 		hud.SetActive(true);
     }

@@ -6,8 +6,6 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public enum NPCType { Test, Customer }
-
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
@@ -55,6 +53,8 @@ public class GameMaster : MonoBehaviour
     public CustomizationManager CustomizationManager;
     [HideInInspector]
     public GUIManager GUIManager;
+    [HideInInspector]
+    public NPCManager NPCManager;
     #endregion
 
     #region <PLAYER/NPC>
@@ -62,8 +62,6 @@ public class GameMaster : MonoBehaviour
 
     [HideInInspector]
     public GameObject CurrentPlayerObject;
-    [HideInInspector]
-    public List<GameObject> CurrentNPCObjects;
 
     [HideInInspector]
     public Player Player;
@@ -93,7 +91,10 @@ public class GameMaster : MonoBehaviour
     public bool BuildMode = false;
     public bool OfflineMode = false;
     public bool TEMPSaveGame = true;
-    public bool StaticMode = false; //* + Check save data
+    public bool SleepMode = false; //* + Check save data
+
+    [HideInInspector]
+    public bool CameraLock = false;
 
     [HideInInspector]
     public bool DayEnd = false; //Day at end - No more events until next day (order generation, random events (?), etc)
@@ -207,6 +208,7 @@ public class GameMaster : MonoBehaviour
         ItemManager = GetComponent<ItemManager>();
         CustomizationManager = GetComponent<CustomizationManager>();
         GUIManager = GetComponent<GUIManager>();
+        NPCManager = GetComponent<NPCManager>();
 
         #region <Manager-specific initializations>
         CustomizationManager.Office.Initialize();
@@ -299,11 +301,13 @@ public class GameMaster : MonoBehaviour
     public void InitializeGame()
     {
         //UIMode = false;
-        //BuildMode = false;
+        BuildMode = false;
         //OfflineMode = false;
         //TutorialMode = false;
 
-        DestroyAllNPCs();
+        ModeSetPlay();
+
+        NPCManager.DestroyAllNPCs();
 
         tPlayerPlayTime = tGameTime = Time.time;
     }
@@ -580,16 +584,11 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    private void SpawnNPC(NPCType npcType)
-    {
-        //*
-    }
-
     private void Update()
     {
         currentTime = Time.time;
 
-        if (!StaticMode)
+        if (!SleepMode)
         {
             float timeAdvance = (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
 
@@ -685,13 +684,15 @@ public class GameMaster : MonoBehaviour
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
             SaveGame(SaveSlotCurrent);
 
-        //TEST: Lock & Unlock cursor
+        //TEST: Lock & Unlock cursor / Sleep mode toggle
         if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
         {
-            if (Cursor.lockState == CursorLockMode.None)
-                Cursor.lockState = CursorLockMode.Locked;
-            else
-                Cursor.lockState = CursorLockMode.None;
+            //if (Cursor.lockState == CursorLockMode.None)
+            //    Cursor.lockState = CursorLockMode.Locked;
+            //else
+            //    Cursor.lockState = CursorLockMode.None;
+
+            SleepMode = !SleepMode;
         }
 
         //TEST: Player customization stuff
@@ -749,6 +750,28 @@ public class GameMaster : MonoBehaviour
         }
         #endregion
     }
+
+    #region <"Mode" change methods>
+    /// <summary>
+    /// UIMode true, Cursor unlocked.
+    /// </summary>
+    public void ModeSetUI()
+    {
+        UIMode = true;
+
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    /// <summary>
+    /// UIMode false, Cursor hidden.
+    /// </summary>
+    public void ModeSetPlay()
+    {
+        UIMode = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    #endregion
 
     #region <SALES METHOD(S)>
     // SalePlayerToOnlinePlayer
@@ -941,17 +964,6 @@ public class GameMaster : MonoBehaviour
             }
         }
     }
-
-    public void DestroyAllNPCs()
-    {
-        if (CurrentNPCObjects.Count > 0)
-        {
-            for (int i = 0; i < CurrentNPCObjects.Count; i++)
-                Destroy(CurrentNPCObjects[i]);
-        }
-
-        CurrentNPCObjects = new List<GameObject>();
-    }
     #endregion
 
     #region <SAVING & LOADING METHODS>
@@ -980,7 +992,7 @@ public class GameMaster : MonoBehaviour
 
                 ChanceNextOrder = this.chanceNextOrder,
 
-                StaticMode = this.StaticMode,
+                SleepMode = this.SleepMode,
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
@@ -1031,7 +1043,7 @@ public class GameMaster : MonoBehaviour
 
         chanceNextOrder = gameData.ChanceNextOrder;
 
-        StaticMode = gameData.StaticMode;
+        SleepMode = gameData.SleepMode;
         DayEnd = gameData.DayEnd;
 
         dayEndCurrent = gameData.DayEndCurrent;

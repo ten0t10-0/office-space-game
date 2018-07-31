@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114553822043926498}
   - component: {fileID: 114180071435077334}
   - component: {fileID: 114781481805665894}
+  - component: {fileID: 114933794338400064}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -63,10 +64,10 @@ MonoBehaviour:
   ItemManager: {fileID: 0}
   CustomizationManager: {fileID: 0}
   GUIManager: {fileID: 0}
+  NPCManager: {fileID: 0}
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
-  CurrentNPCObjects: []
   Player: {}
   initPlayerName: New Player
   initBusinessName: My Business
@@ -133,7 +134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Orders: []
-  MaxOrdersSaved: 50
   ExcludedItemSubcategories: 00000000
 --- !u!114 &114553822043926498
 MonoBehaviour:
@@ -268,3 +268,18 @@ MonoBehaviour:
   HudCanvas: HudCanvas
   OrdersPanelScript: {fileID: 0}
   hudScript: {fileID: 0}
+--- !u!114 &114933794338400064
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633eae87c769b3745bde760970a4b167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaximumNPCs: 10
+  DefaultPosition: {x: 0, y: 0, z: 0}
+  DefaultRotation: {x: 0, y: 0, z: 0}
+  CurrentNPCs: []

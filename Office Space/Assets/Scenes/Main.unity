@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -3218,7 +3218,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00007926732, y: -0.000092708906}
+  m_AnchoredPosition: {x: -0.00007926732, y: -0.000058908267}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &168158905
@@ -7890,6 +7890,21 @@ Prefab:
     - target: {fileID: 1429829325982806, guid: af1c8dad463b4414d95198d229ee5e9b, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224211170363751564, guid: af1c8dad463b4414d95198d229ee5e9b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -47.979996
+      objectReference: {fileID: 0}
+    - target: {fileID: 224211170363751564, guid: af1c8dad463b4414d95198d229ee5e9b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.644989
+      objectReference: {fileID: 0}
+    - target: {fileID: 224565721843269254, guid: af1c8dad463b4414d95198d229ee5e9b,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 8.64502
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: af1c8dad463b4414d95198d229ee5e9b, type: 2}
@@ -23128,6 +23143,11 @@ Prefab:
       propertyPath: m_Shadows.m_Type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 108688638696592142, guid: 6133741666171864e8d8047911d92885,
+        type: 2}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6133741666171864e8d8047911d92885, type: 2}
   m_IsPrefabParent: 0
@@ -25187,7 +25207,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1296113068}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.100000024, y: 0.5500002, z: 1.1800003}
+  m_LocalPosition: {x: -0.024, y: 0.558, z: 1.1800003}
   m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children: []
   m_Father: {fileID: 1657653033}
@@ -31939,7 +31959,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -50.37, y: 20.35}
+  m_AnchoredPosition: {x: -50.369995, y: 20.349976}
   m_SizeDelta: {x: 89.88, y: 29.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1652493299

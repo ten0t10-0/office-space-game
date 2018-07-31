@@ -176,7 +176,6 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        //***Might need to change Input method for this to work on all devices.
         if (!GameMaster.Instance.UIMode)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
