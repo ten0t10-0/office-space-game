@@ -83,7 +83,7 @@ public class PlayerUiController : MonoBehaviour
 
 		space = purchasedItem.UnitSpace * currentAmount; //space item takes up
 
-		avalibleSpace = GameMaster.Instance.Player.Business.ShopInventory.AvailableSpace();
+		avalibleSpace = GameMaster.Instance.Player.Business.WarehouseInventory.AvailableSpace();
 
 		if (total > GameMaster.Instance.Player.Business.Money) 
 		{

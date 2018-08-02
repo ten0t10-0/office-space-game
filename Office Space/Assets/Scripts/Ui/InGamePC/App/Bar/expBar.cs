@@ -20,9 +20,9 @@ public class expBar : MonoBehaviour
 
 	public float CalculateBar()
 	{
-		float value = GameMaster.Instance.Player.Business.ShopInventory.TotalSpaceUsed();
+		float value = GameMaster.Instance.Player.Business.WarehouseInventory.TotalSpaceUsed();
 		float iMin = 0;
-		float iMax = GameMaster.Instance.Player.Business.ShopInventory.MaximumSpace;
+		float iMax = GameMaster.Instance.Player.Business.WarehouseInventory.MaximumSpace;
 
 		return (value - iMin) / (iMax - iMin);
 

@@ -31,11 +31,11 @@ public class Player
     /// <param name="startingMoney"></param>
     /// <param name="maximumInventorySpace"></param>
     /// <param name="maximumShopInventorySpace"></param>
-    public Player(string name, string businessName, int initialLevel, int initialExperience, float startingMoney, float initialMarkup, float maximumInventorySpace, float maximumShopInventorySpace)
+    public Player(string name, string businessName, int initialLevel, int initialExperience, float startingMoney, float initialMarkup, float maximumInventorySpace, int shopItemSlotCount)
     {
         Name = name;
 
-        Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, maximumShopInventorySpace);
+        Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, shopItemSlotCount);
 
         Level = initialLevel;
         Experience = initialExperience;

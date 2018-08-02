@@ -9,16 +9,16 @@ public class SupplierPlayer : Supplier
     public float CustomerTolerance { get; set; }
     public float MarkupPercentage { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
-    public InventoryPlayerShop ShopInventory { get; set; }
+    public PlayerShop Shop { get; set; }
 
     #region <Constructor>
-    public SupplierPlayer(string name, float money, float markup, float maximumInventorySpace, float maximumShopInventorySpace) : base(name)
+    public SupplierPlayer(string name, float money, float markup, float maximumInventorySpace, int shopItemSlotCount) : base(name)
     {
         Money = money;
         MarkupPercentage = markup;
         CustomerTolerance = 1f;
         WarehouseInventory = new InventoryPlayer(maximumInventorySpace);
-        ShopInventory = new InventoryPlayerShop(maximumShopInventorySpace);
+        Shop = new PlayerShop(shopItemSlotCount);
     }
     #endregion
 
@@ -88,142 +88,58 @@ public class SupplierPlayer : Supplier
     }
 
     /// <summary>
-    /// Moves some or all of the specified Items to the Shop Inventory. Validation will check Shop Inventory space and the specified quantity.
+    /// Moves some or all of the specified Items to the Shop.
     /// </summary>
-    /// <param name="iInventoryItem"></param>
+    /// <param name="iInventoryItem">The index of the OrderItem in the Player Inventory to be moved to the shop.</param>
     /// <param name="quantity"></param>
-    /// <param name="performValidation">Set to false only if Shop Inventory space AND Inventory Item quantity has already been validated.</param>
-    /// <param name="result"></param>
+    /// <param name="iSlot"></param>
     /// <returns></returns>
-    public bool MoveItemsToShop(int iInventoryItem, int quantity, bool performValidation, out string result)
+    public void MoveItemsToShop(int iInventoryItem, int quantity, int iSlot)
     {
-        bool successful = false;
-        result = GameMaster.MSG_ERR_DEFAULT;
+        string temp = GameMaster.MSG_GEN_NA;
 
-        OrderItem shopItemToBeAdded = WarehouseInventory.Items[iInventoryItem].Clone();
-        shopItemToBeAdded.Quantity = quantity;
+        bool itemMoved = Shop.AddItem(WarehouseInventory.Items[iInventoryItem].ItemID, quantity, iSlot);
 
-        bool valid;
-
-        if (!performValidation)
-        { valid = true; }
+        if (itemMoved)
+        {
+            if (quantity < WarehouseInventory.Items[iInventoryItem].Quantity)
+                WarehouseInventory.Items[iInventoryItem].ReduceQuantity(quantity, false, out temp);
+            else
+                WarehouseInventory.RemoveItem(iInventoryItem, out temp);
+        }
         else
         {
-            valid = WarehouseInventory.Items[iInventoryItem].ValidateReduceQuantity(quantity, out result);
-
-            if (valid)
-                valid = ShopInventory.ValidateAddItem(shopItemToBeAdded.TotalSpaceUsed(), out result);
+            Debug.Log("***The specified Shop Item slot is already in use.");
         }
-
-        if (valid)
-        {
-            ShopInventory.AddItem(shopItemToBeAdded, false, out result);
-
-            if (quantity < WarehouseInventory.Items[iInventoryItem].Quantity)
-                WarehouseInventory.Items[iInventoryItem].ReduceQuantity(quantity, false, out result);
-            else
-                WarehouseInventory.RemoveItem(iInventoryItem, out result);
-
-            successful = true;
-            result = string.Format("{0} x '{1}' has successfully been moved to Shop!", shopItemToBeAdded.Quantity.ToString(), shopItemToBeAdded.Name);
-        }
-
-        return successful;
     }
 
-    public bool MoveItemsToWarehouse(int iShopInventoryItem, int quantity, bool performValidation, out string result)
+    public void MoveItemsToInventory(int iSlot)
     {
-        bool successful = false;
-        result = GameMaster.MSG_ERR_DEFAULT;
+        string temp = GameMaster.MSG_GEN_NA;
 
-        OrderItem warehouseItemToBeAdded = ShopInventory.Items[iShopInventoryItem].Clone();
-        warehouseItemToBeAdded.Quantity = quantity;
+        OrderItem item = Shop.ItemsOnDisplay[iSlot];
 
-        bool valid;
+        bool itemMoved = WarehouseInventory.AddItem(item, false, out temp);
 
-        if (!performValidation)
-        { valid = true; }
+        if (itemMoved)
+        {
+            Shop.RemoveItem(iSlot);
+        }
         else
         {
-            valid = WarehouseInventory.ValidateAddItem(warehouseItemToBeAdded.TotalSpaceUsed(), out result);
-
-            if (valid)
-                valid = ShopInventory.Items[iShopInventoryItem].ValidateReduceQuantity(quantity, out result);
+            Debug.Log("***Moving items to Inventory fail: " + temp);
         }
-
-        if (valid)
-        {
-            WarehouseInventory.AddItem(warehouseItemToBeAdded, false, out result);
-
-            if (quantity < ShopInventory.Items[iShopInventoryItem].Quantity)
-                ShopInventory.Items[iShopInventoryItem].ReduceQuantity(quantity, false, out result);
-            else
-                ShopInventory.RemoveItem(iShopInventoryItem, out result);
-
-            successful = true;
-            result = string.Format("{0} x '{1}' has successfully been moved back to Warehouse!", warehouseItemToBeAdded.Quantity.ToString(), warehouseItemToBeAdded.Name);
-        }
-
-        return successful;
     }
 
     public float TotalValuation()
     {
-        return WarehouseInventory.Valuation() + ShopInventory.Valuation();
+        return WarehouseInventory.Valuation() + Shop.Valuation();
     }
 
     public float GetTotalMarkup()
     {
         return MarkupPercentage * CustomerTolerance;
     }
-
-    ///// <summary>
-    ///// Executes a sale of the specified item(s). Validation will check if the player has enough quantities of the item available. If valid, adds money and reduces/removes item from inventory.
-    ///// </summary>
-    ///// <param name="iItemToSell"></param>
-    ///// <param name="markup"></param>
-    ///// <param name="performValidation"></param>
-    ///// <param name="result"></param>
-    ///// <returns></returns>
-    //public bool SellItem(int iItemToSell, int quantity, float markup, bool performValidation, out string result)
-    //{
-    //    bool succeeded = false;
-    //    result = GameMaster.MSG_ERR_DEFAULT;
-
-    //    OrderItem item = Inventory.Items[iItemToSell].Clone();
-    //    item.Quantity = quantity;
-
-    //    float totalCost = GameMaster.MarkupPrice(item.TotalValue(), markup);
-
-    //    bool valid;
-
-    //    if (!performValidation)
-    //    {
-    //        valid = true;
-    //    }
-    //    else
-    //    {
-    //        valid = Inventory.Items[iItemToSell].ValidateReduceQuantity(quantity, out result);
-    //    }
-
-    //    if (valid)
-    //    {
-    //        Money += totalCost;
-
-    //        if (quantity != Inventory.Items[iItemToSell].Quantity)
-    //        {
-    //            succeeded = Inventory.Items[iItemToSell].ReduceQuantity(quantity, false, out result);
-    //        }
-    //        else
-    //        {
-    //            succeeded = Inventory.RemoveItem(iItemToSell, out result);
-    //        }
-
-    //        result = string.Format("Sale successful: {0}", result);
-    //    }
-
-    //    return succeeded;
-    //}
     #endregion
 
     //TEMP:

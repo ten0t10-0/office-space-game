@@ -70,7 +70,7 @@ public class GameMaster : MonoBehaviour
     public float initPlayerMoney = 10000;
     public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
-    public float initPlayerShopSpace = 10;
+    public int ShopItemSlotCount = 12;
     public int initPlayerLevel = 1;
     public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
@@ -301,7 +301,7 @@ public class GameMaster : MonoBehaviour
     public void InitializeGame()
     {
         //UIMode = false;
-        BuildMode = false;
+        //BuildMode = false;
         //OfflineMode = false;
         //TutorialMode = false;
 
@@ -334,7 +334,7 @@ public class GameMaster : MonoBehaviour
         chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
+        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, ShopItemSlotCount);
 
         //Generate Suppliers
         SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out message);
@@ -391,7 +391,7 @@ public class GameMaster : MonoBehaviour
             chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, initPlayerShopSpace);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, ShopItemSlotCount);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGeneric);
@@ -875,6 +875,31 @@ public class GameMaster : MonoBehaviour
     }
     #endregion
 
+    #region <IN-STORE METHODS>
+    public void SaleToCustomer(Customer customer, int iSlot, int quantity, float salePercent)
+    {
+        string result = MSG_ERR_DEFAULT;
+
+        if (Player.Business.Shop.ItemsOnDisplay[iSlot] != null)
+        {
+            float payment = (Player.Business.Shop.ItemsOnDisplay[iSlot].UnitCost * quantity) * salePercent;
+
+            //Reduce/Remove item from shop
+            if (quantity < Player.Business.Shop.ItemsOnDisplay[iSlot].Quantity)
+                Player.Business.Shop.ItemsOnDisplay[iSlot].ReduceQuantity(quantity, false, out result);
+            else
+                Player.Business.Shop.RemoveItem(iSlot);
+
+            //Add money
+            Player.Business.Money += payment;
+        }
+        else
+        {
+            Debug.Log("***No item in specified slot.");
+        }
+    }
+    #endregion
+
     #region <CUSTOMIZATION METHODS>
     //public void PurchaseOfficeItem(int iOfficeItem)
     //{
@@ -1093,30 +1118,18 @@ public class GameMaster : MonoBehaviour
             Debug.Log("0");
         }
         Debug.Log("*<OK!>");
-        Debug.Log("*SHOP Inventory:");
-        Debug.Log(Player.Business.ShopInventory.ToString());
+        Debug.Log("*SHOP slots:");
+        Debug.Log(Player.Business.Shop.ToString());
         Debug.Log("*<OK!>");
-        Debug.Log("*SHOP Inventory Items:");
-        if (Player.Business.ShopInventory.Items.Count != 0)
+        Debug.Log("*SHOP Items:");
+        for (int i = 0; i < Player.Business.Shop.ItemsOnDisplay.Length; i++)
         {
-            foreach (OrderItem item in Player.Business.ShopInventory.Items)
-                Debug.Log(item.ToString());
-        }
-        else
-        {
-            Debug.Log("0");
+            if (Player.Business.Shop.ItemsOnDisplay[i] != null)
+                Debug.Log(string.Format("- Slot {0}: {1}", i, Player.Business.Shop.ItemsOnDisplay[i].ToString()));
+            else
+                Debug.Log(string.Format("- Slot {0}: none", i));
         }
         Debug.Log("*<OK!>");
-        Debug.Log("*SHOP Special Items:");
-        if (Player.Business.ShopInventory.ItemsOnSpecial.Count != 0)
-        {
-            foreach (SpecialItem item in Player.Business.ShopInventory.ItemsOnSpecial)
-                Debug.Log(item.ToString());
-        }
-        else
-        {
-            Debug.Log("0");
-        }
         Debug.Log(lineL);
 
         Debug.Log("SUPPLIERS:");
