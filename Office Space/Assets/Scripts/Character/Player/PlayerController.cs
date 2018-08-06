@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Transform HeadTransform;
 
-    private Animator animator;                  // Reference to the animator component.
     private Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
+    private CharacterAnimationScript animationScript;
 
     private bool isRunning;
     private bool grounded;
@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
     //Awake() is like Start() but is called regardless of whether the script is enabled or not.
     private void Awake()
     {
-        animator = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
+        animationScript = GetComponent<CharacterAnimationScript>();
     }
 
     public void Initialize()
@@ -52,10 +52,10 @@ public class PlayerController : MonoBehaviour
                 AnimateMoving(horizontal, vertical);
             }
             else
-                StopAnimations();
+                animationScript.Idle();
         }
         else
-            StopAnimations();
+            animationScript.Idle();
     }
 
     private void Update()
@@ -64,10 +64,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (animator.GetBool("IsIdling") && !animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"))
-                {
-                    animator.SetTrigger("Interact 01");
-                } 
+                animationScript.Interact();
             }
         }
     }
@@ -107,16 +104,16 @@ public class PlayerController : MonoBehaviour
             else
                 speed = walkSpeed;
 
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"))
+            if (!animationScript.IsInteractAnim)
             {
                 //NB: Rigidbody gets moved so that collisions work properly.
                 //Move
                 playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
-            }
 
-            if (cameraMode == CameraMode.ThirdPerson)
-            {
-                playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
+                if (cameraMode == CameraMode.ThirdPerson)
+                {
+                    playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
+                }
             }
         }
 
@@ -144,30 +141,17 @@ public class PlayerController : MonoBehaviour
         {
             if (isRunning)
             {
-                animator.SetBool("IsWalking", false);
-                animator.SetBool("IsRunning", true);
+                animationScript.MoveRun();
             }
             else
             {
-                animator.SetBool("IsRunning", false);
-                animator.SetBool("IsWalking", true);
+                animationScript.MoveWalk();
             }
-
-            animator.SetBool("IsIdling", false);
         }
         else
         {
-            animator.SetBool("IsWalking", false);
-            animator.SetBool("IsRunning", false);
-
-            animator.SetBool("IsIdling", true);
+            animationScript.Idle();
         }
-    }
-
-    private void StopAnimations()
-    {
-        animator.SetBool("IsWalking", false);
-        animator.SetBool("IsRunning", false);
     }
 
     private void OnCollisionEnter(Collision collision)

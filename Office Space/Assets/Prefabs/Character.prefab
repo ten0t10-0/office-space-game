@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 54311235475270812}
   - component: {fileID: 136011282980805270}
   - component: {fileID: 114838629423295934}
+  - component: {fileID: 114883365914991026}
   m_Layer: 2
   m_Name: Character
   m_TagString: Untagged
@@ -889,7 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 1
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 1
 --- !u!114 &114351961456079480
 MonoBehaviour:
@@ -903,7 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 4
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114437029764921334
 MonoBehaviour:
@@ -917,7 +918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 2
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 1
 --- !u!114 &114699995417547062
 MonoBehaviour:
@@ -931,7 +932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 1
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114734314447740132
 MonoBehaviour:
@@ -945,7 +946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 0
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114805018892575818
 MonoBehaviour:
@@ -959,7 +960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 5
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114823019690432056
 MonoBehaviour:
@@ -973,7 +974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 2
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114832658826932586
 MonoBehaviour:
@@ -987,7 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 3
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 0
 --- !u!114 &114838629423295934
 MonoBehaviour:
@@ -1000,7 +1001,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 603ba1ab29602ae4b970a433b7cde145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialBlank: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   MaterialBody: {fileID: 2100000, guid: 67854ed261cd1fb41b2624148f20cfa5, type: 2}
 --- !u!114 &114870071104253554
 MonoBehaviour:
@@ -1014,8 +1014,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClothingSlot: 0
-  ClothingID: -1
+  ClothingIndex: 0
   IsBodyObject: 1
+--- !u!114 &114883365914991026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1614678332217964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1602abf756b27c248b2d14bb9fa0de83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdlingActionBoolNames:
+  - IsIdle01-Act01
+  - IsIdle01-Act02
+  IdlingActionAnimationNames:
+  - Idle01-Act01
+  - Idle01-Act02
+  MinSecondsBetweenIdleAction: 5
+  MaxSecondsBetweenIdleAction: 10
+  Animator: {fileID: 0}
 --- !u!135 &135499385707849584
 SphereCollider:
   m_ObjectHideFlags: 1
