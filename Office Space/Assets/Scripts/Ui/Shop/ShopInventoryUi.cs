@@ -35,6 +35,7 @@ public class ShopInventoryUi : MonoBehaviour {
 	public Quaternion rot;
 
 
+
 	public void setItems(int slots, Vector3 post, Quaternion rotn)
 	{
 		slot = slots;
@@ -151,7 +152,7 @@ public class ShopInventoryUi : MonoBehaviour {
 
 		if (scrollViewContent == null)
 		{
-			scrollViewContent = transform.Find("Inventory/Panel/Scroll View/Viewport/Content");
+			scrollViewContent = transform.Find("Panel/Scroll View/Viewport/Content");
 		}
 
 		foreach (Transform child in scrollViewContent)

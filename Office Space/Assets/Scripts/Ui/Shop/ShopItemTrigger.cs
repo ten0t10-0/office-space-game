@@ -17,8 +17,11 @@ public class ShopItemTrigger : MonoBehaviour {
 	//var shopI : ShopInventoryUi;
 
 	public int slot;
-	public Vector3 pos;
 	public Quaternion rot;
+
+	public GameObject hud;
+
+	Vector3 pos1;
 
 	void Awake ()
 	{
@@ -28,8 +31,7 @@ public class ShopItemTrigger : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-
-		shopI = GameObject.Find("ShopCanvas").GetComponent<ShopInventoryUi>();
+		shopI = GameObject.Find("ShopCanvas").transform.Find("Inventory").gameObject.GetComponent<ShopInventoryUi>();
 		cube = transform.Find("Cube").gameObject;
 	}
 	
@@ -40,10 +42,11 @@ public class ShopItemTrigger : MonoBehaviour {
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				
+				pos1 = cube.transform.position;
 				shopCanvas.SetActive (true);
 				OpenPanel.SetActive (false);
-				shopI.setItems (slot, pos, rot);
+				shopI.setItems (slot, pos1, rot);
+				hud.SetActive (false);
 			}
 		}
 	}
@@ -63,9 +66,6 @@ public class ShopItemTrigger : MonoBehaviour {
 			isInsideTrigger = true;
 			OpenPanel.SetActive(true);
 			cube.SetActive (true);
-
-			Debug.Log (slot);
-			Debug.Log (pos.ToString ());
 		}
 	}
 	void OnTriggerStay(Collider other)
@@ -85,6 +85,7 @@ public class ShopItemTrigger : MonoBehaviour {
 			cube.SetActive (false);
 			if (shopCanvas.activeInHierarchy)
 				shopCanvas.SetActive (false);
+			hud.SetActive (true);
 		}
 	}
 
