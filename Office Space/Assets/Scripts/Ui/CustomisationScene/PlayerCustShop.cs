@@ -18,7 +18,7 @@ public class PlayerCustShop : MonoBehaviour
 	List<int> currentOutfit;
 
 	bool purchased = false;
-
+	public Color textureColour;
 
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
 
@@ -26,6 +26,8 @@ public class PlayerCustShop : MonoBehaviour
 	private GameObject Container;
 
 	private Transform Upperscroll;
+
+	ClothingSlot currentSlot;
 
 	// Use this for initialization
 	void Start () 
@@ -65,7 +67,10 @@ public class PlayerCustShop : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
+		if (currentSlot != null) 
+		{
+			playerCus.UpdateClothingColor(currentSlot,colour.textureColour);
+		}
 	}
 
 	public void ClearScroll()
@@ -142,6 +147,7 @@ public class PlayerCustShop : MonoBehaviour
 		if (item == selectedItems(item)) 
 		{
 			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
+			Debug.Log("Bloop");
 		}
 			
 		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
@@ -162,8 +168,8 @@ public class PlayerCustShop : MonoBehaviour
 			if (item == clothing)
 			{
 				SetClothing (i, item.ClothingSlot.Slot);
+				currentSlot = item.ClothingSlot.Slot;
 				price.SetText(item.Price.ToString());
-				Debug.Log("Bloooooooopo");
 				break;
 			}
 			i++;
@@ -190,7 +196,9 @@ public class PlayerCustShop : MonoBehaviour
 	{
 		foreach (int current in playerCus.ClothingObjects.Values)
 		{
-			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item) {
+			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item)
+			{
+				Debug.Log ("Print");
 				return item;
 				break;
 			} else
@@ -203,7 +211,7 @@ public class PlayerCustShop : MonoBehaviour
 	{
 		foreach(var purchase in GameMaster.Instance.Player.PurchasedClothing)
 		{
-			if (GameMaster.Instance.CustomizationManager.Character.Clothing [purchase] == item) 
+			if (GameMaster.Instance.CustomizationManager.Character.Clothing[purchase] == item) 
 			{
 				return item;
 				break;

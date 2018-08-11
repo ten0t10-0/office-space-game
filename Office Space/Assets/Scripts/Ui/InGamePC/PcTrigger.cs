@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PcTrigger : MonoBehaviour {
 
-	//public Canvas ComputerCanvas;
 	public GameObject hud;
 
 	public GameObject OpenPanel = null;
@@ -12,7 +11,7 @@ public class PcTrigger : MonoBehaviour {
 
 	public GameObject screen;
 	public Transform pcMount;
-	CamMounts cam;
+
 
 	void Update ()
 	{
@@ -38,10 +37,9 @@ public class PcTrigger : MonoBehaviour {
 
 	public void CloseShop()
 	{
-        //ComputerCanvas.enabled = false;
         GameMaster.Instance.ModeSetPlay();
         GameMaster.Instance.CameraLock = false;
-        //Time.timeScale = 1;
+
 		hud.SetActive(true);
     }
 
