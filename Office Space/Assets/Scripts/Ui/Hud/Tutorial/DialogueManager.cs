@@ -14,6 +14,8 @@ public class DialogueManager : MonoBehaviour {
 	public Animator animator;
 	string letters;
 
+	 
+
 	void Start () 
 	{
 		sentences = new Queue<string> ();
@@ -21,8 +23,10 @@ public class DialogueManager : MonoBehaviour {
 
 	public void StartDialogue(Dialogue dialogue)
 	{
-		animator.SetBool ("IsOpen", true);
 		name.SetText (dialogue.name);
+		Debug.Log(dialogue.sentences [1]);
+		animator.SetBool ("IsOpen", true);
+
 		sentences.Clear ();
 
 		foreach (string sentence in dialogue.sentences)

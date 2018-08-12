@@ -95,6 +95,9 @@ public class GameMaster : MonoBehaviour
     public bool TEMPSaveGame = true;
     public bool SleepMode = false; //* + Check save data
 
+	public bool TutorialMode = false;
+	public bool ShopUnlocked = false;
+
     [HideInInspector]
     public bool CameraLock = false;
 
