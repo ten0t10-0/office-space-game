@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Difficulty_3
   m_EditorClassIdentifier: 
   Description: <3rd Difficulty>
-  LevelRequirement: 15
+  LevelRequirement: 10
   GenerateOrders: 1
   MaxSimultaneousOpenOrders: 3
   MaxOrderItems: 10

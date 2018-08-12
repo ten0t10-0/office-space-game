@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114180071435077334}
   - component: {fileID: 114781481805665894}
   - component: {fileID: 114933794338400064}
+  - component: {fileID: 114341436699145852}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -65,6 +66,7 @@ MonoBehaviour:
   CustomizationManager: {fileID: 0}
   GUIManager: {fileID: 0}
   NPCManager: {fileID: 0}
+  AchievementManager: {fileID: 0}
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
@@ -74,7 +76,7 @@ MonoBehaviour:
   initPlayerMoney: 1000000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  initPlayerShopSpace: 10
+  ShopItemSlotCount: 12
   initPlayerLevel: 100
   initPlayerExperience: 0
   PlayerExperienceBase: 100
@@ -86,7 +88,8 @@ MonoBehaviour:
   BuildMode: 1
   OfflineMode: 0
   TEMPSaveGame: 1
-  StaticMode: 0
+  SleepMode: 0
+  CameraLock: 0
   DayEnd: 0
   initDifficulty: 1
   DifficultySettings:
@@ -122,6 +125,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
   Office: {fileID: 11400000, guid: 26d39428fe603c648918aa2e55f31bbc, type: 2}
+--- !u!114 &114341436699145852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdfa7e8821e000c408dc3fe1354f7970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Achievements:
+  - {fileID: 11400000, guid: c762ff70b659482489294fd8b1ae1132, type: 2}
+  - {fileID: 11400000, guid: 67f72298e75e275409e1920a25645503, type: 2}
+  - {fileID: 11400000, guid: 3b7b070c94736ff49a9cbbf3cb99e54c, type: 2}
+  - {fileID: 11400000, guid: 0ef334a6f8b7d4d4daaec32100e70ffe, type: 2}
+  - {fileID: 11400000, guid: d1f0d215e91476943aba9b109124ad2a, type: 2}
+  - {fileID: 11400000, guid: ea3e7e499a6d1b344a89123a345345a3, type: 2}
+  - {fileID: 11400000, guid: 3e5798e0b0cb3154eb0aaa201d06367b, type: 2}
+  - {fileID: 11400000, guid: 8919f724fe0d7f342bc8d1614d32ed2b, type: 2}
+  - {fileID: 11400000, guid: 83f88bcbe9ff53742bab199a95308785, type: 2}
+  - {fileID: 11400000, guid: 41c133854a13a334f88d60c3ca96ed66, type: 2}
+  - {fileID: 11400000, guid: c2fde3075c89dff4184f94401f3fd51d, type: 2}
+  - {fileID: 11400000, guid: 1d3e098aa4b875b4fb30e3a41e524e84, type: 2}
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1

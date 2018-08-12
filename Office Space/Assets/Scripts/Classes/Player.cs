@@ -21,6 +21,9 @@ public class Player
     [SerializeField]
     public List<int> UnlockedOfficeItems { get; set; }
 
+    [SerializeField]
+    public List<int> UnlockedAchievements { get; set; }
+
     #region <Constructors>
 
     /// <summary>
@@ -58,6 +61,8 @@ public class Player
             CharacterCustomizationData.AddClothingData(new CharacterClothing(i));
         }
 
+        UnlockedAchievements = new List<int>();
+
         ////TEMP:
         //for (int i = 1; i <= 20; i++)
         //    Debug.Log("Level " + i + ": " + GetLevelExperience(i));
@@ -65,6 +70,16 @@ public class Player
     #endregion
 
     #region <Methods>
+    public void UnlockAchievement(int achievementID)
+    {
+        if (!UnlockedAchievements.Contains(achievementID))
+        {
+            UnlockedAchievements.Add(achievementID);
+
+            GameMaster.Instance.Notifications.Add(string.Format("Achievement unlocked: '{0}'", GameMaster.Instance.AchievementManager.Achievements[achievementID].Name));
+        }
+    }
+
     public void IncreaseExperience(int amount)
     {
         Experience += amount;

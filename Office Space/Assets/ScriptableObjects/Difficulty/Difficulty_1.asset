@@ -20,7 +20,7 @@ MonoBehaviour:
   GenerateOrderDueDate: 1
   OrderTimeShippingTimeMultiplier: 3
   OrderTimeAddedPerItem: 15
-  OrderGenerationRate: 0.03
+  OrderGenerationRate: 0.02
   IncludeCustomerTolerance: 1
   CustomerToleranceIncrement: 0.1
   CustomerToleranceDecrement: 0.1

@@ -55,6 +55,8 @@ public class GameMaster : MonoBehaviour
     public GUIManager GUIManager;
     [HideInInspector]
     public NPCManager NPCManager;
+    [HideInInspector]
+    public AchievementManager AchievementManager;
     #endregion
 
     #region <PLAYER/NPC>
@@ -209,6 +211,7 @@ public class GameMaster : MonoBehaviour
         CustomizationManager = GetComponent<CustomizationManager>();
         GUIManager = GetComponent<GUIManager>();
         NPCManager = GetComponent<NPCManager>();
+        AchievementManager = GetComponent<AchievementManager>();
 
         #region <Manager-specific initializations>
         CustomizationManager.Office.Initialize();
@@ -335,6 +338,9 @@ public class GameMaster : MonoBehaviour
 
         //Initialize Player
         Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, ShopItemSlotCount);
+
+        //Player Initalizations outside Player class...
+        AchievementManager.CheckAllAchievements();
 
         //Generate Suppliers
         SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out message);

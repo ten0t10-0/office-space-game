@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaterialWallsDefault: {fileID: 2100000, guid: 8a4fa6fb7e6e45e4b82eb5850cc2a17f,
     type: 2}
-  MaterialFloorDefault: {fileID: 2100000, guid: 527bd8531b860794089202bf1b3a87be,
+  MaterialFloorDefault: {fileID: 2100000, guid: e99d5a2e41cfcfd4f9b694ea94cd760e,
     type: 2}
   MaterialCeilingDefault: {fileID: 2100000, guid: 72895f0d12bb70d46be5517d4e2f429e,
     type: 2}
@@ -43,7 +43,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
   - {fileID: 11400000, guid: ad89eda27dd31004e94b3c4b17731495, type: 2}
   - {fileID: 11400000, guid: 3739d0f0e1813b64ba0ffecd65121766, type: 2}
-  DefaultOfficeItemIndexes: 00000000
   EssentialObjectNames:
   - monitor
   CurrentObjects:
