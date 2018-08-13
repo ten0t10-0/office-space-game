@@ -302,6 +302,9 @@ public class GameMaster : MonoBehaviour
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Upper);
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Lower);
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetClothing(4);
+
+        //**TEST: WALL COLOR**
+        CustomizationManager.Office.MaterialWallsCurrent.color = new Color(1f, .1f, .1f);
     }
 
     public void InitializeGame()
