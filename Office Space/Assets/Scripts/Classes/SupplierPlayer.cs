@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class SupplierPlayer : Supplier
 {
-    public float Money { get; set; }
+    public float Money { get; private set; }
     public float CustomerTolerance { get; set; }
     public float MarkupPercentage { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
@@ -53,7 +53,7 @@ public class SupplierPlayer : Supplier
 
         if (valid)
         {
-            Money -= totalCost;
+            DecreaseMoney(totalCost);
             WarehouseInventory.AddItem(item, false, out result);
 
             successful = true;
@@ -129,6 +129,28 @@ public class SupplierPlayer : Supplier
         {
             Debug.Log("***Moving items to Inventory fail: " + temp);
         }
+    }
+
+    public void IncreaseMoney(float increment)
+    {
+        if (increment >= 0)
+        {
+            Money += increment;
+        }
+        else
+            Debug.Log("Increment amount must be a positive number!");
+
+        GameMaster.Instance.AchievementManager.CheckAchievementsByType(AchievementType.PlayerMoney);
+    }
+
+    public void DecreaseMoney(float decrement)
+    {
+        if (decrement >= 0)
+        {
+            Money -= decrement;
+        }
+        else
+            Debug.Log("Decrement amount must be a positive number!");
     }
 
     public float TotalValuation()

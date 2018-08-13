@@ -682,6 +682,8 @@ public class GameMaster : MonoBehaviour
             Player.PlayTime += 1;
             tPlayerPlayTime = currentTime;
 
+            AchievementManager.CheckAchievementsByType(AchievementType.PlayerPlayTime);
+
             #region **DEBUG PLAY TIME**
             //Debug.Log("Play time (s): " + Player.PlayTime.ToString());
             #endregion
@@ -862,13 +864,22 @@ public class GameMaster : MonoBehaviour
 
         OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, Player.Business.GetTotalMarkup(), out payment, out score, out penaltyMult);
 
-        Player.Business.Money += payment;
+        Player.Business.IncreaseMoney(payment);
         Player.IncreaseExperience(score);
 
         Debug.Log("Order score: " + score.ToString());
 
         if (GetDifficultySetting().IncludeCustomerTolerance)
             Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
+
+        if (score > 0)
+        {
+            AchievementManager.CheckAchievementsByType(AchievementType.OrdersCompleted);
+        }
+        else
+        {
+            AchievementManager.CheckAchievementsByType(AchievementType.OrdersFailed);
+        }
     }
 
     /// <summary>
@@ -900,7 +911,7 @@ public class GameMaster : MonoBehaviour
                 Player.Business.Shop.RemoveItem(iSlot);
 
             //Add money
-            Player.Business.Money += payment;
+            Player.Business.IncreaseMoney(payment);
         }
         else
         {

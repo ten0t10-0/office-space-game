@@ -8,6 +8,14 @@ public class AchievementManager : MonoBehaviour
 {
     public List<AchievementSO> Achievements;
 
+    [HideInInspector]
+    public List<int> StoredIDs_PlayerPlayTime;
+
+    public void Awake()
+    {
+        StoredIDs_PlayerPlayTime = GetAchievementIDsByType(AchievementType.PlayerPlayTime);
+    }
+
     public void CheckAllAchievements()
     {
         CheckAchievementsByType(AchievementType.OrdersCompleted);
@@ -35,7 +43,16 @@ public class AchievementManager : MonoBehaviour
 
     public void CheckAchievementsByType(AchievementType achievementType)
     {
-        List<int> achievementList = GetAchievementIDsByType(achievementType);
+        List<int> achievementList = new List<int>();
+
+        if (achievementType == AchievementType.PlayerPlayTime)
+        {
+            achievementList = StoredIDs_PlayerPlayTime;
+        }
+        else
+        {
+            achievementList = GetAchievementIDsByType(achievementType);
+        }
 
         float? achievementField = GetAchievementField(achievementType);
 

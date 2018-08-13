@@ -104,6 +104,8 @@ public class Player
         GetLevelUnlocks();
 
         GameMaster.Instance.CheckDifficulty();
+
+        GameMaster.Instance.AchievementManager.CheckAchievementsByType(AchievementType.PlayerLevel);
     }
 
     private void GetLevelUnlocks()

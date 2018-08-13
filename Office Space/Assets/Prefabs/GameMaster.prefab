@@ -149,6 +149,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 41c133854a13a334f88d60c3ca96ed66, type: 2}
   - {fileID: 11400000, guid: c2fde3075c89dff4184f94401f3fd51d, type: 2}
   - {fileID: 11400000, guid: 1d3e098aa4b875b4fb30e3a41e524e84, type: 2}
+  - {fileID: 11400000, guid: 65c90e46d0230344bab7b45734b33fb7, type: 2}
+  StoredIDs_PlayerPlayTime: 
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1
