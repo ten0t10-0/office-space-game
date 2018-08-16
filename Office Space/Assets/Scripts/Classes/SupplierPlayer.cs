@@ -94,16 +94,16 @@ public class SupplierPlayer : Supplier
     /// <param name="quantity"></param>
     /// <param name="iSlot"></param>
     /// <returns></returns>
-    public void MoveItemsToShop(int iInventoryItem, int quantity, int iSlot)
+    public void MoveItemsToShop(int iInventoryItem, int iSlot)
     {
         string temp = GameMaster.MSG_GEN_NA;
 
-        bool itemMoved = Shop.AddItem(WarehouseInventory.Items[iInventoryItem].ItemID, quantity, iSlot);
+        bool itemMoved = Shop.AddItem(WarehouseInventory.Items[iInventoryItem].ItemID, iSlot);
 
         if (itemMoved)
         {
-            if (quantity < WarehouseInventory.Items[iInventoryItem].Quantity)
-                WarehouseInventory.Items[iInventoryItem].ReduceQuantity(quantity, false, out temp);
+            if (WarehouseInventory.Items[iInventoryItem].Quantity > 1)
+                WarehouseInventory.Items[iInventoryItem].ReduceQuantity(1, false, out temp);
             else
                 WarehouseInventory.RemoveItem(iInventoryItem, out temp);
         }
@@ -117,7 +117,7 @@ public class SupplierPlayer : Supplier
     {
         string temp = GameMaster.MSG_GEN_NA;
 
-        OrderItem item = Shop.ItemsOnDisplay[iSlot];
+        OrderItem item = new OrderItem(Shop.ItemsOnDisplay[iSlot].ItemID, 1);
 
         bool itemMoved = WarehouseInventory.AddItem(item, false, out temp);
 
@@ -151,11 +151,6 @@ public class SupplierPlayer : Supplier
         }
         else
             Debug.Log("Decrement amount must be a positive number!");
-    }
-
-    public float TotalValuation()
-    {
-        return WarehouseInventory.Valuation() + Shop.Valuation();
     }
 
     public float GetTotalMarkup()

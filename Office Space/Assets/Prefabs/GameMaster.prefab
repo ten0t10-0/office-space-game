@@ -76,10 +76,12 @@ MonoBehaviour:
   initPlayerMoney: 1000000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  ShopItemSlotCount: 12
   initPlayerLevel: 100
   initPlayerExperience: 0
   PlayerExperienceBase: 100
+  GameModeManager_Prefab: {fileID: 1641060707539384, guid: d68c57af1d397dc4b84582adc4873906,
+    type: 2}
+  initGameMode: 0
   SaveFileName: Game
   SaveFileExtension: .gd
   SaveCountMax: 10
@@ -89,6 +91,8 @@ MonoBehaviour:
   OfflineMode: 0
   TEMPSaveGame: 1
   SleepMode: 0
+  TutorialMode: 0
+  ShopUnlocked: 0
   CameraLock: 0
   DayEnd: 0
   initDifficulty: 1

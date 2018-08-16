@@ -6,11 +6,11 @@ using UnityEngine;
 public class PlayerShop
 {
     [SerializeField]
-    public OrderItem[] ItemsOnDisplay { get; set; }
+    public Item[] ItemsOnDisplay { get; set; }
 
     public PlayerShop(int displaySlotCount)
     {
-        ItemsOnDisplay = new OrderItem[displaySlotCount];
+        ItemsOnDisplay = new Item[displaySlotCount];
     }
 
     /// <summary>
@@ -20,13 +20,13 @@ public class PlayerShop
     /// <param name="quantity"></param>
     /// <param name="iSlot"></param>
     /// <returns></returns>
-    public bool AddItem(int itemID, int quantity, int iSlot)
+    public bool AddItem(int itemID, int iSlot)
     {
         bool successful = true;
 
         if (ItemsOnDisplay[iSlot] == null)
         {
-            ItemsOnDisplay[iSlot] = new OrderItem(itemID, quantity);
+            ItemsOnDisplay[iSlot] = new Item(itemID);
         }
         else
         {
@@ -45,26 +45,11 @@ public class PlayerShop
         ItemsOnDisplay[iSlot] = null;
     }
 
-    public float Valuation()
-    {
-        float value = 0f;
-
-        foreach (OrderItem item in ItemsOnDisplay)
-        {
-            if (item != null)
-            {
-                value += item.TotalValue();
-            }
-        }
-
-        return value;
-    }
-
     public void ClearItems()
     {
         int slotCount = ItemsOnDisplay.Length;
 
-        ItemsOnDisplay = new OrderItem[slotCount];
+        ItemsOnDisplay = new Item[slotCount];
     }
 
     public override string ToString()

@@ -31,10 +31,12 @@ public class GameData
 
     public NotificationList Notifications;
 
+    public bool IsGameModeOffice, IsGameModeShop;
+
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool sleepMode, bool dayEnd, int dayEndCurrent, NotificationList notifications)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool sleepMode, bool dayEnd, int dayEndCurrent, NotificationList notifications, bool isGameModeOffice, bool isGameModeShop)
     {
         Player = player;
 
@@ -55,5 +57,8 @@ public class GameData
         DayEndCurrent = dayEndCurrent;
 
         Notifications = notifications;
+
+        IsGameModeOffice = isGameModeOffice;
+        IsGameModeShop = isGameModeShop;
     }
 }

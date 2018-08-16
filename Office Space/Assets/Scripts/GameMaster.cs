@@ -6,6 +6,8 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+public enum GameMode { Office, Shop, Both, None }
+
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
@@ -72,13 +74,19 @@ public class GameMaster : MonoBehaviour
     public float initPlayerMoney = 10000;
     public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
-    public int ShopItemSlotCount = 12;
     public int initPlayerLevel = 1;
     public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
     #endregion
 
     #region <GAME>
+    public GameObject GameModeManager_Prefab;
+
+    private GameObject GameModeManager;
+
+    public GameMode initGameMode = GameMode.Office;
+    [HideInInspector]
+    private GameMode CurrentGameMode;
 
     #region <Game Data file info>
     public string SaveFileName = "Game";
@@ -154,7 +162,7 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <EVENT TIMERS>
-    private float chanceNextOrder;
+    //*
     #endregion
 
     #region <MESSAGES/NOTIFCATIONS>
@@ -206,6 +214,8 @@ public class GameMaster : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         #endregion
+
+        GameModeManager = Instantiate(GameModeManager_Prefab);
 
         SupplierManager = GetComponent<SupplierManager>();
         CustomerManager = GetComponent<CustomerManager>();
@@ -261,6 +271,8 @@ public class GameMaster : MonoBehaviour
         currentMessage = MSG_GEN_NA;
 
         SaveSlotCurrent = SaveSlotDefault;
+
+        ChangeGameMode(initGameMode);
     }
 
     private void Start() //***
@@ -340,10 +352,10 @@ public class GameMaster : MonoBehaviour
         Difficulty = initDifficulty;
 
         //Set events
-        chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+        GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, ShopItemSlotCount);
+        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GetShopGMScript().ShopItemSlotCount);
 
         //Player Initalizations outside Player class...
         AchievementManager.CheckAllAchievements();
@@ -400,10 +412,10 @@ public class GameMaster : MonoBehaviour
             Difficulty = initDifficulty;
 
             //TEST: Set events
-            chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+            GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, ShopItemSlotCount);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GetShopGMScript().ShopItemSlotCount);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGeneric);
@@ -611,66 +623,42 @@ public class GameMaster : MonoBehaviour
 
                 if (!DayEnd)
                 {
-                    #region <Generate order>
-                    if (GetDifficultySetting().GenerateOrders)
-                    {
-                        if (OrderManager.GetOpenOrders().Count < GetDifficultySetting().MaxSimultaneousOpenOrders)
-                        {
-                            //Debug.Log(chanceNextOrder.ToString());
-
-                            if (Roll(chanceNextOrder))
-                            {
-                                if (Roll(Player.Business.CustomerTolerance))
-                                {
-                                    //***
-                                    OrderManager.GenerateOrder();
-
-                                    Debug.Log("*ORDER GENERATED*");
-
-                                    //Debug.Log("ORDER:");
-                                    //foreach (OrderItem item in OrderManager.Orders[OrderManager.Orders.Count - 1].Items)
-                                    //    Debug.Log(string.Format("{0} x {1}", item.Quantity.ToString(), item.Name));
-                                }
-                                else
-                                {
-                                    //TEMP:
-                                    Debug.Log("*TOLERANCE*");
-                                }
-
-                                chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
-                            }
-                            else
-                            {
-                                chanceNextOrder += GetDifficultySetting().OrderGenerationRate; //keep increasing chance, otherwise player could potentially wait forever :p
-                            }
-                        }
-                    }
-                    #endregion
-
-                    #region <Random events, etc>
+                    #region <Random, non-gamemode-related events, etc>
                     //*
                     #endregion
                 }
                 else
                 {
                     #region <Next day & checks>
-                    if (OrderManager.GetOpenOrders().Count == 0) //Once all orders are closed...
+                    bool readyNextDay = true;
+
+                    switch (CurrentGameMode)
+                    {
+                        case GameMode.Both:
+                            {
+                                readyNextDay = (GetOfficeGMScript().IsDayEndReady() && GetShopGMScript().IsDayEndReady());
+                                break;
+                            }
+
+                        case GameMode.Office:
+                            {
+                                readyNextDay = GetOfficeGMScript().IsDayEndReady();
+                                break;
+                            }
+
+                        case GameMode.Shop:
+                            {
+                                readyNextDay = GetShopGMScript().IsDayEndReady();
+                                break;
+                            }
+                    }
+
+                    if (readyNextDay)
                     {
                         NextDay(); //*
                     }
                     #endregion
                 }
-
-                #region <Close overdue orders> ***
-                for (int i = 0; i < OrderManager.Orders.Count; i++)
-                {
-                    if (OrderManager.Orders[i].Open)
-                    {
-                        if (GameDateTime >= OrderManager.Orders[i].DateDue)
-                            CancelOrder(i);
-                    }
-                }
-                #endregion
 
                 tGameTime = currentTime;
             }
@@ -765,6 +753,73 @@ public class GameMaster : MonoBehaviour
         #endregion
     }
 
+    #region <GAME MODE METHODS>
+    public void ChangeGameMode(GameMode gameMode)
+    {
+        CurrentGameMode = gameMode;
+
+        switch (gameMode)
+        {
+            case GameMode.Office:
+                {
+                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = false;
+                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = true;
+
+                    break;
+                }
+            case GameMode.Shop:
+                {
+                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = false;
+                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = true;
+
+                    break;
+                }
+            case GameMode.Both:
+                {
+                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = true;
+                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = true;
+
+                    break;
+                }
+            case GameMode.None:
+                {
+                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = false;
+                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = false;
+
+                    break;
+                }
+        }
+    }
+
+    public GameModeOffice GetOfficeGMScript()
+    {
+        return ((GameModeOffice)GetGameModeScript(GameMode.Office));
+    }
+
+    public GameModeShop GetShopGMScript()
+    {
+        return ((GameModeShop)GetGameModeScript(GameMode.Shop));
+    }
+
+    private object GetGameModeScript(GameMode gameMode)
+    {
+        object script = null;
+
+        switch (gameMode)
+        {
+            case GameMode.Office:
+                script = GameModeManager.GetComponent<GameModeOffice>();
+                break;
+
+            case GameMode.Shop:
+                script = GameModeManager.GetComponent<GameModeShop>();
+                break;
+        }
+
+        return script;
+    }
+    #endregion
+
     #region <"Mode" change methods>
     /// <summary>
     /// UIMode true, Cursor unlocked.
@@ -784,142 +839,6 @@ public class GameMaster : MonoBehaviour
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;
-    }
-    #endregion
-
-    #region <SALES METHOD(S)>
-    // SalePlayerToOnlinePlayer
-    // SaleOnlinePlayerToPlayer
-    // ^ Both would have to work hand-in-hand?
-
-    /// <summary>
-    /// Executes a sale where the player purchases items from a supplier. (VALIDATION REQUIRED: Player money and Player inventory space)
-    /// </summary>
-    /// <param name="iSupplier">The Supplier (index).</param>
-    /// <param name="iSupplierItem">The Supplier's Item (index).</param>
-    /// <param name="quantity">The quantity to be purchased.</param>
-    /// <param name="performValidation">Set to false only if Player money AND Player inventory space has already been validated.</param>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    public bool SaleSupplierToPlayer(int iSupplier, int iSupplierItem, int quantity, bool performValidation, out string result)
-    {
-        bool successful = false;
-        result = MSG_ERR_DEFAULT;
-
-        if (iSupplier < SupplierManager.Suppliers.Count)
-        {
-            if (iSupplierItem < SupplierManager.Suppliers[iSupplier].Inventory.Items.Count)
-            {
-                OrderItem item = new OrderItem(SupplierManager.Suppliers[iSupplier].Inventory.Items[iSupplierItem], quantity);
-                float discount = SupplierManager.Suppliers[iSupplier].DiscountPercentage;
-
-                successful = Player.Business.PurchaseItem(item, discount, performValidation, out result);
-            }
-            else
-                Debug.Log("*INVALID SUPPLIER ITEM INDEX.");
-        }
-        else
-            Debug.Log("*INVALID SUPPLIER INDEX.");
-
-        return successful;
-    }
-    #endregion
-
-    #region <ORDER METHODS>
-    /// <summary>
-    /// Complete the specified order with the specified dictionary of items. (Quantities must be validated before this method is called)
-    /// </summary>
-    /// <param name="iOrderToComplete">The index of the order to complete.</param>
-    /// <param name="itemQuantities">Dictionary containing ItemID's as the key, and the quantity as the value.</param>
-    public void CompleteOrder(int iOrderToComplete, Dictionary<int, int> itemQuantities, out float payment, out string result)
-    {
-        result = MSG_ERR_DEFAULT;
-
-        int score;
-        float penaltyMult;
-
-        List<OrderItem> items = new List<OrderItem>();
-
-        result = "";
-        string tempResult;
-
-        foreach (int itemID in itemQuantities.Keys)
-        {
-            items.Add(new OrderItem(itemID, itemQuantities[itemID]));
-
-            for (int iPlayerItem = 0; iPlayerItem < Player.Business.WarehouseInventory.Items.Count; iPlayerItem++)
-            {
-                if (Player.Business.WarehouseInventory.Items[iPlayerItem].ItemID == itemID)
-                {
-                    if (itemQuantities[itemID] < Player.Business.WarehouseInventory.Items[iPlayerItem].Quantity)
-                    {
-                        Player.Business.WarehouseInventory.Items[iPlayerItem].ReduceQuantity(itemQuantities[itemID], false, out tempResult);
-                    }
-                    else
-                    {
-                        Player.Business.WarehouseInventory.RemoveItem(iPlayerItem, out tempResult);
-                    }
-
-                    result += tempResult + "; ";
-                }
-            }
-        }
-
-        OrderManager.CompleteOrder(iOrderToComplete, items, GameDateTime, Player.Business.GetTotalMarkup(), out payment, out score, out penaltyMult);
-
-        Player.Business.IncreaseMoney(payment);
-        Player.IncreaseExperience(score);
-
-        Debug.Log("Order score: " + score.ToString());
-
-        if (GetDifficultySetting().IncludeCustomerTolerance)
-            Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance + (GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
-
-        if (score > 0)
-        {
-            AchievementManager.CheckAchievementsByType(AchievementType.OrdersCompleted);
-        }
-        else
-        {
-            AchievementManager.CheckAchievementsByType(AchievementType.OrdersFailed);
-        }
-    }
-
-    /// <summary>
-    /// Cancels (Fails) an order. Decreases Player Business reputation (Customer Tolerance).
-    /// </summary>
-    /// <param name="iOrderToCancel"></param>
-    public void CancelOrder(int iOrderToCancel)
-    {
-        OrderManager.CloseOrder(iOrderToCancel);
-
-        if (GetDifficultySetting().IncludeCustomerTolerance)
-            Player.Business.CustomerTolerance = Mathf.Clamp(Player.Business.CustomerTolerance - GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
-    }
-    #endregion
-
-    #region <IN-STORE METHODS>
-    public void SaleToCustomer(Customer customer, int iSlot, int quantity, float salePercent)
-    {
-        string result = MSG_ERR_DEFAULT;
-
-        if (Player.Business.Shop.ItemsOnDisplay[iSlot] != null)
-        {
-            float payment = (Player.Business.Shop.ItemsOnDisplay[iSlot].UnitCost * quantity) * salePercent;
-
-            //Reduce/Remove item from shop
-            if (quantity < Player.Business.Shop.ItemsOnDisplay[iSlot].Quantity)
-                Player.Business.Shop.ItemsOnDisplay[iSlot].ReduceQuantity(quantity, false, out result);
-            else
-                Player.Business.Shop.RemoveItem(iSlot);
-
-            //Add money
-            Player.Business.IncreaseMoney(payment);
-        }
-        else
-        {
-            Debug.Log("***No item in specified slot.");
-        }
     }
     #endregion
 
@@ -947,6 +866,12 @@ public class GameMaster : MonoBehaviour
             DayEnd = true;
             dayEndCurrent = GameDateTime.Day;
         }
+
+        if (GetOfficeGMScript().enabled)
+            GetOfficeGMScript().GameTimeUpdate();
+
+        if (GetShopGMScript().enabled)
+            GetShopGMScript().GameTimeUpdate();
     }
 
     private void NewDay()
@@ -956,7 +881,8 @@ public class GameMaster : MonoBehaviour
 
         GameDateTime = new DateTime(GameDateTime.Year, GameDateTime.Month, GameDateTime.Day, DayStartHour, 0, 0);
 
-        chanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+        if (GetOfficeGMScript().enabled)
+            GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //TEST: Generating supplier items
         SupplierManager.PopulateSupplierInventories();
@@ -1021,6 +947,9 @@ public class GameMaster : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
 
+            GameModeOffice gmOffice = (GameModeOffice)GetGameModeScript(GameMode.Office);
+            GameModeShop gmShop = (GameModeShop)GetGameModeScript(GameMode.Shop);
+
             Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
             Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
 
@@ -1038,14 +967,17 @@ public class GameMaster : MonoBehaviour
                 GameDateTime = this.GameDateTime,
                 GameTimeSpeed = this.GameTimeSpeed,
 
-                ChanceNextOrder = this.chanceNextOrder,
+                ChanceNextOrder = gmOffice.ChanceNextOrder,
 
                 SleepMode = this.SleepMode,
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
 
-                Notifications = this.Notifications
+                Notifications = this.Notifications,
+
+                IsGameModeOffice = gmOffice.enabled,
+                IsGameModeShop = gmShop.enabled
             };
 
             SaveData saveData = new SaveData
@@ -1077,6 +1009,9 @@ public class GameMaster : MonoBehaviour
 
         GameData gameData = loadData.GameData;
 
+        GameModeOffice gmOffice = (GameModeOffice)GetGameModeScript(GameMode.Office);
+        GameModeShop gmShop = (GameModeShop)GetGameModeScript(GameMode.Shop);
+
         //Load data from GameData object (loadData):
         Player = gameData.Player;
 
@@ -1089,7 +1024,7 @@ public class GameMaster : MonoBehaviour
         GameDateTime = gameData.GameDateTime;
         GameTimeSpeed = gameData.GameTimeSpeed;
 
-        chanceNextOrder = gameData.ChanceNextOrder;
+        gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
         SleepMode = gameData.SleepMode;
         DayEnd = gameData.DayEnd;
@@ -1097,6 +1032,9 @@ public class GameMaster : MonoBehaviour
         dayEndCurrent = gameData.DayEndCurrent;
 
         Notifications = gameData.Notifications;
+
+        gmOffice.enabled = gameData.IsGameModeOffice;
+        gmShop.enabled = gameData.IsGameModeShop;
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");

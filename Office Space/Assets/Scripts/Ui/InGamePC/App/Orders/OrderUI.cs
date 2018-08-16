@@ -263,7 +263,7 @@ public class OrderUI : MonoBehaviour {
 		string a;
         float paymentTotal;
 		Debug.Log ("Bloooooooooooop"+ ordersNum);
-		GameMaster.Instance.CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
+		GameMaster.Instance.GetOfficeGMScript().CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
 
 		purchase.SetActive(true);
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + paymentTotal.ToString();
