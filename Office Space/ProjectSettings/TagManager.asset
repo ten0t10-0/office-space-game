@@ -6,6 +6,9 @@ TagManager:
   tags:
   - TestTag
   - Ground
+  - waypoint
+  - Fire
+  - FishWayPoint
   layers:
   - Default
   - TransparentFX

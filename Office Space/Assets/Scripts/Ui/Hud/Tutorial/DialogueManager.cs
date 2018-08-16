@@ -14,6 +14,7 @@ public class DialogueManager : MonoBehaviour {
 	public Animator animator;
 	string letters;
 
+	public int count = 0;
 	 
 
 	void Start () 
@@ -39,6 +40,7 @@ public class DialogueManager : MonoBehaviour {
 
 	public void DisplayNextSentence()
 	{
+		count++;
 		if (sentences.Count == 0) 
 		{
 			EndDialogue ();
@@ -51,6 +53,7 @@ public class DialogueManager : MonoBehaviour {
 
 	void EndDialogue()
 	{
+		count = 0;
 		animator.SetBool ("IsOpen", false);
 	}
 
@@ -58,12 +61,12 @@ public class DialogueManager : MonoBehaviour {
 	{
 		text.SetText ("");
 
-
 		foreach (char letter in sentence.ToCharArray()) 
 		{
 			letters += letter;
 			text.SetText (letters);
 			yield return null;
 		}
+		letters = "";
 	}
 }

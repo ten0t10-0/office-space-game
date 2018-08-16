@@ -5,17 +5,24 @@ using UnityEngine;
 public class TutorialNewGame : MonoBehaviour 
 {
 
-	// Use this for initialization
+	DialogueManager manager;
+	Dialogue dialogue;
+
+
 	void Start () 
 	{
-		
+		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
+		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 
-		if (Input.GetKeyDown(KeyCode.Space))
-		gameObject.GetComponent<DialogueTrigger> ().TriggerDialogue ();
+		if (Input.GetKeyDown (KeyCode.Space)) 
+		{
+			manager.DisplayNextSentence ();
+		}
+
 	}
 }
