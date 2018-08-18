@@ -89,7 +89,6 @@ public class FishTank : MonoBehaviour {
 
 	 public Vector3 RandomWaypoint() 
 	{ 
-		Debug.Log (fishWaypoints.Count);
 		int randomWP = Random.Range(0, (fishWaypoints.Count - 1)); 
 		Vector3 randomWaypoint = fishWaypoints[randomWP].transform.position;
 		return randomWaypoint; 

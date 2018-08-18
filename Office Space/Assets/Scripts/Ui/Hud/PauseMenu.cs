@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour {
-
+public class PauseMenu : MonoBehaviour 
+{
 	//ref for other scripts
 	public static bool isPaused = false;
 
 	public GameObject pauseMenu; 
-
 
 	void Update () 
 	{
@@ -23,8 +23,6 @@ public class PauseMenu : MonoBehaviour {
 				Pause ();
 			}
 		}
-
-
 	}
 
 	public void Resume()
@@ -33,6 +31,7 @@ public class PauseMenu : MonoBehaviour {
 		Time.timeScale = 1f;
 		isPaused = false;
         GameMaster.Instance.ModeSetPlay();
+		gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
 
 	}
       void Pause()
@@ -41,5 +40,6 @@ public class PauseMenu : MonoBehaviour {
 		Time.timeScale = 0f;
 		isPaused = true;
         GameMaster.Instance.ModeSetUI();
+		gameObject.GetComponent<GraphicRaycaster> ().enabled= true;
 	}
 }

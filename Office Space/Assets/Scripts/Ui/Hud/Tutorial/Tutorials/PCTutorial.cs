@@ -10,7 +10,6 @@ public class PCTutorial : MonoBehaviour
 	public GameObject questionmark,charaterQuestionMark,pcTutorial2;
 
 	DialogueManager manager;
-	Dialogue dialogue;
 	DialogueTrigger trigger;
 
 	public Button appbtn;
@@ -18,14 +17,11 @@ public class PCTutorial : MonoBehaviour
 
 	private bool isInsideTrigger = false;
 
-	int counter = 0;
-
 
 	// Use this for initialization
 	void Start () 
 	{
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
-		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
 
 		appbtn.GetComponent<Button>().onClick.AddListener(delegate {NextScreen();});
@@ -72,7 +68,6 @@ public class PCTutorial : MonoBehaviour
 
 			manager.DisplayNextSentence ();
 
-			counter++;
 		}
 
 	}
