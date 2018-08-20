@@ -14,13 +14,16 @@ public class ShopItemTrigger : MonoBehaviour {
 	GameObject cube;
 	//public GameObject canvas;
 	public Canvas canvas;
-	TextMeshProUGUI name, price;
+	Canvas tempcanvas;
+	TextMeshProUGUI name, price,quality;
+
+	ShopManagerClass Itemmanager;
+
+	Rigidbody[] items;
+	Item[] shopItem;
 
 	[HideInInspector]
 	public ShopInventoryUi shopI;
-
-	public Rigidbody[] items = new Rigidbody[16];
-	public Item[] shopitem = new Item[16];
 
 	public int slot;
 	public Quaternion rot;
@@ -31,7 +34,7 @@ public class ShopItemTrigger : MonoBehaviour {
 
 	void Awake ()
 	{
-		
+		Itemmanager = FindObjectOfType<ShopManagerClass> ();
 	}
 
 	// Use this for initialization
@@ -40,19 +43,14 @@ public class ShopItemTrigger : MonoBehaviour {
 		shopI = GameObject.Find("ShopCanvas").transform.Find("Inventory").gameObject.GetComponent<ShopInventoryUi>();
 		cube = transform.Find("Cube").gameObject;
 
-		//GameObject tempObject = GameObject.Find("Canvas");
-		//canvas = transform.Find("Canvas").GetComponent<Canvas>();
+		items = Itemmanager.items;
+		shopItem = Itemmanager.shopitem;
 
-//		Transform nameText = canvas.transform.Find ("name");
-//		name = nameText.GetComponent<TextMeshProUGUI> ();
-//
-//		Transform priceText = canvas.transform.Find ("Price");
-//		price = nameText.GetComponent<TextMeshProUGUI> ();
+		//showCanvas ();
 
-//		name = transform.Find ("name").GetComponent<TMP_Text> ();
-//		price = canvas.transform.Find ("Price").GetComponent<TMP_Text> ();
-//		quality = canvas.transform.Find ("Quality").GetComponent<TMP_Text> ();
 		canvas.enabled = false;
+
+
 	}
 	
 	// Update is called once per frame
@@ -71,28 +69,39 @@ public class ShopItemTrigger : MonoBehaviour {
 		}
 	}
 
-	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slot,Item item)
+	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slots,Item item)
 	{
+		if (items [slots] != null) 
+		{
+			Debug.Log ("Bloop");
+			Destroy (items [slots]);
+		}
+
+		Debug.Log ("spawn"+slots.ToString ());
+
 		Rigidbody rPrefab;
 		rPrefab = Instantiate(prefab,post,rotn) as Rigidbody;
-		items [slot] = rPrefab;
+		items [slots] = rPrefab;
 		shopCanvas.SetActive (false);
-		shopitem [slot] = item;
-//		name.SetText (item.Name.ToString());
-//		Debug.Log (item.Name.ToString ());
-//		quality.SetText (item.Quality.ToString ());
-//		price.SetText (item.UnitCost.ToString ());
+		shopItem [slots] = item;
+
+		canvas = transform.GetComponent<Canvas> ();
+
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Player")
 		{
+			tempcanvas = canvas;
 			isInsideTrigger = true;
 			OpenPanel.SetActive(true);
 			cube.SetActive (true);
-//			canvas.enabled = true;
+			canvas.enabled = true;
 			showCanvas();
+			Debug.Log ("Enter" + slot);
+
+
 		}
 	}
 	void OnTriggerStay(Collider other)
@@ -111,7 +120,7 @@ public class ShopItemTrigger : MonoBehaviour {
 			isInsideTrigger = false;
 			OpenPanel.SetActive(false);
 			cube.SetActive (false);
-	//		canvas.enabled = false;
+			canvas.enabled = false;
 			if (shopCanvas.activeInHierarchy)
 				shopCanvas.SetActive (false);
 			hud.SetActive (true);
@@ -120,15 +129,28 @@ public class ShopItemTrigger : MonoBehaviour {
 
 	public void showCanvas()
 	{
-		canvas.enabled = true;
-		canvas.GetComponent<RectTransform> ().localPosition = pos1;
-
 		Transform nameText = canvas.transform.Find ("name");
 		name = nameText.GetComponent<TextMeshProUGUI> ();
-		name.SetText (shopitem [slot].Name);
 
-//		Canvas n;
-//		n = Instantiate (canvas, pos1, rot);
+		Transform priceText = canvas.transform.Find ("Price");
+		price = priceText.GetComponent<TextMeshProUGUI> ();
+
+		Transform qualityText = canvas.transform.Find ("Quality");
+		quality = qualityText.GetComponent<TextMeshProUGUI> ();
+
+		if (items[slot] == null)
+		{
+			name.SetText ("Nothing");
+			price.SetText ("");
+			quality.SetText ("");
+		} 
+		else 
+		{
+			Debug.Log ("Name"+slot.ToString ());
+			name.SetText (shopItem [slot].Name);
+			price.SetText (shopItem [slot].UnitCost.ToString());
+			quality.SetText (shopItem [slot].Quality.ToString());
+		}
 	}
 
 	private bool IsOpenPanelActive
@@ -138,4 +160,5 @@ public class ShopItemTrigger : MonoBehaviour {
 			return OpenPanel.activeInHierarchy;
 		}
 	}
+
 }
