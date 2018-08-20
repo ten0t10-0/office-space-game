@@ -22,7 +22,6 @@ public class AIMove : MonoBehaviour
 		//aiManager = FindObjectOfType<FishTank> ();
 
 		aiManager = transform.parent.GetComponentInParent<FishTank> (); 
-		Debug.Log ("Blooooooop"+ aiManager.fishWaypoints.Count);
 		animator = GetComponent<Animator> (); 
 		//SetUpNPC ();
 	}

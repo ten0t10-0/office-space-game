@@ -143,7 +143,7 @@ public class ShopInventoryUi : MonoBehaviour {
 		else if (item.Subcategory.EnumID == ItemSubcategory.MotherBoard) 
 			prefab = motherboard;
 		
-		shopitem.SpawnObject(prefab,pos,rot);
+		shopitem.SpawnObject(prefab,pos,rot,slot,item);
 
 	}
 
