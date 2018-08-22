@@ -10,7 +10,7 @@ public class CamMounts : MonoBehaviour
 
 	void Start () 
 	{
-		GameMaster.Instance.UIMode = false;
+		//GameMaster.Instance.UIMode = false;
 	}
 		
 	void Update ()

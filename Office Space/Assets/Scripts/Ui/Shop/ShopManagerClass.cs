@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class ShopManagerClass : MonoBehaviour 
 {
-	public Rigidbody[] items = new Rigidbody[16];
 	public Item[] shopitem = new Item[16];
+	public Rigidbody[] items = new Rigidbody[16];
+
 }

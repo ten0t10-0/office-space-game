@@ -80,16 +80,17 @@ public class UiSave : MonoBehaviour
 			Debug.Log ("nosaveGame");
 			return;
 		}
-		if (selectedSlot == -1) {
+		if (selectedSlot == -1) 
+		{
 			Debug.Log ("Please select a savegame");
 			return;
-		} else 
+		}
+		else 
 		{
 			GameMaster.Instance.LoadGame(selectedSlot);
 			Debug.Log ("i is loaded!!??");
 		}
 			
-
 		confirmPanel.SetActive (false);
 	}
 	public void SavePanel()

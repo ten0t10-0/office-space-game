@@ -6,14 +6,17 @@ using TMPro;
 public class HudMain : MonoBehaviour {
 
 
+	public GameObject phone;
 	public TextMeshProUGUI money;
 	public TextMeshProUGUI time;
 	public GameObject order;
 	public GameObject hudCanvas;
+	public Animator animator;
 
 	[SerializeField] //items
 	private GameObject noteContainer;
 	private Transform iscrollContent;
+
 
 	void Start () 
 	{
@@ -25,6 +28,20 @@ public class HudMain : MonoBehaviour {
 
 	void Update () 
 	{
+		if (Input.GetKeyDown (KeyCode.B)) 
+		{
+			StopCoroutine(PhoneClose());
+			phone.SetActive (true);
+			animator.SetBool ("PhoneO", true);
+			FindObjectOfType<SoundManager>().Play("PhoneO");
+		}
+		if (Input.GetKeyDown(KeyCode.N)) 
+		{
+			animator.SetBool ("PhoneO", false);
+			StartCoroutine (PhoneClose());
+		}
+
+
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
         money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
 		DisplayNotes ();
@@ -59,7 +76,7 @@ public class HudMain : MonoBehaviour {
 	{
 		if (iscrollContent == null)
 		{
-			iscrollContent = transform.Find("Phone/Screen/Scroll View/Viewport/Content");
+			iscrollContent = transform.Find("CellPhone/Phone/Orders/Scroll View/Viewport/Content");
 		}
 		foreach (Transform childs in iscrollContent)
 		{
@@ -78,7 +95,11 @@ public class HudMain : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(2);
 		order.SetActive (false);
-
+	}
+	IEnumerator PhoneClose()
+	{
+		yield return new WaitForSeconds(1);
+		phone.SetActive (false);
 	}
 
 }

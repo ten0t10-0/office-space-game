@@ -65,6 +65,8 @@ public class ShopItemTrigger : MonoBehaviour {
 				OpenPanel.SetActive (false);
 				shopI.setItems (slot, pos1, rot);
 				hud.SetActive (false);
+				//GameMaster.Instance.UIMode = true;
+
 			}
 		}
 	}
@@ -74,11 +76,10 @@ public class ShopItemTrigger : MonoBehaviour {
 		if (items [slots] != null) 
 		{
 			Debug.Log ("Bloop");
-			Destroy (items [slots]);
+			Destroy (items[slots].gameObject);
+			Debug.Log ("spawn"+slots.ToString ());
 		}
-
-		Debug.Log ("spawn"+slots.ToString ());
-
+			
 		Rigidbody rPrefab;
 		rPrefab = Instantiate(prefab,post,rotn) as Rigidbody;
 		items [slots] = rPrefab;

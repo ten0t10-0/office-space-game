@@ -30,7 +30,7 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1f;
 		isPaused = false;
-        GameMaster.Instance.ModeSetPlay();
+       // GameMaster.Instance.ModeSetPlay();
 		gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
 
 	}
@@ -39,7 +39,7 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.SetActive (true);
 		Time.timeScale = 0f;
 		isPaused = true;
-        GameMaster.Instance.ModeSetUI();
+        //GameMaster.Instance.ModeSetUI();
 		gameObject.GetComponent<GraphicRaycaster> ().enabled= true;
 	}
 }

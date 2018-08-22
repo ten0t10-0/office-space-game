@@ -64,7 +64,7 @@ public class AIMove : MonoBehaviour
 
 			lastwaypoint = wayPoint; 
 		
-			speed = Random.Range (1f, 3f);
+			speed = Random.Range (.5f, 2f);
 			animator.speed = speed; 
 
 			return true; 
