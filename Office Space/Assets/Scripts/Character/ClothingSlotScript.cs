@@ -72,6 +72,9 @@ public class ClothingSlotScript : MonoBehaviour
     private void OnDestroy()
     {
         if (currentClothingMaterial != null)
+        {
             Destroy(currentClothingMaterial);
+            currentClothingMaterial = null;
+        }
     }
 }

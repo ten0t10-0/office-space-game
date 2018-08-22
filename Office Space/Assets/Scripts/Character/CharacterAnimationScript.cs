@@ -108,6 +108,18 @@ public class CharacterAnimationScript : MonoBehaviour
         }
     }
 
+    public void Greet()
+    {
+        if (Animator.GetBool("IsIdling") && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Greet01"))
+        {
+            StopIdleAct();
+
+            RandomizeNextIdleActTime();
+
+            Animator.SetTrigger("Greet 01");
+        }
+    }
+
     public void Idle()
     {
         Animator.SetBool("IsWalking", false);

@@ -303,9 +303,6 @@ public class GameMaster : MonoBehaviour
         }
 
         #region
-        //Spawn player
-        SpawnPlayer();
-
         //Set Camera target
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
         #endregion
@@ -316,7 +313,7 @@ public class GameMaster : MonoBehaviour
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetClothing(4);
 
         //**TEST: WALL COLOR**
-        CustomizationManager.Office.MaterialWallsCurrent.color = new Color(1f, .1f, .1f);
+        //CustomizationManager.Office.MaterialWallsCurrent.color = new Color(1f, .1f, .1f);
     }
 
     public void InitializeGame()
@@ -326,9 +323,9 @@ public class GameMaster : MonoBehaviour
         //OfflineMode = false;
         //TutorialMode = false;
 
-        ModeSetPlay();
-
         NPCManager.DestroyAllNPCs();
+
+        ModeSetPlay();
 
         tPlayerPlayTime = tGameTime = Time.time;
     }
@@ -374,6 +371,9 @@ public class GameMaster : MonoBehaviour
         newObject2.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
 
         GameObject.Find("monitor").GetComponent<OfficeObjectScript>().SetParent(iObject);
+
+        //Spawn player
+        InitializePlayer();
     }
 
     private void NewGameTEST()
@@ -532,7 +532,7 @@ public class GameMaster : MonoBehaviour
             //Debug.Log(OrderManager.Orders[0].ToString());
 
             //TEST: Spawn (NEW) player
-            SpawnPlayer();
+            InitializePlayer();
 
             //TEST: Set up Office
             CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
@@ -576,7 +576,7 @@ public class GameMaster : MonoBehaviour
             LoadGame(SaveSlotDefault);
 
             //TEST: Spawn (EXISTING) player
-            SpawnPlayer();
+            InitializePlayer();
 
             //TEST: Set Office
             CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
@@ -592,7 +592,7 @@ public class GameMaster : MonoBehaviour
     /// <summary>
     /// Instantiates a Character object as the player, and binds clothing to the player according to the customization data in the Player class.
     /// </summary>
-    private void SpawnPlayer()
+    private void InitializePlayer()
     {
         if (GameObject.FindGameObjectWithTag("Player") == null)
         {
@@ -605,6 +605,10 @@ public class GameMaster : MonoBehaviour
             CurrentPlayerObject.GetComponent<PlayerController>().Initialize();
 
             CustomizationManager.Character.SetPlayer(CurrentPlayerObject, Player.CharacterCustomizationData);
+        }
+        else
+        {
+            CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetAppearanceByData(Player.CharacterCustomizationData);
         }
     }
 
@@ -704,38 +708,7 @@ public class GameMaster : MonoBehaviour
             {
                 CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
 
-                //player.UpdateBodyColor(new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
-
-                //player.UpdateClothingColor(ClothingSlot.Upper, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
-                //player.UpdateClothingColor(ClothingSlot.Lower, new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f)));
-
-                //if (player.IsClothingSlotUsed(ClothingSlot.Costume))
-                //    player.UnsetClothing(ClothingSlot.Costume);
-                //else if (player.IsClothingSlotUsed(ClothingSlot.Upper) && player.IsClothingSlotUsed(ClothingSlot.Lower))
-                //{
-                //    player.UnsetClothing(ClothingSlot.Upper);
-                //    player.UnsetClothing(ClothingSlot.Lower);
-                //}
-                //else
-                //{
-                //    player.SetClothing(3);
-                //}
-
-                ClothingSlot slot = (ClothingSlot)UnityEngine.Random.Range(0, 3);
-
-                switch (slot)
-                {
-                    case ClothingSlot.Costume:
-                        player.SetClothing(3); break;
-                    case ClothingSlot.Upper:
-                        player.SetClothing(5); break;
-                    case ClothingSlot.Lower:
-                        player.SetClothing(4); break;
-                    default:
-                        break;
-                }
-
-                Debug.Log("*" + slot.ToString());
+                player.SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
             }
 
             if (Input.GetKeyDown(KeyCode.R))
@@ -1035,6 +1008,8 @@ public class GameMaster : MonoBehaviour
 
         gmOffice.enabled = gameData.IsGameModeOffice;
         gmShop.enabled = gameData.IsGameModeShop;
+
+        InitializePlayer();
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");

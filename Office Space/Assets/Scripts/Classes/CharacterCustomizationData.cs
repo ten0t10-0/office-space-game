@@ -10,6 +10,9 @@ public class CharacterCustomizationData
     [SerializeField]
     public List<CharacterClothing> CurrentClothing_Values { get; set; }
 
+    [SerializeField]
+    public List<CharacterAccessory> CurrentAccessories { get; set; }
+
     public float BodyColorR { get; set; }
     public float BodyColorG { get; set; }
     public float BodyColorB { get; set; }
@@ -20,6 +23,8 @@ public class CharacterCustomizationData
     {
         CurrentClothing_Keys = new List<ClothingSlot>();
         CurrentClothing_Values = new List<CharacterClothing>();
+
+        CurrentAccessories = new List<CharacterAccessory>();
 
         UpdateBodyColorInfo(bodyColor);
     }

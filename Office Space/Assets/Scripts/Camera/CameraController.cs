@@ -216,4 +216,9 @@ public class CameraController : MonoBehaviour
             }
         }
     }
+
+    public void ChangeMode(CameraMode cameraMode)
+    {
+        CameraMode = cameraMode;
+    }
 }

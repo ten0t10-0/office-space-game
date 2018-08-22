@@ -39,6 +39,9 @@ ModelImporter:
     100062: C_ShirtShort
     100064: B_ShirtNon
     100066: C_ShirtNon
+    100068: C_Monacle
+    100070: C_Moustache
+    100072: C_TopHat
     400000: Arm1_L
     400002: Arm1_R
     400004: Arm2_L
@@ -73,8 +76,15 @@ ModelImporter:
     400062: C_ShirtShort
     400064: B_ShirtNon
     400066: C_ShirtNon
+    400068: C_Monacle
+    400070: C_Moustache
+    400072: C_TopHat
     2100000: B_Default
     2100002: C_Default
+    2300000: C_Moustache
+    2300002: C_TopHat
+    3300000: C_Moustache
+    3300002: C_TopHat
     4300000: B_Onesie
     4300002: C_Onesie
     4300004: B_ShirtLong
@@ -90,6 +100,9 @@ ModelImporter:
     4300024: C_ShirtShort
     4300026: B_ShirtNon
     4300028: C_ShirtNon
+    4300030: C_TopHat
+    4300032: C_Monacle
+    4300034: C_Moustache
     7400000: Default Take
     7400002: Idle01
     7400004: Run01
@@ -97,6 +110,9 @@ ModelImporter:
     7400008: Interact01
     7400010: Idle01-Act01
     7400012: Idle01-Act02
+    7400014: Greet01
+    7400016: PointSide
+    7400018: PointSideUp
     9500000: //RootNode
     13700000: B_Onesie
     13700002: B_PantsLong
@@ -113,6 +129,8 @@ ModelImporter:
     13700024: C_ShirtShort
     13700026: B_ShirtNon
     13700028: C_ShirtNon
+    13700030: C_Monacle
+    13700032: C_TopHat
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -341,6 +359,90 @@ ModelImporter:
       takeName: Idle01-Act02
       firstFrame: -1
       lastFrame: 289
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Greet01
+      takeName: Greet01
+      firstFrame: -1
+      lastFrame: 61
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: PointSide
+      takeName: PointSide
+      firstFrame: -1
+      lastFrame: 53
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: PointSideUp
+      takeName: PointSideUp
+      firstFrame: -1
+      lastFrame: 53
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
