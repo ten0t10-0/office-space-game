@@ -16,10 +16,14 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// </summary>
     private Dictionary<ClothingSlot, int> BodyObjects;
 
+    private Transform headTransform;
+
     private void Awake()
     {
         ClothingObjects = new Dictionary<ClothingSlot, int>();
         BodyObjects = new Dictionary<ClothingSlot, int>();
+
+        headTransform = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip").Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
 
         //Get & use a copy of the default body material (and color)
         MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);
@@ -111,6 +115,77 @@ public class CharacterCustomizationScript : MonoBehaviour
         }
     }
 
+    public void SetAccessory(int accessoryId)
+    {
+        if (!IsAccessoryEquipped(accessoryId))
+        {
+            if (GetAccessoryObjects().Count < GameMaster.Instance.CustomizationManager.Character.MaxAccessories)
+            {
+                Transform headTransform = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip").Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
+
+                GameObject newAccObj = Instantiate(GameMaster.Instance.CustomizationManager.Character.Accessories[accessoryId].GameObject, GameMaster.Instance.CurrentPlayerObject.transform);
+                newAccObj.transform.parent = headTransform;
+
+                newAccObj.GetComponent<AccessoryScript>().Initialize(accessoryId);
+            }
+            else
+                Debug.Log("*Maximum number of accessories reached!");
+        }
+    }
+
+    public void UnsetAccessory(int accessoryId)
+    {
+        GameObject obj = null;
+
+        IsAccessoryEquipped(accessoryId, out obj);
+
+        if (obj != null)
+        {
+            Destroy(obj);
+        }
+    }
+
+    public bool IsAccessoryEquipped(int accessoryId, out GameObject obj)
+    {
+        bool equipped = false;
+
+        List<GameObject> accObjs = GetAccessoryObjects();
+
+        obj = null;
+
+        for (int i = 0; i < accObjs.Count; i++)
+        {
+            if (accObjs[i].GetComponent<AccessoryScript>().AccessoryIndex == accessoryId)
+            {
+                equipped = true;
+                obj = accObjs[i];
+
+                i = accObjs.Count; //break;
+            }
+        }
+
+        return equipped;
+    }
+
+    public bool IsAccessoryEquipped(int accessoryId)
+    {
+        bool equipped = false;
+
+        List<GameObject> accObjs = GetAccessoryObjects();
+
+        for (int i = 0; i < accObjs.Count; i++)
+        {
+            if (accObjs[i].GetComponent<AccessoryScript>().AccessoryIndex == accessoryId)
+            {
+                equipped = true;
+
+                i = accObjs.Count; //break;
+            }
+        }
+
+        return equipped;
+    }
+
     /// <summary>
     /// Sets up the characters appearance according to the specified customization data.
     /// </summary>
@@ -130,7 +205,22 @@ public class CharacterCustomizationScript : MonoBehaviour
             UpdateClothingColor(slot, clothingDictionary[slot].GetColor());
         }
 
-        //ReloadCharacterAppearance();
+        foreach (CharacterAccessory accessory in customizationData.CurrentAccessories)
+        {
+            SetAccessory(accessory.AccessoryID);
+
+            UpdateAccessoryColor(accessory.AccessoryID, accessory.GetColor());
+        }
+    }
+
+    public void SetAccessoriesByPreset(CharacterAccessoryPresetSO preset)
+    {
+        UnsetAllAccessories();
+
+        foreach (int accessoryId in preset.AccessoryIDList)
+        {
+            SetAccessory(accessoryId);
+        }
     }
 
     /// <summary>
@@ -152,11 +242,31 @@ public class CharacterCustomizationScript : MonoBehaviour
         transform.GetChild(ClothingObjects[slot]).gameObject.GetComponent<Renderer>().sharedMaterial.color = newClothingColor;
     }
 
+    public void UpdateAccessoryColor(int accessoryId, Color newColor)
+    {
+        List<GameObject> accObjs = GetAccessoryObjects();
+
+        if (accObjs.Count > 0)
+        {
+            for (int i = 0; i < accObjs.Count; i++)
+            {
+                if (accObjs[i].GetComponent<AccessoryScript>().AccessoryIndex == accessoryId)
+                {
+                    accObjs[i].GetComponent<Renderer>().sharedMaterial.color = newColor;
+                }
+            }
+        }
+        else
+            Debug.Log("*No Accessory objects found!");
+    }
+
     public CharacterCustomizationData GetCustomizationData()
     {
         CharacterCustomizationData data = new CharacterCustomizationData(MaterialBody.color);
 
         Dictionary<ClothingSlot, CharacterClothing> dictionary = new Dictionary<ClothingSlot, CharacterClothing>();
+
+        List<GameObject> accessoryObjects = GetAccessoryObjects();
 
         foreach (ClothingSlot slot in ClothingObjects.Keys)
         {
@@ -170,6 +280,13 @@ public class CharacterCustomizationScript : MonoBehaviour
             }
         }
 
+        foreach (GameObject accObj in accessoryObjects)
+        {
+            CharacterAccessory charAcc = new CharacterAccessory(accObj.GetComponent<AccessoryScript>().AccessoryIndex, accObj.GetComponent<Renderer>().sharedMaterial.color);
+
+            data.CurrentAccessories.Add(charAcc);
+        }
+
         data.SetUpLists(dictionary);
 
         //TEMP:
@@ -178,6 +295,10 @@ public class CharacterCustomizationScript : MonoBehaviour
         for (int i = 0; i < data.CurrentClothing_Keys.Count; i++)
         {
             Debug.Log("*" + data.CurrentClothing_Keys[i].ToString() + "* - Clothing ID: " + data.CurrentClothing_Values[i].ClothingID.ToString() + "; Color: " + data.CurrentClothing_Values[i].GetColor().ToString());
+        }
+        for (int i = 0; i < data.CurrentAccessories.Count; i++)
+        {
+            Debug.Log("*" + "ACC ID: " + data.CurrentAccessories[i].AccessoryID.ToString() + "; ACC Color: " + data.CurrentAccessories[i].GetColor().ToString());
         }
 
         return data;
@@ -277,6 +398,34 @@ public class CharacterCustomizationScript : MonoBehaviour
         {
             UnsetClothing(slot.Slot);
         }
+    }
+
+    public void UnsetAllAccessories()
+    {
+        List<GameObject> accObj = GetAccessoryObjects();
+
+        if (accObj.Count > 0)
+        {
+            for (int i = 0; i < accObj.Count; i++)
+            {
+                Destroy(accObj[i]);
+            }
+        }
+    }
+
+    public List<GameObject> GetAccessoryObjects()
+    {
+        List<GameObject> objects = new List<GameObject>();
+
+        for (int i = 0; i < headTransform.childCount; i++)
+        {
+            GameObject child = headTransform.GetChild(i).gameObject;
+
+            if (child.GetComponent<AccessoryScript>() != null)
+                objects.Add(child);
+        }
+
+        return objects;
     }
 
     private void SetUpBodyObjects()

@@ -66,6 +66,11 @@ public class PlayerController : MonoBehaviour
             {
                 animationScript.Interact();
             }
+
+            if (Input.GetKeyDown(KeyCode.Mouse2))
+            {
+                animationScript.Greet();
+            }
         }
     }
 
@@ -104,16 +109,13 @@ public class PlayerController : MonoBehaviour
             else
                 speed = walkSpeed;
 
-            if (!animationScript.IsInteractAnim)
-            {
-                //NB: Rigidbody gets moved so that collisions work properly.
-                //Move
-                playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
+            //NB: Rigidbody gets moved so that collisions work properly.
+            //Move
+            playerRigidbody.MovePosition(currentPostion + (newPosition.normalized * speed * Time.deltaTime));       //Add new position to current position.
 
-                if (cameraMode == CameraMode.ThirdPerson)
-                {
-                    playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
-                }
+            if (cameraMode == CameraMode.ThirdPerson)
+            {
+                playerRigidbody.MoveRotation(Quaternion.Lerp(currentRotation, newRotation, 0.15f));    //Gradually rotate from current direction to new direction.
             }
         }
 
@@ -158,9 +160,13 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+            if (groundCount == 0)
+            {
+                Debug.Log("Grounded!");
+            }
+
             groundCount++;
             grounded = true;
-            Debug.Log("Grounded!");
         }
     }
 

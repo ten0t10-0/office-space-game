@@ -13,7 +13,12 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
     public List<CharacterClothingSO> Clothing;
     public List<CharacterClothingSlotSO> ClothingSlots;
 
+    public List<CharacterAccessorySO> Accessories;
+
     public List<int> DefaultClothingIndexes;
+    public List<CharacterAccessoryPresetSO> AccessoryPresets;
+
+    public int MaxAccessories = 5;
 
     public List<Material> CustomMaterials;
 

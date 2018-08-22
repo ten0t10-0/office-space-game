@@ -30,7 +30,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7de66848f69064b40993fc639bd154c5, type: 2}
   - {fileID: 11400000, guid: 5b3e278bc66ca824a992d44b838f8367, type: 2}
   - {fileID: 11400000, guid: bf236a2c91b8c684b897bde4340a5076, type: 2}
+  Accessories:
+  - {fileID: 11400000, guid: 0ef2c3fc1aedb2d41a4ad6d8bebed809, type: 2}
+  - {fileID: 11400000, guid: 303d4b65975c8ce449180d6634cc906e, type: 2}
+  - {fileID: 11400000, guid: 2aaf7f86bb4a5214da0ef8dddafdfec0, type: 2}
   DefaultClothingIndexes: 0400000005000000
+  AccessoryPresets:
+  - {fileID: 11400000, guid: 1f4445ae90a682544a2a1c772767c85d, type: 2}
+  MaxAccessories: 5
   CustomMaterials: []
   SkinColors:
   - {r: 0.5529412, g: 0.33333334, b: 0.14117648, a: 1}
