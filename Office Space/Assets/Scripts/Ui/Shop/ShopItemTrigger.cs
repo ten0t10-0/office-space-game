@@ -65,7 +65,7 @@ public class ShopItemTrigger : MonoBehaviour {
 				OpenPanel.SetActive (false);
 				shopI.setItems (slot, pos1, rot);
 				hud.SetActive (false);
-				//GameMaster.Instance.UIMode = true;
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
 			}
 		}
@@ -84,9 +84,10 @@ public class ShopItemTrigger : MonoBehaviour {
 		rPrefab = Instantiate(prefab,post,rotn) as Rigidbody;
 		items [slots] = rPrefab;
 		shopCanvas.SetActive (false);
+		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 		shopItem [slots] = item;
 
-		canvas = transform.GetComponent<Canvas> ();
+		//tempcanvas = transform.GetComponent<Canvas> ();
 
 	}
 
@@ -122,8 +123,11 @@ public class ShopItemTrigger : MonoBehaviour {
 			OpenPanel.SetActive(false);
 			cube.SetActive (false);
 			canvas.enabled = false;
-			if (shopCanvas.activeInHierarchy)
+			if (shopCanvas.activeInHierarchy) 
+			{
 				shopCanvas.SetActive (false);
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
+			}
 			hud.SetActive (true);
 		}
 	}
@@ -138,6 +142,8 @@ public class ShopItemTrigger : MonoBehaviour {
 
 		Transform qualityText = canvas.transform.Find ("Quality");
 		quality = qualityText.GetComponent<TextMeshProUGUI> ();
+
+		Debug.Log (slot);
 
 		if (items[slot] == null)
 		{
