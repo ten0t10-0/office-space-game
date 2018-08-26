@@ -9,6 +9,8 @@ TagManager:
   - waypoint
   - Fire
   - FishWayPoint
+  - NPC
+  - destructor
   layers:
   - Default
   - TransparentFX

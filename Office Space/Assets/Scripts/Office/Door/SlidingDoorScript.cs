@@ -16,7 +16,7 @@ public class SlidingDoorScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player")
+		if (other.tag == "NPC")
 		{
 			isInsideTrigger = true;
 			FindObjectOfType<SoundManager>().Play("SlidingDoor");
@@ -25,7 +25,7 @@ public class SlidingDoorScript : MonoBehaviour {
 
 	void OnTriggerExit(Collider other)
 	{
-		if (other.tag == "Player")
+		if (other.tag == "NPC")
 		{
 			isInsideTrigger = false;
 			animator.SetBool("SOpen", false);
