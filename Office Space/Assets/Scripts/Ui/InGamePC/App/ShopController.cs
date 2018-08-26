@@ -88,7 +88,7 @@ public class ShopController : MonoBehaviour
 		CpuBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Components.ToString(),ItemSubcategory.CPU.ToString());});
 
 		pcgameBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.PCGame.ToString());});
-		gamingBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.ConsoleGame.ToString());});
+		ConsoleBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.ConsoleGame.ToString());});
 
 		figurineBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Merchandise.ToString(),ItemSubcategory.figurines.ToString());});
 

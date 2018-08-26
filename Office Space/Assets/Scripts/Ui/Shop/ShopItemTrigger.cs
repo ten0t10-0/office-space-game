@@ -30,6 +30,8 @@ public class ShopItemTrigger : MonoBehaviour {
 
 	public GameObject hud;
 
+//	bool firstPerson = false;
+
 	Vector3 pos1;
 
 	void Awake ()
@@ -50,6 +52,8 @@ public class ShopItemTrigger : MonoBehaviour {
 
 		canvas.enabled = false;
 
+//		if (Camera.main.GetComponent<CameraController> ().CameraMode == CameraMode.FirstPerson)
+//			firstPerson = true;
 
 	}
 	
@@ -63,7 +67,7 @@ public class ShopItemTrigger : MonoBehaviour {
 				pos1 = cube.transform.position;
 				shopCanvas.SetActive (true);
 				OpenPanel.SetActive (false);
-				shopI.setItems (slot, pos1, rot);
+				shopI.setItems (slot, pos1, rot,tempcanvas);
 				hud.SetActive (false);
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
@@ -71,13 +75,14 @@ public class ShopItemTrigger : MonoBehaviour {
 		}
 	}
 
-	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slots,Item item)
+	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slots,Item item,Canvas tcanvas)
 	{
 		if (items [slots] != null) 
 		{
 			Debug.Log ("Bloop");
 			Destroy (items[slots].gameObject);
 			Debug.Log ("spawn"+slots.ToString ());
+			GameMaster.Instance.Player.Business.MoveItemsToInventory(slots);
 		}
 			
 		Rigidbody rPrefab;
@@ -86,9 +91,9 @@ public class ShopItemTrigger : MonoBehaviour {
 		shopCanvas.SetActive (false);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 		shopItem [slots] = item;
-
+		//GameMaster.Instance.Player.Business.MoveItemsToShop(
 		//tempcanvas = transform.GetComponent<Canvas> ();
-
+		showCanvas(tcanvas, slots);
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -100,7 +105,7 @@ public class ShopItemTrigger : MonoBehaviour {
 			OpenPanel.SetActive(true);
 			cube.SetActive (true);
 			canvas.enabled = true;
-			showCanvas();
+			showCanvas(canvas,slot);
 			Debug.Log ("Enter" + slot);
 
 
@@ -126,26 +131,29 @@ public class ShopItemTrigger : MonoBehaviour {
 			if (shopCanvas.activeInHierarchy) 
 			{
 				shopCanvas.SetActive (false);
+//				if (firstPerson == true)
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
+//				else
+//				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 			}
 			hud.SetActive (true);
 		}
 	}
 
-	public void showCanvas()
+	public void showCanvas(Canvas tcanvas,int slots)
 	{
-		Transform nameText = canvas.transform.Find ("name");
+		Transform nameText = tcanvas.transform.Find ("name");
 		name = nameText.GetComponent<TextMeshProUGUI> ();
 
-		Transform priceText = canvas.transform.Find ("Price");
+		Transform priceText = tcanvas.transform.Find ("Price");
 		price = priceText.GetComponent<TextMeshProUGUI> ();
 
-		Transform qualityText = canvas.transform.Find ("Quality");
+		Transform qualityText = tcanvas.transform.Find ("Quality");
 		quality = qualityText.GetComponent<TextMeshProUGUI> ();
 
 		Debug.Log (slot);
 
-		if (items[slot] == null)
+		if (items[slots] == null)
 		{
 			name.SetText ("Nothing");
 			price.SetText ("");
@@ -154,11 +162,27 @@ public class ShopItemTrigger : MonoBehaviour {
 		else 
 		{
 			Debug.Log ("Name"+slot.ToString ());
-			name.SetText (shopItem [slot].Name);
-			price.SetText (shopItem [slot].UnitCost.ToString());
-			quality.SetText (shopItem [slot].Quality.ToString());
+			name.SetText (shopItem [slots].Name);
+			price.SetText (shopItem [slots].UnitCost.ToString());
+			quality.SetText (shopItem [slots].Quality.ToString());
 		}
 	}
+//	public void UpdateCanvas(Canvas tcanvas,int slots)
+//	{
+//		Transform nameText = tcanvas.transform.Find ("name");
+//		name = nameText.GetComponent<TextMeshProUGUI> ();
+//
+//		Transform priceText = tcanvas.transform.Find ("Price");
+//		price = priceText.GetComponent<TextMeshProUGUI> ();
+//
+//		Transform qualityText = tcanvas.transform.Find ("Quality");
+//		quality = qualityText.GetComponent<TextMeshProUGUI> ();
+//
+//		name.SetText (shopItem [slots].Name);
+//		price.SetText (shopItem [slots].UnitCost.ToString());
+//		quality.SetText (shopItem [slots].Quality.ToString());
+//	
+//	}
 
 	private bool IsOpenPanelActive
 	{

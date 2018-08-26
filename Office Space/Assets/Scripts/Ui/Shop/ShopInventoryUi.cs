@@ -33,14 +33,16 @@ public class ShopInventoryUi : MonoBehaviour {
 	public int slot = 0;
 	public Vector3 pos;
 	public Quaternion rot;
+	public Canvas tempCanvas;
 
 
 
-	public void setItems(int slots, Vector3 post, Quaternion rotn)
+	public void setItems(int slots, Vector3 post, Quaternion rotn,Canvas tCanvas)
 	{
 		slot = slots;
 		pos = post;
 		rot = rotn;
+		tempCanvas = tCanvas;
 
 		Debug.Log (pos.ToString ());
 	}
@@ -143,7 +145,7 @@ public class ShopInventoryUi : MonoBehaviour {
 		else if (item.Subcategory.EnumID == ItemSubcategory.MotherBoard) 
 			prefab = motherboard;
 		
-		shopitem.SpawnObject(prefab,pos,rot,slot,item);
+		shopitem.SpawnObject(prefab,pos,rot,slot,item,tempCanvas);
 
 	}
 
@@ -159,5 +161,9 @@ public class ShopInventoryUi : MonoBehaviour {
 		{
 			Destroy(child.gameObject);
 		}
-	}	
+	}
+	void itemInventory()
+	{
+		//for(int i=0; GameMaster.Instance.Player.)
+	}
 }

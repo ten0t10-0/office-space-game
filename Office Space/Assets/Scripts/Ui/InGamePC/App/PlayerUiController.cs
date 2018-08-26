@@ -27,8 +27,6 @@ public class PlayerUiController : MonoBehaviour
 	public Item purchasedItem;
 	public int iSupplier,iItem;
 
-	private Animator animator;
-
 	void Start()
 	{
 		//disable decrease btn on start up
@@ -38,7 +36,6 @@ public class PlayerUiController : MonoBehaviour
 	}
 	void Awake()
 	{
-		animator = GetComponentInChildren<Animator> ();
 	}
 
 	public void SetItem(Item pi,int iSupp,int iItm)
