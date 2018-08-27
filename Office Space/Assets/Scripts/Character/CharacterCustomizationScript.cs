@@ -16,7 +16,8 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// </summary>
     private Dictionary<ClothingSlot, int> BodyObjects;
 
-    private Transform transform_hip;
+    [HideInInspector]
+    public Transform Transform_Hip;
     [HideInInspector]
     public Transform Transform_Head;
     [HideInInspector]
@@ -26,13 +27,25 @@ public class CharacterCustomizationScript : MonoBehaviour
 
     private void Awake()
     {
+        GameObject objHandL, objHandR;
+
         ClothingObjects = new Dictionary<ClothingSlot, int>();
         BodyObjects = new Dictionary<ClothingSlot, int>();
 
-        transform_hip = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip");
-        Transform_Head = transform_hip.Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
-        Transform_HandL = transform_hip.Find("Spine").Find("Chest").Find("Collar_L").Find("Arm1_L").Find("Arm2_L").gameObject.transform;
-        Transform_HandR = transform_hip.Find("Spine").Find("Chest").Find("Collar_R").Find("Arm1_R").Find("Arm2_R").gameObject.transform;
+        Transform_Hip = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip");
+        Transform_Head = Transform_Hip.Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
+
+        objHandL = new GameObject(name + "_Hand-L");
+        objHandR = new GameObject(name + "_Hand-R");
+
+        objHandL.transform.parent = Transform_Hip.Find("Spine").Find("Chest").Find("Collar_L").Find("Arm1_L").Find("Arm2_L").gameObject.transform;
+        objHandR.transform.parent = Transform_Hip.Find("Spine").Find("Chest").Find("Collar_R").Find("Arm1_R").Find("Arm2_R").gameObject.transform;
+
+        objHandL.transform.position = objHandL.transform.parent.position + (objHandL.transform.parent.right * -1 * GameMaster.Instance.CustomizationManager.Character.CharacterHandObjOffset);
+        objHandR.transform.position = objHandR.transform.parent.position + (objHandR.transform.parent.right * -1 * GameMaster.Instance.CustomizationManager.Character.CharacterHandObjOffset);
+
+        Transform_HandL = objHandL.transform;
+        Transform_HandR = objHandR.transform;
 
         //Get & use a copy of the default body material (and color)
         MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);

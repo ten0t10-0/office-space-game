@@ -20,6 +20,8 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
 
     public int MaxAccessories = 5;
 
+    public float CharacterHandObjOffset = 0.5f;
+
     public List<Material> CustomMaterials;
 
     public List<Color> SkinColors;
