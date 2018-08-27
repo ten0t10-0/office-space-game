@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9392d102e2fb5074987d4e9615bccd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameMode: 1
+  ShopItemSlotCount: 17
 --- !u!114 &114825085948646302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -63,3 +65,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d92bd86c77f1b40b0f564aadd07adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameMode: 0
+  ChanceNextOrder: 0

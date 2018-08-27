@@ -20,7 +20,7 @@ public class ShopItemTrigger : MonoBehaviour {
 	ShopManagerClass Itemmanager;
 
 	Rigidbody[] items;
-	Item[] shopItem;
+	//Item[] shopItem;
 
 	[HideInInspector]
 	public ShopInventoryUi shopI;
@@ -46,7 +46,7 @@ public class ShopItemTrigger : MonoBehaviour {
 		cube = transform.Find("Cube").gameObject;
 
 		items = Itemmanager.items;
-		shopItem = Itemmanager.shopitem;
+		//shopItem = Itemmanager.shopitem;
 
 		//showCanvas ();
 
@@ -75,7 +75,7 @@ public class ShopItemTrigger : MonoBehaviour {
 		}
 	}
 
-	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slots,Item item,Canvas tcanvas)
+	public void SpawnObject(Rigidbody prefab,Vector3 post, Quaternion rotn,int slots,Item item,Canvas tcanvas,int inventory)
 	{
 		if (items [slots] != null) 
 		{
@@ -90,9 +90,9 @@ public class ShopItemTrigger : MonoBehaviour {
 		items [slots] = rPrefab;
 		shopCanvas.SetActive (false);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
-		shopItem [slots] = item;
-		//GameMaster.Instance.Player.Business.MoveItemsToShop(
-		//tempcanvas = transform.GetComponent<Canvas> ();
+		//shopItem [slots] = item;
+		GameMaster.Instance.Player.Business.MoveItemsToShop (inventory, slots);
+
 		showCanvas(tcanvas, slots);
 	}
 
@@ -162,9 +162,9 @@ public class ShopItemTrigger : MonoBehaviour {
 		else 
 		{
 			Debug.Log ("Name"+slot.ToString ());
-			name.SetText (shopItem [slots].Name);
-			price.SetText (shopItem [slots].UnitCost.ToString());
-			quality.SetText (shopItem [slots].Quality.ToString());
+			name.SetText (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay [slots].Name);
+			price.SetText (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay[slots].UnitCost.ToString());
+			quality.SetText (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay [slots].Quality.ToString());
 		}
 	}
 //	public void UpdateCanvas(Canvas tcanvas,int slots)

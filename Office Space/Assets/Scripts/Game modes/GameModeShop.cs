@@ -8,7 +8,7 @@ public class GameModeShop : MonoBehaviour
     public GameMode GameMode = GameMode.Shop;
 
     #region <FIELDS>
-    public int ShopItemSlotCount = 12;
+    public int ShopItemSlotCount = 17;
     #endregion
 
     #region <METHODS>

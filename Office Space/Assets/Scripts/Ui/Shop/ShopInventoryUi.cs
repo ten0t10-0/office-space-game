@@ -35,15 +35,12 @@ public class ShopInventoryUi : MonoBehaviour {
 	public Quaternion rot;
 	public Canvas tempCanvas;
 
-
-
 	public void setItems(int slots, Vector3 post, Quaternion rotn,Canvas tCanvas)
 	{
 		slot = slots;
 		pos = post;
 		rot = rotn;
 		tempCanvas = tCanvas;
-
 		Debug.Log (pos.ToString ());
 	}
 
@@ -71,11 +68,6 @@ public class ShopInventoryUi : MonoBehaviour {
 		btnIncrease.interactable = currentAmount < max;
 	}
 		
-	void Update () 
-	{
-
-
-	}
 	public void AddItems()
 	{
 		ClearInventory ();
@@ -111,6 +103,8 @@ public class ShopInventoryUi : MonoBehaviour {
 
 	public void spawn(Item item)
 	{
+		 int inventory = GetItemID (item);
+
 
 		if (item.Subcategory.EnumID == ItemSubcategory.Console)
 			prefab = console;
@@ -145,8 +139,8 @@ public class ShopInventoryUi : MonoBehaviour {
 		else if (item.Subcategory.EnumID == ItemSubcategory.MotherBoard) 
 			prefab = motherboard;
 		
-		shopitem.SpawnObject(prefab,pos,rot,slot,item,tempCanvas);
-
+		shopitem.SpawnObject(prefab,pos,rot,slot,item,tempCanvas,inventory);
+		AddItems ();
 	}
 
 	public void ClearInventory()
@@ -162,8 +156,15 @@ public class ShopInventoryUi : MonoBehaviour {
 			Destroy(child.gameObject);
 		}
 	}
-	void itemInventory()
+	int GetItemID(Item item)
 	{
-		//for(int i=0; GameMaster.Instance.Player.)
+		Item[] inventory  = GameMaster.Instance.Player.Business.WarehouseInventory.Items.ToArray ();
+
+		for (int i = 0; i <= inventory.Length; i++) 
+		{
+			if (item == inventory [i])
+				return i;
+		}
+		return -1;
 	}
 }

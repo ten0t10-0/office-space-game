@@ -4,7 +4,6 @@ using System.Collections;
 public class MouseManager : MonoBehaviour {
 
 	public GameObject selectedObject;
-	Unit unit;
 
 	// Use this for initialization
 	void Start () {

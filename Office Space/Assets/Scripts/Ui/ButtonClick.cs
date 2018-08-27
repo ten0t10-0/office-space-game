@@ -29,6 +29,9 @@ public class ButtonClick : MonoBehaviour
 	{
 		sm.Play ("Hover");
 	}
-
+	public void MenuNext()
+	{
+		sm.Play ("NextM");
+	}
 
 }
