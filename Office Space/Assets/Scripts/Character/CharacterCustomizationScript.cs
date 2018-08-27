@@ -16,14 +16,23 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// </summary>
     private Dictionary<ClothingSlot, int> BodyObjects;
 
-    private Transform headTransform;
+    private Transform transform_hip;
+    [HideInInspector]
+    public Transform Transform_Head;
+    [HideInInspector]
+    public Transform Transform_HandL;
+    [HideInInspector]
+    public Transform Transform_HandR;
 
     private void Awake()
     {
         ClothingObjects = new Dictionary<ClothingSlot, int>();
         BodyObjects = new Dictionary<ClothingSlot, int>();
 
-        headTransform = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip").Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
+        transform_hip = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip");
+        Transform_Head = transform_hip.Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
+        Transform_HandL = transform_hip.Find("Spine").Find("Chest").Find("Collar_L").Find("Arm1_L").Find("Arm2_L").gameObject.transform;
+        Transform_HandR = transform_hip.Find("Spine").Find("Chest").Find("Collar_R").Find("Arm1_R").Find("Arm2_R").gameObject.transform;
 
         //Get & use a copy of the default body material (and color)
         MaterialBody = new Material(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault);
@@ -417,9 +426,9 @@ public class CharacterCustomizationScript : MonoBehaviour
     {
         List<GameObject> objects = new List<GameObject>();
 
-        for (int i = 0; i < headTransform.childCount; i++)
+        for (int i = 0; i < Transform_Head.childCount; i++)
         {
-            GameObject child = headTransform.GetChild(i).gameObject;
+            GameObject child = Transform_Head.GetChild(i).gameObject;
 
             if (child.GetComponent<AccessoryScript>() != null)
                 objects.Add(child);

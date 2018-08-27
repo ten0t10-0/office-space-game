@@ -297,9 +297,6 @@ public class GameMaster : MonoBehaviour
         else
         {
             LoadGame(SaveSlotCurrent);
-
-            //Set up area
-            CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
         }
 
         #region
@@ -372,7 +369,7 @@ public class GameMaster : MonoBehaviour
 
         GameObject.Find("monitor").GetComponent<OfficeObjectScript>().SetParent(iObject);
 
-        //Spawn player
+        //Spawn Player Object
         InitializePlayer();
     }
 
@@ -608,6 +605,8 @@ public class GameMaster : MonoBehaviour
         }
         else
         {
+            CurrentPlayerObject.transform.position = Vector3.up;
+            CurrentPlayerObject.transform.rotation = Quaternion.Euler(Vector3.zero);
             CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetAppearanceByData(Player.CharacterCustomizationData);
         }
     }
@@ -1009,7 +1008,11 @@ public class GameMaster : MonoBehaviour
         gmOffice.enabled = gameData.IsGameModeOffice;
         gmShop.enabled = gameData.IsGameModeShop;
 
+        //Setup Player Object
         InitializePlayer();
+
+        //Set up area
+        CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
 
         //LOG:
         Debug.Log("GAME DATA LOADED!");
