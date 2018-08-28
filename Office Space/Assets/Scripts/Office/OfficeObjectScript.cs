@@ -234,6 +234,13 @@ public class OfficeObjectScript : MonoBehaviour
                 placementValid = false;
 
                 SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialInvalidPlacement);
+
+                List<GameObject> familiy = GetFamily();
+
+                foreach (GameObject member in familiy)
+                {
+                    member.GetComponent<OfficeObjectScript>().SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialInvalidPlacement);
+                }
             }
         }
     }
@@ -249,30 +256,107 @@ public class OfficeObjectScript : MonoBehaviour
                 placementValid = true;
 
                 SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
+
+                List<GameObject> familiy = GetFamily();
+
+                foreach (GameObject member in familiy)
+                {
+                    member.GetComponent<OfficeObjectScript>().SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
+                }
             }
         }
     }
 
     private void SetObjectMaterials(Material material)
     {
-        Material[] newMaterials = new Material[GetComponent<Renderer>().sharedMaterials.Length];
+        //Material[] newMaterials = new Material[GetComponent<Renderer>().sharedMaterials.Length];
 
-        for (int i = 0; i < newMaterials.Length; i++)
+        //for (int i = 0; i < newMaterials.Length; i++)
+        //{
+        //    newMaterials[i] = material;
+        //}
+
+        //GetComponent<Renderer>().sharedMaterials = newMaterials;
+
+        //Debug.Log("Materials: " + Resources.FindObjectsOfTypeAll(typeof(Material)).Length);
+
+        List<Renderer> renderers = GetObjectRenderers();
+
+        foreach (Renderer r in renderers)
         {
-            newMaterials[i] = material;
+            if (r.sharedMaterials.Length == 1)
+                r.sharedMaterial = material;
+            else
+            {
+                Material[] newMaterials = new Material[r.sharedMaterials.Length];
+
+                for (int i = 0; i < newMaterials.Length; i++)
+                    newMaterials[i] = material;
+
+                r.sharedMaterials = newMaterials;
+            }
         }
-
-        GetComponent<Renderer>().sharedMaterials = newMaterials;
-
-        Debug.Log("Materials: " + Resources.FindObjectsOfTypeAll(typeof(Material)).Length);
     }
 
     private void ResetObjectMaterials()
     {
+        List<Renderer> renderers = GetObjectRenderers();
+
         if (OfficeItemID > -1)
-            GetComponent<Renderer>().sharedMaterials = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Object.GetComponent<Renderer>().sharedMaterials;
+        {
+            Renderer[] renderersDefault = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Object.GetComponentsInChildren<Renderer>();
+            Dictionary<string, Material[]> materialsDefault = new Dictionary<string, Material[]>();
+
+            Material[] matArray;
+
+            for (int i = 0; i < renderersDefault.Length; i++)
+            {
+                matArray = renderersDefault[i].sharedMaterials;
+
+                materialsDefault.Add(renderersDefault[i].gameObject.name, matArray);
+            }
+
+            foreach (Renderer r in renderers)
+            {
+                string objName = r.gameObject.name;
+
+                if (!GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault.ContainsKey(objName))
+                {
+                    if (!materialsDefault.ContainsKey(objName))
+                    {
+                        objName = objName.Substring(0, objName.Length - "(Clone)".Length);
+                    }
+
+                    r.sharedMaterials = materialsDefault[objName];
+                }
+            }
+        }
         else
-            GetComponent<Renderer>().sharedMaterials = GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault[name];
+        {
+            foreach (Renderer r in renderers)
+            {
+                r.sharedMaterials = GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault[r.gameObject.name];
+            }
+        }
+    }
+
+    private List<Renderer> GetObjectRenderers()
+    {
+        List<Renderer> result = new List<Renderer>();
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+
+        if (GetComponent<Renderer>() != null)
+            result.Add(GetComponent<Renderer>());
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i].gameObject.GetComponent<OfficeObjectScript>() == null)
+            {
+                result.Add(renderers[i]);
+            }
+        }
+
+        return result;
     }
 
     private List<GameObject> GetChildren()

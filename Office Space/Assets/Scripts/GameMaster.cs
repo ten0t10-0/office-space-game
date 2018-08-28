@@ -111,6 +111,9 @@ public class GameMaster : MonoBehaviour
 
     [HideInInspector]
     public bool DayEnd = false; //Day at end - No more events until next day (order generation, random events (?), etc)
+
+    [HideInInspector]
+    public bool PlayerControl = true;
     #endregion
 
     #region <Difficulty>
@@ -798,6 +801,7 @@ public class GameMaster : MonoBehaviour
     /// </summary>
     public void ModeSetUI()
     {
+        PlayerControl = false;
         UIMode = true;
 
         Cursor.lockState = CursorLockMode.None;
@@ -808,6 +812,7 @@ public class GameMaster : MonoBehaviour
     /// </summary>
     public void ModeSetPlay()
     {
+        PlayerControl = true;
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;

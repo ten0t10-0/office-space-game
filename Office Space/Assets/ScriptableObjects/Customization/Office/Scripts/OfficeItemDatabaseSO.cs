@@ -90,7 +90,12 @@ public class OfficeItemDatabaseSO : ScriptableObject
                 essentialObject.GetComponent<OfficeObjectScript>().Essential = true;
                 essentialObject.GetComponent<OfficeObjectScript>().ObjectIndex = CurrentObjects.Count;
 
-                MaterialEssentialObjectsDefault.Add(essentialObject.name, essentialObject.GetComponent<Renderer>().sharedMaterials);
+                Renderer[] renderers = essentialObject.GetComponentsInChildren<Renderer>();
+
+                foreach (Renderer renderer in renderers)
+                {
+                    MaterialEssentialObjectsDefault.Add(renderer.gameObject.name, renderer.sharedMaterials);
+                }
 
                 CurrentObjects.Add(essentialObject);
             }
