@@ -46,8 +46,6 @@ public class OfficeItemDatabaseSO : ScriptableObject
     private Transform shopRoomTransform;
     //private Transform shopObjectTransform;
 
-    public List<string> EssentialObjectNames;
-
     [HideInInspector]
     public Dictionary<string, Material[]> MaterialEssentialObjectsDefault;
 
@@ -81,24 +79,22 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
         CurrentObjects = new List<GameObject>();
 
-        if (EssentialObjectNames.Count > 0)
+        OfficeObjectScript[] objs = FindObjectsOfType<OfficeObjectScript>();
+
+        for (int i = 0; i < objs.Length; i++)
         {
-            for (int i = 0; i < EssentialObjectNames.Count; i++)
+            Debug.Log("* " + objs[i].gameObject.name);
+            objs[i].Essential = true;
+            objs[i].ObjectIndex = CurrentObjects.Count;
+
+            Renderer[] renderers = objs[i].gameObject.GetComponentsInChildren<Renderer>();
+
+            foreach (Renderer renderer in renderers)
             {
-                GameObject essentialObject = GameObject.Find(EssentialObjectNames[i]);
-
-                essentialObject.GetComponent<OfficeObjectScript>().Essential = true;
-                essentialObject.GetComponent<OfficeObjectScript>().ObjectIndex = CurrentObjects.Count;
-
-                Renderer[] renderers = essentialObject.GetComponentsInChildren<Renderer>();
-
-                foreach (Renderer renderer in renderers)
-                {
-                    MaterialEssentialObjectsDefault.Add(renderer.gameObject.name, renderer.sharedMaterials);
-                }
-
-                CurrentObjects.Add(essentialObject);
+                MaterialEssentialObjectsDefault.Add(renderer.gameObject.name, renderer.sharedMaterials);
             }
+
+            CurrentObjects.Add(objs[i].gameObject);
         }
 
         Transform wallsTransform = officeRoomTransform.Find("Walls");

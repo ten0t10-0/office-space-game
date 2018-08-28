@@ -125,6 +125,11 @@ public class OfficeObjectScript : MonoBehaviour
                     placement = CustomPlacement;
                 }
 
+                if (placement == OfficeItemPosition.None)
+                {
+                    objectPlacementDistance = 1f;
+                }
+
                 Vector3 newPos;
 
                 //*TEMP?:
@@ -142,15 +147,14 @@ public class OfficeObjectScript : MonoBehaviour
                 Ray ray;
                 RaycastHit hit;
 
+                tempObj = null;
+
                 if (Physics.Linecast(Camera.main.transform.position, newPos, out hit))
                 {
                     newPos = hit.point;
 
-                    tempObj = hit.collider.gameObject;
-                }
-                else
-                {
-                    tempObj = null;
+                    if (GetComponent<Rigidbody>() == null)
+                        tempObj = hit.collider.gameObject;
                 }
 
                 switch (placement)
@@ -185,6 +189,10 @@ public class OfficeObjectScript : MonoBehaviour
                             //    newPos = hit.point;
                             //}
 
+                            break;
+                        }
+                    case OfficeItemPosition.None:
+                        {
                             break;
                         }
                 }
@@ -408,6 +416,11 @@ public class OfficeObjectScript : MonoBehaviour
 
         GetComponent<Collider>().isTrigger = true;
 
+        if (GetComponent<Rigidbody>() != null)
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+        }
+
         SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
 
         List<GameObject> family = GetFamily();
@@ -426,6 +439,11 @@ public class OfficeObjectScript : MonoBehaviour
         gameObject.layer = GameMaster.Instance.CustomizationManager.Office.OfficeItemLayer;
 
         GetComponent<Collider>().isTrigger = false;
+
+        if (GetComponent<Rigidbody>() != null)
+        {
+            GetComponent<Rigidbody>().isKinematic = false;
+        }
 
         ResetObjectMaterials();
 

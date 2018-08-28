@@ -98,26 +98,22 @@ public class CharacterAnimationScript : MonoBehaviour
 
     public void Interact()
     {
-        if (Animator.GetBool("IsIdling") && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"))
-        {
-            StopIdleAct();
-
-            RandomizeNextIdleActTime();
-
-            Animator.SetTrigger("Interact 01");
-        }
+        Trigger("Interact 01", "Interact01");
     }
 
     public void Greet()
     {
-        if (Animator.GetBool("IsIdling") && !Animator.GetCurrentAnimatorStateInfo(0).IsName("Greet01"))
-        {
-            StopIdleAct();
+        Trigger("Greet 01", "Greet01");
+    }
 
-            RandomizeNextIdleActTime();
+    public void PointSide()
+    {
+        Trigger("PointSide", "PointSide");
+    }
 
-            Animator.SetTrigger("Greet 01");
-        }
+    public void PointSideUp()
+    {
+        Trigger("PointSideUp", "PointSideUp");
     }
 
     public void Idle()
@@ -146,5 +142,17 @@ public class CharacterAnimationScript : MonoBehaviour
     public bool IsInteractAnim
     {
         get { return Animator.GetCurrentAnimatorStateInfo(0).IsName("Interact01"); }
+    }
+
+    private void Trigger(string triggerName, string stateName)
+    {
+        if (Animator.GetBool("IsIdling") && !Animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
+        {
+            StopIdleAct();
+
+            RandomizeNextIdleActTime();
+
+            Animator.SetTrigger(triggerName);
+        }
     }
 }
