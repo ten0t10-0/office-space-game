@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         //GetAxisRaw() is used so that movement is instant instead of gradual.
         //***Might need to change Input method to work for all devices.
 
-        if (GameMaster.Instance.PlayerControl)
+        if (!GameMaster.Instance.UIMode)
         {
             if (!Input.GetKey(KeyCode.RightShift))
             {
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!GameMaster.Instance.PlayerControl)
+        if (!GameMaster.Instance.UIMode)
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
