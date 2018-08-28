@@ -15,10 +15,14 @@ public class DialogueManager : MonoBehaviour {
 	string letters;
 
 	public int count = 0;
+	public GameObject tutorialGuy,spawnLocation;
 	 
 
 	void Start () 
 	{
+		Instantiate (tutorialGuy, spawnLocation.transform);
+
+		//tutorialGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
 		sentences = new Queue<string> ();
 	}
 
