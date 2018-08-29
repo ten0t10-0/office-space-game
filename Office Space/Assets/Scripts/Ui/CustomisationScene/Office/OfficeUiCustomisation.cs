@@ -12,6 +12,9 @@ public class OfficeUiCustomisation : MonoBehaviour {
 	public TextMeshProUGUI time;
 
 	public GameObject tablet;
+	public Animator phone;
+
+	//public Button ;
 
 	[SerializeField] 
 	private GameObject Container;
@@ -39,11 +42,11 @@ public class OfficeUiCustomisation : MonoBehaviour {
 
 		foreach (OfficeItemSO item in GameMaster.Instance.CustomizationManager.Office.Items) 
 		{
-			if (item.Type.Category == OfficeItemCategory.Furniture) 
-			{
+			//if (item.Type.Category == OfficeItemCategory.Furniture) 
+			//{
 				GameObject newItem = Instantiate (Container, scrollView);
 				SetItem (newItem, item);
-			}
+			//}
 		}
 	}
 
@@ -89,14 +92,19 @@ public class OfficeUiCustomisation : MonoBehaviour {
 		{
 			if (item == officeitem)
 			{
+				phone.SetBool ("PhoneH", false);
+				phone.SetBool ("PhoneO", false);
                 GameMaster.Instance.BuildMode = true;
 
                 GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
 				GameMaster.Instance.CustomizationManager.Office.SelectObject (random);
+
 				tablet.SetActive (false);
+
 				break;
 			}
 			i++;
 		}
 	}
+
 }

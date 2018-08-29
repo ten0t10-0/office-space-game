@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48405087, g: 0.5757902, b: 0.68020916, a: 1}
+  m_IndirectSpecularColor: {r: 0.48400742, g: 0.57574797, b: 0.68019503, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -4593,58 +4593,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 109544821}
---- !u!1 &115795088
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 115795089}
-  - component: {fileID: 115795090}
-  m_Layer: 5
-  m_Name: CellPhone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &115795089
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 115795088}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1571997419}
-  m_Father: {fileID: 1592564645}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 196, y: -387}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &115795090
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 115795088}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2c6aeb83ea766eb45984bc5a796fa816, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &115962407
 GameObject:
   m_ObjectHideFlags: 0
@@ -7013,7 +6961,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00007926732, y: -0.00011845506}
+  m_AnchoredPosition: {x: -0.00007926732, y: -0.00010573688}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &168158905
@@ -20846,7 +20794,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00004824951, y: 0.00000745481}
+  m_AnchoredPosition: {x: -0.000024716659, y: 0.000039840226}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &489790219
@@ -61037,7 +60985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000012188018, y: -0.000008949233}
+  m_AnchoredPosition: {x: 0.0000051702586, y: -0.000008949233}
   m_SizeDelta: {x: -27.600006, y: 180.9}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1300932371
@@ -70425,17 +70373,17 @@ RectTransform:
   m_GameObject: {fileID: 1571997418}
   m_LocalRotation: {x: -0, y: -0, z: 0.0032376074, w: 0.9999948}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4399998, y: 1.4399998, z: 1.4399999}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 106453666}
   - {fileID: 2011582901}
   - {fileID: 687434998}
-  m_Father: {fileID: 115795089}
-  m_RootOrder: 0
+  m_Father: {fileID: 1592564645}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -153.99997, y: -212.20218}
   m_SizeDelta: {x: 182.49, y: 278.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1571997420
@@ -71026,7 +70974,7 @@ RectTransform:
   - {fileID: 1267472435}
   - {fileID: 1623208658}
   - {fileID: 255736569}
-  - {fileID: 115795089}
+  - {fileID: 1571997419}
   - {fileID: 2024639092}
   m_Father: {fileID: 0}
   m_RootOrder: 20
@@ -71052,7 +71000,7 @@ MonoBehaviour:
   time: {fileID: 1652493299}
   order: {fileID: 1623208657}
   hudCanvas: {fileID: 1592564641}
-  animator: {fileID: 115795090}
+  animator: {fileID: 1571997422}
   noteContainer: {fileID: 1429829325982806, guid: af1c8dad463b4414d95198d229ee5e9b,
     type: 2}
 --- !u!1 &1594296581
@@ -92096,6 +92044,7 @@ MonoBehaviour:
   date: {fileID: 81067060}
   time: {fileID: 597957643}
   tablet: {fileID: 2024639091}
+  phone: {fileID: 1571997422}
   Container: {fileID: 1104035328032824, guid: b70892fa44902e04c811c5dc8f2624f5, type: 2}
 --- !u!114 &2024639094
 MonoBehaviour:

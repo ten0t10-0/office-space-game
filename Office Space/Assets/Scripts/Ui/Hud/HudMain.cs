@@ -76,7 +76,7 @@ public class HudMain : MonoBehaviour {
 	{
 		if (iscrollContent == null)
 		{
-			iscrollContent = transform.Find("CellPhone/Phone/Orders/Scroll View/Viewport/Content");
+			iscrollContent = transform.Find("Phone/Orders/Scroll View/Viewport/Content");
 		}
 		foreach (Transform childs in iscrollContent)
 		{
