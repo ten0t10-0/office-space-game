@@ -9,12 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5696201cb49a8ac49b95455973b01e99, type: 3}
-  m_Name: Lamp-01
+  m_Name: Table-01
   m_EditorClassIdentifier: 
-  Name: Lamp 1
-  Price: 175
+  Name: Table 1
+  Price: 500
   Essential: 0
   LevelRequirement: 5
   Placement: 0
-  Type: {fileID: 11400000, guid: ad89eda27dd31004e94b3c4b17731495, type: 2}
-  Object: {fileID: 1971226770090720, guid: 90fccc6271ad6864baf2aa329ddc9e15, type: 2}
+  Type: {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
+  Object: {fileID: 1717544249061330, guid: 8885972989dc6fd4092b1df64bed365e, type: 2}

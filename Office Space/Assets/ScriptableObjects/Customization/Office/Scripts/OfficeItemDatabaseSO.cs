@@ -17,6 +17,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
 
     public float ObjectPlacementDistance = 7f;
 
+    public float ObjectInteractDistance = 2f;
+
     [HideInInspector]
     public Material MaterialWallsCurrent;
     [HideInInspector]

@@ -24,6 +24,7 @@ MonoBehaviour:
     type: 2}
   OfficeItemLayer: 8
   ObjectPlacementDistance: 10
+  ObjectInteractDistance: 5
   MaterialWallsCurrent: {fileID: 0}
   MaterialFloorCurrent: {fileID: 0}
   MaterialCeilingCurrent: {fileID: 0}
@@ -39,11 +40,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c6a5117425a2d5e4fb37cf6a294e5348, type: 2}
   - {fileID: 11400000, guid: 3ffe20ae191503049bb40c0d4697cc38, type: 2}
   - {fileID: 11400000, guid: fffd17d5b5902004a9df5fd169aa006a, type: 2}
+  - {fileID: 11400000, guid: 07724911dcac4ab438f64753007cde74, type: 2}
+  - {fileID: 11400000, guid: 72664b511fd520e46a47ac9d35cc360b, type: 2}
+  - {fileID: 11400000, guid: 16574d42a3ea68349847c461db959892, type: 2}
+  - {fileID: 11400000, guid: 3b95dd3b2c9c9f7429e91f0155eb746b, type: 2}
+  - {fileID: 11400000, guid: 74a3335c29907244b9eafd44a0addd77, type: 2}
+  - {fileID: 11400000, guid: cdff8f7bee1955c45ae16ca761e7338a, type: 2}
   Types:
   - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
   - {fileID: 11400000, guid: ad89eda27dd31004e94b3c4b17731495, type: 2}
   - {fileID: 11400000, guid: 3739d0f0e1813b64ba0ffecd65121766, type: 2}
-  EssentialObjectNames:
-  - monitor
+  - {fileID: 11400000, guid: e196161b1d7425c40bc0a8a221d86813, type: 2}
   CurrentObjects:
+  - {fileID: 0}
   - {fileID: 0}

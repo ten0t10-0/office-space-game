@@ -85,17 +85,23 @@ public class OfficeObjectScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (GameMaster.Instance.BuildMode && selected)
+            if (GetObjectPlacement() != OfficeItemPosition.Wall)
             {
-                transform.Rotate(Vector3.up, -45f);
+                if (GameMaster.Instance.BuildMode && selected)
+                {
+                    transform.Rotate(Vector3.up, -45f);
+                }
             }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (GameMaster.Instance.BuildMode && selected)
+            if (GetObjectPlacement() != OfficeItemPosition.Wall)
             {
-                transform.Rotate(Vector3.up, 45f);
+                if (GameMaster.Instance.BuildMode && selected)
+                {
+                    transform.Rotate(Vector3.up, 45f);
+                }
             }
         }
     }
@@ -108,22 +114,7 @@ public class OfficeObjectScript : MonoBehaviour
             {
                 float objectPlacementDistance = GameMaster.Instance.CustomizationManager.Office.ObjectPlacementDistance;
 
-                OfficeItemPosition placement;
-
-                if (!UseCustomPlacement)
-                {
-                    if (OfficeItemID > -1)
-                        placement = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Placement;
-                    else
-                    {
-                        placement = OfficeItemPosition.Floor;
-                        Debug.Log("OfficeItemID = -1!");
-                    }
-                }
-                else
-                {
-                    placement = CustomPlacement;
-                }
+                OfficeItemPosition placement = GetObjectPlacement();
 
                 if (placement == OfficeItemPosition.None)
                 {
@@ -178,6 +169,26 @@ public class OfficeObjectScript : MonoBehaviour
                         }
                     case OfficeItemPosition.Wall:
                         {
+                            if (hit.normal != Vector3.zero && hit.collider.gameObject.layer != GameMaster.Instance.CustomizationManager.Office.OfficeItemLayer)
+                            {
+                                Quaternion newRotation = Quaternion.LookRotation(hit.normal);
+
+                                if (newRotation.eulerAngles.x == 0)
+                                {
+                                    SetPlacementValidation(true);
+
+                                    transform.rotation = newRotation;
+                                }
+                                else
+                                {
+                                    SetPlacementValidation(false);
+                                }
+                            }
+                            else
+                            {
+                                SetPlacementValidation(false);
+                            }
+
                             break;
                         }
                     case OfficeItemPosition.Ceiling:
@@ -237,6 +248,43 @@ public class OfficeObjectScript : MonoBehaviour
         {
             collisionCount++;
 
+            SetPlacementValidation(false);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (GameMaster.Instance.BuildMode && selected)
+        {
+            collisionCount--;
+
+            if (collisionCount == 0)
+            {
+                SetPlacementValidation(true);
+            }
+        }
+    }
+
+    private void SetPlacementValidation(bool valid)
+    {
+        if (valid)
+        {
+            if (!placementValid)
+            {
+                placementValid = true;
+
+                SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
+
+                List<GameObject> familiy = GetFamily();
+
+                foreach (GameObject member in familiy)
+                {
+                    member.GetComponent<OfficeObjectScript>().SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
+                }
+            }
+        }
+        else
+        {
             if (placementValid)
             {
                 placementValid = false;
@@ -253,26 +301,26 @@ public class OfficeObjectScript : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private OfficeItemPosition GetObjectPlacement()
     {
-        if (GameMaster.Instance.BuildMode && selected)
+        OfficeItemPosition placement;
+
+        if (!UseCustomPlacement)
         {
-            collisionCount--;
-
-            if (collisionCount == 0)
+            if (OfficeItemID > -1)
+                placement = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Placement;
+            else
             {
-                placementValid = true;
-
-                SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
-
-                List<GameObject> familiy = GetFamily();
-
-                foreach (GameObject member in familiy)
-                {
-                    member.GetComponent<OfficeObjectScript>().SetObjectMaterials(GameMaster.Instance.CustomizationManager.Office.MaterialHighlighted);
-                }
+                placement = OfficeItemPosition.Floor;
+                Debug.Log("OfficeItemID = -1!");
             }
         }
+        else
+        {
+            placement = CustomPlacement;
+        }
+
+        return placement;
     }
 
     private void SetObjectMaterials(Material material)

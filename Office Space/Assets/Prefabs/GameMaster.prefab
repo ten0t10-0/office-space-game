@@ -95,6 +95,7 @@ MonoBehaviour:
   ShopUnlocked: 0
   CameraLock: 0
   DayEnd: 0
+  PlayerControl: 1
   initDifficulty: 1
   DifficultySettings:
   - {fileID: 11400000, guid: bbd3d6275a20ca84493df18dcfedf9c4, type: 2}
