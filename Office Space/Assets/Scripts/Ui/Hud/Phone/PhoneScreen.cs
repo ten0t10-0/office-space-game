@@ -34,6 +34,7 @@ public class PhoneScreen : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(.5f);
 		tab.SetActive (true);
+		GameMaster.Instance.ModeSetUI ();
 
 	}
 }

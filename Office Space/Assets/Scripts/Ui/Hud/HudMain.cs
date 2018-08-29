@@ -34,10 +34,12 @@ public class HudMain : MonoBehaviour {
 			phone.SetActive (true);
 			animator.SetBool ("PhoneO", true);
 			FindObjectOfType<SoundManager>().Play("PhoneO");
+			Cursor.lockState = CursorLockMode.None;
 		}
 		if (Input.GetKeyDown(KeyCode.N)) 
 		{
 			animator.SetBool ("PhoneO", false);
+			Cursor.lockState = CursorLockMode.Locked;
 			StartCoroutine (PhoneClose());
 		}
 
