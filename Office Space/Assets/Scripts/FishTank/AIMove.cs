@@ -64,7 +64,7 @@ public class AIMove : MonoBehaviour
 
 			lastwaypoint = wayPoint; 
 		
-			speed = Random.Range (.5f, 2f);
+			speed = Random.Range (.5f, 1f);
 			animator.speed = speed; 
 
 			return true; 
@@ -73,7 +73,7 @@ public class AIMove : MonoBehaviour
 	//Rotate the NPC to face new waypoint 
 	void RotateNPC (Vector3 waypoint,float currentSpeed) 
 	{ 
-		float TurnSpeed = currentSpeed * Random.Range(1f, 3f); 
+		float TurnSpeed = currentSpeed * Random.Range(6f, 6f); 
 
 		Vector3 LookAt = waypoint - transform.position; 
 		transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (LookAt), TurnSpeed * Time.deltaTime);

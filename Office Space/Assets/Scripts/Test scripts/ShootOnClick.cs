@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootOnClick : MonoBehaviour {
 
 
-	//public Material hitMaterial;
+	public GameObject hitMaterial;
 
 	// Use this for initialization
 	void Start () {
@@ -27,6 +27,9 @@ public class ShootOnClick : MonoBehaviour {
 					//rig.GetComponent<MeshRenderer>().material = hitMaterial;
 					rig.AddForceAtPosition(ray.direction * 50f, hitInfo.point, ForceMode.VelocityChange);
 				}
+				GameObject impact = Instantiate (hitMaterial, hitInfo.point, Quaternion.LookRotation (hitInfo.normal));
+				Destroy (impact, 1f);
+
 			}
 		}
 
