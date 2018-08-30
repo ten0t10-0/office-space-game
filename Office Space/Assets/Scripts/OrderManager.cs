@@ -31,7 +31,7 @@ public class OrderManager : MonoBehaviour
         List<OrderItem> items = new List<OrderItem>();
         int numberOfItems = UnityEngine.Random.Range(1, diffSetting.MaxOrderItems + 1);
 
-        List<int> itemIDsAvailable = GetAvailableItemIDs();
+        List<int> itemIDsAvailable = GetAvailableItemIDs(diffSetting);
 
         for (int c = 1; c <= numberOfItems; c++)
         {
@@ -111,78 +111,79 @@ public class OrderManager : MonoBehaviour
         GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders();
     }
 
-    private List<int> GetAvailableItemIDs()
+    private List<int> GetAvailableItemIDs(DifficultySO diffSetting)
     {
         List<int> itemIDsAvailable = new List<int>();
+        List<int> itemIDsAll = new List<int>();
 
         List<SupplierAI> suppliers = GameMaster.Instance.SupplierManager.Suppliers;
         InventoryPlayer playerInventory = GameMaster.Instance.Player.Business.WarehouseInventory;
+
+        int countAcceptedQualityItems = 0;
 
         //Loop through all items for all suppliers
         for (int iSupplier = 0; iSupplier < suppliers.Count; iSupplier++)
         {
             for (int iItem = 0; iItem < suppliers[iSupplier].Inventory.Items.Count; iItem++)
             {
-                bool exclude = false;
-
                 Item item = suppliers[iSupplier].Inventory.Items[iItem];
 
-                foreach (ItemSubcategory excludedSubcategory in ExcludedItemSubcategories)
+                if (!ExcludedItemSubcategories.Contains(item.Subcategory.EnumID) && !itemIDsAll.Contains(item.ItemID))
                 {
-                    if (item.Subcategory.EnumID == excludedSubcategory)
-                    {
-                        exclude = true;
-                        break;
-                    }
-                }
+                    itemIDsAll.Add(item.ItemID);
 
-                if (!exclude)
-                {
-                    foreach (int itemId in itemIDsAvailable)
-                    {
-                        if (item.ItemID == itemId)
-                        {
-                            exclude = true;
-                            break;
-                        }
-                    }
+                    if ((int)item.Quality <= (int)diffSetting.MaxItemQuality)
+                        countAcceptedQualityItems++;
                 }
-
-                if (!exclude)
-                    itemIDsAvailable.Add(item.ItemID);
             }
         }
 
         //Loop through all player warehouse items
         for (int iPlayerItem = 0; iPlayerItem < playerInventory.Items.Count; iPlayerItem++)
         {
-            bool exclude = false;
-
             OrderItem item = playerInventory.Items[iPlayerItem];
 
-            foreach (ItemSubcategory excludedSubcategory in ExcludedItemSubcategories)
+            if (!ExcludedItemSubcategories.Contains(item.Subcategory.EnumID) && !itemIDsAll.Contains(item.ItemID))
             {
-                if (item.Subcategory.EnumID == excludedSubcategory)
-                {
-                    exclude = true;
-                    break;
-                }
+                itemIDsAll.Add(item.ItemID);
+
+                if ((int)item.Quality <= (int)diffSetting.MaxItemQuality)
+                    countAcceptedQualityItems++;
+            }
+        }
+
+        if (countAcceptedQualityItems > 0)
+        {
+            foreach (int itemID in itemIDsAll)
+            {
+                if ((int)GameMaster.Instance.ItemManager.Database.Items[itemID].Quality <= (int)diffSetting.MaxItemQuality || GameMaster.Roll(diffSetting.ChanceForAbnormalItemQuality))
+                    itemIDsAvailable.Add(itemID);
             }
 
-            if (!exclude)
+            if (itemIDsAvailable.Count < diffSetting.MaxOrderItems)
             {
-                foreach (int itemId in itemIDsAvailable)
+                int countMakeupItems = diffSetting.MaxOrderItems - itemIDsAvailable.Count;
+                List<int> itemIDsTemp = new List<int>();
+
+                foreach (int itemID in itemIDsAll)
                 {
-                    if (item.ItemID == itemId)
-                    {
-                        exclude = true;
-                        break;
-                    }
+                    if (!itemIDsAvailable.Contains(itemID))
+                        itemIDsTemp.Add(itemID);
+                }
+
+                for (int c = 1; c <= countMakeupItems; c++)
+                {
+                    int indexTemp = UnityEngine.Random.Range(0, itemIDsTemp.Count);
+
+                    itemIDsAvailable.Add(itemIDsTemp[indexTemp]);
+
+                    itemIDsTemp.RemoveAt(indexTemp);
                 }
             }
-
-            if (!exclude)
-                itemIDsAvailable.Add(item.ItemID);
+        }
+        else
+        {
+            itemIDsAvailable = itemIDsAll; //*
         }
 
         return itemIDsAvailable;

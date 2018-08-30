@@ -864,6 +864,8 @@ public class GameMaster : MonoBehaviour
         //TEST: Generating supplier items
         SupplierManager.PopulateSupplierInventories();
 
+        Player.Business.ResetMoneyStart();
+
         DayEnd = false;
     }
 

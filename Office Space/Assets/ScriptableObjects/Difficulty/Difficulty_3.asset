@@ -24,3 +24,5 @@ MonoBehaviour:
   IncludeCustomerTolerance: 1
   CustomerToleranceIncrement: 0.1
   CustomerToleranceDecrement: 0.1
+  MaxItemQuality: 3
+  ChanceForAbnormalItemQuality: 1

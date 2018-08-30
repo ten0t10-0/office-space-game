@@ -19,4 +19,6 @@ public class DifficultySO : ScriptableObject
     public bool IncludeCustomerTolerance;
     public float CustomerToleranceIncrement;
     public float CustomerToleranceDecrement;
+    public ItemQuality MaxItemQuality;
+    public float ChanceForAbnormalItemQuality;
 }

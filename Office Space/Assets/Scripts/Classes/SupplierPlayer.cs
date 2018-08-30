@@ -6,6 +6,7 @@ using UnityEngine;
 public class SupplierPlayer : Supplier
 {
     public float Money { get; private set; }
+    public float MoneyStart { get; set; }
     public float CustomerTolerance { get; set; }
     public float MarkupPercentage { get; set; }
     public InventoryPlayer WarehouseInventory { get; set; }
@@ -19,6 +20,8 @@ public class SupplierPlayer : Supplier
         CustomerTolerance = 1f;
         WarehouseInventory = new InventoryPlayer(maximumInventorySpace);
         Shop = new PlayerShop(shopItemSlotCount);
+
+        ResetMoneyStart();
     }
     #endregion
 
@@ -156,6 +159,16 @@ public class SupplierPlayer : Supplier
     public float GetTotalMarkup()
     {
         return MarkupPercentage * CustomerTolerance;
+    }
+
+    public void ResetMoneyStart()
+    {
+        MoneyStart = Money;
+    }
+
+    public float GetProfits()
+    {
+        return (Money - MoneyStart);
     }
     #endregion
 
