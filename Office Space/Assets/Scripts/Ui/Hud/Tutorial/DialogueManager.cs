@@ -16,14 +16,16 @@ public class DialogueManager : MonoBehaviour {
 
 	public int count = 0;
 	public GameObject tutorialGuy,spawnLocation;
-	 
+	private GameObject currentGuy;
 
 	void Start () 
 	{
-		Instantiate (tutorialGuy, spawnLocation.transform);
-
-		//tutorialGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
 		sentences = new Queue<string> ();
+		currentGuy = Instantiate (tutorialGuy, spawnLocation.transform);
+
+		currentGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(GameMaster.Instance.CustomizationManager.Character.AccessoryPresets[0]);
+		currentGuy.GetComponent<CharacterCustomizationScript> ().RandomizeAppearance ();
+
 	}
 
 	public void StartDialogue(Dialogue dialogue)

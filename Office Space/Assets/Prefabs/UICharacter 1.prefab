@@ -531,7 +531,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1132940838060850}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -106.999985, z: -2.7000008}
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_Children:
@@ -547,7 +547,7 @@ Transform:
   - {fileID: 4645492134118080}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4198931848438382
 Transform:
   m_ObjectHideFlags: 1
@@ -1139,7 +1139,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1942964419950894}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1201,7 +1201,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1956755283561984}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1263,7 +1263,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1475796859705444}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1325,7 +1325,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1811924700663004}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1387,7 +1387,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1202455194082556}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1449,7 +1449,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1533522754296304}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1511,7 +1511,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1192156440542716}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1573,7 +1573,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1191014431074592}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1635,7 +1635,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 1229670002630774}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1

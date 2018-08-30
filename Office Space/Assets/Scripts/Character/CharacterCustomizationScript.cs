@@ -145,7 +145,7 @@ public class CharacterCustomizationScript : MonoBehaviour
             {
                 Transform headTransform = transform.Find("Player").Find("ROOT").Find("Hip_CONT").Find("Hip").Find("Spine").Find("Chest").Find("Neck").Find("Head").gameObject.transform;
 
-                GameObject newAccObj = Instantiate(GameMaster.Instance.CustomizationManager.Character.Accessories[accessoryId].GameObject, GameMaster.Instance.CurrentPlayerObject.transform);
+                GameObject newAccObj = Instantiate(GameMaster.Instance.CustomizationManager.Character.Accessories[accessoryId].GameObject, transform);
                 newAccObj.transform.parent = headTransform;
 
                 newAccObj.GetComponent<AccessoryScript>().Initialize(accessoryId);

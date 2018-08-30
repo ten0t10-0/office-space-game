@@ -37,4 +37,11 @@ public class PhoneScreen : MonoBehaviour {
 		GameMaster.Instance.ModeSetUI ();
 
 	}
+	public void BuildMode()
+	{
+		if (GameMaster.Instance.BuildMode = true)
+			GameMaster.Instance.BuildMode = false;
+		else
+			GameMaster.Instance.BuildMode = true;
+	}
 }

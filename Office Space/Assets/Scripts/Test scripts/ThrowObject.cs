@@ -5,7 +5,7 @@ using UnityEngine;
 public class ThrowObject : MonoBehaviour {
 
 	 Transform player;
-	public Transform playerCam;
+	//public Transform playerCam;
 	public float throwForce = 100;
 	bool hasPlayer = false;
 	bool beingCarried = false;
@@ -50,7 +50,7 @@ public class ThrowObject : MonoBehaviour {
 				GetComponent<Rigidbody>().isKinematic = false;
 				transform.parent = null;
 				beingCarried = false;
-				GetComponent<Rigidbody>().AddForce(playerCam.forward * throwForce);
+				GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * throwForce);
 				GetComponent<Collider> ().enabled = true;
 			}
 			else if (Input.GetMouseButtonDown(1))
