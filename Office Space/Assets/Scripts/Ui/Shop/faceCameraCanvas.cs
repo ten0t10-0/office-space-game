@@ -6,12 +6,12 @@ using UnityEngine;
 public class faceCameraCanvas : MonoBehaviour 
 {
 
-		public Camera m_Camera;
+		
 
 		void Update()
 		{
-			transform.LookAt(transform.position + m_Camera.transform.rotation * Vector3.forward,
-				m_Camera.transform.rotation * Vector3.up);
+		transform.LookAt(transform.position + Camera.main.transform.rotation * Vector3.forward,
+			Camera.main.transform.rotation * Vector3.up);
 		}
 }
 
