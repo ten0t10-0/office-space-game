@@ -6,8 +6,8 @@ public class MenuCamGuide : MonoBehaviour {
 
 	public Transform currentMount;
 
-	public float speedFactor= 0.1f;
-	public float zoomFactor= 1.0f;
+	public float speedFactor = 0.1f;
+	public float zoomFactor = 1.0f;
 	public Vector3 lastPosition;
 
 	void  Start ()

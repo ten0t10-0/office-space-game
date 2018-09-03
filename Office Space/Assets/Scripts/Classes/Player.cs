@@ -76,6 +76,8 @@ public class Player
         {
             UnlockedAchievements.Add(achievementID);
 
+			AchievmentsUI  achiev = GameObject.Find("NotificationCanvas").GetComponent<AchievmentsUI>();
+			achiev.addAcheivment (GameMaster.Instance.AchievementManager.Achievements [achievementID].Name);
             GameMaster.Instance.Notifications.Add(string.Format("Achievement unlocked: '{0}'", GameMaster.Instance.AchievementManager.Achievements[achievementID].Name));
         }
     }

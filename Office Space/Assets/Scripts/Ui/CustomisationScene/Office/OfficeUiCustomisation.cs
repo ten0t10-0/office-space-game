@@ -10,6 +10,7 @@ public class OfficeUiCustomisation : MonoBehaviour {
 	public TextMeshProUGUI money;
 	public TextMeshProUGUI date;
 	public TextMeshProUGUI time;
+	public Button tables, chairs, lights, misc;
 
 	public GameObject tablet;
 	public Animator phone;
@@ -27,6 +28,11 @@ public class OfficeUiCustomisation : MonoBehaviour {
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
 		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
 
+//		tables.GetComponent<Button>().onClick.AddListener(delegate {SetCate(off);});
+//		chairs.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+//		lights.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+//		misc.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+
 		AddFurniture ();
 	}
 	
@@ -35,6 +41,12 @@ public class OfficeUiCustomisation : MonoBehaviour {
 	{
 
 	}
+//	public void SetCate(string cat)
+//	{
+//		category = cat;
+//		subCategory = "all";
+//		AddByCateSupp (category, supplier, subCategory);
+//	}
 
 	public void AddFurniture()
 	{
@@ -64,10 +76,17 @@ public class OfficeUiCustomisation : MonoBehaviour {
 
 	void SetItem(GameObject newItem, OfficeItemSO item)
 	{
+		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
+		{
+			//newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = locked;
+		}
+
 		newItem.transform.Find("Name").GetComponent<TMP_Text> ().text = item.Name;
 		newItem.transform.Find("Button/PriceText").GetComponent<TMP_Text> ().text = "$" + item.Price.ToString();
 
 		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{buyItem(item);});
+
+
 	}
 
 	void buyItem(OfficeItemSO item)

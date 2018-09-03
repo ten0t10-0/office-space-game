@@ -17,18 +17,20 @@ public class Notifications : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		AddNotifications();
+		Debug.Log ("Bloooop");
+
 	}
 
 	// Update is called once per frame
 	void Update () 
 	{
-		
+		//AddNotifications();
 	}
 
 	public void AddNotifications()
 	{
-		//		ClearNotifications();
+		ClearNotifications ();
+
 		List <Notification> noteList = GameMaster.Instance.Notifications.GetAll ();
 
 		foreach (Notification note in noteList) 
@@ -36,7 +38,7 @@ public class Notifications : MonoBehaviour {
 			if (note.Read == false) 
 			{
 				GameObject newNote = Instantiate (NotificationContainer, scrollViewContent);
-				newNote.transform.Find ("Button/Text").GetComponent<TMP_Text> ().text = note.Text;
+				newNote.transform.Find ("Button/text").GetComponent<TMP_Text> ().text = note.Text;
 
 				newNote.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate {ReadNotification(note);});
 			}
@@ -46,6 +48,7 @@ public class Notifications : MonoBehaviour {
 	public void ReadNotification(Notification note)
 	{
 		note.Read = true;
+		AddNotifications ();
 	}
 
 		public void ClearNotifications()
@@ -53,7 +56,7 @@ public class Notifications : MonoBehaviour {
 	
 			if (scrollViewContent == null)
 			{
-				scrollViewContent = transform.Find("Screen/Scroll View/Viewport/Content");
+			scrollViewContent = transform.Find("Notification/Scroll View/Viewport/Content");
 			}
 	
 			foreach (Transform child in scrollViewContent)

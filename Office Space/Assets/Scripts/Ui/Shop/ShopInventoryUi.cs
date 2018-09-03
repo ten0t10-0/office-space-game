@@ -23,7 +23,7 @@ public class ShopInventoryUi : MonoBehaviour {
 
 	public Sprite bronze, silver, gold;
 
-	public TextMeshProUGUI category;
+	public TextMeshProUGUI category,qty,cost;
 
 	int min = 0, max;
 
@@ -97,8 +97,13 @@ public class ShopInventoryUi : MonoBehaviour {
 					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = gold;;
 				}
 				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(delegate {spawn(item);});
+				//newItem.transform.Find ("Button").GetComponent<Button> ().(delegate {spawn(item);});
 			}
 		}
+	}
+	public void DisplayDetails(Item item)
+	{
+		cost.SetText (item.UnitCost.ToString ());
 	}
 
 	public void spawn(Item item)

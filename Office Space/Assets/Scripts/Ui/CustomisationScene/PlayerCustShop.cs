@@ -63,6 +63,11 @@ public class PlayerCustShop : MonoBehaviour
 		playerCus.UpdateClothingColor(slot,colour.textureColour);
 	}
 
+	public void PurchaseItems()
+	{
+		
+	}
+
 
 	// Update is called once per frame
 	void Update ()

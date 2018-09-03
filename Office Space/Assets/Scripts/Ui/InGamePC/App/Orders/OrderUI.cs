@@ -35,7 +35,7 @@ public class OrderUI : MonoBehaviour {
 	public InputField amount;
 	public Button btnDecrease,btnIncrease,confirm;
 
-	public GameObject purchase;
+	public GameObject purchase,location;
 
 	GameObject selectcontainer,selectedOrder;
 	Item selectOrder;
@@ -287,17 +287,13 @@ public class OrderUI : MonoBehaviour {
 			
 		GameMaster.Instance.GetOfficeGMScript().CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
 
-		purchase.SetActive(true);
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + paymentTotal.ToString();
-		StartCoroutine(moneyPopUp());
+		GameObject pur = Instantiate (purchase, location.transform);
+		Destroy (pur, 2f);
+
 		Destroy (selectedOrder);
 		clearInvoice ();
 		completeOrder.Clear();
-	}
-	IEnumerator moneyPopUp()
-	{
-		yield return new WaitForSeconds(2);
-		purchase.SetActive (false);
 	}
 
 //	public void Reset()

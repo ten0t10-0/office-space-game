@@ -47,6 +47,7 @@ public class NotificationList
 
     public void Add(string notificationText)
     {
+		
         Notification newNotification = new Notification(notificationText);
         int maxNotifications = GameMaster.Instance.MaxStoredNotifications;
 
@@ -59,6 +60,9 @@ public class NotificationList
 
         //TEMP:
         Debug.Log("*New Notification: \"" + notificationText + "\"");
+
+		GameMaster.Instance.GUIManager.note.AddNotifications ();
+
     }
     #endregion
 }

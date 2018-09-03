@@ -17,12 +17,12 @@ public class CustomisationTrigger : MonoBehaviour {
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				OpenPanel.SetActive (false);
 
-				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().transform.position = pos;
-				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().transform.Rotate(rot);
 				SetMount ();
-				GameMaster.Instance.UIMode = true;
+				OpenPanel.SetActive (false);
+				GameMaster.Instance.ModeSetUI();
+				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MovePosition (cube.transform.position); 
+				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MoveRotation (cube.transform.rotation);
 
 				hud.SetActive (false);
 				custom.SetActive (true);
@@ -38,13 +38,12 @@ public class CustomisationTrigger : MonoBehaviour {
 		FindObjectOfType<CamMounts> ().setMount(bodyMount);
 	}
 
-
-	void Start () 
+	public void Exit()
 	{
-		pos = cube.transform.position;
-		rot = cube.transform.eulerAngles;
+		GameMaster.Instance.ModeSetPlay();
+		hud.SetActive (true);
+		custom.SetActive (false);
 	}
-
 
 	void OnTriggerEnter(Collider other)
 	{

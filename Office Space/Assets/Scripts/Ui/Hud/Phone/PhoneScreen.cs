@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PhoneScreen : MonoBehaviour {
 
 
 	public Animator animator;
 	public GameObject tab;
+	public TextMeshProUGUI topbar;
 
 	// Use this for initialization
 	void Start () {
@@ -43,5 +45,17 @@ public class PhoneScreen : MonoBehaviour {
 			GameMaster.Instance.BuildMode = false;
 		else
 			GameMaster.Instance.BuildMode = true;
+	}
+	public void home()
+	{
+		topbar.SetText ("Home");
+	}
+	public void Note()
+	{
+		topbar.SetText ("Notifications");
+	}
+	public void Order()
+	{
+		topbar.SetText ("Orders");
 	}
 }

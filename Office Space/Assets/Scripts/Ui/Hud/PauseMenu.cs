@@ -30,6 +30,7 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1f;
 		isPaused = false;
+	
         GameMaster.Instance.ModeSetPlay();
 		//Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 		gameObject.GetComponent<GraphicRaycaster> ().enabled = false;

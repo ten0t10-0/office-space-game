@@ -14,7 +14,7 @@ public class PlayerUiController : MonoBehaviour
 	public TextMeshProUGUI playerMoney;
 
 	public GameObject buyPanel;
-	public GameObject moneyA,moneyMsg;
+	public GameObject moneyA,moneyMsg,location;
 	//public GameObject pic;
 
 	public int max = 25;
@@ -105,9 +105,11 @@ public class PlayerUiController : MonoBehaviour
 			buyPanel.SetActive (false);
 
 			moneyA.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "- "+ total.ToString();
-			moneyA.SetActive (true);
+			GameObject pur = Instantiate (moneyA, location.transform);
+			Destroy (pur, 2f);
+			//moneyA.SetActive (true);
 
-			StartCoroutine(moneyPopUp());
+			//StartCoroutine(moneyPopUp());
 	
 		}
 	}
