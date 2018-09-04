@@ -21,6 +21,7 @@ public class CustomisationTrigger : MonoBehaviour {
 				SetMount ();
 				OpenPanel.SetActive (false);
 				GameMaster.Instance.ModeSetUI();
+				GameMaster.Instance.CameraLock = true;
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MovePosition (cube.transform.position); 
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MoveRotation (cube.transform.rotation);
 
@@ -40,6 +41,7 @@ public class CustomisationTrigger : MonoBehaviour {
 
 	public void Exit()
 	{
+		GameMaster.Instance.CameraLock = false;
 		GameMaster.Instance.ModeSetPlay();
 		hud.SetActive (true);
 		custom.SetActive (false);

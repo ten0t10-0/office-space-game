@@ -14,6 +14,7 @@ public class PlayerCustShop : MonoBehaviour
 
 	public Sprite locked;
 	public Sprite equipped;
+	public Animator shelf;
 
 	List<int> currentOutfit;
 

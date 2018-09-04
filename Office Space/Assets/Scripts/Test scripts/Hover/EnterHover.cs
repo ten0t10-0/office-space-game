@@ -11,6 +11,8 @@ public class EnterHover : MonoBehaviour {
 	public Collider trigger;
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
+	public Animator spin;
+	public GameObject steam;
 
 	// Use this for initialization
 	void Start () 
@@ -34,6 +36,8 @@ public class EnterHover : MonoBehaviour {
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MovePosition (mount.transform.position); 
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MoveRotation (mount.transform.rotation);
 				onBoard = true;
+				spin.SetBool ("HoverO", true);
+		
 			}
 
 		}
@@ -45,6 +49,8 @@ public class EnterHover : MonoBehaviour {
 						GameMaster.Instance.PlayerControl = true;
 						//trigger.enabled = false;
 						onBoard = false;
+						spin.SetBool ("HoverO", false);
+					
 					}
 	
 
