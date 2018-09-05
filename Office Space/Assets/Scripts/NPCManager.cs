@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum NPCType { Test, Customer }
-
 public class NPCManager : MonoBehaviour
 {
     public int MaximumNPCs = 10;
@@ -18,39 +16,29 @@ public class NPCManager : MonoBehaviour
         CurrentNPCs = new GameObject[MaximumNPCs];
     }
 
-    public List<NPCCustomer> GetCustomerNPCData()
-    {
-        List<NPCCustomer> customerList = new List<NPCCustomer>();
+    //public void SpawnNPC(NPCType npcType)
+    //{
+    //    int npcId = GetNextID();
 
-        //*
+    //    if (npcId != -1)
+    //    {
+    //        switch (npcType)
+    //        {
+    //            case NPCType.Customer:
+    //                {
+    //                    CurrentNPCs[npcId] = Instantiate(GameMaster.Instance.GenericCharacterObject, DefaultPosition, Quaternion.Euler(DefaultRotation));
 
-        return customerList;
-    }
+    //                    //*
 
-    public void SpawnNPC(NPCType npcType)
-    {
-        int npcId = GetNextID();
-
-        if (npcId != -1)
-        {
-            switch (npcType)
-            {
-                case NPCType.Customer:
-                    {
-                        CurrentNPCs[npcId] = Instantiate(GameMaster.Instance.GenericCharacterObject, DefaultPosition, Quaternion.Euler(DefaultRotation));
-
-                        //*
-
-                        break;
-                    }
-            }
-        }
-    }
+    //                    break;
+    //                }
+    //        }
+    //    }
+    //}
 
     public void DestroyNPC(int npcId)
     {
         Destroy(CurrentNPCs[npcId]);
-        CurrentNPCs[npcId] = null;
     }
 
     public void DestroyAllNPCs()
@@ -58,8 +46,20 @@ public class NPCManager : MonoBehaviour
         for (int i = 0; i < CurrentNPCs.Length; i++)
         {
             Destroy(CurrentNPCs[i]);
-            CurrentNPCs[i] = null;
         }
+    }
+
+    public void CurrentNPCs_ResetAt(int index)
+    {
+        CurrentNPCs[index] = null;
+    }
+
+    /// <summary>
+    /// Maximum number of NPCs already present in game?
+    /// </summary>
+    public bool IsMaxNPCs
+    {
+        get { return GetNextID() == -1; }
     }
 
     private int GetNextID()
