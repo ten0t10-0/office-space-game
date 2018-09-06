@@ -10,6 +10,16 @@ public class GameModeOffice : MonoBehaviour
     #region <FIELDS>
     [HideInInspector]
     public float ChanceNextOrder;
+
+    [Range(0, 11)]
+    public int DayStartHour = 8;
+    [Range(12, 23)]
+    public int DayEndHour = 20;
+
+    /// <summary>
+    /// Number of minutes that pass every second
+    /// </summary>
+    public float GameTimeSpeed = 5;
     #endregion
 
     #region <METHODS>

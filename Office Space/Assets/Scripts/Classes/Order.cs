@@ -77,7 +77,13 @@ public class Order
     public TimeSpan? GetTimeRemaining()
     {
         if (!Filled && DateDue.HasValue)
-            return DateDue.Value.Subtract(GameMaster.Instance.GameDateTime);
+        {
+            long ticks = DateDue.Value.Subtract(GameMaster.Instance.GameDateTime).Ticks;
+
+            ticks /= (long)GameMaster.Instance.GameModeManager.Office.GameTimeSpeed;
+
+            return new TimeSpan(ticks);
+        }
         else
             return null;
     }

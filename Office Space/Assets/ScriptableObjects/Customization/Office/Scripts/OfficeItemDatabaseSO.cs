@@ -230,12 +230,47 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// <param name="objectIndex"></param>
     public void RemoveOfficeObject(int objectIndex)
     {
-        if (!CurrentObjects[objectIndex].GetComponent<OfficeObjectScript>().Essential)
+        GameObject obj = CurrentObjects[objectIndex];
+
+        if (!obj.GetComponent<OfficeObjectScript>().Essential)
         {
-            Destroy(CurrentObjects[objectIndex]);
+            RaycastHit hit;
+
+            List<Transform> children = new List<Transform>();
+
+            for (int i = 0; i < obj.transform.childCount; i++)
+            {
+                GameObject child = obj.transform.GetChild(i).gameObject;
+
+                if (child.GetComponent<OfficeObjectScript>() != null)
+                    children.Add(child.transform);
+            }
+
+            foreach (Transform child in children)
+            {
+                child.GetComponent<OfficeObjectScript>().ParentIndex = -1;
+                child.GetComponent<OfficeObjectScript>().Deselect();
+                child.parent = officeObjectTransform;
+
+                if (Physics.Raycast(child.position, Vector3.down, out hit))
+                {
+                    child.position = hit.point;
+
+                    OfficeObjectScript objScript = hit.collider.gameObject.GetComponent<OfficeObjectScript>();
+
+                    if (objScript != null)
+                    {
+                        child.gameObject.GetComponent<OfficeObjectScript>().SetParent(objScript.ObjectIndex);
+                    }
+                }
+            }
+
+            Destroy(obj);
             CurrentObjects.RemoveAt(objectIndex);
 
             UpdateObjectIndexes();
+
+            SelectedObjectIndex = -1;
         }
         else
             Debug.Log("Cannot remove essential office items!");

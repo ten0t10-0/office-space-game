@@ -100,7 +100,7 @@ public class PlayerUiController : MonoBehaviour
 		if ((total <= GameMaster.Instance.Player.Business.Money) && (space <= avalibleSpace))
 		{
 			valid = true;
-			GameMaster.Instance.GetOfficeGMScript().SaleSupplierToPlayer(iSupplier, iItem, currentAmount,valid, out result);
+			GameMaster.Instance.GameModeManager.Office.SaleSupplierToPlayer(iSupplier, iItem, currentAmount,valid, out result);
 
 			buyPanel.SetActive (false);
 

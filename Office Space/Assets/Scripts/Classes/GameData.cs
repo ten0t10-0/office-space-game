@@ -20,7 +20,6 @@ public class GameData
 
     [SerializeField]
     public DateTime GameDateTime;
-    public float GameTimeSpeed;
 
     public float ChanceNextOrder;
 
@@ -31,12 +30,12 @@ public class GameData
 
     public NotificationList Notifications;
 
-    public bool IsGameModeOffice, IsGameModeShop;
+    public GameMode GameMode;
 
     public GameData()
     { }
 
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float gameTimeSpeed, float chanceNextOrder, bool sleepMode, bool dayEnd, int dayEndCurrent, NotificationList notifications, bool isGameModeOffice, bool isGameModeShop)
+    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float chanceNextOrder, bool sleepMode, bool dayEnd, int dayEndCurrent, NotificationList notifications, GameMode gameMode)
     {
         Player = player;
 
@@ -47,7 +46,6 @@ public class GameData
         Difficulty = difficulty;
 
         GameDateTime = gameDateTime;
-        GameTimeSpeed = gameTimeSpeed;
 
         ChanceNextOrder = chanceNextOrder;
 
@@ -58,7 +56,6 @@ public class GameData
 
         Notifications = notifications;
 
-        IsGameModeOffice = isGameModeOffice;
-        IsGameModeShop = isGameModeShop;
+        GameMode = gameMode;
     }
 }

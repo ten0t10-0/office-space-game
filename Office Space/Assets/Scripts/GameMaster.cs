@@ -6,8 +6,6 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-public enum GameMode { Office, Shop, Both, None }
-
 public class GameMaster : MonoBehaviour
 {
     public static GameMaster Instance = null;
@@ -80,13 +78,8 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <GAME>
-    public GameObject GameModeManager_Prefab;
-
-    private GameObject GameModeManager;
-
-    public GameMode initGameMode = GameMode.Office;
     [HideInInspector]
-    private GameMode CurrentGameMode;
+    public GameModeManagerScript GameModeManager;
 
     #region <Game Data file info>
     public string SaveFileName = "Game";
@@ -124,11 +117,6 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <Date & Time>
-    [Range(0, 11)]
-    public int DayStartHour = 8;
-    [Range(12, 23)]
-    public int DayEndHour = 20;
-
     public DateTime GameDateTime;
 
     public int initGameDateYear;
@@ -137,12 +125,15 @@ public class GameMaster : MonoBehaviour
     [Range(0, 31)]
     public int initGameDateDay;
 
-    [Range(0, 23)]
-    public int initGameTimeHour;
-    [Range(0, 59)]
-    public int initGameTimeMinutes;
+    [Range(0, 11)]
+    public int DayStartHour_DEFAULT = 8;
+    [Range(12, 23)]
+    public int DayEndHour_DEFAULT = 20;
 
-    public float GameTimeSpeed = 60; //60: +/-1 second (in reality) is equal to 1 minute in the game.
+    /// <summary>
+    /// Number of minutes that pass every second
+    /// </summary>
+    public float GameTimeSpeed_DEFAULT = 1;
 
     private int dayEndCurrent;
     #endregion
@@ -151,10 +142,6 @@ public class GameMaster : MonoBehaviour
     public string CurrencySymbol = "$";
     #endregion
 
-    #endregion
-
-    #region <SUPPLIER MANAGER INFO>
-    public int initNumberOfSuppliers = 5;
     #endregion
 
     #region <TIMERS/LAPSES>
@@ -218,7 +205,7 @@ public class GameMaster : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         #endregion
 
-        GameModeManager = Instantiate(GameModeManager_Prefab);
+        GameModeManager = transform.Find("GameModeManager").gameObject.GetComponent<GameModeManagerScript>();
 
         SupplierManager = GetComponent<SupplierManager>();
         CustomerManager = GetComponent<CustomerManager>();
@@ -274,8 +261,6 @@ public class GameMaster : MonoBehaviour
         currentMessage = MSG_GEN_NA;
 
         SaveSlotCurrent = SaveSlotDefault;
-
-        ChangeGameMode(initGameMode);
     }
 
     private void Start() //***
@@ -333,14 +318,22 @@ public class GameMaster : MonoBehaviour
     public void NewGame()
     {
         string message;
+        double initGameTimeHour = DayStartHour_DEFAULT;
 
         //Initialize game
         InitializeGame();
 
         //Initialize Date & Time
         GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
+        switch (GameModeManager.GameMode_Current)
+        {
+            case GameMode.Office:
+                initGameTimeHour = GameModeManager.Office.DayStartHour; break;
+
+            case GameMode.Shop:
+                initGameTimeHour = GameModeManager.Shop.DayStartHour; break;
+        }
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
-        GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
 
         //Clear notifications
         Notifications = new NotificationList();
@@ -349,16 +342,16 @@ public class GameMaster : MonoBehaviour
         Difficulty = initDifficulty;
 
         //Set events
-        GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+        GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GetShopGMScript().ShopItemSlotCount);
+        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
         //Player Initalizations outside Player class...
         AchievementManager.CheckAllAchievements();
 
         //Generate Suppliers
-        SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out message);
+        SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out message);
 
         //TEST: Generating supplier items *
         SupplierManager.PopulateSupplierInventories();
@@ -378,13 +371,21 @@ public class GameMaster : MonoBehaviour
 
     private void NewGameTEST()
     {
+        double initGameTimeHour = DayStartHour_DEFAULT;
+
         InitializeGame();
 
         #region <Initialize Date & Time>
         GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
+        switch (GameModeManager.GameMode_Current)
+        {
+            case GameMode.Office:
+                initGameTimeHour = GameModeManager.Office.DayStartHour; break;
 
+            case GameMode.Shop:
+                initGameTimeHour = GameModeManager.Shop.DayStartHour; break;
+        }
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
-        GameDateTime = GameDateTime.AddMinutes(initGameTimeMinutes);
         #endregion
 
         Notifications = new NotificationList();
@@ -412,13 +413,13 @@ public class GameMaster : MonoBehaviour
             Difficulty = initDifficulty;
 
             //TEST: Set events
-            GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+            GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GetShopGMScript().ShopItemSlotCount);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
             //Supplier generator
-            SupplierManager.GenerateSuppliers(initNumberOfSuppliers, out resultGeneric);
+            SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out resultGeneric);
             Debug.Log("*SUPPLIER GENERATOR RESULT: " + resultGeneric);
 
             //TEST: Adding supplier items
@@ -620,12 +621,22 @@ public class GameMaster : MonoBehaviour
 
         if (!SleepMode)
         {
-            float timeAdvance = (tGameTime + 60 / GameTimeSpeed) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+            float timeAdvance = (tGameTime + 1) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
 
-            //Increase in-game time by 1 minute if 60 seconds (divided by Game Time speed) have passed:
+            //Increase in-game time by x minutes if 1 second has passed:
             if (currentTime >= timeAdvance) 
             {
-                AdvanceInGameTime(1);
+                float gameTimeSpeed = GameTimeSpeed_DEFAULT;
+                switch (GameModeManager.GameMode_Current)
+                {
+                    case GameMode.Office:
+                        gameTimeSpeed = GameModeManager.Office.GameTimeSpeed; break;
+
+                    case GameMode.Shop:
+                        gameTimeSpeed = GameModeManager.Shop.GameTimeSpeed; break;
+                }
+
+                AdvanceInGameTime(gameTimeSpeed);
 
                 if (!DayEnd)
                 {
@@ -638,23 +649,17 @@ public class GameMaster : MonoBehaviour
                     #region <Next day & checks>
                     bool readyNextDay = true;
 
-                    switch (CurrentGameMode)
+                    switch (GameModeManager.GameMode_Current)
                     {
-                        case GameMode.Both:
-                            {
-                                readyNextDay = (GetOfficeGMScript().IsDayEndReady() && GetShopGMScript().IsDayEndReady());
-                                break;
-                            }
-
                         case GameMode.Office:
                             {
-                                readyNextDay = GetOfficeGMScript().IsDayEndReady();
+                                readyNextDay = GameModeManager.Office.IsDayEndReady();
                                 break;
                             }
 
                         case GameMode.Shop:
                             {
-                                readyNextDay = GetShopGMScript().IsDayEndReady();
+                                readyNextDay = GameModeManager.Shop.IsDayEndReady();
                                 break;
                             }
                     }
@@ -692,7 +697,7 @@ public class GameMaster : MonoBehaviour
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
             SaveGame(SaveSlotCurrent);
 
-        //TEST: Lock & Unlock cursor / Sleep mode toggle
+        //TEST: Lock & Unlock cursor / Sleep mode toggle / Build mode toggle
         if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
         {
             //if (Cursor.lockState == CursorLockMode.None)
@@ -700,7 +705,12 @@ public class GameMaster : MonoBehaviour
             //else
             //    Cursor.lockState = CursorLockMode.None;
 
-            SleepMode = !SleepMode;
+            //SleepMode = !SleepMode;
+
+            if (BuildMode)
+                DisableBuildMode();
+            else
+                EnableBuildMode();
         }
 
         //TEST: Player customization stuff
@@ -728,73 +738,6 @@ public class GameMaster : MonoBehaviour
         #endregion
     }
 
-    #region <GAME MODE METHODS>
-    public void ChangeGameMode(GameMode gameMode)
-    {
-        CurrentGameMode = gameMode;
-
-        switch (gameMode)
-        {
-            case GameMode.Office:
-                {
-                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = false;
-                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = true;
-
-                    break;
-                }
-            case GameMode.Shop:
-                {
-                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = false;
-                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = true;
-
-                    break;
-                }
-            case GameMode.Both:
-                {
-                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = true;
-                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = true;
-
-                    break;
-                }
-            case GameMode.None:
-                {
-                    ((GameModeOffice)GetGameModeScript(GameMode.Office)).enabled = false;
-                    ((GameModeShop)GetGameModeScript(GameMode.Shop)).enabled = false;
-
-                    break;
-                }
-        }
-    }
-
-    public GameModeOffice GetOfficeGMScript()
-    {
-        return ((GameModeOffice)GetGameModeScript(GameMode.Office));
-    }
-
-    public GameModeShop GetShopGMScript()
-    {
-        return ((GameModeShop)GetGameModeScript(GameMode.Shop));
-    }
-
-    private object GetGameModeScript(GameMode gameMode)
-    {
-        object script = null;
-
-        switch (gameMode)
-        {
-            case GameMode.Office:
-                script = GameModeManager.GetComponent<GameModeOffice>();
-                break;
-
-            case GameMode.Shop:
-                script = GameModeManager.GetComponent<GameModeShop>();
-                break;
-        }
-
-        return script;
-    }
-    #endregion
-
     #region <"Mode" change methods>
     /// <summary>
     /// UIMode true, Cursor unlocked.
@@ -817,6 +760,18 @@ public class GameMaster : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
     }
+
+    public void EnableBuildMode()
+    {
+        BuildMode = true;
+        SleepMode = true;
+    }
+
+    public void DisableBuildMode()
+    {
+        BuildMode = false;
+        SleepMode = false;
+    }
     #endregion
 
     #region <CUSTOMIZATION METHODS>
@@ -834,32 +789,64 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <GAME TIME METHODS>
-    private void AdvanceInGameTime(int minutesToAdd)
+    private void AdvanceInGameTime(float minutesToAdd)
     {
+        int dayEndHour = DayEndHour_DEFAULT;
         GameDateTime = GameDateTime.AddMinutes(minutesToAdd);
 
-        if (!DayEnd && GameDateTime.Hour >= DayEndHour)
+        switch (GameModeManager.GameMode_Current)
+        {
+            case GameMode.Office:
+                {
+                    GameModeManager.Office.GameTimeUpdate();
+                    dayEndHour = GameModeManager.Office.DayEndHour;
+
+                    break;
+                }
+
+            case GameMode.Shop:
+                {
+                    GameModeManager.Shop.GameTimeUpdate();
+                    dayEndHour = GameModeManager.Shop.DayEndHour;
+
+                    break;
+                }
+        }
+
+        if (!DayEnd && GameDateTime.Hour >= dayEndHour)
         {
             DayEnd = true;
             dayEndCurrent = GameDateTime.Day;
         }
-
-        if (GetOfficeGMScript().enabled)
-            GetOfficeGMScript().GameTimeUpdate();
-
-        if (GetShopGMScript().enabled)
-            GetShopGMScript().GameTimeUpdate();
     }
 
     private void NewDay()
     {
+        int dayStartHour = DayStartHour_DEFAULT;
+
+        switch (GameModeManager.GameMode_Current)
+        {
+            case GameMode.Office:
+                {
+                    dayStartHour = GameModeManager.Office.DayStartHour;
+
+                    GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+
+                    break;
+                }
+
+            case GameMode.Shop:
+                {
+                    dayStartHour = GameModeManager.Shop.DayStartHour;
+
+                    break;
+                }
+        }
+
         if (GameDateTime.Day == dayEndCurrent)
             GameDateTime = GameDateTime.AddDays(1);
 
-        GameDateTime = new DateTime(GameDateTime.Year, GameDateTime.Month, GameDateTime.Day, DayStartHour, 0, 0);
-
-        if (GetOfficeGMScript().enabled)
-            GetOfficeGMScript().ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+        GameDateTime = new DateTime(GameDateTime.Year, GameDateTime.Month, GameDateTime.Day, dayStartHour, 0, 0);
 
         //TEST: Generating supplier items
         SupplierManager.PopulateSupplierInventories();
@@ -926,8 +913,8 @@ public class GameMaster : MonoBehaviour
         {
             BinaryFormatter bf = new BinaryFormatter();
 
-            GameModeOffice gmOffice = (GameModeOffice)GetGameModeScript(GameMode.Office);
-            GameModeShop gmShop = (GameModeShop)GetGameModeScript(GameMode.Shop);
+            GameModeOffice gmOffice = GameModeManager.Office;
+            GameModeShop gmShop = GameModeManager.Shop;
 
             Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
             Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
@@ -944,7 +931,6 @@ public class GameMaster : MonoBehaviour
                 Difficulty = this.Difficulty,
 
                 GameDateTime = this.GameDateTime,
-                GameTimeSpeed = this.GameTimeSpeed,
 
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
@@ -955,8 +941,7 @@ public class GameMaster : MonoBehaviour
 
                 Notifications = this.Notifications,
 
-                IsGameModeOffice = gmOffice.enabled,
-                IsGameModeShop = gmShop.enabled
+                GameMode = GameModeManager.GameMode_Current
             };
 
             SaveData saveData = new SaveData
@@ -988,8 +973,8 @@ public class GameMaster : MonoBehaviour
 
         GameData gameData = loadData.GameData;
 
-        GameModeOffice gmOffice = (GameModeOffice)GetGameModeScript(GameMode.Office);
-        GameModeShop gmShop = (GameModeShop)GetGameModeScript(GameMode.Shop);
+        GameModeOffice gmOffice = GameModeManager.Office;
+        GameModeShop gmShop = GameModeManager.Shop;
 
         //Load data from GameData object (loadData):
         Player = gameData.Player;
@@ -1001,7 +986,6 @@ public class GameMaster : MonoBehaviour
         Difficulty = gameData.Difficulty;
 
         GameDateTime = gameData.GameDateTime;
-        GameTimeSpeed = gameData.GameTimeSpeed;
 
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
@@ -1012,8 +996,7 @@ public class GameMaster : MonoBehaviour
 
         Notifications = gameData.Notifications;
 
-        gmOffice.enabled = gameData.IsGameModeOffice;
-        gmShop.enabled = gameData.IsGameModeShop;
+        GameModeManager.ChangeGameMode(gameData.GameMode);
 
         //Setup Player Object
         InitializePlayer();

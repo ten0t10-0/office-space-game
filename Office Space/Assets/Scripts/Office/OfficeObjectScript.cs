@@ -22,6 +22,9 @@ public class OfficeObjectScript : MonoBehaviour
 
     private GameObject tempObj = null;
 
+    private Vector3? position_temp;
+    private Quaternion rotation_temp;
+
     public void Initialize(int officeItemId, int objectIndex)
     {
         OfficeItemID = officeItemId;
@@ -68,39 +71,63 @@ public class OfficeObjectScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (GameMaster.Instance.BuildMode && !GameMaster.Instance.UIMode)
         {
-            if (GameMaster.Instance.BuildMode && !GameMaster.Instance.UIMode)
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 if (highlighted && !selected)
                 {
+                    position_temp = transform.position;
+                    rotation_temp = transform.rotation;
+
                     GameMaster.Instance.CustomizationManager.Office.SelectObject(ObjectIndex);
                 }
                 else if (selected && placementValid)
                 {
+                    position_temp = null;
+
                     GameMaster.Instance.CustomizationManager.Office.PlaceObject(tempObj);
                 }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (GetObjectPlacement() != OfficeItemPosition.Wall)
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                if (GameMaster.Instance.BuildMode && selected)
+                if (selected)
                 {
-                    transform.Rotate(Vector3.up, -45f);
+                    if (ParentIndex != -1)
+                        tempObj = transform.parent.gameObject;
+
+                    GameMaster.Instance.CustomizationManager.Office.PlaceObject(tempObj);
                 }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (GetObjectPlacement() != OfficeItemPosition.Wall)
+            if (Input.GetKeyDown(KeyCode.Delete))
             {
-                if (GameMaster.Instance.BuildMode && selected)
+                if (selected)
                 {
-                    transform.Rotate(Vector3.up, 45f);
+                    GameMaster.Instance.CustomizationManager.Office.RemoveOfficeObject(ObjectIndex);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (GetObjectPlacement() != OfficeItemPosition.Wall)
+                {
+                    if (GameMaster.Instance.BuildMode && selected)
+                    {
+                        transform.Rotate(Vector3.up, -45f);
+                    }
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (GetObjectPlacement() != OfficeItemPosition.Wall)
+                {
+                    if (GameMaster.Instance.BuildMode && selected)
+                    {
+                        transform.Rotate(Vector3.up, 45f);
+                    }
                 }
             }
         }
@@ -152,18 +179,33 @@ public class OfficeObjectScript : MonoBehaviour
                 {
                     case OfficeItemPosition.Floor:
                         {
-                            ray = new Ray(newPos, Vector3.down);
+                            ray = new Ray(newPos + Vector3.up, Vector3.down);
 
                             if (Physics.Raycast(ray, out hit))
                             {
                                 newPos = hit.point;
 
-                                tempObj = hit.collider.gameObject;
+                                if (!hit.collider.gameObject.GetComponent<Rigidbody>())
+                                {
+                                    tempObj = hit.collider.gameObject;
+
+                                    if (collisionCount == 0)
+                                    {
+                                        SetPlacementValidation(true);
+                                    }
+                                }
+                                else
+                                {
+                                    SetPlacementValidation(false);
+                                }
                             }
                             else
                             {
                                 tempObj = null;
                             }
+
+                            if (!tempObj)
+                                SetPlacementValidation(false);
 
                             break;
                         }
@@ -175,7 +217,10 @@ public class OfficeObjectScript : MonoBehaviour
 
                                 if (newRotation.eulerAngles.x == 0)
                                 {
-                                    SetPlacementValidation(true);
+                                    if (collisionCount == 0)
+                                    {
+                                        SetPlacementValidation(true);
+                                    }
 
                                     transform.rotation = newRotation;
                                 }
@@ -213,6 +258,10 @@ public class OfficeObjectScript : MonoBehaviour
         }
         else
         {
+            if (selected)
+            {
+                GameMaster.Instance.CustomizationManager.Office.PlaceObject(tempObj);
+            }
             if (highlighted)
             {
                 highlighted = false;
@@ -484,6 +533,12 @@ public class OfficeObjectScript : MonoBehaviour
 
     public void DeselectSetup()
     {
+        if (position_temp.HasValue)
+        {
+            transform.position = position_temp.Value;
+            transform.rotation = rotation_temp;
+        }
+
         gameObject.layer = GameMaster.Instance.CustomizationManager.Office.OfficeItemLayer;
 
         GetComponent<Collider>().isTrigger = false;

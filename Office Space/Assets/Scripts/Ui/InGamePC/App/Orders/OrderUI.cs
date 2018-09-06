@@ -285,7 +285,7 @@ public class OrderUI : MonoBehaviour {
 			Debug.Log ("dictionary itemID " + entry.Key);
 		}
 			
-		GameMaster.Instance.GetOfficeGMScript().CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
+		GameMaster.Instance.GameModeManager.Office.CompleteOrder(ordersNum, completeOrder, out paymentTotal, out a);
 
 		purchase.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "+" + paymentTotal.ToString();
 		GameObject pur = Instantiate (purchase, location.transform);

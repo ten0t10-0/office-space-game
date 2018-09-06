@@ -69,7 +69,7 @@ public class OrderManager : MonoBehaviour
             minutesToAdd += (int)(highestShippingTime * diffSetting.OrderTimeShippingTimeMultiplier);
             minutesToAdd += (int)(numberOfItems * diffSetting.OrderTimeAddedPerItem);
 
-            dueDate = currentDate.AddMinutes(minutesToAdd);
+            dueDate = currentDate.AddMinutes(minutesToAdd * GameMaster.Instance.GameModeManager.Office.GameTimeSpeed);
         }
         else
             dueDate = null;

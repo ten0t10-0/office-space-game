@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SupplierManager : MonoBehaviour
 {
+    public int InitNumberOfSuppliers = 5;
     public int MinNumberOfItemsPerSupplier = 10;
     public int MaxNumberOfItemsPerSupplier = 25;
     public int MaxGenerationsPerItem = 3;

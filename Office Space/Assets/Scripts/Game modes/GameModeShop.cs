@@ -9,6 +9,16 @@ public class GameModeShop : MonoBehaviour
 
     #region <FIELDS>
     public int ShopItemSlotCount = 17;
+
+    [Range(0, 11)]
+    public int DayStartHour = 9;
+    [Range(12, 23)]
+    public int DayEndHour = 17;
+
+    /// <summary>
+    /// Number of minutes that pass every second
+    /// </summary>
+    public float GameTimeSpeed = 5;
     #endregion
 
     #region <METHODS>

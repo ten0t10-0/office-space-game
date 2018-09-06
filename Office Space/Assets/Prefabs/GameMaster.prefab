@@ -35,6 +35,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1849420024875974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4095430908494068}
+  - component: {fileID: 114961089940548198}
+  - component: {fileID: 114856139823664460}
+  - component: {fileID: 114130676260164374}
+  m_Layer: 0
+  m_Name: GameModeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4095430908494068
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849420024875974}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4894069694185576}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4894069694185576
 Transform:
   m_ObjectHideFlags: 1
@@ -44,10 +75,27 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4095430908494068}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114130676260164374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849420024875974}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9392d102e2fb5074987d4e9615bccd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameMode: 1
+  ShopItemSlotCount: 17
+  DayStartHour: 9
+  DayEndHour: 17
+  GameTimeSpeed: 5
 --- !u!114 &114137614351113880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,15 +127,13 @@ MonoBehaviour:
   initPlayerLevel: 100
   initPlayerExperience: 0
   PlayerExperienceBase: 100
-  GameModeManager_Prefab: {fileID: 1641060707539384, guid: d68c57af1d397dc4b84582adc4873906,
-    type: 2}
-  initGameMode: 0
+  GameModeManager: {fileID: 0}
   SaveFileName: Game
   SaveFileExtension: .gd
   SaveCountMax: 10
   SaveSlotDefault: 0
   UIMode: 0
-  BuildMode: 1
+  BuildMode: 0
   OfflineMode: 0
   TEMPSaveGame: 1
   SleepMode: 0
@@ -103,16 +149,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 41a18cec0e4b6ed4599115030ba705b7, type: 2}
   - {fileID: 11400000, guid: 2ad7052845d016844a1d3d047febf6d1, type: 2}
   - {fileID: 11400000, guid: 49b4b58ecca7a864da4a47343e5003dc, type: 2}
-  DayStartHour: 8
-  DayEndHour: 20
   initGameDateYear: 0
   initGameDateMonth: 0
   initGameDateDay: 0
-  initGameTimeHour: 8
-  initGameTimeMinutes: 0
-  GameTimeSpeed: 60
+  DayStartHour_DEFAULT: 8
+  DayEndHour_DEFAULT: 20
+  GameTimeSpeed_DEFAULT: 1
   CurrencySymbol: $
-  initNumberOfSuppliers: 5
   MaxStoredNotifications: 50
   Notifications:
     AllNotificationsRead: 1
@@ -192,6 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2754a5c338375419d450c49fe1e98f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InitNumberOfSuppliers: 5
   MinNumberOfItemsPerSupplier: 3
   MaxNumberOfItemsPerSupplier: 10
   MaxGenerationsPerItem: 3
@@ -302,6 +346,23 @@ MonoBehaviour:
   HudCanvas: HudCanvas
   OrdersPanelScript: {fileID: 0}
   hudScript: {fileID: 0}
+  note: {fileID: 0}
+--- !u!114 &114856139823664460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849420024875974}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40d92bd86c77f1b40b0f564aadd07adb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameMode: 0
+  ChanceNextOrder: 0
+  DayStartHour: 8
+  DayEndHour: 20
+  GameTimeSpeed: 1
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -317,3 +378,17 @@ MonoBehaviour:
   DefaultPosition: {x: 0, y: 0, z: 0}
   DefaultRotation: {x: 0, y: 0, z: 0}
   CurrentNPCs: []
+--- !u!114 &114961089940548198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1849420024875974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitGameMode: 0
+  Office: {fileID: 0}
+  Shop: {fileID: 0}
