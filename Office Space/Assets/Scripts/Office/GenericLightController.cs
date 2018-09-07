@@ -27,21 +27,21 @@ public class GenericLightController : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (!GameMaster.Instance.BuildMode && !GameMaster.Instance.UIMode)
-        {
-            highlighted = false;
-        }
+        highlighted = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (highlighted)
         {
-            float distanceToPlayer = Vector3.Distance(GameMaster.Instance.CurrentPlayerObject.transform.position, transform.position);
-
-            if (highlighted && distanceToPlayer <= GameMaster.Instance.CustomizationManager.Office.ObjectInteractDistance)
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                lightComponent.enabled = !lightComponent.enabled;
+                float distanceToPlayer = Vector3.Distance(GameMaster.Instance.CurrentPlayerObject.transform.position, transform.position);
+
+                if (distanceToPlayer <= GameMaster.Instance.CustomizationManager.Office.ObjectInteractDistance)
+                {
+                    lightComponent.enabled = !lightComponent.enabled;
+                }
             }
         }
     }

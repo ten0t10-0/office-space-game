@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.PostProcessing;
+
 public enum CameraMode { ThirdPerson, FirstPerson, Static }
 
 public class CameraController : MonoBehaviour
@@ -14,9 +16,11 @@ public class CameraController : MonoBehaviour
     [Range(0f, 2f)]
     public float OffsetX = 1.25f;
 
-    public bool orbitOTS = true;
+    public bool ThirdPersonOverShoulder = true;
 
     public float maxDistanceFromTarget, minDistanceFromTarget;
+
+    public bool UseDOF = false;
 
     [HideInInspector]
     public CameraMode CameraMode { get; private set; }
@@ -48,6 +52,11 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         targetController = new GameObject(targetControllerName);
+
+        if (!UseDOF)
+        {
+            GetComponent<PostProcessingBehaviour>().profile.depthOfField.enabled = false;
+        }
     }
 
     // Use this method for initialization
@@ -99,7 +108,7 @@ public class CameraController : MonoBehaviour
                         newRotation = Quaternion.Euler(new Vector3(currentXAngle, currentEulerAngles.y + horizontal, 0));
                         targetController.transform.rotation = newRotation;
 
-                        if (orbitOTS)
+                        if (ThirdPersonOverShoulder)
                         {
                             offsetX = OffsetX;
 
@@ -171,6 +180,27 @@ public class CameraController : MonoBehaviour
                         break;
                     }
             }
+
+            if (UseDOF)
+            {
+                RaycastHit hit;
+
+                PostProcessingProfile postProfile = GetComponent<PostProcessingBehaviour>().profile;
+                DepthOfFieldModel.Settings dofsettings = postProfile.depthOfField.settings;
+
+                if (Physics.Raycast(transform.position, transform.forward, out hit))
+                {
+                    dofsettings.focusDistance = hit.distance;
+
+                    postProfile.depthOfField.enabled = true;
+                }
+                else
+                {
+                    postProfile.depthOfField.enabled = false;
+                }
+
+                postProfile.depthOfField.settings = dofsettings;
+            }
         }
     }
 
@@ -186,7 +216,7 @@ public class CameraController : MonoBehaviour
                         Offset -= Vector3.forward * zoomSpeed;
                     else
                     {
-                        CameraMode = CameraMode.FirstPerson;
+                        ChangeMode(CameraMode.FirstPerson);
                     }
                 }
             }
@@ -200,7 +230,7 @@ public class CameraController : MonoBehaviour
                 else if (CameraMode == CameraMode.FirstPerson)
                 {
                     Offset.z = minDistanceFromTarget;
-                    CameraMode = CameraMode.ThirdPerson;
+                    ChangeMode(CameraMode.ThirdPerson);
                 }
             }
 
@@ -210,9 +240,9 @@ public class CameraController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (CameraMode == CameraMode.ThirdPerson)
-                    CameraMode = CameraMode.FirstPerson;
+                    ChangeMode(CameraMode.FirstPerson);
                 else if (CameraMode == CameraMode.FirstPerson)
-                    CameraMode = CameraMode.ThirdPerson;
+                    ChangeMode(CameraMode.ThirdPerson);
             }
         }
     }
@@ -220,5 +250,38 @@ public class CameraController : MonoBehaviour
     public void ChangeMode(CameraMode cameraMode)
     {
         CameraMode = cameraMode;
+
+        UpdateTargetRenderers();
+    }
+
+    public void UpdateTargetRenderers()
+    {
+        switch (CameraMode)
+        {
+            case CameraMode.FirstPerson:
+                {
+                    //Renderer[] targetRenderers = Target.gameObject.GetComponentsInChildren<Renderer>();
+
+                    //foreach (Renderer r in targetRenderers)
+                    //{
+                    //    r.enabled = false;
+                    //}
+
+                    break;
+                }
+
+            case CameraMode.ThirdPerson:
+            case CameraMode.Static:
+                {
+                    //Renderer[] targetRenderers = Target.gameObject.GetComponentsInChildren<Renderer>();
+
+                    //foreach (Renderer r in targetRenderers)
+                    //{
+                    //    r.enabled = true;
+                    //}
+
+                    break;
+                }
+        }
     }
 }

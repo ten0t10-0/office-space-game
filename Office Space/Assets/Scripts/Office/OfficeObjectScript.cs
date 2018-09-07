@@ -169,6 +169,8 @@ public class OfficeObjectScript : MonoBehaviour
 
                 if (Physics.Linecast(Camera.main.transform.position, newPos, out hit))
                 {
+                    //Debug.Log("#Cast 01: " + hit.collider.name);
+
                     newPos = hit.point;
 
                     if (GetComponent<Rigidbody>() == null)
@@ -183,6 +185,8 @@ public class OfficeObjectScript : MonoBehaviour
 
                             if (Physics.Raycast(ray, out hit))
                             {
+                                //Debug.Log("#Cast 02: " + hit.collider.name);
+
                                 newPos = hit.point;
 
                                 if (!hit.collider.gameObject.GetComponent<Rigidbody>())

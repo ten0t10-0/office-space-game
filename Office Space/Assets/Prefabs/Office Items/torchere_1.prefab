@@ -179,8 +179,8 @@ MonoBehaviour:
   ObjectIndex: -1
   ParentIndex: -1
   ParentSelected: 0
-  Essential: 1
-  UseCustomPlacement: 1
+  Essential: 0
+  UseCustomPlacement: 0
   CustomPlacement: 0
 --- !u!114 &114778823682364262
 MonoBehaviour:
