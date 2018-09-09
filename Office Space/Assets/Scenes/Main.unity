@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48398733, g: 0.57572955, b: 0.68020093, a: 1}
+  m_IndirectSpecularColor: {r: 0.48399305, g: 0.5757315, b: 0.6801771, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -22552,7 +22552,6 @@ GameObject:
   - component: {fileID: 481931133}
   - component: {fileID: 481931132}
   - component: {fileID: 481931131}
-  - component: {fileID: 481931136}
   m_Layer: 5
   m_Name: NotificationCanvas
   m_TagString: Untagged
@@ -22650,20 +22649,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &481931136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 481931130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16c43154e479a964bbde1c7d2b73c48f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  achievment: {fileID: 942767856}
-  text: {fileID: 1916313491}
-  acheiv: {fileID: 942767858}
 --- !u!1 &483751028
 GameObject:
   m_ObjectHideFlags: 0
@@ -24373,6 +24358,7 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  Master: {fileID: 24300002, guid: ad59411bb09aa5a4d8d2aba487e79052, type: 2}
 --- !u!4 &506264578
 Transform:
   m_ObjectHideFlags: 0
@@ -48490,6 +48476,7 @@ GameObject:
   - component: {fileID: 942767860}
   - component: {fileID: 942767859}
   - component: {fileID: 942767858}
+  - component: {fileID: 942767861}
   m_Layer: 5
   m_Name: Acheivments
   m_TagString: Untagged
@@ -48567,6 +48554,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 942767856}
+--- !u!114 &942767861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 942767856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16c43154e479a964bbde1c7d2b73c48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  achievment: {fileID: 942767856}
+  text: {fileID: 1916313491}
+  acheiv: {fileID: 942767858}
 --- !u!1 &944233681
 GameObject:
   m_ObjectHideFlags: 0

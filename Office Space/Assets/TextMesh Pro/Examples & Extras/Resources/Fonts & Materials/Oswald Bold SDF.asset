@@ -40,10 +40,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Ambient: 0.67
-    - _Bevel: 0.483
+    - _Bevel: 0.687
     - _BevelClamp: 0.979
     - _BevelOffset: 0.219
-    - _BevelRoundness: 0.337
+    - _BevelRoundness: 0.331
     - _BevelWidth: 0.5
     - _BumpFace: 0
     - _BumpOutline: 0
@@ -63,7 +63,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.293
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 5.34
     - _ScaleRatioA: 0.8333333

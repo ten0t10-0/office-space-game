@@ -9,56 +9,83 @@ public class AchievmentsUI : MonoBehaviour
 	public GameObject achievment;
 	public TextMeshProUGUI text;
 	public Animator acheiv;
-	Queue aQ = new Queue();
+	//Queue<string> aQ = new Queue<string>();
+	List<string> ach = new List<string>();
 	bool playing = false;
+	bool running;
+	WaitForSeconds wait = new WaitForSeconds(5);
+	int c =1,i=0;
 
-//	void Update()
-//	{
-//		if (aQ.Count > 0 && playing == false )
-//			StartCoroutine(DisplayAll());
-//			
-//	}
-//
-//
+	void Update()
+	{
+		if (ach.Count > 0 && playing == false) 
+		{
+			Debug.Log ("Ir Staaaaaaarted");
+			c = 0;
+			i = ach.Count;
+			running = true;
+			DisplayAll();
+
+
+		}
+			
+			
+	}
+
+
 	public void addAcheivment(string text)
 	{
-		aQ.Enqueue (text);
+		ach.Add(text);
 
 
 	}
-//
-//	public void displayAchievment (string description)
-//	{
-//		playing = true;
-//		text.SetText (description);
-//		achievment.SetActive (true);
-//		acheiv.SetBool ("achO", true);
-//
-//		//StartCoroutine(showAchievment());
-//		FindObjectOfType<SoundManager>().Play("Achievement");
-//		aQ.Dequeue ();
-//		acheiv.SetBool ("achO", false);
-//	}
-////	IEnumerator showAchievment()
-////	{
-////		yield return new WaitForSeconds(5);
-////
-////		achievment.SetActive (false);
-////
-////	}
-//
-//	IEnumerator DisplayAll()
-//	{
-//		playing = true; 
-//		WaitForSeconds wait = new WaitForSeconds( 5f ) ;
-//		foreach (string i in aQ) 
-//		{
-//			playing = true;
-//			displayAchievment (aQ.);
-//			Debug.Log ("Scooop"+aQ.ToString());
-//			yield return wait;
-//		}
-//		playing = false;
-//	}
+
+	public void setfalse ()
+	{
+		acheiv.SetBool ("achO", false);
+	}
+
+
+	public void displayAchievment (string description)
+	{
+		
+		playing = true;
+		text.SetText (description);
+		//achievment.SetActive (true);
+		acheiv.SetBool ("achO", true);
+
+		//StartCoroutine(showAchievment());
+		FindObjectOfType<SoundManager>().Play("Achievement");
+		//acheiv.SetBool ("achO", false);
+
+	}
+
+	public void DisplayAll()
+	{
+		
+		Debug.Log ("Im Callledpppppppppppppppppp");
+
+		if (running == true) 
+		{
+
+			playing = true; 
+
+			Debug.Log ("Staaart c = " + c + " i = " + i);
+			displayAchievment (ach [c]);
+
+			//StartCoroutine (showAchievment ());
+			Debug.Log ("Bloooooooop" + ach [c].ToString ());
+			c++;
+			Debug.Log ("++ c = " + c + " i = " + i);
+
+			if (c > i-1) 
+			{
+				Debug.Log("RunwhenPPPPPPPPPPPPPPPPPPPPPPP");
+				ach.Clear ();
+				playing = false;
+				running = false;
+			}
+		}
+	}
 
 }
