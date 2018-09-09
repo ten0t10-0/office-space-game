@@ -13,7 +13,9 @@ public class PCTutorial : MonoBehaviour
 	DialogueTrigger trigger;
 
 	public Button appbtn;
-
+	int counter = 1;
+	float canPress = 0;
+	bool disableSpace = true;
 
 	private bool isInsideTrigger = false;
 
@@ -36,41 +38,61 @@ public class PCTutorial : MonoBehaviour
 			{
 				questionmark.SetActive (false);
 				trigger.TriggerDialogue ();
-				Cursor.visible = false;
+
 			}
 		}
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
-
-			if (manager.count == 0) 
+			if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
 			{
-				customisation.enabled = true;
+				NextDialogue (counter);
+				canPress = Time.time + 2f;  
+				counter++;
+				Debug.Log (counter);
+				//diable courser
+				manager.DisplayNextSentence ();
 			}
-			if (manager.count == 1) 
-			{
-				customisation.enabled = false;
-				app.enabled = true;
-			}
-			if (manager.count == 2) 
-			{
-				app.enabled = false;
-				achivment.enabled = true;
-			}
-			if (manager.count == 3) 
-			{
-				achivment.enabled = false;
-			}
-			if (manager.count == 4) 
-			{
-				Cursor.visible = true;
-				app.enabled = true;
-			}
-
-			manager.DisplayNextSentence ();
 
 		}
 
 	}
+
+	public void NextDialogue(int i)
+	{
+		switch (i) 
+		{
+		case 0:
+			{
+				customisation.SetBool ("BtnO", true);
+				disableSpace = false;
+				break;
+			}
+		case 1:
+			{
+				customisation.SetBool ("BtnO", false);
+				app.SetBool ("BtnO", true);
+				break;
+			}
+		case 2:
+			{
+				app.SetBool ("BtnO", false);
+				achivment.SetBool ("BtnO", true);
+				break;
+			}
+		case 3:
+			{
+				achivment.SetBool ("BtnO", false);
+				break;
+			}
+		case 4:
+			{
+				Cursor.visible = true;
+				app.SetBool ("BtnO", true);
+				break;
+			}
+		}
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Player")
@@ -81,7 +103,7 @@ public class PCTutorial : MonoBehaviour
 
 	void NextScreen()
 	{
-		app.enabled = false;
+		app.SetBool ("BtnO", false);
 		pcTutorial2.SetActive (true);
 		Cursor.visible = false;
 	}

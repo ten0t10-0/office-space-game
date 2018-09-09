@@ -32,7 +32,7 @@ public class DialogueManager : MonoBehaviour {
 	{
 		name.SetText (dialogue.name);
 		Debug.Log(dialogue.sentences [1]);
-		animator.SetBool ("IsOpen", true);
+		animator.SetBool ("UpO", true);
 
 		sentences.Clear ();
 
@@ -61,7 +61,7 @@ public class DialogueManager : MonoBehaviour {
 	void EndDialogue()
 	{
 		count = 0;
-		animator.SetBool ("IsOpen", false);
+		animator.SetBool ("UpO", false);
 	}
 
 	IEnumerator TypeSentence(string sentence)
