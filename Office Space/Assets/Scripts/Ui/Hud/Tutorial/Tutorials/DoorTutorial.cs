@@ -18,7 +18,7 @@ public class DoorTutorial : MonoBehaviour
 	{
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
-			manager.DisplayNextSentence ();
+			//manager.DisplayNextSentence ();
 			if (manager.count == 3) 
 			{
 				tutorial.SetActive (false);

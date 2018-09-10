@@ -13,8 +13,7 @@ public class PCTutorial : MonoBehaviour
 	DialogueTrigger trigger;
 
 	public Button appbtn;
-	int counter = 1;
-	float canPress = 0;
+	int counter = 0;
 	bool disableSpace = true;
 
 	private bool isInsideTrigger = false;
@@ -38,22 +37,23 @@ public class PCTutorial : MonoBehaviour
 			{
 				questionmark.SetActive (false);
 				trigger.TriggerDialogue ();
+				disableSpace = false;
 
 			}
 		}
-		if (Input.GetKeyDown (KeyCode.Space)) 
-		{
-			if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
+
+
+		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 			{
 				NextDialogue (counter);
-				canPress = Time.time + 2f;  
 				counter++;
-				Debug.Log (counter);
-				//diable courser
-				manager.DisplayNextSentence ();
+				Debug.Log ("Blooooop"+counter);
+				//Cursor.lockState = CursorLockMode.Locked;
+				//manager.DisplayNextSentence ();
+				manager.DisplayNextSentence();
 			}
 
-		}
+
 
 	}
 
@@ -61,35 +61,39 @@ public class PCTutorial : MonoBehaviour
 	{
 		switch (i) 
 		{
-		case 0:
+		case 1:
 			{
+				Debug.Log ("Bloooooprunning????"+counter);
 				customisation.SetBool ("BtnO", true);
 				disableSpace = false;
 				break;
 			}
-		case 1:
+		case 2:
 			{
+				Debug.Log ("Bloooooprunning????"+counter);
 				customisation.SetBool ("BtnO", false);
 				app.SetBool ("BtnO", true);
 				break;
 			}
-		case 2:
+		case 3:
 			{
 				app.SetBool ("BtnO", false);
 				achivment.SetBool ("BtnO", true);
 				break;
 			}
-		case 3:
+		case 4:
 			{
 				achivment.SetBool ("BtnO", false);
 				break;
 			}
-		case 4:
+		case 5:
 			{
-				Cursor.visible = true;
+				//Cursor.lockState = CursorLockMode.None;
 				app.SetBool ("BtnO", true);
 				break;
 			}
+		default:
+			break;
 		}
 	}
 

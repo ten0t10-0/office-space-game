@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour {
 	public int count = 0;
 	public GameObject tutorialGuy,spawnLocation;
 	private GameObject currentGuy;
+	public bool done = true;
 
 	void Start () 
 	{
@@ -27,6 +28,7 @@ public class DialogueManager : MonoBehaviour {
 		currentGuy.GetComponent<CharacterCustomizationScript> ().RandomizeAppearance ();
 
 	}
+
 
 	public void StartDialogue(Dialogue dialogue)
 	{
@@ -47,15 +49,17 @@ public class DialogueManager : MonoBehaviour {
 	public void DisplayNextSentence()
 	{
 		count++;
+
 		if (sentences.Count == 0) 
 		{
 			EndDialogue ();
 			return;
 		}
 		string sentence = sentences.Dequeue ();
-		//StopAllCoroutines ();
-		//StartCoroutine(TypeSentence(sentence));
-		text.SetText (sentence);
+		StopAllCoroutines ();
+		StartCoroutine(TypeSentence(sentence));
+
+		//text.SetText (sentence);
 	}
 
 	void EndDialogue()
@@ -67,13 +71,15 @@ public class DialogueManager : MonoBehaviour {
 	IEnumerator TypeSentence(string sentence)
 	{
 		text.SetText ("");
-
+		done = false;
 		foreach (char letter in sentence.ToCharArray()) 
 		{
 			letters += letter;
 			text.SetText (letters);
+
 			yield return null;
 		}
+		done = true;
 		letters = "";
 	}
 }

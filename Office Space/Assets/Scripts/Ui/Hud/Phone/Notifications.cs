@@ -17,7 +17,6 @@ public class Notifications : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		Debug.Log ("Bloooop");
 
 	}
 
