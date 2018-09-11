@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersCompleted-20
   m_EditorClassIdentifier: 
   Name: 20 Orders Completed
+  des: Way to go Cupcake
   AchievementType: 3
   TargetValue: 20

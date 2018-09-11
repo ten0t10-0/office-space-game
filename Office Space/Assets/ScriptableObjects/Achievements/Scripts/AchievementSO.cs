@@ -6,6 +6,7 @@ using UnityEngine;
 public class AchievementSO : ScriptableObject
 {
     public string Name;
+	public string des;
     public AchievementType AchievementType;
     public int TargetValue;
 }

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerLevel-20
   m_EditorClassIdentifier: 
   Name: Level 20
+  des: Expert
   AchievementType: 1
   TargetValue: 20

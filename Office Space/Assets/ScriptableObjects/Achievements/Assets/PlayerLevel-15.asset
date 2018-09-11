@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerLevel-15
   m_EditorClassIdentifier: 
   Name: Level 15
+  des: Master
   AchievementType: 1
   TargetValue: 15

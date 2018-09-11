@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerPlayTime-01H
   m_EditorClassIdentifier: 
   Name: 1 Hour
+  des: Those Are Rookie Numbers
   AchievementType: 2
   TargetValue: 3600

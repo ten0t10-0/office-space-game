@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersCompleted-01
   m_EditorClassIdentifier: 
   Name: First Order Completed
+  des: And So It Begins..
   AchievementType: 3
   TargetValue: 1

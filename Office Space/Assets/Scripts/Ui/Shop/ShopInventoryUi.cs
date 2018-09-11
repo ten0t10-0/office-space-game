@@ -35,6 +35,11 @@ public class ShopInventoryUi : MonoBehaviour {
 	public Quaternion rot;
 	public Canvas tempCanvas;
 
+	public void spawnShopItems()
+	{
+		//spawn items at start
+	}
+
 	public void setItems(int slots, Vector3 post, Quaternion rotn,Canvas tCanvas)
 	{
 		slot = slots;

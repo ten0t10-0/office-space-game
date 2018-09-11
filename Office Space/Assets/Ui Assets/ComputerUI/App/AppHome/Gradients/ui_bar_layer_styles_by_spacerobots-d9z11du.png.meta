@@ -1,0 +1,307 @@
+fileFormatVersion: 2
+guid: 746b2026264e6d041b121bce93bdb64b
+timeCreated: 1536651025
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ui_bar_layer_styles_by_spacerobots-d9z11du_0
+    21300002: ui_bar_layer_styles_by_spacerobots-d9z11du_1
+    21300004: ui_bar_layer_styles_by_spacerobots-d9z11du_2
+    21300006: ui_bar_layer_styles_by_spacerobots-d9z11du_3
+    21300008: ui_bar_layer_styles_by_spacerobots-d9z11du_4
+    21300010: ui_bar_layer_styles_by_spacerobots-d9z11du_5
+    21300012: ui_bar_layer_styles_by_spacerobots-d9z11du_6
+    21300014: ui_bar_layer_styles_by_spacerobots-d9z11du_7
+    21300016: ui_bar_layer_styles_by_spacerobots-d9z11du_8
+    21300018: ui_bar_layer_styles_by_spacerobots-d9z11du_9
+    21300020: ui_bar_layer_styles_by_spacerobots-d9z11du_10
+    21300022: ui_bar_layer_styles_by_spacerobots-d9z11du_11
+    21300024: ui_bar_layer_styles_by_spacerobots-d9z11du_12
+    21300026: ui_bar_layer_styles_by_spacerobots-d9z11du_13
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 831
+        width: 258
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 832
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 704
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_3
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 703
+        width: 261
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_4
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 575
+        width: 261
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_5
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 575
+        width: 261
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_6
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 446
+        width: 260
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_7
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 446
+        width: 260
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_8
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 319
+        width: 261
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_9
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 317
+        width: 264
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_10
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_11
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 192
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ui_bar_layer_styles_by_spacerobots-d9z11du_13
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 64
+        width: 256
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersCompleted-50
   m_EditorClassIdentifier: 
   Name: 50 Orders Completed
+  des: MoneyBags
   AchievementType: 3
   TargetValue: 50

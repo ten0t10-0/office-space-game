@@ -69,6 +69,9 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
+		GetNpcDetails getD = FindObjectOfType<GetNpcDetails> ();
+		CharacterCustomizationScript customer = getD.Cus;
+		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
 		//playerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
 		//customer apperance
 	}

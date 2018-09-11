@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerPlayTime-24H
   m_EditorClassIdentifier: 
   Name: Yeah, sure...
+  des: Yeahh Suree
   AchievementType: 2
   TargetValue: 86400

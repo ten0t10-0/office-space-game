@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersFailed-01
   m_EditorClassIdentifier: 
   Name: First Failed Order
+  des: Breaking Not So Bad
   AchievementType: 4
   TargetValue: 1

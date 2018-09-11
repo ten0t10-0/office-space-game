@@ -7,18 +7,22 @@ public class PhoneScreen : MonoBehaviour {
 
 
 	public Animator animator;
-	public GameObject tab;
+	public GameObject tab,noti,order;
+	Animator notiA, orderA;
 	public TextMeshProUGUI topbar;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update () 
+	{
+		//if(GameMaster.Instance.OrderManager.GetCompletedOrders)
 	}
+
 	public void OpenTablet()
 	{
 		animator.SetBool ("PhoneH", true);

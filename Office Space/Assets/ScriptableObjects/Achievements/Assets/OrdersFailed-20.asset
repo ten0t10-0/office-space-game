@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersFailed-20
   m_EditorClassIdentifier: 
   Name: 20 Orders Failed
+  des: Maybe Play The Tutorial Again?
   AchievementType: 4
   TargetValue: 20

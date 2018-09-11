@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerLevel-05
   m_EditorClassIdentifier: 
   Name: Level 5
+  des: Beginner
   AchievementType: 1
   TargetValue: 5

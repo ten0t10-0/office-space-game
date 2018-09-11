@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: OrdersFailed-50
   m_EditorClassIdentifier: 
   Name: 50 Orders Failed
+  des: How Do You Still Have Customers?
   AchievementType: 4
   TargetValue: 50
