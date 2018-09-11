@@ -34,7 +34,7 @@ public class GameModeOffice : MonoBehaviour
         {
             if (difficultySetting.GenerateOrders)
             {
-                if (orderManager.GetOpenOrders().Count < difficultySetting.MaxSimultaneousOpenOrders)
+                if (orderManager.CountOpen < difficultySetting.MaxSimultaneousOpenOrders)
                 {
                     //Debug.Log(chanceNextOrder.ToString());
 
@@ -190,12 +190,18 @@ public class GameModeOffice : MonoBehaviour
 
         if (score > 0)
         {
+            orderManager.CountCompleted++;
+            orderManager.CountCompletedToday++;
             achievementManager.CheckAchievementsByType(AchievementType.OrdersCompleted);
         }
         else
         {
+            orderManager.CountFailed++;
+            orderManager.CountFailedToday++;
             achievementManager.CheckAchievementsByType(AchievementType.OrdersFailed);
         }
+
+        orderManager.CountOpen--;
     }
 
     /// <summary>
@@ -209,6 +215,11 @@ public class GameModeOffice : MonoBehaviour
 
         if (GameMaster.Instance.GetDifficultySetting().IncludeCustomerTolerance)
             player.Business.CustomerTolerance = Mathf.Clamp(player.Business.CustomerTolerance - GameMaster.Instance.GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
+
+        GameMaster.Instance.OrderManager.CountFailed++;
+        GameMaster.Instance.OrderManager.CountFailedToday++;
+        GameMaster.Instance.OrderManager.CountOpen--;
+        GameMaster.Instance.AchievementManager.CheckAchievementsByType(AchievementType.OrdersFailed);
     }
     #endregion
 

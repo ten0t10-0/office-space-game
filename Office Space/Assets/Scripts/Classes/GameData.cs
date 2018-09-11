@@ -15,6 +15,7 @@ public class GameData
 
     [SerializeField]
     public List<Order> Orders;
+    public int OrdersCountOpen, OrdersCountCompleted, OrdersCountFailed, OrdersCountCompletedToday, OrdersCountFailedToday;
 
     public int Difficulty;
 
@@ -34,28 +35,4 @@ public class GameData
 
     public GameData()
     { }
-
-    public GameData(Player player, List<SupplierAI> suppliers, List<Order> orders, int difficulty, DateTime gameDateTime, float chanceNextOrder, bool sleepMode, bool dayEnd, int dayEndCurrent, NotificationList notifications, GameMode gameMode)
-    {
-        Player = player;
-
-        Suppliers = suppliers;
-
-        Orders = orders;
-
-        Difficulty = difficulty;
-
-        GameDateTime = gameDateTime;
-
-        ChanceNextOrder = chanceNextOrder;
-
-        SleepMode = sleepMode;
-        DayEnd = dayEnd;
-
-        DayEndCurrent = dayEndCurrent;
-
-        Notifications = notifications;
-
-        GameMode = gameMode;
-    }
 }

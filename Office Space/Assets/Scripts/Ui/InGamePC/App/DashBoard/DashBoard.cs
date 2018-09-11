@@ -20,9 +20,9 @@ public class DashBoard : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		failed = GameMaster.Instance.OrderManager.GetFailedOrders().Count;
-		current = GameMaster.Instance.OrderManager.GetOpenOrders().Count;
-		complete = GameMaster.Instance.OrderManager.GetCompletedOrders().Count;
+		failed = GameMaster.Instance.OrderManager.CountFailed;
+		current = GameMaster.Instance.OrderManager.CountOpen;
+		complete = GameMaster.Instance.OrderManager.CountCompleted;
 
 		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 		money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());

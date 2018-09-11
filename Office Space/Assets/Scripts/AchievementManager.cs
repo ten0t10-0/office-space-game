@@ -77,11 +77,11 @@ public class AchievementManager : MonoBehaviour
         switch (achievementType)
         {
             case AchievementType.OrdersCompleted:
-                genericField = GameMaster.Instance.OrderManager.GetCompletedOrders().Count;
+                genericField = GameMaster.Instance.OrderManager.CountCompleted;
                 break;
 
             case AchievementType.OrdersFailed:
-                genericField = GameMaster.Instance.OrderManager.GetFailedOrders().Count;
+                genericField = GameMaster.Instance.OrderManager.CountFailed;
                 break;
 
             case AchievementType.PlayerLevel:

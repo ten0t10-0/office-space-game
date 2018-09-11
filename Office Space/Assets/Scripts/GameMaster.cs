@@ -832,6 +832,9 @@ public class GameMaster : MonoBehaviour
 
                     GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
+                    OrderManager.Orders.Clear();
+                    OrderManager.CountCompletedToday = OrderManager.CountFailedToday = 0;
+
                     break;
                 }
 
@@ -927,6 +930,11 @@ public class GameMaster : MonoBehaviour
                 Suppliers = SupplierManager.Suppliers,
 
                 Orders = OrderManager.Orders,
+                OrdersCountOpen = OrderManager.CountOpen,
+                OrdersCountCompleted = OrderManager.CountCompleted,
+                OrdersCountFailed = OrderManager.CountFailed,
+                OrdersCountCompletedToday = OrderManager.CountCompletedToday,
+                OrdersCountFailedToday = OrderManager.CountFailedToday,
 
                 Difficulty = this.Difficulty,
 
@@ -982,6 +990,11 @@ public class GameMaster : MonoBehaviour
         SupplierManager.Suppliers = gameData.Suppliers;
 
         OrderManager.Orders = gameData.Orders;
+        OrderManager.CountOpen = gameData.OrdersCountOpen;
+        OrderManager.CountCompleted = gameData.OrdersCountCompleted;
+        OrderManager.CountFailed = gameData.OrdersCountFailed;
+        OrderManager.CountCompletedToday = gameData.OrdersCountCompletedToday;
+        OrderManager.CountFailedToday = gameData.OrdersCountFailedToday;
 
         Difficulty = gameData.Difficulty;
 

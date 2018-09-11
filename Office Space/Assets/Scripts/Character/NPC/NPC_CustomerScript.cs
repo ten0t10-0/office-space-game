@@ -22,6 +22,12 @@ public class NPC_CustomerScript : MonoBehaviour
         ItemHeld = null;
     }
 
+    public void TakeItem(int iSlot)
+    {
+        ItemHeld = new Item(GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay[iSlot].ItemID);
+        GameMaster.Instance.Player.Business.Shop.RemoveItem(iSlot); //***
+    }
+
     private void OnDestroy()
     {
         GameMaster.Instance.NPCManager.CurrentNPCs_ResetAt(NPC_ID);

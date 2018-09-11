@@ -9,6 +9,13 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     public List<Order> Orders;
 
+    public int CountOpen = 0;
+    public int CountCompleted = 0;
+    public int CountFailed = 0;
+
+    public int CountCompletedToday = 0;
+    public int CountFailedToday = 0;
+
     public List<ItemSubcategory> ExcludedItemSubcategories = new List<ItemSubcategory>
         {
             ItemSubcategory.Nothing
@@ -79,6 +86,8 @@ public class OrderManager : MonoBehaviour
         #endregion
 
         Orders.Add(new Order(customer, items, currentDate, dueDate));
+
+        CountOpen++;
 
 		GameMaster.Instance.GUIManager.OrdersPanelScript.DisplayOrders ();
 	    GameMaster.Instance.GUIManager.hudScript.orderNotifiation ();
