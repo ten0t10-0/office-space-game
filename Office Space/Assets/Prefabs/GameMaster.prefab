@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 114781481805665894}
   - component: {fileID: 114933794338400064}
   - component: {fileID: 114341436699145852}
+  - component: {fileID: 114363407500964880}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -115,6 +116,7 @@ MonoBehaviour:
   GUIManager: {fileID: 0}
   NPCManager: {fileID: 0}
   AchievementManager: {fileID: 0}
+  UpgradeManager: {fileID: 0}
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}
@@ -199,6 +201,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d3e098aa4b875b4fb30e3a41e524e84, type: 2}
   - {fileID: 11400000, guid: 65c90e46d0230344bab7b45734b33fb7, type: 2}
   StoredIDs_PlayerPlayTime: 
+--- !u!114 &114363407500964880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f9b495fab292fc47bf77cad38e87e06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Upgrades_Passive:
+  - {fileID: 11400000, guid: 1aa9e87e06552234294fb37433ec2466, type: 2}
+  - {fileID: 11400000, guid: ad7c3d5878975e24e83f8c1b54826973, type: 2}
+  - {fileID: 11400000, guid: f6e6588c80ca25540904b84d09a459a8, type: 2}
+  Upgrades_Active:
+  - {fileID: 11400000, guid: 802d33b8c57b18b4f8ad1835ac3ca4cf, type: 2}
+  - {fileID: 11400000, guid: 02b1c6ed1102753458f3aa3763f28948, type: 2}
+  - {fileID: 11400000, guid: 0898157ae77cc374bbafb3493534713c, type: 2}
+  - {fileID: 11400000, guid: 48a954a5901027f448fc1f2316caa863, type: 2}
 --- !u!114 &114541504168204232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -211,6 +233,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Orders: []
+  CountOpen: 0
+  CountCompleted: 0
+  CountFailed: 0
+  CountCompletedToday: 0
+  CountFailedToday: 0
   ExcludedItemSubcategories: 00000000
 --- !u!114 &114553822043926498
 MonoBehaviour:
@@ -347,6 +374,7 @@ MonoBehaviour:
   OrdersPanelScript: {fileID: 0}
   hudScript: {fileID: 0}
   note: {fileID: 0}
+  achiev: {fileID: 0}
 --- !u!114 &114856139823664460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -362,7 +390,7 @@ MonoBehaviour:
   ChanceNextOrder: 0
   DayStartHour: 8
   DayEndHour: 20
-  GameTimeSpeed: 1
+  GameTimeSpeed: 5
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -57,6 +57,8 @@ public class GameMaster : MonoBehaviour
     public NPCManager NPCManager;
     [HideInInspector]
     public AchievementManager AchievementManager;
+    [HideInInspector]
+    public UpgradeManager UpgradeManager;
     #endregion
 
     #region <PLAYER/NPC>
@@ -215,6 +217,7 @@ public class GameMaster : MonoBehaviour
         GUIManager = GetComponent<GUIManager>();
         NPCManager = GetComponent<NPCManager>();
         AchievementManager = GetComponent<AchievementManager>();
+        UpgradeManager = GetComponent<UpgradeManager>();
 
         #region <Manager-specific initializations>
         CustomizationManager.Office.Initialize();
@@ -338,14 +341,15 @@ public class GameMaster : MonoBehaviour
         //Clear notifications
         Notifications = new NotificationList();
 
-        //Set Difficulty
-        Difficulty = initDifficulty;
-
         //Set events
         GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
         Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+
+        //Set Difficulty
+        Difficulty = initDifficulty;
+        CheckDifficulty();
 
         //Player Initalizations outside Player class...
         AchievementManager.CheckAllAchievements();
@@ -697,6 +701,9 @@ public class GameMaster : MonoBehaviour
         if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
             SaveGame(SaveSlotCurrent);
 
+        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.U))
+            UpgradeManager.PurchaseActiveUpgrade(3);
+
         //TEST: Lock & Unlock cursor / Sleep mode toggle / Build mode toggle
         if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
         {
@@ -813,6 +820,8 @@ public class GameMaster : MonoBehaviour
                 }
         }
 
+        UpgradeManager.UpdateActiveUpgrades();
+
         if (!DayEnd && GameDateTime.Hour >= dayEndHour)
         {
             DayEnd = true;
@@ -901,11 +910,14 @@ public class GameMaster : MonoBehaviour
     {
         if (Difficulty != -1 && Difficulty < 3)
         {
-            if (Player.Level >= DifficultySettings[Difficulty + 1].LevelRequirement)
+            for (int i = Difficulty; i <= 3; i++)
             {
-                Difficulty++;
+                if (Player.Level >= DifficultySettings[i].LevelRequirement)
+                    Difficulty = i;
             }
         }
+
+        Debug.Log("*New Difficulty: " + Difficulty.ToString());
     }
     #endregion
 

@@ -18,7 +18,7 @@ public class GameModeShop : MonoBehaviour
     /// <summary>
     /// Number of minutes that pass every second
     /// </summary>
-    public float GameTimeSpeed = 5;
+    public int GameTimeSpeed = 5;
     #endregion
 
     #region <METHODS>

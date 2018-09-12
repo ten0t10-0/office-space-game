@@ -97,7 +97,7 @@ public class OrderManager : MonoBehaviour
             Debug.Log(orderItem.ToString());
 
         Debug.Log("Order value - base item costs: " + Orders[Orders.Count - 1].TotalValue().ToString());
-        Debug.Log("Order value (with player markup): " + GameMaster.MarkupPrice(Orders[Orders.Count - 1].TotalValue(), GameMaster.Instance.Player.Business.MarkupPercentage).ToString());
+        Debug.Log("Order value (with player markup): " + GameMaster.MarkupPrice(Orders[Orders.Count - 1].TotalValue(), GameMaster.Instance.Player.Business.GetTotalMarkup()).ToString());
     }
 
     public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, float markup, out float payment, out int score, out float penaltyMultiplier)

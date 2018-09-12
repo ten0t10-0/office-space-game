@@ -19,7 +19,7 @@ public class GameModeOffice : MonoBehaviour
     /// <summary>
     /// Number of minutes that pass every second
     /// </summary>
-    public float GameTimeSpeed = 5;
+    public int GameTimeSpeed = 5;
     #endregion
 
     #region <METHODS>
@@ -40,7 +40,7 @@ public class GameModeOffice : MonoBehaviour
 
                     if (GameMaster.Roll(ChanceNextOrder))
                     {
-                        if (GameMaster.Roll(player.Business.CustomerTolerance))
+                        if (GameMaster.Roll(player.Business.CustomerTolerance_Total))
                         {
                             //***
                             orderManager.GenerateOrder();

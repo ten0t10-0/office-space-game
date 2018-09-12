@@ -95,6 +95,10 @@ public class AchievementManager : MonoBehaviour
             case AchievementType.PlayerPlayTime:
                 genericField = GameMaster.Instance.Player.PlayTime;
                 break;
+
+            case AchievementType.UpgradeCount:
+                genericField = GameMaster.Instance.Player.UnlockedUpgradesPassive.Count;
+                break;
         }
 
         return genericField;

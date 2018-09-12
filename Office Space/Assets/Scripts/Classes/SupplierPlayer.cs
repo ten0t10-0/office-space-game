@@ -12,6 +12,42 @@ public class SupplierPlayer : Supplier
     public InventoryPlayer WarehouseInventory { get; set; }
     public PlayerShop Shop { get; set; }
 
+    public float CustomerTolerance_Total
+    {
+        get
+        {
+            float mod_CustomerTolerance = 0f;
+
+            for (int i = 0; i < GameMaster.Instance.Player.CurrentUpgradesActive.Count; i++)
+            {
+                UpgradeActiveSO ua = GameMaster.Instance.UpgradeManager.Upgrades_Active[GameMaster.Instance.Player.CurrentUpgradesActive[i].UpgradeID];
+
+                if (ua.UpgradeField == UpgradeField.CustomerTolerance)
+                    mod_CustomerTolerance += ua.Value;
+            }
+
+            return Mathf.Clamp(CustomerTolerance + mod_CustomerTolerance, 0f, 1f);
+        }
+    }
+
+    public float MarkupPercentage_Total
+    {
+        get
+        {
+            float mod_PlayerMarkup = 0f;
+
+            for (int i = 0; i < GameMaster.Instance.Player.CurrentUpgradesActive.Count; i++)
+            {
+                UpgradeActiveSO ua = GameMaster.Instance.UpgradeManager.Upgrades_Active[GameMaster.Instance.Player.CurrentUpgradesActive[i].UpgradeID];
+
+                if (ua.UpgradeField == UpgradeField.PlayerMarkup)
+                    mod_PlayerMarkup += ua.Value;
+            }
+
+            return MarkupPercentage + mod_PlayerMarkup;
+        }
+    }
+
     #region <Constructor>
     public SupplierPlayer(string name, float money, float markup, float maximumInventorySpace, int shopItemSlotCount) : base(name)
     {
@@ -158,7 +194,7 @@ public class SupplierPlayer : Supplier
 
     public float GetTotalMarkup()
     {
-        return MarkupPercentage * CustomerTolerance;
+        return MarkupPercentage_Total * CustomerTolerance; //***
     }
 
     public void ResetMoneyStart()

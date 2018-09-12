@@ -24,6 +24,11 @@ public class Player
     [SerializeField]
     public List<int> UnlockedAchievements { get; set; }
 
+    [SerializeField]
+    public List<int> UnlockedUpgradesPassive { get; set; }
+    [SerializeField]
+    public List<UpgradeActive> CurrentUpgradesActive { get; set; }
+
     #region <Constructors>
 
     /// <summary>
@@ -62,6 +67,9 @@ public class Player
         }
 
         UnlockedAchievements = new List<int>();
+
+        UnlockedUpgradesPassive = new List<int>();
+        CurrentUpgradesActive = new List<UpgradeActive>();
 
         ////TEMP:
         //for (int i = 1; i <= 20; i++)
