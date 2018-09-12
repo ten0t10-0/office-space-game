@@ -9,14 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05d57810997c07145a39d19f4a63f413, type: 3}
-  m_Name: OnesieLong
+  m_Name: Suit
   m_EditorClassIdentifier: 
-  Name: Onesie (Long sleeves)
-  Price: 200
-  LevelRequirement: 15
+  Name: Suit
+  Price: 0
+  LevelRequirement: 0
   ClothingSlot: {fileID: 11400000, guid: 9ca95f108f2155042948915067794a09, type: 2}
-  Special: 0
+  Special: 1
   Meshes:
-  - {fileID: 4300002, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
-  - {fileID: 4300000, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
-  CustomMaterials: []
+  - {fileID: 4300038, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
+  - {fileID: 4300036, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
+  CustomMaterials:
+  - {fileID: 2100004, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
+  - {fileID: 2100006, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}

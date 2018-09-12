@@ -7,6 +7,7 @@ public class ClothingSlotScript : MonoBehaviour
     public ClothingSlot ClothingSlot;
     public int ClothingIndex;
     public bool IsBodyObject;
+    public bool HasCustomMaterial = false;
 
     private CharacterCustomizationScript parentScript;
 
@@ -43,6 +44,19 @@ public class ClothingSlotScript : MonoBehaviour
             GetComponent<SkinnedMeshRenderer>().enabled = true;
 
             ClothingIndex = clothingIndex;
+
+            if (clothingSO.HasCustomMaterial)
+            {
+                HasCustomMaterial = true;
+
+                GetComponent<Renderer>().sharedMaterials = clothingSO.CustomMaterials;
+            }
+            else
+            {
+                HasCustomMaterial = false;
+
+                GetComponent<Renderer>().sharedMaterial = currentClothingMaterial;
+            }
         }
         else if (clothingSO.HasBodyMesh)
         {
@@ -62,6 +76,7 @@ public class ClothingSlotScript : MonoBehaviour
         GetComponent<SkinnedMeshRenderer>().enabled = false;
 
         ClothingIndex = -1;
+        HasCustomMaterial = false;
     }
 
     public bool IsSet

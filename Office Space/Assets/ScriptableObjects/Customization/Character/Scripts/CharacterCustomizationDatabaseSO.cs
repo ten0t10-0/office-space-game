@@ -84,9 +84,21 @@ public class CharacterCustomizationDatabaseSO : ScriptableObject
         return clothingIndex;
     }
 
-    public int GetRandomClothingBySlot(ClothingSlot slot)
+    public int GetRandomClothingBySlot(ClothingSlot slot, bool includeSpecial = false)
     {
         List<int> clothing = GetClothingIDsBySlot(slot);
+
+        if (!includeSpecial)
+        {
+            for (int i = 0; i < clothing.Count; i++)
+            {
+                if (GameMaster.Instance.CustomizationManager.Character.Clothing[clothing[i]].Special)
+                {
+                    clothing.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
 
         return clothing[Random.Range(0, clothing.Count)];
     }

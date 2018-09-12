@@ -727,7 +727,10 @@ public class GameMaster : MonoBehaviour
             {
                 CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
 
+                player.UnsetAllClothing();
+                player.SetClothing(9);
                 player.SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
+                player.UpdateBodyColor(CustomizationManager.Character.SkinColors[3]);
             }
 
             if (Input.GetKeyDown(KeyCode.R))

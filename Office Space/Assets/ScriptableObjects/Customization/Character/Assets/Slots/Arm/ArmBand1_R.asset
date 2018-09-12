@@ -15,5 +15,7 @@ MonoBehaviour:
   Price: 50
   LevelRequirement: 5
   ClothingSlot: {fileID: 11400000, guid: 5b3e278bc66ca824a992d44b838f8367, type: 2}
+  Special: 0
   Meshes:
   - {fileID: 0}
+  CustomMaterials: []

@@ -261,7 +261,12 @@ public class CharacterCustomizationScript : MonoBehaviour
     /// <param name="newClothingColor"></param>
     public void UpdateClothingColor(ClothingSlot slot, Color newClothingColor)
     {
-        transform.GetChild(ClothingObjects[slot]).gameObject.GetComponent<Renderer>().sharedMaterial.color = newClothingColor;
+        ClothingSlotScript clothingSlotScript = transform.GetChild(ClothingObjects[slot]).gameObject.GetComponent<ClothingSlotScript>();
+
+        if (!clothingSlotScript.HasCustomMaterial)
+            clothingSlotScript.gameObject.GetComponent<Renderer>().sharedMaterial.color = newClothingColor;
+        else
+            Debug.Log("***Cannot change color of clothing object with custom material!");
     }
 
     public void UpdateAccessoryColor(int accessoryId, Color newColor)
@@ -354,8 +359,8 @@ public class CharacterCustomizationScript : MonoBehaviour
 
         List<int> clothingToApply = new List<int>();
 
-        bool setOutfit = GameMaster.Roll(0.15f);
-        bool setHead = GameMaster.Roll(0.15f);
+        bool setOutfit = GameMaster.Roll(0.075f);
+        bool setHead = GameMaster.Roll(0.05f);
 
         bool setArmLeft = false;
         bool setArmRight = false;

@@ -42,6 +42,8 @@ ModelImporter:
     100068: C_Monacle
     100070: C_Moustache
     100072: C_TopHat
+    100074: B_Suit
+    100076: C_Suit
     400000: Arm1_L
     400002: Arm1_R
     400004: Arm2_L
@@ -79,8 +81,12 @@ ModelImporter:
     400068: C_Monacle
     400070: C_Moustache
     400072: C_TopHat
+    400074: B_Suit
+    400076: C_Suit
     2100000: B_Default
     2100002: C_Default
+    2100004: C_Suit02
+    2100006: C_Suit01
     2300000: C_Moustache
     2300002: C_TopHat
     3300000: C_Moustache
@@ -103,6 +109,8 @@ ModelImporter:
     4300030: C_TopHat
     4300032: C_Monacle
     4300034: C_Moustache
+    4300036: B_Suit
+    4300038: C_Suit
     7400000: Default Take
     7400002: Idle01
     7400004: Run01
@@ -131,6 +139,8 @@ ModelImporter:
     13700028: C_ShirtNon
     13700030: C_Monacle
     13700032: C_TopHat
+    13700034: B_Suit
+    13700036: C_Suit
   externalObjects: {}
   materials:
     importMaterials: 1

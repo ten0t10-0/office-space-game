@@ -6,7 +6,6 @@ using UnityEngine;
 public class CharacterClothing
 {
     public int ClothingID { get; set; }
-    public int CustomMaterialID { get; set; }
 
     public float ColorR { get; set; }
     public float ColorG { get; set; }
@@ -23,8 +22,6 @@ public class CharacterClothing
     {
         ClothingID = clothingId;
         UpdateColorData(color);
-
-        CustomMaterialID = -1;
     }
 
     /// <summary>
@@ -35,21 +32,6 @@ public class CharacterClothing
     {
         ClothingID = clothingId;
         UpdateColorData(GetClothingSO().ClothingSlot.MaterialDefault.color);
-
-        CustomMaterialID = -1;
-    }
-
-    /// <summary>
-    /// Create a reference to a clothing item in the DB. Custom material used.
-    /// </summary>
-    /// <param name="clothingId"></param>
-    /// <param name="materialId"></param>
-    public CharacterClothing(int clothingId, int materialId)
-    {
-        ClothingID = clothingId;
-        CustomMaterialID = materialId;
-
-        UpdateColorData(GameMaster.Instance.CustomizationManager.Character.CustomMaterials[materialId].color);
     }
     #endregion
 
@@ -70,11 +52,6 @@ public class CharacterClothing
         ColorG = color.g;
         ColorB = color.b;
         ColorA = color.a;
-    }
-
-    public bool HasCustomMaterial()
-    {
-        return CustomMaterialID > -1;
     }
     #endregion
 }
