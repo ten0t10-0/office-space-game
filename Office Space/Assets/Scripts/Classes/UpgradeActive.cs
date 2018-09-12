@@ -4,6 +4,7 @@ using UnityEngine;
 
 using System;
 
+[System.Serializable]
 public class UpgradeActive
 {
     public int UpgradeID { get; set; }
