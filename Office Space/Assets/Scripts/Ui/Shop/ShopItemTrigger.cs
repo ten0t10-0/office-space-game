@@ -29,6 +29,7 @@ public class ShopItemTrigger : MonoBehaviour {
 	public Quaternion rot;
 
 	public GameObject hud;
+	public Animator hudO;
 
 //	bool firstPerson = false;
 
@@ -68,6 +69,7 @@ public class ShopItemTrigger : MonoBehaviour {
 				shopCanvas.SetActive (true);
 				OpenPanel.SetActive (false);
 				shopI.setItems (slot, pos1, rot,tempcanvas);
+				hudO.SetBool ("UIO", true);
 				hud.SetActive (false);
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
@@ -124,6 +126,7 @@ public class ShopItemTrigger : MonoBehaviour {
 	{
 		if (other.tag == "Player")
 		{
+			hudO.SetBool ("UIO", false);
 			isInsideTrigger = false;
 			OpenPanel.SetActive(false);
 			cube.SetActive (false);

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class PhoneScreen : MonoBehaviour {
+public class PhoneScreen : MonoBehaviour 
+{
 
 
 	public Animator animator;
 	public GameObject tab,noti,order;
-	Animator notiA, orderA;
-	public TextMeshProUGUI topbar;
+	public TextMeshProUGUI topbar,notiT,orderT;
+	int count = 0;
 
 	// Use this for initialization
 	void Start () 
@@ -20,7 +21,22 @@ public class PhoneScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		//if(GameMaster.Instance.OrderManager.GetCompletedOrders)
+		if (GameMaster.Instance.OrderManager.CountOpen > 0) 
+		{
+			order.SetActive (true);
+			orderT.SetText (GameMaster.Instance.OrderManager.CountOpen.ToString ());
+		}
+		else
+			order.SetActive (false);
+		
+		if (count > 0) 
+		{
+			noti.SetActive (true);
+			notiT.SetText (count.ToString());
+		}
+		else
+			noti.SetActive (false);
+		
 	}
 
 	public void OpenTablet()
@@ -45,7 +61,7 @@ public class PhoneScreen : MonoBehaviour {
 	}
 	public void BuildMode()
 	{
-		if (GameMaster.Instance.BuildMode = true)
+		if (GameMaster.Instance.BuildMode == true)
 			GameMaster.Instance.BuildMode = false;
 		else
 			GameMaster.Instance.BuildMode = true;
@@ -61,5 +77,19 @@ public class PhoneScreen : MonoBehaviour {
 	public void Order()
 	{
 		topbar.SetText ("Orders");
+	}
+	public void noteCount()
+	{
+		count = 0;
+		List <Notification> noteList = GameMaster.Instance.Notifications.GetAll ();
+
+		foreach (Notification note in noteList) 
+		{
+			if (note.Read == false)
+			{
+				count++;
+			}
+
+		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class HudMain : MonoBehaviour {
 
@@ -16,12 +17,15 @@ public class HudMain : MonoBehaviour {
 	[SerializeField] //items
 	private GameObject noteContainer;
 	private Transform iscrollContent;
+	PhoneScreen ph;
+
+
 
 
 	void Start () 
 	{
 		//money.SetText("$ "+(GameMaster.Instance.Player.Business.Money).ToString());
-
+		ph = gameObject.transform.Find("Phone").GetComponent<PhoneScreen>();
 
 	}
 	
@@ -35,6 +39,7 @@ public class HudMain : MonoBehaviour {
 			animator.SetBool ("PhoneO", true);
 			FindObjectOfType<SoundManager>().Play("PhoneO");
 			Cursor.lockState = CursorLockMode.None;
+			ph.noteCount ();
 		}
 		if (Input.GetKeyDown(KeyCode.N)) 
 		{
@@ -50,6 +55,8 @@ public class HudMain : MonoBehaviour {
 
 		if (order.activeInHierarchy)
 			orderNew ();
+
+
     }
 
 	public void DisplayNotes()
@@ -103,5 +110,7 @@ public class HudMain : MonoBehaviour {
 		yield return new WaitForSeconds(1);
 		phone.SetActive (false);
 	}
+
+
 
 }

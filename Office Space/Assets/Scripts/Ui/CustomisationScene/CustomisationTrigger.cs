@@ -10,6 +10,7 @@ public class CustomisationTrigger : MonoBehaviour {
 	public Transform bodyMount;
 	Vector3 pos,rot;
 	CamMounts cam;
+	public Animator hudO;
 
 	void Update ()
 	{
@@ -24,7 +25,7 @@ public class CustomisationTrigger : MonoBehaviour {
 				GameMaster.Instance.CameraLock = true;
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MovePosition (cube.transform.position); 
 				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MoveRotation (cube.transform.rotation);
-
+				hudO.SetBool ("UIO", true);
 				hud.SetActive (false);
 				custom.SetActive (true);
 
@@ -45,6 +46,7 @@ public class CustomisationTrigger : MonoBehaviour {
 		GameMaster.Instance.ModeSetPlay();
 		hud.SetActive (true);
 		custom.SetActive (false);
+		hudO.SetBool ("UIO", false);
 	}
 
 	void OnTriggerEnter(Collider other)

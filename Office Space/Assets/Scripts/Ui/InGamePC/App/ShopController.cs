@@ -121,9 +121,9 @@ public class ShopController : MonoBehaviour
 		}
 	}
 
-	public void SetSupp(string supplier)
+	public void SetSupp(string suppliers)
 	{
-		supplier = supplier;  
+		supplier = suppliers;  
 		AddByCateSupp (category, supplier,subCategory);
 	}
 

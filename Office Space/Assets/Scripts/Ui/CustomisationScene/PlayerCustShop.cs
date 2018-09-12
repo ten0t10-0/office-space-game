@@ -18,7 +18,6 @@ public class PlayerCustShop : MonoBehaviour
 
 	List<int> currentOutfit;
 
-	bool purchased = false;
 	public Color textureColour;
 
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
@@ -206,7 +205,6 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				Debug.Log ("Print");
 				return item;
-				break;
 			} else
 				return null;
 		}
@@ -220,7 +218,6 @@ public class PlayerCustShop : MonoBehaviour
 			if (GameMaster.Instance.CustomizationManager.Character.Clothing[purchase] == item) 
 			{
 				return item;
-				break;
 			} else
 				return null;
 		}

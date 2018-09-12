@@ -11,6 +11,7 @@ public class PcTrigger : MonoBehaviour {
 
 	public GameObject screen;
 	public Transform pcMount;
+	public Animator hudO;
 
 
 	void Update ()
@@ -19,6 +20,7 @@ public class PcTrigger : MonoBehaviour {
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
+				hudO.SetBool ("UIO", true);
 				SetMount ();
 				OpenPanel.SetActive (false);
                 GameMaster.Instance.ModeSetUI();
@@ -39,8 +41,8 @@ public class PcTrigger : MonoBehaviour {
 	{
         GameMaster.Instance.ModeSetPlay();
         GameMaster.Instance.CameraLock = false;
-
 		hud.SetActive(true);
+		hudO.SetBool ("UIO", false);
     }
 
 	void OnTriggerEnter(Collider other)
@@ -75,4 +77,5 @@ public class PcTrigger : MonoBehaviour {
 			return OpenPanel.activeInHierarchy;
 		}
 	}
+
 }

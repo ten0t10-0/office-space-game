@@ -6,7 +6,6 @@ public class EnterHover : MonoBehaviour {
 
 	HoverCarControl hover;
 	public GameObject mount;
-	Vector3 pos,rot;
 	bool onBoard = false;
 	public Collider trigger;
 	public GameObject OpenPanel = null;
@@ -18,8 +17,7 @@ public class EnterHover : MonoBehaviour {
 	void Start () 
 	{
 		hover = GetComponent<HoverCarControl> ();
-		pos = mount.transform.position;
-		rot = mount.transform.eulerAngles;
+
 	}
 	
 	// Update is called once per frame

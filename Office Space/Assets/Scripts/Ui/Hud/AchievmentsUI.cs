@@ -12,7 +12,6 @@ public class AchievmentsUI : MonoBehaviour
 	List<string> ach = new List<string>();
 	bool playing = false;
 	bool running;
-	WaitForSeconds wait = new WaitForSeconds(5);
 	int c =1,i=0;
 
 	void Update()
