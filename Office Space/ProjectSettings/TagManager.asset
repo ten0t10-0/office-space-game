@@ -11,6 +11,7 @@ TagManager:
   - FishWayPoint
   - NPC
   - destructor
+  - destructor1
   layers:
   - Default
   - TransparentFX

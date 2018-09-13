@@ -7,7 +7,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 
-public class AI_try : MonoBehaviour 
+public class AI_try2 : MonoBehaviour 
 {
 	NavMeshAgent nm;
 	Rigidbody rb;
@@ -29,12 +29,12 @@ public class AI_try : MonoBehaviour
 
 	void Awake()
 	{
-//		sm = GameObject.Find ("Waypoints").transform;
-//
-//		for (int i = 0; i < sm.childCount; i++)
-//		{
-//			WayPoints [i] = sm.GetChild (i);
-//		}
+		//		sm = GameObject.Find ("Waypoints").transform;
+		//
+		//		for (int i = 0; i < sm.childCount; i++)
+		//		{
+		//			WayPoints [i] = sm.GetChild (i);
+		//		}
 		taken1 = false;
 		taken2 = false;
 		taken3 = false;
@@ -43,7 +43,7 @@ public class AI_try : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		sm = GameObject.Find ("Waypoints").transform;
+		sm = GameObject.Find ("route").transform;
 
 		for (int i = 0; i < sm.childCount; i++)
 		{
@@ -67,67 +67,56 @@ public class AI_try : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{ 
-			nm.acceleration = speed;
-			nm.stoppingDistance = stop_distance;
-		
+		nm.acceleration = speed;
+		nm.stoppingDistance = stop_distance;
 
-			float distance = Vector3.Distance (transform.position, Target.position);
 
-		
-			//Move to waypoint
+		float distance = Vector3.Distance (transform.position, Target.position);
 
-			if (distance > stop_distance && WayPoints.Length > 0) 
+
+		//Move to waypoint
+
+		if (distance > stop_distance && WayPoints.Length > 0) 
 		{
-				anim.SetBool ("IsWalking", true);
-				anim.SetBool ("IsIdling", false);
+			anim.SetBool ("IsWalking", true);
+			anim.SetBool ("IsIdling", false);
 
-				//Find Waypoint
-				Target = WayPoints [Cur_Waypoint];
+			//Find Waypoint
+			Target = WayPoints [Cur_Waypoint];
 
 		}
 
 		else if (distance <= stop_distance && WayPoints.Length > 0) 
-		
+
 		{
-				if (cur_timer > 0) 
+			if (cur_timer > 0) 
 			{
-					cur_timer -= 0.01f;
-					anim.SetBool ("IsWalking", false);
-					anim.SetBool ("IsIdling", true);
-				}
-				if (cur_timer <= 0) 
-				{
-					Cur_Waypoint++;
-					if (Cur_Waypoint >= WayPoints.Length) 
-					{
-						Cur_Waypoint = 0;
-					}
-					Target = WayPoints [Cur_Waypoint];
-
-
-				cur_timer = Random.Range(0.1f,3f);
-				}
+				cur_timer -= 0.01f;
+				anim.SetBool ("IsWalking", false);
+				anim.SetBool ("IsIdling", true);
 			}
-			nm.SetDestination (Target.position);
+			if (cur_timer <= 0) 
+			{
+				Cur_Waypoint++;
+				if (Cur_Waypoint >= WayPoints.Length) 
+				{
+					Cur_Waypoint = 0;
+				}
+				Target = WayPoints [Cur_Waypoint];
+				cur_timer = Random.Range(0.1f,3f);
+			}
+		}
+		nm.SetDestination (Target.position);
 
 //		if (Cur_Waypoint == 4) 
 //		{
 //			cur_timer = 3;
 //		}
 //
-//		if (Cur_Waypoint == 5) 
+//		if (Cur_Waypoint == 6) 
 //		{
 //			cur_timer = 3;
 //		}
-//
-//		if (Cur_Waypoint == 7) 
-//		{
-//			cur_timer = 3;
-//		}
-//
-//		if (Cur_Waypoint == 10) 
-//		{
-//			cur_timer = 3;
-//		}
-}
+
+	}
 }
