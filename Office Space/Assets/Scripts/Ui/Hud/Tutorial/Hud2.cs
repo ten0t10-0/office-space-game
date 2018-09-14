@@ -30,7 +30,7 @@ public class Hud2 : MonoBehaviour
 	{
 		float value = GameMaster.Instance.Player.Experience;
 		float iMin = 0;
-		float iMax = 100;
+		float iMax = GameMaster.Instance.Player.GetLevelExperience(GameMaster.Instance.Player.Level);
 
 		return (value - iMin) / (iMax - iMin);
 

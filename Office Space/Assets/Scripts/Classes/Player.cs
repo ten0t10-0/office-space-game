@@ -99,7 +99,7 @@ public class Player
         }
     }
 
-    private int GetLevelExperience(float level)
+	public int GetLevelExperience(float level)
     {
         float expBase = GameMaster.Instance.PlayerExperienceBase;
 

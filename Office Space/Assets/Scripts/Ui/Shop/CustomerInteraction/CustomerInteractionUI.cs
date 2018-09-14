@@ -8,7 +8,7 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube;
 
 	public Button btnDecrease,btnIncrease;
 
@@ -47,13 +47,10 @@ public class CustomerInteractionUI : MonoBehaviour
 				InteractionPanel.SetActive (true);
 				OpenPanel.SetActive (false);
 				hudCanvas.SetActive (false);
-				GameMaster.Instance.PlayerControl = false;
-				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().isKinematic = true;
-				GameMaster.Instance.CurrentPlayerObject.transform.parent = mount.transform;
-				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MovePosition (mount.transform.position); 
-				GameMaster.Instance.CurrentPlayerObject.GetComponent<Rigidbody> ().MoveRotation (mount.transform.rotation);
-				startInteraction ();
-				StartCoroutine (startO ());
+				cube.SetActive (true);
+//				startInteraction ();
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+				//StartCoroutine (startO ());
 			}
 		}
 		if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
@@ -63,16 +60,16 @@ public class CustomerInteractionUI : MonoBehaviour
 			counter++;
 			Debug.Log (counter);
 		}
+
 	}
 
-	public void startInteraction()
+	public void startInteraction(CharacterCustomizationScript customer)
 	{
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
-		GetNpcDetails getD = FindObjectOfType<GetNpcDetails> ();
-		CharacterCustomizationScript customer = getD.Cus;
+
 		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
-		//playerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
+		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
 		//customer apperance
 	}
 	public void runInteraction(int i)
