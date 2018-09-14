@@ -20,11 +20,11 @@ public class GUIManager : MonoBehaviour
 	[HideInInspector]
 	public AchievmentsUI achiev;
 
-    private void Awake()
-	{	
-		OrdersPanelScript = GameObject.Find(goMonitor).transform.Find(goUIScreen).Find(goCompCanvas).Find(goApps).Find(goOrdersPanel).gameObject.GetComponent<OrderUI>();
-		hudScript = GameObject.Find("HudCanvas").GetComponent<HudMain>();
-		note = GameObject.Find ("HudCanvas").transform.Find ("Phone").gameObject.GetComponent<Notifications> ();
-		achiev = GameObject.Find("NotificationCanvas").transform.Find("Acheivments").gameObject.GetComponent<AchievmentsUI>();
+    public void Initialize()
+    {
+        OrdersPanelScript = GameObject.Find(goMonitor).transform.Find(goUIScreen).Find(goCompCanvas).Find(goApps).Find(goOrdersPanel).gameObject.GetComponent<OrderUI>();
+        hudScript = GameObject.Find("HudCanvas").GetComponent<HudMain>();
+        note = GameObject.Find("HudCanvas").transform.Find("Phone").gameObject.GetComponent<Notifications>();
+        achiev = GameObject.Find("NotificationCanvas").transform.Find("Acheivments").gameObject.GetComponent<AchievmentsUI>();
     }
 }

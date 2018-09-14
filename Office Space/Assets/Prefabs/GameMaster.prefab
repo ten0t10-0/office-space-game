@@ -117,6 +117,7 @@ MonoBehaviour:
   NPCManager: {fileID: 0}
   AchievementManager: {fileID: 0}
   UpgradeManager: {fileID: 0}
+  IsMainMenu: 0
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
   CurrentPlayerObject: {fileID: 0}

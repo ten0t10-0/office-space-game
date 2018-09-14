@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.4840111, g: 0.5757225, b: 0.68020576, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -13109,8 +13109,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2050059698}
   m_HandleRect: {fileID: 2050059697}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99999815
+  m_Value: 1
+  m_Size: 0.999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25760,7 +25760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00004226013, y: 0.00012679667}
+  m_AnchoredPosition: {x: -0.00004248292, y: -0.0002906247}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1808481734
@@ -31971,6 +31971,7 @@ GameObject:
   - component: {fileID: 2007650286}
   - component: {fileID: 2007650285}
   - component: {fileID: 2007650289}
+  - component: {fileID: 2007650290}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -32053,6 +32054,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: 3dd7182945adff243a4d9d63bfadc093, type: 2}
+--- !u!114 &2007650290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2007650284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2922841a48bdc42a3966f3e8205e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMaster: {fileID: 1415113535136420, guid: 21273d5281c22804e824eb34d5b99661, type: 2}
 --- !u!1001 &2010085078
 Prefab:
   m_ObjectHideFlags: 0

@@ -61,6 +61,8 @@ public class GameMaster : MonoBehaviour
     public UpgradeManager UpgradeManager;
     #endregion
 
+    public bool IsMainMenu = false;
+
     #region <PLAYER/NPC>
     public GameObject GenericCharacterObject;
 
@@ -88,7 +90,7 @@ public class GameMaster : MonoBehaviour
     public string SaveFileExtension = ".gd";
     public int SaveCountMax = 10;
     public int SaveSlotDefault = 0;
-    private int SaveSlotCurrent;
+    private int SaveSlotCurrent = -1;
     #endregion
 
     #region <Bools>
@@ -100,6 +102,8 @@ public class GameMaster : MonoBehaviour
 
 	public bool TutorialMode = false;
 	public bool ShopUnlocked = false;
+
+    private bool IsGameInitialized = false;
 
     [HideInInspector]
     public bool CameraLock = false;
@@ -219,10 +223,6 @@ public class GameMaster : MonoBehaviour
         AchievementManager = GetComponent<AchievementManager>();
         UpgradeManager = GetComponent<UpgradeManager>();
 
-        #region <Manager-specific initializations>
-        CustomizationManager.Office.Initialize();
-        #endregion
-
         #region <Validate Game Save File Name & Extension>
         string tempSaveFileName, tempSaveFileExtension;
 
@@ -262,38 +262,51 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         currentMessage = MSG_GEN_NA;
-
-        SaveSlotCurrent = SaveSlotDefault;
     }
 
-    private void Start() //***
+    private void Start()
     {
-        bool saveSlotFound = false;
+        if (!IsMainMenu)
+            InitializeGame(SaveSlotDefault);
+        else
+            Debug.Log("*DONE!");
+    }
 
-        for (int i = 0; i < SaveCountMax; i++)
-        {
-            if (File.Exists(GetSaveFilePath(i)))
-            {
-                saveSlotFound = true;
-                SaveSlotCurrent = i;
-                i = SaveCountMax; //break
-            }
-        }
+    /// <summary>
+    /// Call straight after scene is loaded. Pass save slot parameter if a game should be loaded.
+    /// </summary>
+    /// <param name="initialSaveSlot"></param>
+    public void InitializeGame(int initialSaveSlot = -1)
+    {
+        //UIMode = false;
+        //BuildMode = false;
+        //OfflineMode = false;
+        //TutorialMode = false;
 
-        if (!saveSlotFound)
+        //NPCManager.DestroyAllNPCs();
+
+        #region <Manager-specific initializations>
+        CustomizationManager.Office.Initialize();
+        GUIManager.Initialize();
+        #endregion
+
+        ModeSetPlay();
+
+        if (initialSaveSlot != -1 && SaveFileExists(initialSaveSlot))
         {
-            NewGame();
-            //NewGameTEST();
+            LoadGame(initialSaveSlot);
         }
         else
         {
-            LoadGame(SaveSlotCurrent);
+            NewGame();
         }
 
-        #region
+        tPlayerPlayTime = tGameTime = Time.time;
+
         //Set Camera target
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
-        #endregion
+
+        IsGameInitialized = true;
 
         //**TEST**
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Upper);
@@ -304,27 +317,10 @@ public class GameMaster : MonoBehaviour
         //CustomizationManager.Office.MaterialWallsCurrent.color = new Color(1f, .1f, .1f);
     }
 
-    public void InitializeGame()
-    {
-        //UIMode = false;
-        //BuildMode = false;
-        //OfflineMode = false;
-        //TutorialMode = false;
-
-        NPCManager.DestroyAllNPCs();
-
-        ModeSetPlay();
-
-        tPlayerPlayTime = tGameTime = Time.time;
-    }
-
     public void NewGame()
     {
         string message;
         double initGameTimeHour = DayStartHour_DEFAULT;
-
-        //Initialize game
-        InitializeGame();
 
         //Initialize Date & Time
         GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
@@ -376,8 +372,6 @@ public class GameMaster : MonoBehaviour
     private void NewGameTEST()
     {
         double initGameTimeHour = DayStartHour_DEFAULT;
-
-        InitializeGame();
 
         #region <Initialize Date & Time>
         GameDateTime = new DateTime(initGameDateYear, initGameDateMonth, initGameDateDay, 0, 0, 0);
@@ -621,131 +615,132 @@ public class GameMaster : MonoBehaviour
 
     private void Update()
     {
-        currentTime = Time.time;
-
-        if (!SleepMode)
+        if (IsGameInitialized)
         {
-            float timeAdvance = (tGameTime + 1) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+            currentTime = Time.time;
 
-            //Increase in-game time by x minutes if 1 second has passed:
-            if (currentTime >= timeAdvance) 
+            if (!SleepMode)
             {
-                float gameTimeSpeed = GameTimeSpeed_DEFAULT;
-                switch (GameModeManager.GameMode_Current)
+                float timeAdvance = (tGameTime + 1) + Time.deltaTime; // (Time.deltaTime added so that if the game is lagging bad, the in game time will adjust)
+
+                //Increase in-game time by x minutes if 1 second has passed:
+                if (currentTime >= timeAdvance)
                 {
-                    case GameMode.Office:
-                        gameTimeSpeed = GameModeManager.Office.GameTimeSpeed; break;
-
-                    case GameMode.Shop:
-                        gameTimeSpeed = GameModeManager.Shop.GameTimeSpeed; break;
-                }
-
-                AdvanceInGameTime(gameTimeSpeed);
-
-                if (!DayEnd)
-                {
-                    #region <Random, non-gamemode-related events, etc>
-                    //*
-                    #endregion
-                }
-                else
-                {
-                    #region <Next day & checks>
-                    bool readyNextDay = true;
-
+                    float gameTimeSpeed = GameTimeSpeed_DEFAULT;
                     switch (GameModeManager.GameMode_Current)
                     {
                         case GameMode.Office:
-                            {
-                                readyNextDay = GameModeManager.Office.IsDayEndReady();
-                                break;
-                            }
+                            gameTimeSpeed = GameModeManager.Office.GameTimeSpeed; break;
 
                         case GameMode.Shop:
-                            {
-                                readyNextDay = GameModeManager.Shop.IsDayEndReady();
-                                break;
-                            }
+                            gameTimeSpeed = GameModeManager.Shop.GameTimeSpeed; break;
                     }
 
-                    if (readyNextDay)
+                    AdvanceInGameTime(gameTimeSpeed);
+
+                    if (!DayEnd)
                     {
-                        NextDay(); //*
+                        #region <Random, non-gamemode-related events, etc>
+                        //*
+                        #endregion
                     }
-                    #endregion
+                    else
+                    {
+                        #region <Next day & checks>
+                        bool readyNextDay = true;
+
+                        switch (GameModeManager.GameMode_Current)
+                        {
+                            case GameMode.Office:
+                                {
+                                    readyNextDay = GameModeManager.Office.IsDayEndReady();
+                                    break;
+                                }
+
+                            case GameMode.Shop:
+                                {
+                                    readyNextDay = GameModeManager.Shop.IsDayEndReady();
+                                    break;
+                                }
+                        }
+
+                        if (readyNextDay)
+                        {
+                            NextDay(); //*
+                        }
+                        #endregion
+                    }
+
+                    tGameTime = currentTime;
+                }
+            }
+
+            #region <Player play time>
+            //Increase Player's play time by 1 second if 1 second has passed:
+            if (currentTime >= tPlayerPlayTime + 1)
+            {
+                Player.PlayTime += 1;
+                tPlayerPlayTime = currentTime;
+
+                AchievementManager.CheckAchievementsByType(AchievementType.PlayerPlayTime);
+
+                #region **DEBUG PLAY TIME**
+                //Debug.Log("Play time (s): " + Player.PlayTime.ToString());
+                #endregion
+            }
+            #endregion
+
+            #region <INPUTS>
+            //TEST: Saving during gameplay
+            if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
+                SaveGame(SaveSlotDefault);
+
+            if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.U))
+                UpgradeManager.PurchaseActiveUpgrade(3);
+
+            //TEST: Lock & Unlock cursor / Sleep mode toggle / Build mode toggle
+            if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
+            {
+                //if (Cursor.lockState == CursorLockMode.None)
+                //    Cursor.lockState = CursorLockMode.Locked;
+                //else
+                //    Cursor.lockState = CursorLockMode.None;
+
+                //SleepMode = !SleepMode;
+
+                if (BuildMode)
+                    DisableBuildMode();
+                else
+                    EnableBuildMode();
+            }
+
+            //TEST: Player customization stuff
+            if (Input.GetKey(KeyCode.RightShift))
+            {
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+
+                    player.UnsetAllClothing();
+                    player.SetClothing(9);
+                    player.SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
+                    player.UpdateBodyColor(CustomizationManager.Character.SkinColors[3]);
                 }
 
-                tGameTime = currentTime;
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    //CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+
+                    //player.UnsetClothing(ClothingSlot.Costume);
+
+                    CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
+
+                    player.RandomizeAppearance();
+                    player.GetCustomizationData();
+                }
             }
-        }
-
-        //*<Check for new notifications> (Pop ups) ?
-
-        #region <Player play time>
-        //Increase Player's play time by 1 second if 1 second has passed:
-        if (currentTime >= tPlayerPlayTime + 1)
-        {
-            Player.PlayTime += 1;
-            tPlayerPlayTime = currentTime;
-
-            AchievementManager.CheckAchievementsByType(AchievementType.PlayerPlayTime);
-
-            #region **DEBUG PLAY TIME**
-            //Debug.Log("Play time (s): " + Player.PlayTime.ToString());
             #endregion
         }
-        #endregion
-
-        #region <INPUTS>
-        //TEST: Saving during gameplay
-        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.S))
-            SaveGame(SaveSlotCurrent);
-
-        if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.U))
-            UpgradeManager.PurchaseActiveUpgrade(3);
-
-        //TEST: Lock & Unlock cursor / Sleep mode toggle / Build mode toggle
-        if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
-        {
-            //if (Cursor.lockState == CursorLockMode.None)
-            //    Cursor.lockState = CursorLockMode.Locked;
-            //else
-            //    Cursor.lockState = CursorLockMode.None;
-
-            //SleepMode = !SleepMode;
-
-            if (BuildMode)
-                DisableBuildMode();
-            else
-                EnableBuildMode();
-        }
-
-        //TEST: Player customization stuff
-        if (Input.GetKey(KeyCode.RightShift))
-        {
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
-
-                player.UnsetAllClothing();
-                player.SetClothing(9);
-                player.SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
-                player.UpdateBodyColor(CustomizationManager.Character.SkinColors[3]);
-            }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                //CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
-
-                //player.UnsetClothing(ClothingSlot.Costume);
-
-                CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
-
-                player.RandomizeAppearance();
-                player.GetCustomizationData();
-            }
-        }
-        #endregion
     }
 
     #region <"Mode" change methods>
@@ -1044,6 +1039,27 @@ public class GameMaster : MonoBehaviour
     public string GetSaveFilePath(int saveSlot)
     {
         return Application.persistentDataPath + "/" + SaveFileName + Convert.ToString(saveSlot).PadLeft(3, '0') + SaveFileExtension;
+    }
+
+    private bool SaveFileExists(int saveSlot)
+    {
+        bool saveFileFound = false;
+
+        if (saveSlot > -1)
+        {
+            for (int i = 0; i < SaveCountMax; i++)
+            {
+                if (File.Exists(GetSaveFilePath(i)))
+                {
+                    saveFileFound = true;
+                    i = SaveCountMax; //break
+                }
+            }
+        }
+        else
+            Debug.Log("Invalid save slot number passed!");
+
+        return saveFileFound;
     }
     #endregion
 
