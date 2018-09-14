@@ -25,6 +25,17 @@ public class OfficeObjectScript : MonoBehaviour
     private Vector3? position_temp;
     private Quaternion rotation_temp;
 
+    public OfficeItemSO SO
+    {
+        get
+        {
+            if (OfficeItemID > -1)
+                return GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID];
+            else
+                return null;
+        }
+    }
+
     public void Initialize(int officeItemId, int objectIndex)
     {
         OfficeItemID = officeItemId;
@@ -361,7 +372,7 @@ public class OfficeObjectScript : MonoBehaviour
         if (!UseCustomPlacement)
         {
             if (OfficeItemID > -1)
-                placement = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Placement;
+                placement = SO.Placement;
             else
             {
                 placement = OfficeItemPosition.Floor;
@@ -413,7 +424,7 @@ public class OfficeObjectScript : MonoBehaviour
 
         if (OfficeItemID > -1)
         {
-            Renderer[] renderersDefault = GameMaster.Instance.CustomizationManager.Office.Items[OfficeItemID].Object.GetComponentsInChildren<Renderer>();
+            Renderer[] renderersDefault = SO.Object.GetComponentsInChildren<Renderer>();
             Dictionary<string, Material[]> materialsDefault = new Dictionary<string, Material[]>();
 
             Material[] matArray;

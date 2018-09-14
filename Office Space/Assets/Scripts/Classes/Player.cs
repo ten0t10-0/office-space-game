@@ -10,6 +10,7 @@ public class Player
     public int Level { get; private set; }
     public int Experience { get; private set; }
     public float PlayTime { get; set; }
+    public bool HasLifeLine { get; set; }
 
     public CharacterCustomizationData CharacterCustomizationData;
     public OfficeCustomizationData OfficeCustomizationData;
@@ -49,6 +50,8 @@ public class Player
         Experience = initialExperience;
 
         PlayTime = 0f;
+
+        HasLifeLine = true;
 
         CharacterCustomizationData = new CharacterCustomizationData(GameMaster.Instance.CustomizationManager.Character.MaterialBodyDefault.color);
         UnlockedClothing = new List<int>();
@@ -112,9 +115,15 @@ public class Player
 
         GetLevelUnlocks();
 
+        GameMaster.Instance.AchievementManager.CheckAchievementsByType(AchievementType.PlayerLevel);
+
         GameMaster.Instance.CheckDifficulty();
 
-        GameMaster.Instance.AchievementManager.CheckAchievementsByType(AchievementType.PlayerLevel);
+        if (Level >= GameMaster.Instance.ShopModeLevelRequirement)
+        {
+            GameMaster.Instance.ShopUnlocked = true;
+            GameMaster.Instance.Notifications.Add("SHOP UNLOCKED!");
+        }
     }
 
     private void GetLevelUnlocks()

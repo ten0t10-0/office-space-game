@@ -243,15 +243,25 @@ public class OfficeItemDatabaseSO : ScriptableObject
                 GameObject child = obj.transform.GetChild(i).gameObject;
 
                 if (child.GetComponent<OfficeObjectScript>() != null)
+                {
                     children.Add(child.transform);
+
+                    child.GetComponent<OfficeObjectScript>().ParentIndex = -1;
+                    child.GetComponent<OfficeObjectScript>().Deselect();
+                    child.transform.parent = officeObjectTransform;
+                }
             }
+
+            obj.layer = 2;
+            Destroy(obj);
+            CurrentObjects.RemoveAt(objectIndex);
+
+            UpdateObjectIndexes();
+
+            SelectedObjectIndex = -1;
 
             foreach (Transform child in children)
             {
-                child.GetComponent<OfficeObjectScript>().ParentIndex = -1;
-                child.GetComponent<OfficeObjectScript>().Deselect();
-                child.parent = officeObjectTransform;
-
                 if (Physics.Raycast(child.position, Vector3.down, out hit))
                 {
                     child.position = hit.point;
@@ -261,16 +271,13 @@ public class OfficeItemDatabaseSO : ScriptableObject
                     if (objScript != null)
                     {
                         child.gameObject.GetComponent<OfficeObjectScript>().SetParent(objScript.ObjectIndex);
+
+                        Debug.Log("New parent: " + objScript.gameObject.name);
                     }
+                    else
+                        Debug.Log("New parent: " + child.parent.name);
                 }
             }
-
-            Destroy(obj);
-            CurrentObjects.RemoveAt(objectIndex);
-
-            UpdateObjectIndexes();
-
-            SelectedObjectIndex = -1;
         }
         else
             Debug.Log("Cannot remove essential office items!");
@@ -281,25 +288,14 @@ public class OfficeItemDatabaseSO : ScriptableObject
     /// </summary>
     public void RemoveAllOfficeObjects()
     {
-        List<GameObject> essentialObjects = new List<GameObject>();
-
         if (CurrentObjects.Count > 0)
         {
             for (int i = 0; i < CurrentObjects.Count; i++)
             {
                 if (!CurrentObjects[i].GetComponent<OfficeObjectScript>().Essential)
-                    Destroy(CurrentObjects[i]);
-                else
-                    essentialObjects.Add(CurrentObjects[i]);
-            }
-
-            CurrentObjects.Clear();
-
-            if (essentialObjects.Count > 0)
-            {
-                for (int i = 0; i < essentialObjects.Count; i++)
                 {
-                    CurrentObjects.Add(essentialObjects[i]);
+                    RemoveOfficeObject(i);
+                    i--;
                 }
             }
         }
@@ -378,7 +374,7 @@ public class OfficeItemDatabaseSO : ScriptableObject
         MaterialCeilingCurrent.color = MaterialCeilingDefault.color;
     }
 
-    public float GetValue()
+    public float GetTotalValue()
     {
         float value = 0;
 
@@ -398,6 +394,61 @@ public class OfficeItemDatabaseSO : ScriptableObject
         }
 
         return value;
+    }
+
+    public bool RepossessItems(float debtValue)
+    {
+        bool sufficientValue = true;
+
+        float officeValue = GetTotalValue();
+        float accumulatedValue = 0f;
+        float remainingValue = 0f;
+
+        if (officeValue >= debtValue)
+        {
+            while (accumulatedValue < debtValue)
+            {
+                float lowestValue = Mathf.Infinity;
+                int iObjectToRemove = -1;
+
+                for (int iObject = 0; iObject < CurrentObjects.Count; iObject++)
+                {
+                    OfficeObjectScript obj = CurrentObjects[iObject].GetComponent<OfficeObjectScript>();
+
+                    if (!obj.Essential)
+                    {
+                        if (obj.SO.Price < lowestValue)
+                        {
+                            lowestValue = obj.SO.Price;
+                            iObjectToRemove = iObject;
+                        }
+                    }
+                }
+
+                Debug.Log("*REMOVE: " + CurrentObjects[iObjectToRemove].name);
+                RemoveOfficeObject(iObjectToRemove);
+                accumulatedValue += lowestValue;
+            }
+
+            remainingValue = accumulatedValue - debtValue;
+
+            Debug.Log("*REQUIRED VALUE: " + debtValue.ToString());
+            Debug.Log("*ACCUMULATED VALUE: " + accumulatedValue.ToString());
+        }
+        else if (GameMaster.Instance.Player.HasLifeLine)
+        {
+            GameMaster.Instance.Player.HasLifeLine = false;
+
+            Debug.Log("*LIFELINE USED");
+
+            RemoveAllOfficeObjects();
+        }
+        else
+        {
+            sufficientValue = false;
+        }
+
+        return sufficientValue;
     }
 
     private void UpdateObjectIndexes()

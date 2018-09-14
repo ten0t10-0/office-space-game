@@ -79,6 +79,7 @@ public class GameMaster : MonoBehaviour
     public int initPlayerLevel = 1;
     public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
+    public int ShopModeLevelRequirement = 10;
     #endregion
 
     #region <GAME>
@@ -367,6 +368,13 @@ public class GameMaster : MonoBehaviour
 
         //Spawn Player Object
         InitializePlayer();
+    }
+
+    public void EndGame()
+    {
+        SleepMode = true;
+        DisableBuildMode();
+        ModeSetUI();
     }
 
     private void NewGameTEST()
@@ -697,6 +705,17 @@ public class GameMaster : MonoBehaviour
 
             if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.U))
                 UpgradeManager.PurchaseActiveUpgrade(3);
+
+            if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.D))
+            {
+                Debug.Log("*CURRENT OFFICE VALUE: " + CustomizationManager.Office.GetTotalValue());
+                bool result = CustomizationManager.Office.RepossessItems(1000f);
+
+                if (result)
+                    Debug.Log("**REPOSSESSION SUCCESS**");
+                else
+                    Debug.Log("**GAME OVER**");
+            }
 
             //TEST: Lock & Unlock cursor / Sleep mode toggle / Build mode toggle
             if (Input.GetKeyDown(KeyCode.C) && !Input.GetKey(KeyCode.RightShift))
