@@ -21,4 +21,5 @@ MonoBehaviour:
   - {fileID: 4300036, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
   CustomMaterials:
   - {fileID: 2100004, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
+  - {fileID: 2100008, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
   - {fileID: 2100006, guid: 887a076c6fb697f45bbfd7d24fe5be2e, type: 3}
