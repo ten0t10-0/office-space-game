@@ -8,11 +8,12 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle;
 
 	public Button btnDecrease,btnIncrease;
 
 	private GameObject playerGuy,customerGuy;
+	public Animator hudO;
 
 	CharacterCustomizationData Char;
 	CharacterCustomizationScript playerCus;
@@ -44,13 +45,14 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				InteractionPanel.SetActive (true);
+				
+				//InteractionPanel.SetActive (true);
 				OpenPanel.SetActive (false);
 				hudCanvas.SetActive (false);
+				particle.SetActive (false);
 				cube.SetActive (true);
-//				startInteraction ();
+				mount.GetComponent<Collider>().enabled = false;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-				//StartCoroutine (startO ());
 			}
 		}
 		if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
@@ -65,12 +67,20 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	public void startInteraction(CharacterCustomizationScript customer)
 	{
+		Debug.Log ("Do I ru??????????????????????????????");
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
 
-		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
-		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
-		//customer apperance
+		InteractionPanel.SetActive (true);
+		hudO.SetBool ("UIO", true);
+		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+
+
+		//playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
+		//customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
+	
+		runInteraction (0);
+
 	}
 	public void runInteraction(int i)
 	{
@@ -138,6 +148,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				player.SetBool ("PlayerIn", false);
 				speech.SetBool ("SpeechIn", false);
 				bars.SetBool ("BarIn", false);
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
 			}
@@ -183,11 +194,6 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 			return OpenPanel.activeInHierarchy;
 		}
-	}
-	IEnumerator startO()
-	{
-		yield return new WaitForSeconds(3);
-		runInteraction (0);
 	}
 	public void ChangeAmount(bool increase)
 	{

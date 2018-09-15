@@ -22,6 +22,13 @@ public class SlidingDoorScript : MonoBehaviour {
 			FindObjectOfType<SoundManager>().Play("SlidingDoor");
 		}
 	}
+	void OnTriggerStay(Collider other)
+	{
+		if (other.tag == "NPC")
+		{
+			isInsideTrigger = true;
+		}
+	}
 
 	void OnTriggerExit(Collider other)
 	{

@@ -6,42 +6,30 @@ using TMPro;
 public class GetNpc : MonoBehaviour {
 
 	public GameObject cube1,cube2,cube3;
+	public Collider col1, col2, col3;
 	public int line;
-	public CharacterCustomizationScript Cus1,Cus2,Cus3;
-	public TextMeshPro time1, time2, time3;
-	int timer1,timer2,timer3;
-	bool cusWait1 = false, cusWait2 = false, cusWait3 = false;
+
+	ServeCustomer serve;
+
+	void Awake()
+	{
+		serve = FindObjectOfType<ServeCustomer> ();
+
+	}
 
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "NPC")
 		{
 			Enter (other, line);
-			Debug.Log("Blooooooooooooooooooooooooooooooop");
 		}
 	}
-	void Update()
+	void OnTriggerExit(Collider other)
 	{
-//		if (cusWait1 == true)
-//		{
-//			timer1 -= Time.deltaTime; 
-//		}
-//
-//		if (cusWait2 == true) 
-//		{
-//			timer2 -= Time.deltaTime; 
-//		}
-//
-//		if (cusWait3 == true) 
-//		{
-//			timer3 -= Time.deltaTime; 
-//		}
-//
-//
-//		if (time1 < 0) 
-//		{
-//			
-//		}
+		if (other.tag == "NPC")
+		{
+			Exit (other,line);
+		}
 	}
 
 	void Enter(Collider col, int i)
@@ -50,28 +38,56 @@ public class GetNpc : MonoBehaviour {
 		{
 		case 1:
 			{
-				Cus1 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.cus1 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				cube1.SetActive (true);
-				cusWait1 = true;
-				Debug.Log ("Customer Counter " + i);
+				col1.enabled = true;
+				serve.StartTimer (i);
+				Debug.Log ("Customer Counter on Enter" + i);
 				break;
 			}
 		case 2:
 			{
-				Cus2 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.cus2 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				cube2.SetActive (true);
-				cusWait2 = true;
+				serve.StartTimer (i);
+				col2.enabled = true;
 				Debug.Log ("Customer Counter " + i);
 				break;
 			}
 		case 3:
 			{
-				Cus3 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.cus3 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				cube3.SetActive (true);
-				cusWait3 = true;
+				col3.enabled = true;
+				serve.StartTimer (i);
 				Debug.Log ("Customer Counter " + i);
 				break;
 			}
 		}
 	}
+	void Exit(Collider col, int i)
+	{
+		switch (i) 
+		{
+		case 1:
+			{
+				cube1.SetActive (false);
+				col1.enabled = false;
+				break;
+			}
+		case 2:
+			{
+				col2.enabled = false;
+				cube2.SetActive (false);
+				break;
+			}
+		case 3:
+			{
+				col3.enabled = false;
+				cube3.SetActive (false);
+				break;
+			}
+		}
+	}
+
 }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PCTutorial : MonoBehaviour 
 {
 	public Animator app, customisation, achivment, bank;
-	public GameObject questionmark,charaterQuestionMark,pcTutorial2;
+	public GameObject questionmark,charaterQuestionMark,pcTutorial2,canvas;
 
 	DialogueManager manager;
 	DialogueTrigger trigger;
@@ -19,9 +19,11 @@ public class PCTutorial : MonoBehaviour
 	private bool isInsideTrigger = false;
 
 
+
 	// Use this for initialization
 	void Start () 
 	{
+		canvas.SetActive (true);
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
 
@@ -48,8 +50,8 @@ public class PCTutorial : MonoBehaviour
 				NextDialogue (counter);
 				counter++;
 				Debug.Log ("Blooooop"+counter);
-				//Cursor.lockState = CursorLockMode.Locked;
-				//manager.DisplayNextSentence ();
+				Cursor.lockState = CursorLockMode.Locked;
+
 				manager.DisplayNextSentence();
 			}
 
@@ -63,32 +65,35 @@ public class PCTutorial : MonoBehaviour
 		{
 		case 1:
 			{
-				Debug.Log ("Bloooooprunning????"+counter);
+				manager.charaA.PointSideUp ();
 				customisation.SetBool ("BtnO", true);
 				disableSpace = false;
 				break;
 			}
 		case 2:
 			{
-				Debug.Log ("Bloooooprunning????"+counter);
+				manager.charaA.PointSideUp ();
 				customisation.SetBool ("BtnO", false);
 				app.SetBool ("BtnO", true);
 				break;
 			}
 		case 3:
 			{
+				manager.charaA.PointSide ();
 				app.SetBool ("BtnO", false);
 				achivment.SetBool ("BtnO", true);
 				break;
 			}
 		case 4:
 			{
+				manager.charaA.PointSideUp ();
 				achivment.SetBool ("BtnO", false);
 				break;
 			}
 		case 5:
 			{
-				//Cursor.lockState = CursorLockMode.None;
+				Cursor.lockState = CursorLockMode.None;
+				manager.charaA.PointSideUp ();
 				app.SetBool ("BtnO", true);
 				break;
 			}

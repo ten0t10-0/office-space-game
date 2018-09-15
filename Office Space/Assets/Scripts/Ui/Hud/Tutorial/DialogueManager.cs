@@ -15,9 +15,12 @@ public class DialogueManager : MonoBehaviour {
 	string letters;
 
 	public int count = 0;
-	public GameObject tutorialGuy,spawnLocation;
+	public GameObject tutorialGuy,spawnLocation,next,canvas;
 	private GameObject currentGuy;
 	public bool done = true;
+	[HideInInspector]
+	public CharacterAnimationScript charaA;
+
 
 	void Start () 
 	{
@@ -26,6 +29,8 @@ public class DialogueManager : MonoBehaviour {
 
 		currentGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(GameMaster.Instance.CustomizationManager.Character.AccessoryPresets[0]);
 		currentGuy.GetComponent<CharacterCustomizationScript> ().RandomizeAppearance ();
+		charaA = currentGuy.GetComponent<CharacterAnimationScript> ();
+		canvas.SetActive (false);
 
 	}
 
@@ -49,7 +54,7 @@ public class DialogueManager : MonoBehaviour {
 	public void DisplayNextSentence()
 	{
 		count++;
-
+		next.SetActive (false);
 		if (sentences.Count == 0) 
 		{
 			EndDialogue ();
@@ -81,5 +86,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 		done = true;
 		letters = "";
+		next.SetActive (true);
 	}
+
 }

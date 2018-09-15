@@ -105,7 +105,7 @@ public class AI_try4 : MonoBehaviour
 				Target = WayPoints [Cur_Waypoint];
 
 
-				cur_timer = Random.Range(0.1f,3f);
+				cur_timer = Random.Range(0.1f,0.3f);
 			}
 		}
 		nm.SetDestination (Target.position);
