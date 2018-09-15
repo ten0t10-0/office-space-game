@@ -404,16 +404,19 @@ public class OfficeObjectScript : MonoBehaviour
 
         foreach (Renderer r in renderers)
         {
-            if (r.sharedMaterials.Length == 1)
-                r.sharedMaterial = material;
-            else
+            if (r.gameObject.layer != 5)
             {
-                Material[] newMaterials = new Material[r.sharedMaterials.Length];
+                if (r.sharedMaterials.Length == 1)
+                    r.sharedMaterial = material;
+                else
+                {
+                    Material[] newMaterials = new Material[r.sharedMaterials.Length];
 
-                for (int i = 0; i < newMaterials.Length; i++)
-                    newMaterials[i] = material;
+                    for (int i = 0; i < newMaterials.Length; i++)
+                        newMaterials[i] = material;
 
-                r.sharedMaterials = newMaterials;
+                    r.sharedMaterials = newMaterials;
+                }
             }
         }
     }
@@ -431,23 +434,29 @@ public class OfficeObjectScript : MonoBehaviour
 
             for (int i = 0; i < renderersDefault.Length; i++)
             {
-                matArray = renderersDefault[i].sharedMaterials;
+                if (renderersDefault[i].gameObject.layer != 5)
+                {
+                    matArray = renderersDefault[i].sharedMaterials;
 
-                materialsDefault.Add(renderersDefault[i].gameObject.name, matArray);
+                    materialsDefault.Add(renderersDefault[i].gameObject.name, matArray);
+                }
             }
 
             foreach (Renderer r in renderers)
             {
-                string objName = r.gameObject.name;
-
-                if (!GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault.ContainsKey(objName))
+                if (r.gameObject.layer != 5)
                 {
-                    if (!materialsDefault.ContainsKey(objName))
-                    {
-                        objName = objName.Substring(0, objName.Length - "(Clone)".Length);
-                    }
+                    string objName = r.gameObject.name;
 
-                    r.sharedMaterials = materialsDefault[objName];
+                    if (!GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault.ContainsKey(objName))
+                    {
+                        if (!materialsDefault.ContainsKey(objName))
+                        {
+                            objName = objName.Substring(0, objName.Length - "(Clone)".Length);
+                        }
+
+                        r.sharedMaterials = materialsDefault[objName];
+                    }
                 }
             }
         }
@@ -455,7 +464,8 @@ public class OfficeObjectScript : MonoBehaviour
         {
             foreach (Renderer r in renderers)
             {
-                r.sharedMaterials = GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault[r.gameObject.name];
+                if (r.gameObject.layer != 5)
+                    r.sharedMaterials = GameMaster.Instance.CustomizationManager.Office.MaterialEssentialObjectsDefault[r.gameObject.name];
             }
         }
     }
