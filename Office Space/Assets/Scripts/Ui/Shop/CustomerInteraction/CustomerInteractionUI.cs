@@ -76,8 +76,8 @@ public class CustomerInteractionUI : MonoBehaviour
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
 
-		//playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
-		//customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
+//		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
+//		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
 	
 		runInteraction (0);
 

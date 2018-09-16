@@ -11,6 +11,7 @@ public class PcTutorial2 : MonoBehaviour
 
 	public GameObject shopDoor,pcTutorial2,customisation;
 	int counter = 0;
+	bool disableSpace = true;
 
 	DialogueManager manager;
 	Dialogue dialogue;
@@ -27,24 +28,48 @@ public class PcTutorial2 : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			
-			if (manager.count == 0) {
-				DashBtn.enabled = true;
-			}
-			if (manager.count == 1) {
-				ShowPanel (orderP, DashP,orderBtn,DashBtn);
-			}
-			if (manager.count == 2) {
-				ShowPanel (inventoryP, orderP, inventoryBtn, orderBtn);
-			}
-			if (manager.count == 3) {
-				ShowPanel (OrdersP, inventoryP, orderBtn, inventoryBtn);
-				Cursor.visible = true;
-			}
-			manager.DisplayNextSentence ();
-
+		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
+		{
+			NextDialogue (counter);
 			counter++;
+			Debug.Log ("Blooooop"+counter);
+			Cursor.lockState = CursorLockMode.Locked;
+
+			manager.DisplayNextSentence();
+		}
+	}
+
+	public void NextDialogue(int i)
+	{
+		switch (i) 
+		{
+		case 1:
+			{
+				manager.charaA.PointSideUp ();
+				DashBtn.enabled = true;
+				break;
+			}
+		case 2:
+			{
+				ShowPanel (orderP, DashP,orderBtn,DashBtn);
+				break;
+			}
+		case 3:
+			{
+				ShowPanel (inventoryP, orderP, inventoryBtn, orderBtn);
+				break;
+			}
+		case 4:
+			{
+				ShowPanel (OrdersP, inventoryP, orderBtn, inventoryBtn);
+				break;
+			}
+		case 5:
+			{
+				break;
+			}
+		default:
+			break;
 		}
 	}
 

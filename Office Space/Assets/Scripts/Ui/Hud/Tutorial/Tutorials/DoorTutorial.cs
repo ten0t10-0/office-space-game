@@ -6,7 +6,9 @@ public class DoorTutorial : MonoBehaviour
 {
 	DialogueManager manager;
 	DialogueTrigger trigger;
-	public GameObject tutorial;
+	public GameObject tutorial,canvas;
+	bool disableSpace = true;
+	int counter = 0;
 
 	void Start () 
 	{
@@ -16,20 +18,42 @@ public class DoorTutorial : MonoBehaviour
 
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.Space)) 
+		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 		{
-			//manager.DisplayNextSentence ();
-			if (manager.count == 3) 
+			NextDialogue (counter);
+			counter++;
+			manager.DisplayNextSentence();
+		}
+
+	}
+	public void NextDialogue(int i)
+	{
+		switch (i) 
+		{
+		case 1:
 			{
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 				tutorial.SetActive (false);
+				GameMaster.Instance.PlayerControl = true;
+				canvas.SetActive (false);
+				break;
 			}
 		}
 	}
+
+
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "Player")
 		{
 			trigger.TriggerDialogue ();
+			canvas.SetActive (true);
+			disableSpace = false;
+			manager.charaA.Greet ();
+			Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+			GameMaster.Instance.PlayerControl = false;
+
 		}
 	}
 }

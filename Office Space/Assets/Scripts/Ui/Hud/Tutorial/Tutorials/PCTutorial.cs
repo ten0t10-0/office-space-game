@@ -23,7 +23,7 @@ public class PCTutorial : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		canvas.SetActive (true);
+		
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
 
@@ -37,6 +37,7 @@ public class PCTutorial : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
+				canvas.SetActive (true);
 				questionmark.SetActive (false);
 				trigger.TriggerDialogue ();
 				disableSpace = false;
