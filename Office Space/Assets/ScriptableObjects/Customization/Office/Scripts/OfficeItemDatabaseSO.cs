@@ -41,7 +41,6 @@ public class OfficeItemDatabaseSO : ScriptableObject
     public int MaxNumberOfObjects = 15;
 
     public List<OfficeItemSO> Items;
-    public List<OfficeItemTypeSO> Types;
 
     private Transform officeRoomTransform;
     private Transform officeObjectTransform;
@@ -315,8 +314,9 @@ public class OfficeItemDatabaseSO : ScriptableObject
         {
             OfficeItem officeItem;
 
-            foreach (GameObject obj in CurrentObjects)
+            for (int i = 0; i < CurrentObjects.Count; i++)
             {
+                GameObject obj = CurrentObjects[i];
                 OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
 
                 if (objScript.OfficeItemID > -1)
@@ -335,6 +335,27 @@ public class OfficeItemDatabaseSO : ScriptableObject
                     data.Dependencies.Add(new OfficeObjectDependency(objScript.ObjectIndex, objScript.ParentIndex));
                 }
             }
+
+            //foreach (GameObject obj in CurrentObjects)
+            //{
+            //    OfficeObjectScript objScript = obj.GetComponent<OfficeObjectScript>();
+
+            //    if (objScript.OfficeItemID > -1)
+            //    {
+            //        officeItem = new OfficeItem(objScript.OfficeItemID, obj.transform.position, obj.transform.rotation);
+            //    }
+            //    else
+            //    {
+            //        officeItem = new OfficeItem(obj.name, obj.transform.position, obj.transform.rotation);
+            //    }
+
+            //    data.OfficeItems.Add(officeItem);
+
+            //    if (objScript.ParentIndex != -1)
+            //    {
+            //        data.Dependencies.Add(new OfficeObjectDependency(objScript.ObjectIndex, objScript.ParentIndex));
+            //    }
+            //}
         }
 
         ResetAllObjectParents();

@@ -35,23 +35,33 @@ MonoBehaviour:
   ObjectsParentName: Objects
   ShopParentName: Shop
   ShopRoomParentName: Room
-  MaxNumberOfObjects: 25
+  MaxNumberOfObjects: 100
   Items:
   - {fileID: 11400000, guid: c6a5117425a2d5e4fb37cf6a294e5348, type: 2}
-  - {fileID: 11400000, guid: 3ffe20ae191503049bb40c0d4697cc38, type: 2}
-  - {fileID: 11400000, guid: fffd17d5b5902004a9df5fd169aa006a, type: 2}
-  - {fileID: 11400000, guid: 07724911dcac4ab438f64753007cde74, type: 2}
   - {fileID: 11400000, guid: 72664b511fd520e46a47ac9d35cc360b, type: 2}
-  - {fileID: 11400000, guid: 16574d42a3ea68349847c461db959892, type: 2}
-  - {fileID: 11400000, guid: 3b95dd3b2c9c9f7429e91f0155eb746b, type: 2}
-  - {fileID: 11400000, guid: 74a3335c29907244b9eafd44a0addd77, type: 2}
+  - {fileID: 11400000, guid: fffd17d5b5902004a9df5fd169aa006a, type: 2}
   - {fileID: 11400000, guid: cdff8f7bee1955c45ae16ca761e7338a, type: 2}
+  - {fileID: 11400000, guid: 3ffe20ae191503049bb40c0d4697cc38, type: 2}
+  - {fileID: 11400000, guid: 16574d42a3ea68349847c461db959892, type: 2}
+  - {fileID: 11400000, guid: d732276de414ca649a3c3166643e96cb, type: 2}
+  - {fileID: 11400000, guid: 74a3335c29907244b9eafd44a0addd77, type: 2}
+  - {fileID: 11400000, guid: 04f6c9c158fe22c479aa6c3cfee01828, type: 2}
   - {fileID: 11400000, guid: 4c6a478424b9b7d47a1f589403b34cf4, type: 2}
-  Types:
-  - {fileID: 11400000, guid: 048ddd642f575ed45a2279dafef4bb83, type: 2}
-  - {fileID: 11400000, guid: ad89eda27dd31004e94b3c4b17731495, type: 2}
-  - {fileID: 11400000, guid: 3739d0f0e1813b64ba0ffecd65121766, type: 2}
-  - {fileID: 11400000, guid: e196161b1d7425c40bc0a8a221d86813, type: 2}
+  - {fileID: 11400000, guid: 5e6a97586b7b6954594ef1dec483de80, type: 2}
+  - {fileID: 11400000, guid: 07724911dcac4ab438f64753007cde74, type: 2}
+  - {fileID: 11400000, guid: 3e91db2b67569964d8b5ec49949b7293, type: 2}
+  - {fileID: 11400000, guid: 0b1f132731e982341912f43cf74724e3, type: 2}
+  - {fileID: 11400000, guid: 17891afa0bd349348bbb9462632b8848, type: 2}
+  - {fileID: 11400000, guid: ec3089004629c5d46adac977d65ed8c4, type: 2}
+  - {fileID: 11400000, guid: c6fba0756cca8d04fb7c519825b0b10c, type: 2}
+  - {fileID: 11400000, guid: 22b59675646060647b066438d8411ecb, type: 2}
+  - {fileID: 11400000, guid: 9805b7537d3b9a445bf22269d5b57922, type: 2}
+  - {fileID: 11400000, guid: 3b95dd3b2c9c9f7429e91f0155eb746b, type: 2}
+  - {fileID: 11400000, guid: a57c077d373cdc34fa7da6fb31c91649, type: 2}
   CurrentObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

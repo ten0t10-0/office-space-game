@@ -10,6 +10,6 @@ public class OfficeItemSO : ScriptableObject
     public bool Essential;
     public int LevelRequirement;
     public OfficeItemPosition Placement;
-    public OfficeItemTypeSO Type;
+    public OfficeItemCategory Category;
     public GameObject Object;
 }

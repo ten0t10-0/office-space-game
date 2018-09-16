@@ -87,6 +87,7 @@ public class GameMaster : MonoBehaviour
     public GameModeManagerScript GameModeManager;
 
     #region <Game Data file info>
+    public string SaveNameDefault = "Save";
     public string SaveFileName = "Game";
     public string SaveFileExtension = ".gd";
     public int SaveCountMax = 10;
@@ -939,7 +940,7 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <SAVING & LOADING METHODS>
-    public void SaveGame(int saveSlot)
+    public void SaveGame(int saveSlot, string saveName = null)
     {
         if (TEMPSaveGame)
         {
@@ -981,8 +982,14 @@ public class GameMaster : MonoBehaviour
                 GameMode = GameModeManager.GameMode_Current
             };
 
+            if (saveName == null)
+            {
+                saveName = string.Format("{0} {1}", SaveNameDefault, saveSlot.ToString().PadLeft(3, '0'));
+            }
+
             SaveData saveData = new SaveData
             {
+                Name = saveName,
                 Date = DateTime.Now,
                 GameData = gameData
             };
@@ -994,7 +1001,7 @@ public class GameMaster : MonoBehaviour
             file.Close();
 
             //LOG:
-            Debug.Log("GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
+            Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
         }
     }
 
@@ -1047,7 +1054,7 @@ public class GameMaster : MonoBehaviour
         CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
 
         //LOG:
-        Debug.Log("GAME DATA LOADED!");
+        Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA LOADED!");
     }
 
     //public void DeleteSave()
@@ -1064,16 +1071,9 @@ public class GameMaster : MonoBehaviour
     {
         bool saveFileFound = false;
 
-        if (saveSlot > -1)
+        if (saveSlot > -1 && File.Exists(GetSaveFilePath(saveSlot)))
         {
-            for (int i = 0; i < SaveCountMax; i++)
-            {
-                if (File.Exists(GetSaveFilePath(i)))
-                {
-                    saveFileFound = true;
-                    i = SaveCountMax; //break
-                }
-            }
+            saveFileFound = true;
         }
         else
             Debug.Log("Invalid save slot number passed!");
