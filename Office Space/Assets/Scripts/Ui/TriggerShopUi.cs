@@ -20,8 +20,11 @@ public class TriggerShopUi : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				cus.StartCustomerUi (line);
+				
 				OpenPanel.SetActive(false);
+				Debug.Log ("Wooooop");
+				cus.StartCustomerUi (line);
+
 			}
 		}
 	}

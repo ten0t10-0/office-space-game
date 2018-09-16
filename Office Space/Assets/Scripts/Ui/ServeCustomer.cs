@@ -120,22 +120,26 @@ public class ServeCustomer : MonoBehaviour
 		{
 		case 1:
 			{
-				
-				cusI.startInteraction (cus1);
+				Debug.Log ("Wooooop1111111111111111111111111");
 				line1.SetActive (false);
+				OpenPanel.SetActive (false);
+				cusI.startInteraction (cus1);
+
 
 				break;
 			}
 		case 2:
 			{
-				cusI.startInteraction (cus2);
+				OpenPanel.SetActive (false);
 				line2.SetActive (false);
+				cusI.startInteraction (cus2);
 				break;
 			}
 		case 3:
 			{
-				cusI.startInteraction (cus3);
+				OpenPanel.SetActive (false);
 				line3.SetActive (false);
+				cusI.startInteraction (cus3);
 				break;
 			}
 		}
