@@ -1074,7 +1074,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
   Cur_Waypoint: 0
   tempr_Waypoint: 0
   speed: 1
