@@ -92,7 +92,8 @@ public class GameMaster : MonoBehaviour
     public string SaveFileExtension = ".gd";
     public int SaveCountMax = 10;
     public int SaveSlotDefault = 0;
-    private int SaveSlotCurrent = -1;
+	[HideInInspector]
+    public int SaveSlotCurrent = -1;
     #endregion
 
     #region <Bools>

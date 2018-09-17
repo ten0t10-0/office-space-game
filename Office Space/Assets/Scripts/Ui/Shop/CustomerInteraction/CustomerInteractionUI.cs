@@ -76,8 +76,8 @@ public class CustomerInteractionUI : MonoBehaviour
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
 
-//		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
-//		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
+		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
+		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
 	
 		runInteraction (0);
 
@@ -205,4 +205,14 @@ public class CustomerInteractionUI : MonoBehaviour
 		btnDecrease.interactable = currentAmount > min;
 		btnIncrease.interactable = currentAmount < max;
 	}
+//	Item  RandomItem()
+//	{
+//		foreach (Item item in GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay) 
+//		{
+//			if (item != null) 
+//			{
+//				return GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay [Random.Range (0, GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay.Length)];
+//			}
+//		}
+//	}
 }

@@ -43,7 +43,7 @@ public class LoadGame : MonoBehaviour {
 				newItem.transform.Find ("Button/empty").GetComponent<TMP_Text> ().text = "";
 				newItem.transform.Find ("Button/date").GetComponent<TMP_Text> ().text = loadData.Date.ToString();
 			}
-			newItem.transform.Find ("Button").GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("Button/Slot").GetComponent<TMP_Text>().text),newItem);});
+			newItem.transform.Find ("Button").GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("Button/num").GetComponent<TMP_Text>().text),newItem);});
 		}
 
 
@@ -70,7 +70,8 @@ public class LoadGame : MonoBehaviour {
 		}
 		else 
 		{
-			GameMaster.Instance.LoadGame(selectedSlot);
+			GameMaster.Instance.SaveSlotCurrent = selectedSlot;
+			UnityEngine.SceneManagement.SceneManager.LoadScene ("Main", UnityEngine.SceneManagement.LoadSceneMode.Single);
 			Debug.Log ("i is loaded!!??");
 		}
 
