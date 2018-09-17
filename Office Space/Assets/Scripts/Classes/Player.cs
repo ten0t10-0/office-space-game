@@ -35,19 +35,18 @@ public class Player
     /// <summary>
     /// Creates a NEW player. Default clothing unlocked and activated in customization data. Default Office items unlocked.
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="businessName"></param>
-    /// <param name="startingMoney"></param>
-    /// <param name="maximumInventorySpace"></param>
-    /// <param name="maximumShopInventorySpace"></param>
-    public Player(string name, string businessName, int initialLevel, int initialExperience, float startingMoney, float initialMarkup, float maximumInventorySpace, int shopItemSlotCount)
+    public Player(string name, string businessName, int initialLevel, float startingMoney, float initialMarkup, float maximumInventorySpace, int shopItemSlotCount)
     {
         Name = name;
 
         Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, shopItemSlotCount);
 
+        if (initialLevel < 1)
+        {
+            initialLevel = 1;
+        } 
         Level = initialLevel;
-        Experience = initialExperience;
+        Experience = GetLevelExperience(initialLevel);
 
         PlayTime = 0f;
 

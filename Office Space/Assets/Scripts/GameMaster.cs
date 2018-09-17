@@ -59,8 +59,11 @@ public class GameMaster : MonoBehaviour
     public AchievementManager AchievementManager;
     [HideInInspector]
     public UpgradeManager UpgradeManager;
+    [HideInInspector]
+    public DatabaseManager DBManager;
     #endregion
 
+    [HideInInspector]
     public bool IsMainMenu = false;
 
     #region <PLAYER/NPC>
@@ -77,7 +80,6 @@ public class GameMaster : MonoBehaviour
     public float initPlayerMarkup = 0.15f;
     public float initPlayerInventorySpace = 100;
     public int initPlayerLevel = 1;
-    public int initPlayerExperience = 0;
     public int PlayerExperienceBase = 100;
     public int ShopModeLevelRequirement = 10;
     #endregion
@@ -92,7 +94,7 @@ public class GameMaster : MonoBehaviour
     public string SaveFileExtension = ".gd";
     public int SaveCountMax = 10;
     public int SaveSlotDefault = 0;
-	[HideInInspector]
+    [HideInInspector]
     public int SaveSlotCurrent = -1;
     #endregion
 
@@ -225,6 +227,7 @@ public class GameMaster : MonoBehaviour
         NPCManager = GetComponent<NPCManager>();
         AchievementManager = GetComponent<AchievementManager>();
         UpgradeManager = GetComponent<UpgradeManager>();
+        DBManager = GetComponent<DatabaseManager>();
 
         #region <Validate Game Save File Name & Extension>
         string tempSaveFileName, tempSaveFileExtension;
@@ -265,14 +268,47 @@ public class GameMaster : MonoBehaviour
         #endregion
 
         currentMessage = MSG_GEN_NA;
+
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (sceneName == "MainMenu")
+            IsMainMenu = true;
+        else if (sceneName == "Main")
+            IsMainMenu = false;
     }
 
     private void Start()
     {
         if (!IsMainMenu)
-            InitializeGame(SaveSlotDefault);
-        else
-            Debug.Log("*DONE!");
+        {
+            //DB Tests
+            if (!OfflineMode)
+            {
+                DBPlayer currentPlayer = new DBPlayer()
+                {
+                    Username = Player.Name,
+                    Experience = Player.Experience,
+                    Money = Player.Business.Money
+                };
+
+                if (!DBManager.CheckPlayerUsername(Player.Name))
+                {
+                    bool success = DBManager.AddPlayer(currentPlayer);
+
+                    Debug.Log("*ADDED PLAYER: " + success.ToString());
+                }
+                else
+                {
+                    bool success = DBManager.UpdatePlayer(currentPlayer);
+
+                    Debug.Log("*UPDATED PLAYER: " + success.ToString());
+                }
+
+                List<DBPlayer> highScores = DBManager.GetHighScores();
+
+                foreach (DBPlayer player in highScores)
+                    Debug.Log(player.ToString());
+            }
+        }
     }
 
     /// <summary>
@@ -281,6 +317,8 @@ public class GameMaster : MonoBehaviour
     /// <param name="initialSaveSlot"></param>
     public void InitializeGame(int initialSaveSlot = -1)
     {
+        Debug.Log("INIT BEGIN");
+
         //UIMode = false;
         //BuildMode = false;
         //OfflineMode = false;
@@ -344,7 +382,7 @@ public class GameMaster : MonoBehaviour
         GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
         //Set Difficulty
         Difficulty = initDifficulty;
@@ -424,7 +462,7 @@ public class GameMaster : MonoBehaviour
             GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerExperience, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out resultGeneric);
@@ -1072,9 +1110,10 @@ public class GameMaster : MonoBehaviour
     {
         bool saveFileFound = false;
 
-        if (saveSlot > -1 && File.Exists(GetSaveFilePath(saveSlot)))
+        if (saveSlot > -1)
         {
-            saveFileFound = true;
+            if (File.Exists(GetSaveFilePath(saveSlot)))
+                saveFileFound = true;
         }
         else
             Debug.Log("Invalid save slot number passed!");

@@ -219,6 +219,7 @@ public class CharacterCustomizationScript : MonoBehaviour
         MaterialBody.color = customizationData.GetBodyColor();
 
         UnsetAllClothing();
+        UnsetAllAccessories();
 
         foreach (ClothingSlot slot in clothingDictionary.Keys)
         {

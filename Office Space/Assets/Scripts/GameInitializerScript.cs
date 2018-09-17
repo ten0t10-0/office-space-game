@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class GameInitializerScript : MonoBehaviour
 {
+    private void Start()
+    {
+        int saveSlot = -1;
 
-	// Use this for initialization
-	void Start ()
-	{
-		
-		GameMaster.Instance.InitializeGame (GameMaster.Instance.SaveSlotCurrent);
-	}
+        GameMaster gm = GameMaster.Instance;
+
+        if (gm.IsMainMenu)
+            saveSlot = gm.SaveSlotCurrent;
+        else
+            saveSlot = gm.SaveSlotDefault;
+
+        gm.InitializeGame(saveSlot);
+    }
 }

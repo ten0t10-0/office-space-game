@@ -9,11 +9,15 @@ public class OrderManager : MonoBehaviour
     [SerializeField]
     public List<Order> Orders;
 
+    [HideInInspector]
     public int CountOpen = 0;
+    [HideInInspector]
     public int CountCompleted = 0;
+    [HideInInspector]
     public int CountFailed = 0;
-
+    [HideInInspector]
     public int CountCompletedToday = 0;
+    [HideInInspector]
     public int CountFailedToday = 0;
 
     public List<ItemSubcategory> ExcludedItemSubcategories = new List<ItemSubcategory>

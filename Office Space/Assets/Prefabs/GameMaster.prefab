@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 114933794338400064}
   - component: {fileID: 114341436699145852}
   - component: {fileID: 114363407500964880}
+  - component: {fileID: 114288893346340154}
   m_Layer: 0
   m_Name: GameMaster
   m_TagString: Untagged
@@ -117,6 +118,7 @@ MonoBehaviour:
   NPCManager: {fileID: 0}
   AchievementManager: {fileID: 0}
   UpgradeManager: {fileID: 0}
+  DBManager: {fileID: 0}
   IsMainMenu: 0
   GenericCharacterObject: {fileID: 1614678332217964, guid: 61594c30539aef940a32fb8aa5ef0454,
     type: 2}
@@ -128,16 +130,18 @@ MonoBehaviour:
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerLevel: 100
-  initPlayerExperience: 0
   PlayerExperienceBase: 100
+  ShopModeLevelRequirement: 10
   GameModeManager: {fileID: 0}
+  SaveNameDefault: Save
   SaveFileName: Game
   SaveFileExtension: .gd
   SaveCountMax: 10
   SaveSlotDefault: 0
+  SaveSlotCurrent: -1
   UIMode: 0
   BuildMode: 0
-  OfflineMode: 0
+  OfflineMode: 1
   TEMPSaveGame: 1
   SleepMode: 0
   TutorialMode: 0
@@ -176,6 +180,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 11400000, guid: 8b26cc048f1a96345b6c70ab2eadcc11, type: 2}
   Office: {fileID: 11400000, guid: 26d39428fe603c648918aa2e55f31bbc, type: 2}
+--- !u!114 &114288893346340154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415113535136420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc16193e27fd8640a4976a46ac81e48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ServerName: 10.0.0.14, 1433
+  NetworkLibrary: DBMSSOCN
+  DatabaseName: OfficeSpacePPG
+  Username: admin
+  Password: admin
+  AuthenticationMode: 1
 --- !u!114 &114341436699145852
 MonoBehaviour:
   m_ObjectHideFlags: 1

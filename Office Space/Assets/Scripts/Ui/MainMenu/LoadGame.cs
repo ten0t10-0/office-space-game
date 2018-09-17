@@ -7,6 +7,8 @@ using System;
 using TMPro;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using UnityEngine.SceneManagement;
+
 public class LoadGame : MonoBehaviour {
 
 	[SerializeField] //saves
@@ -70,15 +72,31 @@ public class LoadGame : MonoBehaviour {
 		}
 		else 
 		{
-			GameMaster.Instance.SaveSlotCurrent = selectedSlot;
-			UnityEngine.SceneManagement.SceneManager.LoadScene ("Main", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            GameMaster.Instance.SaveSlotCurrent = selectedSlot;
+
+			StartCoroutine(LoadAsynchronously("Main"));
+			
 			Debug.Log ("i is loaded!!??");
 		}
 
 		confirmPanel.SetActive (false);
 	}
 
-	public void LoadPanel()
+    private IEnumerator LoadAsynchronously(string sceneName)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / .9f);
+
+            Debug.Log(progress);
+
+            yield return null;
+        }
+    }
+
+    public void LoadPanel()
 	{
 		loadtext.SetText("Load Game" +selectedSlot+"?");
 	}
