@@ -7,7 +7,7 @@ using TMPro;
 public class CustomerInteractionUI : MonoBehaviour 
 {
 
-	public Animator customer,player,bars,item,speech,perc,button;
+	public Animator customer,player,bars,item,speech,perc,button,inventory;
 	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle;
 
 	public Button btnDecrease,btnIncrease;
@@ -21,17 +21,17 @@ public class CustomerInteractionUI : MonoBehaviour
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
 
-	bool disableSpace = true;
+	bool disableSpace = true, markUpFail = false;
 
 	public TextMeshProUGUI text,name,itemName; 
 	public TextMeshProUGUI itemCost,calPercentage; 
 	Item customerItem;
 
-	int counter = 1;
+	int counter = 1,failCounter = 0;
 	float currentAmount = 100,percentage,profit ;
 	float canPress = 0;
 	float max = 10000000,min = 0;
-	float increasePerClick = 10;
+	float increasePerClick = 100;
 
 	string[] greet = new string[] {"Hello there!","Welcome","Good Day","Welcome, Im here to help","How can I help you?"};
 	string[] buyGreeting = new string[]{"I want this","I'll take this","How much is this?","I finally found this"};
@@ -40,6 +40,9 @@ public class CustomerInteractionUI : MonoBehaviour
 	string[] playerHappy = new string[]{"Score!","Awesome","Alright","Thank you","Come again"};
 	string[] playerSad = new string[]{"Awww","I made them mad","Better luck next time"};
 	string[] tooHigh = new string[]{"I can't pay that much","Could you lower it?","Maybe a bit lower?"};
+
+	string customerResponce = "";
+	string playerResponce = "";
 
 	// Use this for initialization
 	void Start () 
@@ -66,6 +69,12 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 		if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
 		{
+			if (markUpFail == true) 
+			{
+				runInteraction (2);
+				counter = 3;
+				markUpFail = false;
+			}
 			runInteraction (counter);
 			canPress = Time.time + 1.5f;  
 			counter++;
@@ -114,7 +123,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length-1)]);
 				name.SetText("Bryawando");
 				itemName.SetText(customerItem.Name.ToString());
-				currentAmount = (customerItem.UnitCost *.5f) + customerItem.UnitCost;
+				currentAmount = customerItem.UnitCost;
 				itemCost.SetText (currentAmount.ToString ());
 				item.SetBool("ItemIn",true);
 				break;
@@ -131,13 +140,14 @@ public class CustomerInteractionUI : MonoBehaviour
 				buttonpanel.SetActive (true);
 				button.SetBool ("ButtonIn", true);
 				Debug.Log ("do i run?");
-
+				disableSpace = true;
 				break;
 			}
 		case 4:
 			{
+				disableSpace = false;
 				item.SetBool("ItemIn",false);
-				text.SetText("That will do");
+				text.SetText(customerResponce);
 				name.SetText("Bryawando");
 //				button.SetBool ("ButtonIn", false);
 				buttonpanel.SetActive (false);
@@ -149,7 +159,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		case 5:
 			{
 				customer.SetBool ("CustomerIn", false);
-				text.SetText("yay!");
+				text.SetText(playerResponce);
 				name.SetText(GameMaster.Instance.Player.Name);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
@@ -160,6 +170,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				speech.SetBool ("SpeechIn", false);
 				bars.SetBool ("BarIn", false);
 				counter = 0;
+				failCounter = 0;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
@@ -168,11 +179,48 @@ public class CustomerInteractionUI : MonoBehaviour
 			break;
 		}
 	}
+	void MarkUpTooHigh()
+	{
+		if (failCounter >= 3) 
+		{
+			customerResponce = customerSad[Random.Range (0, customerSad.Length - 1)];
+			playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+			runInteraction (4);
+			counter = 5;
+		} 
+		else 
+		{
+			item.SetBool("ItemIn",false);
+			name.SetText("Bryawando");
+			text.SetText(customerResponce);
+			buttonpanel.SetActive (false);
+			speech.SetBool ("SpeechIn", true);
+			perc.SetBool ("PerIn", false);
+			percentagePanel.SetActive (false);
+			markUpFail = true;
+			disableSpace = false;
+			failCounter++;
+		}
+
+	}
 	public void confirmButton()
 	{
-		runInteraction (4);
-		counter = 5;
+		float per = CheckMarkUp ();
 
+		if (percentage > per) 
+		{
+			Debug.Log ("Customer sad");
+			customerResponce = tooHigh[Random.Range (0, tooHigh.Length - 1)];
+			MarkUpTooHigh ();
+		}
+		else
+		{
+			Debug.Log ("Customer happy");
+			runInteraction (4);
+			counter = 5;
+			customerResponce = customerHappy [Random.Range (0, customerHappy.Length - 1)];
+			playerResponce = playerHappy [Random.Range (0, playerHappy.Length - 1)];
+		}
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -213,8 +261,8 @@ public class CustomerInteractionUI : MonoBehaviour
 		currentAmount = Mathf.Clamp(currentAmount + (increase ? increasePerClick : -increasePerClick), min, max);
 		itemCost.SetText (currentAmount.ToString ());
 		profit = currentAmount - customerItem.UnitCost;
-		percentage = profit / customerItem.UnitCost;
-		calPercentage.SetText ((percentage * 100).ToString ("f0")+"%");
+		percentage = (profit / customerItem.UnitCost) * 100;
+		calPercentage.SetText ((percentage + 100).ToString ("f0")+"%");
 
 		// disable buttons i
 		btnDecrease.interactable = currentAmount > min;
@@ -238,6 +286,22 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		return GameMaster.Instance.ItemManager.Database.Subcategories [Random.Range (0, GameMaster.Instance.ItemManager.Database.Subcategories.Count)];
 	}
+	float CheckMarkUp()
+	{
+		if (customerItem.Quality == ItemQuality.Low) 
+		{
+			return Random.Range (20, 25);
+		}
+		if (customerItem.Quality == ItemQuality.Medium) 
+		{
+			return Random.Range (28, 35);
+		}
+		if (customerItem.Quality == ItemQuality.High) 
+		{
+			return Random.Range(40,50);
+		}
+		return 50;
+	}
 
-		
+
 }
