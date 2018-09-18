@@ -12,7 +12,6 @@ public class ShopInventoryUi : MonoBehaviour {
 	private Transform scrollViewContent;
 
 	string [] cat ;
-
 	ShopItemTrigger shopitem;
 
 	public Rigidbody gpu, cpu, console, desktop, laptop, game, keyboard, mouse, figure,motherboard;
@@ -177,4 +176,5 @@ public class ShopInventoryUi : MonoBehaviour {
 		}
 		return -1;
 	}
+
 }

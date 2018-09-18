@@ -20,6 +20,7 @@ public class LoadGame : MonoBehaviour {
 
 	public GameObject confirmPanel;
 	public TextMeshProUGUI loadtext;
+	public GameObject loading;
 
 	void Start()
 	{
@@ -33,7 +34,7 @@ public class LoadGame : MonoBehaviour {
 		for (int i = 0; i < GameMaster.Instance.SaveCountMax; i++)
 		{
 			GameObject newItem = Instantiate (SaveContainer, scrollViewContent);
-			newItem.transform.Find ("Button/num").GetComponent<TMP_Text> ().text = (i + 1).ToString();
+			newItem.transform.Find ("num").GetComponent<TMP_Text> ().text = (i + 1).ToString();
 
 			if (File.Exists (GameMaster.Instance.GetSaveFilePath (i))) 
 			{
@@ -42,10 +43,10 @@ public class LoadGame : MonoBehaviour {
 				SaveData loadData = (SaveData)bf.Deserialize (file);
 				file.Close ();	
 
-				newItem.transform.Find ("Button/empty").GetComponent<TMP_Text> ().text = "";
-				newItem.transform.Find ("Button/date").GetComponent<TMP_Text> ().text = loadData.Date.ToString();
+				newItem.transform.Find ("empty").GetComponent<TMP_Text> ().text = "";
+				newItem.transform.Find ("date").GetComponent<TMP_Text> ().text = loadData.Date.ToString();
 			}
-			newItem.transform.Find ("Button").GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("Button/num").GetComponent<TMP_Text>().text),newItem);});
+			newItem.GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("num").GetComponent<TMP_Text>().text),newItem);});
 		}
 
 
@@ -72,6 +73,7 @@ public class LoadGame : MonoBehaviour {
 		}
 		else 
 		{
+			loading.SetActive (true);
             GameMaster.Instance.SaveSlotCurrent = selectedSlot;
 
 			StartCoroutine(LoadAsynchronously("Main"));
