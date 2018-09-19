@@ -41,6 +41,7 @@ public class GetNpc : MonoBehaviour {
 		case 1:
 			{
 				serve.cus1 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.AI1 = col.gameObject.GetComponent<AI_try4> ();
 				cube1.SetActive (true);
 				col1.enabled = true;
 				serve.StartTimer (i);
@@ -50,6 +51,7 @@ public class GetNpc : MonoBehaviour {
 		case 2:
 			{
 				serve.cus2 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.AI2 = col.gameObject.GetComponent<AI_try3> ();
 				cube2.SetActive (true);
 				serve.StartTimer (i);
 				col2.enabled = true;
@@ -59,6 +61,7 @@ public class GetNpc : MonoBehaviour {
 		case 3:
 			{
 				serve.cus3 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
+				serve.AI3 = col.gameObject.GetComponent<AI_try>();
 				cube3.SetActive (true);
 				col3.enabled = true;
 				serve.StartTimer (i);

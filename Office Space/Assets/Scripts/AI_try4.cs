@@ -102,6 +102,7 @@ public class AI_try4 : MonoBehaviour
 		}
 				if (Cur_Waypoint == 3) 
 				{
+			cur_timer = 0;
 					exit4 = false;
 				}
 		//

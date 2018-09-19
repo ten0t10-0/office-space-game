@@ -8,7 +8,7 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button,inventory;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP;
 
 	public Button btnDecrease,btnIncrease;
 
@@ -17,17 +17,19 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	CharacterCustomizationData Char;
 	CharacterCustomizationScript playerCus;
+	ServeCustomer serve;
 
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
 
-	bool disableSpace = true, markUpFail = false;
+	bool disableSpace = true, markUpFail = false,subCate = false;
 
-	public TextMeshProUGUI text,name,itemName; 
+	public TextMeshProUGUI text,name,itemName,labelCat; 
 	public TextMeshProUGUI itemCost,calPercentage; 
 	Item customerItem;
+	ItemSubcategorySO customerSub;
 
-	int counter = 1,failCounter = 0;
+	int counter = 1,failCounter = 0, subFailCounter = 0,AInum =0;
 	float currentAmount = 100,percentage,profit ;
 	float canPress = 0;
 	float max = 10000000,min = 0;
@@ -36,18 +38,22 @@ public class CustomerInteractionUI : MonoBehaviour
 	string[] greet = new string[] {"Hello there!","Welcome","Good Day","Welcome, Im here to help","How can I help you?"};
 	string[] buyGreeting = new string[]{"I want this","I'll take this","How much is this?","I finally found this"};
 	string[] customerHappy = new string[]{"Thats Perfect","I'll take that","Thats fine","That will do","Not bad"};
+	string[] customerSubcate = new string[]{"I'm looking for some ","Do you have ","I want any "};
+	string[] customerSubSad = new string[]{"Think I'll try else where ","So you do not have any? ","Thanks for nothing "};
 	string[] customerSad = new string[]{"You are crazy","Im not paying that!","Think I'll try else where"};
+	string[] customerFind = new string[]{"Thats not it","I dont want that","Not what I'm looking for"};
 	string[] playerHappy = new string[]{"Score!","Awesome","Alright","Thank you","Come again"};
 	string[] playerSad = new string[]{"Awww","I made them mad","Better luck next time"};
 	string[] tooHigh = new string[]{"I can't pay that much","Could you lower it?","Maybe a bit lower?"};
 
 	string customerResponce = "";
 	string playerResponce = "";
+	string customerSubCat = "";
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
-		 
+		serve = FindObjectOfType<ServeCustomer> ();
 	}
 	
 	// Update is called once per frame
@@ -67,37 +73,48 @@ public class CustomerInteractionUI : MonoBehaviour
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 			}
 		}
-		if (Input.GetKeyUp(KeyCode.Space) && Time.time > canPress && disableSpace == false)
+		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
 		{
-			if (markUpFail == true) 
+			if (subCate == false) 
 			{
-				runInteraction (2);
-				counter = 3;
-				markUpFail = false;
+				if (markUpFail == true) 
+				{
+					runInteraction (2);
+					counter = 3;
+					markUpFail = false;
+				}
+				runInteraction (counter);
+				canPress = Time.time + 1.5f;  
+				counter++;
+				Debug.Log (counter);
+			} 
+			else 
+			{
+				runSubInteraction (counter);
+				canPress = Time.time + 1.5f;  
+				counter++;
+				Debug.Log (counter);
 			}
-			runInteraction (counter);
-			canPress = Time.time + 1.5f;  
-			counter++;
-			Debug.Log (counter);
-		}
+	}
 
 	}
 
-	public void startInteraction(CharacterCustomizationScript customer)
+	public void startInteraction(CharacterCustomizationScript customer,int ai)
 	{
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
-
+		AInum = ai;
 		InteractionPanel.SetActive (true);
 		hudO.SetBool ("UIO", true);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
 		customerItem = RandomItem ();
+		customerSub = RandomSubCat ();
 
 		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
 		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
 	
-
+			//runSubInteraction(0);
 		runInteraction (0);
 
 	}
@@ -119,6 +136,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			}
 		case 1:
 			{
+
 				customer.SetBool ("CustomerIn", true);
 				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length-1)]);
 				name.SetText("Bryawando");
@@ -172,6 +190,9 @@ public class CustomerInteractionUI : MonoBehaviour
 				counter = 0;
 				failCounter = 0;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+				Destroy (playerGuy, 3f);
+				subCate = true;
+				serve.AiExit (AInum);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
 			}
@@ -179,13 +200,137 @@ public class CustomerInteractionUI : MonoBehaviour
 			break;
 		}
 	}
+	public void runSubInteraction(int i)
+	{
+		switch (i) 
+		{
+		case 0:
+			{
+				labelCat.SetText ("Select a " + customerSub.Name.ToString ());
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+				bars.SetBool ("BarIn", true);
+				player.SetBool ("PlayerIn", true);
+				name.SetText (GameMaster.Instance.Player.Name);
+				//array of random greetings
+				text.SetText (greet [Random.Range (0, greet.Length - 1)]);
+				speech.SetBool ("SpeechIn", true);
+				disableSpace = false;
+				break;
+			}
+		case 1:
+			{
+				customer.SetBool ("CustomerIn", true);
+
+				text.SetText(customerSubcate[Random.Range(0 , customerSubcate.Length - 1)]+ customerSub.Name.ToString());
+				name.SetText("Bryawando");
+				inventoryP.SetActive (true);
+				inventory.SetBool ("InvenO", true);
+				disableSpace = true;
+				break;
+			}
+		case 2:
+			{
+				inventoryP.SetActive (false);
+				speech.SetBool ("SpeechIn", false);
+				percentagePanel.SetActive (true);
+				perc.SetBool ("PerIn", true);
+				disableSpace = false;
+				item.SetBool("ItemIn",true);
+				break;
+			}
+		case 3:
+			{
+				buttonpanel.SetActive (true);
+				button.SetBool ("ButtonIn", true);
+				disableSpace = true;
+				break;
+			}
+		case 4:
+			{
+				disableSpace = false;
+				item.SetBool("ItemIn",false);
+				text.SetText(customerResponce);
+				name.SetText("Bryawando");
+				//				button.SetBool ("ButtonIn", false);
+				buttonpanel.SetActive (false);
+				speech.SetBool ("SpeechIn", true);
+				perc.SetBool ("PerIn", false);
+				percentagePanel.SetActive (false);
+				break;
+			}
+		case 5:
+			{
+				customer.SetBool ("CustomerIn", false);
+				text.SetText(playerResponce);
+				name.SetText(GameMaster.Instance.Player.Name);
+				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
+				break;
+			}
+		case 6:
+			{
+				player.SetBool ("PlayerIn", false);
+				speech.SetBool ("SpeechIn", false);
+				bars.SetBool ("BarIn", false);
+				counter = 0;
+				subFailCounter = 0;
+				failCounter = 0;
+				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+				Destroy (playerGuy, 3f);
+				subCate = false;
+				serve.AiExit (AInum);
+				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
+				break;
+			}
+		default:
+			break;
+		}
+
+	}
+
+	public void SelectSubItem(Item subItem)
+	{
+		if (customerSub == subItem.Subcategory) 
+		{
+			counter = 3;
+			runSubInteraction (2);
+			customerItem = subItem;
+			itemName.SetText(customerItem.Name.ToString());
+			currentAmount = customerItem.UnitCost;
+			itemCost.SetText (currentAmount.ToString ());
+		}
+		else 
+		{
+			if (subFailCounter >= 3) 
+			{
+				customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length - 1)];
+				playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+				inventoryP.SetActive (false);
+				runSubInteraction (4);
+				counter = 5;
+
+			} 
+			else 
+			{
+				text.SetText (customerFind[subFailCounter]);
+				subFailCounter++;
+			}
+		}
+	}
+
 	void MarkUpTooHigh()
 	{
 		if (failCounter >= 3) 
 		{
 			customerResponce = customerSad[Random.Range (0, customerSad.Length - 1)];
 			playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
-			runInteraction (4);
+			if (subCate == false) 
+			{
+				runInteraction (4);
+			} 
+			else 
+			{
+				runSubInteraction (4);
+			}
 			counter = 5;
 		} 
 		else 
@@ -215,13 +360,22 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log ("Customer happy");
-			runInteraction (4);
-			counter = 5;
 			customerResponce = customerHappy [Random.Range (0, customerHappy.Length - 1)];
 			playerResponce = playerHappy [Random.Range (0, playerHappy.Length - 1)];
+			Debug.Log ("Customer happy");
+			if (subCate == false) 
+			{
+				runInteraction (4);
+			} 
+			else
+				runSubInteraction (4);
+			
+			counter = 5;
+	
 		}
 	}
+
+
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -284,7 +438,16 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	ItemSubcategorySO RandomSubCat()
 	{
-		return GameMaster.Instance.ItemManager.Database.Subcategories [Random.Range (0, GameMaster.Instance.ItemManager.Database.Subcategories.Count)];
+		List<ItemSubcategorySO> tempCats = new List<ItemSubcategorySO> ();
+
+		foreach (ItemSubcategorySO cat in GameMaster.Instance.ItemManager.Database.Subcategories) 
+		{
+			if (cat.Name.ToString() != ItemSubcategory.Nothing.ToString()) 
+			{
+				tempCats.Add (cat);
+			}
+		}
+		return tempCats [Random.Range (0, tempCats.Count)];
 	}
 	float CheckMarkUp()
 	{

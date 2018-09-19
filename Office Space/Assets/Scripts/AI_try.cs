@@ -103,6 +103,7 @@ public class AI_try : MonoBehaviour
 
 		if (Cur_Waypoint == 10) 
 		{
+			cur_timer = 0;
 			exit = false;
 		}
 //

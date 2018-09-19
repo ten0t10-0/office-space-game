@@ -8,12 +8,24 @@ public class ServeCustomer : MonoBehaviour
 	public GameObject OpenPanel = null,line1,line2,line3;
 	private bool isInsideTrigger = false;
 	public Animator hudO, timerA, timerB, timerC;
-	public int line;
 	CustomerInteractionUI cusI;
 	public TextMeshProUGUI time1,time2,time3;
+	public Collider col1,col2,col3;
+
+	public Collider cusP1;
 
 	[HideInInspector]
 	public CharacterCustomizationScript cus1,cus2,cus3;
+
+	[HideInInspector]
+	public AI_try4 AI1;
+
+	[HideInInspector]
+	public AI_try3 AI2;
+
+	[HideInInspector]
+	public AI_try AI3;
+
 
 	//float start1;
 	bool cusWait1 = false, cusWait2 = false, cusWait3 = false;
@@ -44,6 +56,7 @@ public class ServeCustomer : MonoBehaviour
 				if (t <= 0) 
 				{
 					cusWait1 = false;
+					AI1.exit4 = true;
 					line1.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -68,6 +81,7 @@ public class ServeCustomer : MonoBehaviour
 				if (t2 <= 0) 
 				{
 					cusWait2 = false;
+					AI2.exit3 = true;
 					line2.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -87,11 +101,12 @@ public class ServeCustomer : MonoBehaviour
 				}
 				if (t3 < 30) {
 					time3.color = new Color32 (216, 43, 43, 255);
-					timerA.SetBool ("TimeO", true);
+					timerC.SetBool ("TimeO", true);
 				}
 				if (t3 <= 0) 
 				{
 					cusWait3 = false;
+					AI3.exit = true;
 					line3.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -120,26 +135,31 @@ public class ServeCustomer : MonoBehaviour
 		{
 		case 1:
 			{
+				int c1 = 1;
 				Debug.Log ("Wooooop1111111111111111111111111");
 				line1.SetActive (false);
 				OpenPanel.SetActive (false);
-				cusI.startInteraction (cus1);
-
+				cusI.startInteraction (cus1,c1);
+				col1.enabled = false;
 
 				break;
 			}
 		case 2:
 			{
+				int c2 = 2;
 				OpenPanel.SetActive (false);
 				line2.SetActive (false);
-				cusI.startInteraction (cus2);
+				cusI.startInteraction (cus2,c2);
+				col2.enabled = false;
 				break;
 			}
 		case 3:
 			{
+				int c3 = 3;
 				OpenPanel.SetActive (false);
 				line3.SetActive (false);
-				cusI.startInteraction (cus3);
+				cusI.startInteraction (cus3,c3);
+				col3.enabled = false;
 				break;
 			}
 		}
@@ -166,6 +186,28 @@ public class ServeCustomer : MonoBehaviour
 				start3 = Random.Range (100f, 250f);
 				cusWait3 = true;
 	
+				break;
+			}
+		}
+	}
+	public void AiExit(int i)
+	{
+		Debug.Log ("Runblopps>"+i.ToString ());
+		switch (i) 
+		{
+		case 1:
+			{
+				AI1.exit4 = true;
+				break;
+			}
+		case 2:
+			{
+				AI2.exit3 = true;
+				break;
+			}
+		case 3:
+			{	
+				AI3.exit = true;
 				break;
 			}
 		}

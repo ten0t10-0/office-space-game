@@ -22,7 +22,7 @@ public class TriggerShopUi : MonoBehaviour
 			{
 				
 				OpenPanel.SetActive(false);
-				Debug.Log ("Wooooop");
+				Debug.Log ("Woooooooooooo"+line.ToString());
 				cus.StartCustomerUi (line);
 
 			}

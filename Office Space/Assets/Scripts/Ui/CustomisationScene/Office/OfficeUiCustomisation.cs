@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class OfficeUiCustomisation : MonoBehaviour {
-
-
+public class OfficeUiCustomisation : MonoBehaviour 
+{
 	public TextMeshProUGUI money;
 	public TextMeshProUGUI date;
 	public TextMeshProUGUI time;
@@ -19,6 +18,8 @@ public class OfficeUiCustomisation : MonoBehaviour {
 
 	[SerializeField] 
 	private GameObject Container;
+
+	OfficeItemCategory tempCat;
 
 	private Transform scrollView;
 
