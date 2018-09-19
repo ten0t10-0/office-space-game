@@ -18,6 +18,6 @@ public class Destroy_Script : MonoBehaviour
 	}
 	void Awake()
 	{
-		spawn = FindObjectOfType<Spawn_NPC> ();
+		//spawn = FindObjectOfType<Spawn_NPC> ();
 	}
 }

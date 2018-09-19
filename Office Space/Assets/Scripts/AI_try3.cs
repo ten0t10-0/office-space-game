@@ -22,9 +22,7 @@ public class AI_try3 : MonoBehaviour
 	private float cur_timer;
 	Transform sm;
 	public List<Transform> npcWayPoints;
-	bool taken1 = false;
-	bool taken2 = false;
-	bool taken3 = false;
+	public bool exit3 = true;
 
 
 	void Awake()
@@ -35,9 +33,7 @@ public class AI_try3 : MonoBehaviour
 		//		{
 		//			WayPoints [i] = sm.GetChild (i);
 		//		}
-		taken1 = false;
-		taken2 = false;
-		taken3 = false;
+
 	}
 
 	// Use this for initialization
@@ -67,53 +63,47 @@ public class AI_try3 : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{ 
-		nm.acceleration = speed;
-		nm.stoppingDistance = stop_distance;
+		if (exit3 == true) {
+			nm.acceleration = speed;
+			nm.stoppingDistance = stop_distance;
 
 
-		float distance = Vector3.Distance (transform.position, Target.position);
+			float distance = Vector3.Distance (transform.position, Target.position);
 
 
-		//Move to waypoint
+			//Move to waypoint
 
-		if (distance > stop_distance && WayPoints.Length > 0) 
-		{
-			anim.SetBool ("IsWalking", true);
-			anim.SetBool ("IsIdling", false);
+			if (distance > stop_distance && WayPoints.Length > 0) {
+				anim.SetBool ("IsWalking", true);
+				anim.SetBool ("IsIdling", false);
 
-			//Find Waypoint
-			Target = WayPoints [Cur_Waypoint];
-
-		}
-
-		else if (distance <= stop_distance && WayPoints.Length > 0) 
-
-		{
-			if (cur_timer > 0) 
-			{
-				cur_timer -= 0.01f;
-				anim.SetBool ("IsWalking", false);
-				anim.SetBool ("IsIdling", true);
-			}
-			if (cur_timer <= 0) 
-			{
-				Cur_Waypoint++;
-				if (Cur_Waypoint >= WayPoints.Length) 
-				{
-					Cur_Waypoint = 0;
-				}
+				//Find Waypoint
 				Target = WayPoints [Cur_Waypoint];
 
+			} else if (distance <= stop_distance && WayPoints.Length > 0) {
+				if (cur_timer > 0) {
+					cur_timer -= 0.01f;
+					anim.SetBool ("IsWalking", false);
+					anim.SetBool ("IsIdling", true);
+				}
+				if (cur_timer <= 0) {
+					Cur_Waypoint++;
+					if (Cur_Waypoint >= WayPoints.Length) {
+						Cur_Waypoint = 0;
+					}
+					Target = WayPoints [Cur_Waypoint];
 
-				cur_timer = Random.Range(0.1f,.5f);
+
+					cur_timer = Random.Range (0.1f, .5f);
+				}
 			}
+			nm.SetDestination (Target.position);
 		}
-		nm.SetDestination (Target.position);
 
-		//		if (Cur_Waypoint == 4) 
-		//		{
-		//			cur_timer = 3;
-		//		}
+				if (Cur_Waypoint == 8) 
+				{
+			exit3 = false;
+				}
 		//
 		//		if (Cur_Waypoint == 5) 
 		//		{

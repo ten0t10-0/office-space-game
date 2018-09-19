@@ -22,9 +22,8 @@ public class AI_try : MonoBehaviour
 	private float cur_timer;
 	Transform sm;
 	public List<Transform> npcWayPoints;
-	bool taken1 = false;
-	bool taken2 = false;
-	bool taken3 = false;
+	public bool exit = true;
+
 
 
 	void Awake()
@@ -35,9 +34,7 @@ public class AI_try : MonoBehaviour
 //		{
 //			WayPoints [i] = sm.GetChild (i);
 //		}
-		taken1 = false;
-		taken2 = false;
-		taken3 = false;
+
 	}
 
 	// Use this for initialization
@@ -67,6 +64,7 @@ public class AI_try : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{ 
+		if (exit == true) {
 			nm.acceleration = speed;
 			nm.stoppingDistance = stop_distance;
 		
@@ -76,44 +74,37 @@ public class AI_try : MonoBehaviour
 		
 			//Move to waypoint
 
-			if (distance > stop_distance && WayPoints.Length > 0) 
-		{
+			if (distance > stop_distance && WayPoints.Length > 0) {
 				anim.SetBool ("IsWalking", true);
 				anim.SetBool ("IsIdling", false);
 
 				//Find Waypoint
 				Target = WayPoints [Cur_Waypoint];
 
-		}
-
-		else if (distance <= stop_distance && WayPoints.Length > 0) 
-		
-		{
-				if (cur_timer > 0) 
-			{
+			} else if (distance <= stop_distance && WayPoints.Length > 0) {
+				if (cur_timer > 0) {
 					cur_timer -= 0.01f;
 					anim.SetBool ("IsWalking", false);
 					anim.SetBool ("IsIdling", true);
 				}
-				if (cur_timer <= 0) 
-				{
+				if (cur_timer <= 0) {
 					Cur_Waypoint++;
-					if (Cur_Waypoint >= WayPoints.Length) 
-					{
+					if (Cur_Waypoint >= WayPoints.Length) {
 						Cur_Waypoint = 0;
 					}
 					Target = WayPoints [Cur_Waypoint];
 
 
-				cur_timer = Random.Range(0.1f,3f);
+					cur_timer = Random.Range (0.1f, 1f);
 				}
 			}
 			nm.SetDestination (Target.position);
+		}
 
-//		if (Cur_Waypoint == 4) 
-//		{
-//			cur_timer = 3;
-//		}
+		if (Cur_Waypoint == 10) 
+		{
+			exit = false;
+		}
 //
 //		if (Cur_Waypoint == 5) 
 //		{

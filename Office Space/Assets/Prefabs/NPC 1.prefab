@@ -1005,7 +1005,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
   Cur_Waypoint: 1
   tempr_Waypoint: 0
   speed: 1
@@ -1013,6 +1012,7 @@ MonoBehaviour:
   PauseTimer: 1
   cur_timer: 0.9100001
   npcWayPoints: []
+  exit: 1
 --- !u!114 &114234897962495872
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1769,7 +1769,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 10
   m_Acceleration: 1
   avoidancePriority: 50
   m_AngularSpeed: 120

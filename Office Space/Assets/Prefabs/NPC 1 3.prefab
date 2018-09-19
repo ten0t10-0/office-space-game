@@ -1153,6 +1153,7 @@ MonoBehaviour:
   PauseTimer: 0.2
   cur_timer: 0
   npcWayPoints: []
+  exit4: 1
 --- !u!114 &114950797105694788
 MonoBehaviour:
   m_ObjectHideFlags: 1

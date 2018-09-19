@@ -1074,6 +1074,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   Cur_Waypoint: 0
   tempr_Waypoint: 0
   speed: 1
@@ -1081,6 +1085,7 @@ MonoBehaviour:
   PauseTimer: 0.2
   cur_timer: 0
   npcWayPoints: []
+  exit: 1
 --- !u!114 &114466837362543194
 MonoBehaviour:
   m_ObjectHideFlags: 1
