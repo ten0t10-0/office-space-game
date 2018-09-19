@@ -102,7 +102,7 @@ public class AI_try3 : MonoBehaviour
 
 				if (Cur_Waypoint == 8) 
 				{
-			exit3 = false;
+					exit3 = false;
 				}
 		//
 		//		if (Cur_Waypoint == 5) 
