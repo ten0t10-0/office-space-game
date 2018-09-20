@@ -82,14 +82,14 @@ public class GetNpc : MonoBehaviour {
 			}
 		case 2:
 			{
-				col2.enabled = false;
 				cube2.SetActive (false);
+				col2.enabled = false;
 				break;
 			}
 		case 3:
 			{
-				col3.enabled = false;
 				cube3.SetActive (false);
+				col3.enabled = false;
 				break;
 			}
 		}

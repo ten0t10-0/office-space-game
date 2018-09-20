@@ -55,6 +55,10 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		serve = FindObjectOfType<ServeCustomer> ();
 	}
+	void Start()
+	{
+
+	}
 	
 	// Update is called once per frame
 	void Update () 
@@ -71,6 +75,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				cube.SetActive (true);
 				mount.GetComponent<Collider>().enabled = false;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+			
+
 			}
 		}
 		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
@@ -113,7 +119,7 @@ public class CustomerInteractionUI : MonoBehaviour
 
 		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
 		customerGuy.GetComponent<CharacterCustomizationScript> ().SetAppearanceByData (GameMaster.Instance.CurrentPlayerObject.GetComponent<CharacterCustomizationScript> ().GetCustomizationData ());
-	
+
 			//runSubInteraction(0);
 		runInteraction (0);
 
@@ -190,7 +196,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				counter = 0;
 				failCounter = 0;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-				Destroy (playerGuy, 3f);
+				Destroy (playerGuy, 1f);
+				Destroy (customerGuy, 1f);
 				subCate = true;
 				serve.AiExit (AInum);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
@@ -275,7 +282,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				subFailCounter = 0;
 				failCounter = 0;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-				Destroy (playerGuy, 3f);
+				Destroy (playerGuy, 1f);
+				Destroy (customerGuy, 1f);
 				subCate = false;
 				serve.AiExit (AInum);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;

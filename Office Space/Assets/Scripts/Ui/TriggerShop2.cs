@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerShopUi : MonoBehaviour 
-{
+public class TriggerShop2 : MonoBehaviour {
+
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
 	ServeCustomer cus;
@@ -20,10 +20,11 @@ public class TriggerShopUi : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				
+
 				OpenPanel.SetActive(false);
-				cus.StartCustomerUi (1);
-				Debug.Log ("Woooooooooooo1");
+			
+				cus.StartCustomerUi (2);
+				Debug.Log ("Woooooooooooo2");
 			}
 		}
 	}

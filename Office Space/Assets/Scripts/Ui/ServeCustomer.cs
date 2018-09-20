@@ -118,9 +118,6 @@ public class ServeCustomer : MonoBehaviour
 
 	}
 
-
-
-
 	private bool IsOpenPanelActive
 	{
 		get
@@ -131,12 +128,13 @@ public class ServeCustomer : MonoBehaviour
 
 	public void StartCustomerUi(int i)
 	{
+		Debug.Log ("Starting interaction with " + i.ToString ());
+
 		switch (i) 
 		{
 		case 1:
 			{
 				int c1 = 1;
-				Debug.Log ("Wooooop1111111111111111111111111");
 				line1.SetActive (false);
 				OpenPanel.SetActive (false);
 				cusI.startInteraction (cus1,c1);
