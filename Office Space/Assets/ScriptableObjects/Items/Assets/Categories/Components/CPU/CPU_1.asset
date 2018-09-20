@@ -16,4 +16,4 @@ MonoBehaviour:
   Quality: 2
   UnitCost: 4000
   UnitSpace: 0.1
-  Picture: {fileID: 21300000, guid: dd23080ee4c90ee47a7522819aaaffbd, type: 3}
+  Picture: {fileID: 21300000, guid: 51f58cd1edcdc3343a51b6fe7ef9ad88, type: 3}

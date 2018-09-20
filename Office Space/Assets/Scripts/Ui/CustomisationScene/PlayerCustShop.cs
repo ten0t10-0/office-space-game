@@ -14,11 +14,13 @@ public class PlayerCustShop : MonoBehaviour
 
 	public Sprite locked;
 	public Sprite equipped;
+	public Sprite upper, lower, access, outfit;
 	public Animator shelf;
 
 	List<int> currentOutfit;
 
 	public Color textureColour;
+	bool clicked = false;
 
 //	Button headband1,shirtLong,pantsLong,armL,armR,onesie;
 
@@ -28,6 +30,8 @@ public class PlayerCustShop : MonoBehaviour
 	private Transform Upperscroll;
 
 	ClothingSlot currentSlot;
+
+	CharacterClothingSO tempItem;
 
 	// Use this for initialization
 	void Start () 
@@ -55,6 +59,7 @@ public class PlayerCustShop : MonoBehaviour
 		colour = transform.Find ("Refresh").GetComponent<ColourPicker> ();
 		CurrentOutfit();
 		AddUpper ();
+		shelf.SetBool ("Shelf1", true);
 	}
 
 	void SetClothing(int index,ClothingSlot slot)
@@ -65,7 +70,24 @@ public class PlayerCustShop : MonoBehaviour
 
 	public void PurchaseItems()
 	{
-		
+		if (tempItem == null) 
+		{
+			Debug.Log ("Nothing happens");
+		} 
+		else 
+		{
+			if (GameMaster.Instance.Player.Business.Money < tempItem.Price) 
+			{
+				Debug.Log ("Not enough money");
+			} 
+			else 
+			{
+				CurrentOutfit();
+				GameMaster.Instance.Player.Business.DecreaseMoney (tempItem.Price);
+				Debug.Log("Item Purchased");
+			}
+		}
+	
 	}
 
 
@@ -99,6 +121,7 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
+				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = upper;
 			}
 		}
 	}
@@ -112,6 +135,7 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
+				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = lower;
 			}
 		}
 	}
@@ -125,6 +149,7 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
+				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = outfit;
 			}
 		}
 	}
@@ -137,18 +162,15 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				GameObject newItem = Instantiate (Container, Upperscroll);
 				SetItem (newItem, item);
+				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = access;
 			}
 		}
 	}
 	void SetItem(GameObject newItem, CharacterClothingSO item)
 	{
-		
+		newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = outfit;
 		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
 
-		if (item == PurchasedItems (item)) 
-		{
-			newItem.transform.Find ("BuyButton").GetComponent<Button> ().enabled = false;
-		}
 		if (item == selectedItems(item)) 
 		{
 			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
@@ -157,17 +179,18 @@ public class PlayerCustShop : MonoBehaviour
 			
 		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
 		{
-			newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = locked;
-			//newItem.transform.Find ("Button").GetComponent<Button> ().enabled = false;
+			newItem.transform.Find ("Image").GetComponent<Image> ().gameObject.SetActive(true);
 		}
 		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
-		//newItem.transform.Find("BuyButton").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
+
 	}
 
 	void slots(CharacterClothingSO clothing)
 	{
 		int i = 0;
-
+		clicked = true;
+		tempItem = clothing;
+		price.SetText (clothing.Price.ToString ());
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
 			if (item == clothing)
@@ -222,6 +245,52 @@ public class PlayerCustShop : MonoBehaviour
 				return null;
 		}
 		return null;
+	}
+
+	public void buttonClick()
+	{
+		if (clicked == true) 
+		{
+			clicked= false;
+			playerCus.SetAppearanceByData (Char);
+		}
+	}
+
+	public void shelf1()
+	{
+		shelf.SetBool ("Shelf1", true);
+		shelf.SetBool ("Shelf2", false);
+		shelf.SetBool ("Shelf3", false);
+		shelf.SetBool ("Shelf4", false);
+	}
+	public void shelf2()
+	{
+		
+		shelf.SetBool ("Shelf2", true);
+		shelf.SetBool ("Shelf3", false);
+		shelf.SetBool ("Shelf4", false);
+		shelf.SetBool ("Shelf1", false);
+	}
+	public void shelf3()
+	{
+		shelf.SetBool ("Shelf3", true);
+		shelf.SetBool ("Shelf1", false);
+		shelf.SetBool ("Shelf2", false);
+		shelf.SetBool ("Shelf4", false);
+	}	
+	public void shelf4()
+	{
+		shelf.SetBool ("Shelf3", true);
+		shelf.SetBool ("Shelf1", false);
+		shelf.SetBool ("Shelf2", false);
+		shelf.SetBool ("Shelf4", false);
+	}
+	public void shelfClose()
+	{
+		shelf.SetBool ("Shelf3", false);
+		shelf.SetBool ("Shelf1", false);
+		shelf.SetBool ("Shelf2", false);
+		shelf.SetBool ("Shelf4", false);
 	}
 	
 }

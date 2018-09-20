@@ -8,13 +8,14 @@ public class OfficeUiCustomisation : MonoBehaviour
 {
 	public TextMeshProUGUI money;
 	public TextMeshProUGUI date;
-	public TextMeshProUGUI time;
-	public Button tables, chairs, lights, misc;
+	public TextMeshProUGUI time,confirmName;
+	public Button tables, chairs, lights, misc,station;
+	public Sprite chair, lightS, other, stationary, table;
 
-	public GameObject tablet;
+	public GameObject tablet,confirm;
 	public Animator phone;
 
-	//public Button ;
+	OfficeItemSO tempItem;
 
 	[SerializeField] 
 	private GameObject Container;
@@ -29,12 +30,13 @@ public class OfficeUiCustomisation : MonoBehaviour
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
 		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
 
-//		tables.GetComponent<Button>().onClick.AddListener(delegate {SetCate(off);});
-//		chairs.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
-//		lights.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
-//		misc.GetComponent<Button>().onClick.AddListener(delegate {SetCate(ItemCategory.Computers.ToString());});
+		tables.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Tables);});
+		chairs.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Chairs);});
+		lights.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Lights);});
+		misc.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Miscellaneous);});
+		station.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Stationery);});
 
-		AddFurniture ();
+		AddItems (OfficeItemCategory.Tables);
 	}
 	
 	// Update is called once per frame
@@ -42,24 +44,19 @@ public class OfficeUiCustomisation : MonoBehaviour
 	{
 
 	}
-//	public void SetCate(string cat)
-//	{
-//		category = cat;
-//		subCategory = "all";
-//		AddByCateSupp (category, supplier, subCategory);
-//	}
 
-	public void AddFurniture()
+	public void AddItems(OfficeItemCategory cat)
 	{
 		ClearScroll ();
 
 		foreach (OfficeItemSO item in GameMaster.Instance.CustomizationManager.Office.Items) 
 		{
-			//if (item.Type.Category == OfficeItemCategory.Furniture) 
-			//{
+			if (item.Category == cat) 
+			{
+				
 				GameObject newItem = Instantiate (Container, scrollView);
 				SetItem (newItem, item);
-			//}
+			}
 		}
 	}
 
@@ -85,17 +82,40 @@ public class OfficeUiCustomisation : MonoBehaviour
 		newItem.transform.Find("Name").GetComponent<TMP_Text> ().text = item.Name;
 		newItem.transform.Find("Button/PriceText").GetComponent<TMP_Text> ().text = "$" + item.Price.ToString();
 
-		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{buyItem(item);});
+		if(item.LevelRequirement < GameMaster.Instance.Player.Level)
+		newItem.transform.Find ("Image").GetComponent<Image> ().gameObject.SetActive (true);
+
+		if (item.Category == OfficeItemCategory.Chairs)
+			newItem.transform.Find ("Button/Picture").GetComponent<Image> ().sprite = chair;
+		if (item.Category == OfficeItemCategory.Lights)
+			newItem.transform.Find ("Button/Picture").GetComponent<Image> ().sprite = lightS;
+		if (item.Category == OfficeItemCategory.Miscellaneous)
+			newItem.transform.Find ("Button/Picture").GetComponent<Image> ().sprite = other;
+		if (item.Category == OfficeItemCategory.Stationery)
+			newItem.transform.Find ("Button/Picture").GetComponent<Image> ().sprite = stationary;
+		if (item.Category == OfficeItemCategory.Tables)
+			newItem.transform.Find ("Button/Picture").GetComponent<Image> ().sprite = table;
+
+		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{Confirm(item);});
 
 
 	}
 
-	void buyItem(OfficeItemSO item)
+	public void buyItem()
 	{
 		if (GameMaster.Instance.CustomizationManager.Office.MaxNumberOfObjects > GameMaster.Instance.CustomizationManager.Office.CurrentObjects.Count) 
 		{
 			//money and animation
-			GetItem (item);
+			if (GameMaster.Instance.Player.Business.Money > tempItem.Price) 
+			{
+				GetItem (tempItem);
+				GameMaster.Instance.Player.Business.DecreaseMoney (tempItem.Price);
+			} 
+			else 
+			{
+				Debug.Log ("Not enough money");
+			}
+
 		} 
 		else 
 		{
@@ -125,6 +145,13 @@ public class OfficeUiCustomisation : MonoBehaviour
 			}
 			i++;
 		}
+	}
+
+	public void Confirm(OfficeItemSO item)
+	{
+		tempItem = item;
+		confirmName.SetText (item.Name);
+		confirm.SetActive (true);
 	}
 
 }
