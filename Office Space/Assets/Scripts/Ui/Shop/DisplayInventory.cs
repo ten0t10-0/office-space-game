@@ -23,6 +23,7 @@ public class DisplayInventory : MonoBehaviour
 
 	int increasePerClick = 1;
 	int currentAmount = 0;
+	int inventoryType = 0;
 	string [] cat ;
 	CustomerInteractionUI cusInt;
 
@@ -38,10 +39,12 @@ public class DisplayInventory : MonoBehaviour
 		max = cat.Length-1;
 		category.SetText(cat [currentAmount].ToString ());
 		//butons
-		AddItems ();
+		AddShopItems();
+		inventoryType = 0;
 
-//		shop.GetComponent<Button> ().onClick.AddListener (delegate {SetInventory ();});
-//		inventory.GetComponent<Button>().onClick.AddListener(delegate {SetShopInventory();});
+		shop.GetComponent<Button> ().onClick.AddListener (delegate {SetShopInventory();});
+		inventory.GetComponent<Button>().onClick.AddListener(delegate {SetInventory ();});
+		nothing.GetComponent<Button>().onClick.AddListener(delegate {SetNothing();});
 	}
 	
 	// Update is called once per frame
@@ -57,9 +60,9 @@ public class DisplayInventory : MonoBehaviour
 		category.SetText (cat [currentAmount].ToString ());
 
 		if (inventoryS == true)
-			AddItems ();
+			AddShopItems ();
 		else
-			//AddShopItems ();
+			AddItems();
 		
 		// disable buttons i
 		btnDecrease.interactable = currentAmount > min;
@@ -96,39 +99,44 @@ public class DisplayInventory : MonoBehaviour
 			}
 		}
 	}
-//	public void AddShopItems()
-//	{
-//		ClearInventory ();
-//
-//		foreach (Item item in GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay) 
-//		{
-//
-//			if (item.Category.EnumID.ToString() == cat[currentAmount]) 
-//			{	
-//				GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-//				newItem.transform.Find ("Button/Name").GetComponent<TMP_Text> ().text = item.Name;
-//				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = item.Picture;
-//				//newItem.transform.Find ("Button/Qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
-//
-//				if (item.Quality == ItemQuality.Low)
-//				{
-//					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = bronze;;
-//
-//				}
-//				else if (item.Quality == ItemQuality.Medium)
-//				{
-//					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = silver;;
-//
-//				}
-//				else if (item.Quality == ItemQuality.High)
-//				{
-//					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = gold;;
-//				}
-//				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(delegate {ConfirmPanel(item);});
-//
-//			}
-//		}
-//	}
+	public void AddShopItems()
+	{
+		ClearInventory ();
+
+		foreach ( Item item  in GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay) 
+		{
+			if (item != null) 
+			{
+				if (item.Category.EnumID.ToString () == cat [currentAmount])
+				{
+					GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
+					newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+					newItem.transform.Find ("Border/Image").GetComponent<Image> ().sprite = item.Picture;
+					//newItem.transform.Find ("Button/Qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
+
+					if (item.Quality == ItemQuality.Low) 
+					{
+						newItem.transform.Find ("Border").GetComponent<Image> ().sprite = bronze;
+						;
+
+					} 
+					else if (item.Quality == ItemQuality.Medium) 
+					{
+						newItem.transform.Find ("Border").GetComponent<Image> ().sprite = silver;
+						;
+
+					} 
+					else if (item.Quality == ItemQuality.High)
+					{
+						newItem.transform.Find ("Border").GetComponent<Image> ().sprite = gold;
+						;
+					}
+					newItem.GetComponent<Button> ().onClick.AddListener (delegate {ConfirmPanel (item);});
+				}
+			}
+
+		}
+	}
 
 	public void ClearInventory()
 	{
@@ -146,12 +154,19 @@ public class DisplayInventory : MonoBehaviour
 	void SetInventory()
 	{
 		inventoryS = true;
+		inventoryType = 1;
 		AddItems ();
 	}
 	void SetShopInventory()
 	{
 		inventoryS = false;
-		//AddShopItems ();
+		inventoryType = 0;
+		AddShopItems ();
+	}
+	void SetNothing()
+	{
+		inventoryType = -1;
+		confirmPanel.SetActive (true);
 	}
 
 	public void ConfirmPanel(Item item)
@@ -159,9 +174,10 @@ public class DisplayInventory : MonoBehaviour
 		tempItem = item;
 		confirmPanel.SetActive (true);
 	}
+
 	public void ConfirmButton()
 	{
-		cusInt.SelectSubItem (tempItem);
+		cusInt.SelectSubItem (tempItem,inventoryType);
 		confirmPanel.SetActive (false);
 	}
 }

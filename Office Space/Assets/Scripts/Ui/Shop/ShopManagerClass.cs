@@ -65,5 +65,11 @@ public class ShopManagerClass : MonoBehaviour
 
 		return prefab;
 	}
+	public void RemoveItem(int i)
+	{
+		Debug.Log("Removing item " + i.ToString());
+		Destroy (items[i].gameObject);
+		items [i] = null;
+	}
 
 }

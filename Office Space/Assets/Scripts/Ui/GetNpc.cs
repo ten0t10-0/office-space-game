@@ -34,9 +34,9 @@ public class GetNpc : MonoBehaviour {
 		}
 	}
 
-	void Enter(Collider col, int i)
+	void Enter(Collider col, int en)
 	{
-		switch (i) 
+		switch (en) 
 		{
 		case 1:
 			{
@@ -44,8 +44,8 @@ public class GetNpc : MonoBehaviour {
 				serve.AI1 = col.gameObject.GetComponent<AI_try4> ();
 				cube1.SetActive (true);
 				col1.enabled = true;
-				serve.StartTimer (i);
-				Debug.Log ("Customer Counter on Enter" + i);
+				serve.StartTimer (en);
+				Debug.Log ("Customer Counter on Enter" + en);
 				break;
 			}
 		case 2:
@@ -53,9 +53,9 @@ public class GetNpc : MonoBehaviour {
 				serve.cus2 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				serve.AI2 = col.gameObject.GetComponent<AI_try3> ();
 				cube2.SetActive (true);
-				serve.StartTimer (i);
+				serve.StartTimer (en);
 				col2.enabled = true;
-				Debug.Log ("Customer Counter " + i);
+				Debug.Log ("Customer Counter " + en);
 				break;
 			}
 		case 3:
@@ -64,15 +64,15 @@ public class GetNpc : MonoBehaviour {
 				serve.AI3 = col.gameObject.GetComponent<AI_try>();
 				cube3.SetActive (true);
 				col3.enabled = true;
-				serve.StartTimer (i);
-				Debug.Log ("Customer Counter " + i);
+				serve.StartTimer (en);
+				Debug.Log ("Customer Counter " + en);
 				break;
 			}
 		}
 	}
-	void Exit(Collider col, int i)
+	void Exit(Collider col, int ex)
 	{
-		switch (i) 
+		switch (ex) 
 		{
 		case 1:
 			{

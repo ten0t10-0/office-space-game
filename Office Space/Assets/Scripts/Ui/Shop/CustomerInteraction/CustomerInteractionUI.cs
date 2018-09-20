@@ -18,11 +18,12 @@ public class CustomerInteractionUI : MonoBehaviour
 	CharacterCustomizationData Char;
 	CharacterCustomizationScript playerCus;
 	ServeCustomer serve;
+	ShopManagerClass shopMan;
 
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
 
-	bool disableSpace = true, markUpFail = false,subCate = false;
+	bool disableSpace = true, markUpFail = false,subCate = false,saleSuccessful = false,subNothing = false;
 
 	public TextMeshProUGUI text,name,itemName,labelCat; 
 	public TextMeshProUGUI itemCost,calPercentage; 
@@ -30,6 +31,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	ItemSubcategorySO customerSub;
 
 	int counter = 1,failCounter = 0, subFailCounter = 0,AInum =0;
+	int inventoryType = 0;
 	float currentAmount = 100,percentage,profit ;
 	float canPress = 0;
 	float max = 10000000,min = 0;
@@ -54,6 +56,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	void Awake () 
 	{
 		serve = FindObjectOfType<ServeCustomer> ();
+		shopMan = FindObjectOfType<ShopManagerClass> ();
 	}
 	void Start()
 	{
@@ -67,20 +70,30 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				
-				//InteractionPanel.SetActive (true);
-				OpenPanel.SetActive (false);
-				hudCanvas.SetActive (false);
-				particle.SetActive (false);
-				cube.SetActive (true);
-				mount.GetComponent<Collider>().enabled = false;
-				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-			
+				if (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay == null) 
+				{
+					Debug.Log ("No Items on display");
+				} 
+				else 
+				{
+					//InteractionPanel.SetActive (true);
+					OpenPanel.SetActive (false);
+					hudCanvas.SetActive (false);
+					particle.SetActive (false);
+					cube.SetActive (true);
+					mount.GetComponent<Collider>().enabled = false;
+					Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+				}
 
 			}
 		}
 		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
 		{
+			if (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay == null) 
+			{
+				subCate = true;
+			}
+
 			if (subCate == false) 
 			{
 				if (markUpFail == true) 
@@ -110,6 +123,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
 		AInum = ai;
+		Debug.Log ("scoooooooooop" + ai.ToString ());
 		InteractionPanel.SetActive (true);
 		hudO.SetBool ("UIO", true);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
@@ -130,7 +144,9 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 		case 0:
 			{
-				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+				saleSuccessful = false;
+				GameMaster.Instance.ModeSetUI();
+				//GameMaster.Instance.CameraLock = true;
 				bars.SetBool ("BarIn", true);
 				player.SetBool ("PlayerIn", true);
 				name.SetText(GameMaster.Instance.Player.Name);
@@ -195,11 +211,19 @@ public class CustomerInteractionUI : MonoBehaviour
 				bars.SetBool ("BarIn", false);
 				counter = 0;
 				failCounter = 0;
+				GameMaster.Instance.ModeSetPlay();
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 				Destroy (playerGuy, 1f);
 				Destroy (customerGuy, 1f);
 				subCate = true;
 				serve.AiExit (AInum);
+
+				//GameMaster.Instance.CameraLock = false;
+
+				if (saleSuccessful == true) 
+				{
+					SaleSuccess (customerItem);
+				}
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
 			}
@@ -213,8 +237,10 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 		case 0:
 			{
+				saleSuccessful = false;
 				labelCat.SetText ("Select a " + customerSub.Name.ToString ());
-				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+				GameMaster.Instance.ModeSetUI();
+				//GameMaster.Instance.CameraLock = true;
 				bars.SetBool ("BarIn", true);
 				player.SetBool ("PlayerIn", true);
 				name.SetText (GameMaster.Instance.Player.Name);
@@ -278,13 +304,24 @@ public class CustomerInteractionUI : MonoBehaviour
 				player.SetBool ("PlayerIn", false);
 				speech.SetBool ("SpeechIn", false);
 				bars.SetBool ("BarIn", false);
+				Destroy (playerGuy, 1f);
+				Destroy (customerGuy, 1f);
 				counter = 0;
 				subFailCounter = 0;
 				failCounter = 0;
+				if (saleSuccessful == true) 
+				{
+					if (inventoryType == 0)
+						SaleSuccess (customerItem);
+					else if (inventoryType == 1)
+						SaleSuccessInventory (customerItem);
+				}
+				GameMaster.Instance.ModeSetPlay();
+				//GameMaster.Instance.CameraLock = false;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-				Destroy (playerGuy, 1f);
-				Destroy (customerGuy, 1f);
+
 				subCate = false;
+				subNothing = false;
 				serve.AiExit (AInum);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
@@ -295,9 +332,17 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	}
 
-	public void SelectSubItem(Item subItem)
+	public void SelectSubItem(Item subItem, int type)
 	{
-		if (customerSub == subItem.Subcategory) 
+		if (type == -1) 
+		{
+			subFailCounter = 3;
+			subNothing = true;
+		}
+
+		inventoryType = type;
+
+		if (customerSub == subItem.Subcategory && subNothing == false) 
 		{
 			counter = 3;
 			runSubInteraction (2);
@@ -315,7 +360,6 @@ public class CustomerInteractionUI : MonoBehaviour
 				inventoryP.SetActive (false);
 				runSubInteraction (4);
 				counter = 5;
-
 			} 
 			else 
 			{
@@ -368,6 +412,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 		else
 		{
+			saleSuccessful = true;
 			customerResponce = customerHappy [Random.Range (0, customerHappy.Length - 1)];
 			playerResponce = playerHappy [Random.Range (0, playerHappy.Length - 1)];
 			Debug.Log ("Customer happy");
@@ -382,8 +427,6 @@ public class CustomerInteractionUI : MonoBehaviour
 	
 		}
 	}
-
-
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -474,5 +517,46 @@ public class CustomerInteractionUI : MonoBehaviour
 		return 50;
 	}
 
+	void SaleSuccess(Item cusitem)
+	{
+		//normal sale
+
+		GameMaster.Instance.Player.Business.IncreaseMoney(currentAmount);
+		Debug.Log ("Doooo i runnss" +	GameMaster.Instance.Player.Business.Money.ToString ());
+		int i = 0;
+		foreach (Item items in GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay) 
+		{
+			if (items != null) 
+			{
+				if (items.ItemID == cusitem.ItemID) 
+				{
+					GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay [i] = null;
+					shopMan.RemoveItem (i);
+
+				}
+			}
+			i++;
+		}
+	}
+	void SaleSuccessInventory(Item item)
+	{
+		//normal sale
+
+		GameMaster.Instance.Player.Business.IncreaseMoney(currentAmount);
+
+		int i = 0;
+		foreach (OrderItem items in GameMaster.Instance.Player.Business.WarehouseInventory.Items) 
+		{
+			if (items != null) 
+			{
+				if (items.ItemID == item.ItemID)
+				{
+					GameMaster.Instance.Player.Business.WarehouseInventory.Items [i] = null;
+
+				}
+			}
+			i++;
+		}
+	}
 
 }

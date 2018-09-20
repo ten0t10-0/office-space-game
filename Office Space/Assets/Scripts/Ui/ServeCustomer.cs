@@ -12,8 +12,6 @@ public class ServeCustomer : MonoBehaviour
 	public TextMeshProUGUI time1,time2,time3;
 	public Collider col1,col2,col3;
 
-	public Collider cusP1;
-
 	[HideInInspector]
 	public CharacterCustomizationScript cus1,cus2,cus3;
 
@@ -126,11 +124,11 @@ public class ServeCustomer : MonoBehaviour
 		}
 	}
 
-	public void StartCustomerUi(int i)
+	public void StartCustomerUi(int sc)
 	{
-		Debug.Log ("Starting interaction with " + i.ToString ());
+		Debug.Log ("Starting interaction with " + sc.ToString ());
 
-		switch (i) 
+		switch (sc) 
 		{
 		case 1:
 			{
@@ -162,9 +160,9 @@ public class ServeCustomer : MonoBehaviour
 			}
 		}
 	}
-	public void StartTimer(int i)
+	public void StartTimer(int st)
 	{
-		switch (i) 
+		switch (st) 
 		{
 		case 1:
 			{
@@ -188,10 +186,10 @@ public class ServeCustomer : MonoBehaviour
 			}
 		}
 	}
-	public void AiExit(int i)
+	public void AiExit(int ae)
 	{
-		Debug.Log ("Runblopps>"+i.ToString ());
-		switch (i) 
+		Debug.Log ("Runblopps>"+ae.ToString ());
+		switch (ae) 
 		{
 		case 1:
 			{

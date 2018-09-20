@@ -36,6 +36,7 @@ public class TriggerShop3 : MonoBehaviour
 		{
 			isInsideTrigger = true;
 			OpenPanel.SetActive(true);
+			Debug.Log ("Enter 3");
 		}
 	}
 
