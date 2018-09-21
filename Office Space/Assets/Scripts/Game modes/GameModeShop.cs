@@ -6,6 +6,16 @@ public class GameModeShop : MonoBehaviour
 {
     [HideInInspector]
     public GameMode GameMode = GameMode.Shop;
+    [HideInInspector]
+    public CustomerCaptureScript CustomerCaptureScript;
+
+    public int CountCustomersAtCounter
+    {
+        get
+        {
+            return CustomerCaptureScript.Count;
+        }
+    }
 
     #region <FIELDS>
     public int ShopItemSlotCount = 17;

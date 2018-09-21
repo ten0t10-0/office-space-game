@@ -151,6 +151,8 @@ public class GameMaster : MonoBehaviour
 
     #region <Misc>
     public string CurrencySymbol = "$";
+    [HideInInspector]
+    public DayOfWeek DayDebt;
     #endregion
 
     #endregion
@@ -319,12 +321,17 @@ public class GameMaster : MonoBehaviour
     {
         Debug.Log("INIT BEGIN");
 
+        DayDebt = GameDateTime.DayOfWeek;
+
         //UIMode = false;
         //BuildMode = false;
         //OfflineMode = false;
         //TutorialMode = false;
 
         //NPCManager.DestroyAllNPCs();
+
+        GameModeManager.Shop.CustomerCaptureScript = GameObject.Find("CustomerCapture").GetComponent<CustomerCaptureScript>();
+
 
         #region <Manager-specific initializations>
         CustomizationManager.Office.Initialize();
@@ -348,6 +355,8 @@ public class GameMaster : MonoBehaviour
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
 
         IsGameInitialized = true;
+
+        Debug.Log(GameModeManager.Shop.CountCustomersAtCounter.ToString());
 
         //**TEST**
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Upper);
