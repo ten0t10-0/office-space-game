@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class ShopInventoryUi : MonoBehaviour {
+public class ShopInventoryUi : MonoBehaviour 
+{
 
 	[SerializeField] //items
 	private GameObject ItemContainer;

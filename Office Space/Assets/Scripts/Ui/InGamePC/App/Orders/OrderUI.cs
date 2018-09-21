@@ -30,7 +30,7 @@ public class OrderUI : MonoBehaviour {
 
 	public GameObject qtyPanel,inventoryPanel,orderPanel;
 
-	int qty, currentAmount = 1, increasePerClick = 1, min = 1, max = 25,ordersNum,i;
+	int qty, currentAmount = 1, increasePerClick = 1, min = 1, max = 25,ordersNum;
 
 	public InputField amount;
 	public Button btnDecrease,btnIncrease,confirm;
@@ -78,9 +78,11 @@ public class OrderUI : MonoBehaviour {
 		{
 			if (order [i].Open) 
 			{
+				int newi = i;
+				Debug.Log ("Blooooooooooooooooopsss" + i);
 				GameObject newItem = Instantiate (OrderContainer, scrollViewContent);
 				newItem.transform.Find ("Button/Customer").GetComponent<TMP_Text> ().text = order [i].Customer.FullName ();
-				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (delegate {SetOrder (order, i, newItem);});
+				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener (delegate {SetOrder ( newi, newItem);});
 			}
 		}
 	}
@@ -100,12 +102,11 @@ public class OrderUI : MonoBehaviour {
 	}
 
 	// displays the order information to the invoice
-	void SetOrder(List<Order> order,int i, GameObject setOrder)
+	void SetOrder(int i, GameObject setOrder)
 	{
-		i = i - 1;
-
+		Debug.Log("bloooooooooop" + i.ToString());
+		List<Order> order = GameMaster.Instance.OrderManager.Orders;
 		ordersNum = i; 
-
 		ClearItems();
 		selectedOrder = setOrder;
 

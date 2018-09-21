@@ -30,7 +30,7 @@ public class DatabaseManager : MonoBehaviour
                 break;
 
             case DBAuthenticationMode.Windows:
-                connectionString = string.Format("Data Source = {0}; Initial Catalog = {1}; User id = {2}; Password = {3};", ServerName, DatabaseName, Username, Password);
+			connectionString = string.Format("Data Source = {0}; Initial Catalog = {1}; Integrated Security= true;", ServerName, DatabaseName);
                 break;
         }
 
@@ -75,6 +75,8 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.Log("*SQL ERROR: " + ex.Message);
         }
+		catch {
+			Debug.Log ("help");}
 
         if (conn.State == ConnectionState.Open)
             conn.Close();
