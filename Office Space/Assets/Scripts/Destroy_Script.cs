@@ -6,14 +6,14 @@ public class Destroy_Script : MonoBehaviour
 {
 	public GameObject other;
 	public GameObject Waypoint;
-	Spawn_NPC spawn;
+	//Spawn_NPC spawn;
 	// Update is called once per frame
 	void OnTriggerEnter(Collider Waypoint)
 	{
 		if (Waypoint.tag == "destructor") 
 		{
 			Destroy (other);
-			spawn.SpawnAgent ();
+			//spawn.SpawnAgent ();
 		}
 	}
 	void Awake()
