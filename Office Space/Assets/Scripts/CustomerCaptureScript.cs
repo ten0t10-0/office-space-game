@@ -14,13 +14,13 @@ public class CustomerCaptureScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<CharacterCustomizationData>() != null)
+        if (other.gameObject.GetComponent<CharacterCustomizationScript>() != null)
             Count++;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetComponent<CharacterCustomizationData>() != null)
+        if (other.gameObject.GetComponent<CharacterCustomizationScript>() != null)
             Count--;
     }
 }
