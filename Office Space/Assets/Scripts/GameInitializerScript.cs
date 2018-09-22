@@ -6,6 +6,10 @@ public class GameInitializerScript : MonoBehaviour
 {
     private void Start()
     {
+        GameMaster.Instance.Skybox_Current = new Material(GameMaster.Instance.SkyboxDayMaterial);
+        RenderSettings.skybox = GameMaster.Instance.Skybox_Current;
+        DynamicGI.UpdateEnvironment();
+
         int saveSlot = -1;
 
         GameMaster gm = GameMaster.Instance;
@@ -16,5 +20,10 @@ public class GameInitializerScript : MonoBehaviour
             saveSlot = gm.SaveSlotDefault;
 
         gm.InitializeGame(saveSlot);
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(GameMaster.Instance.Skybox_Current);
     }
 }

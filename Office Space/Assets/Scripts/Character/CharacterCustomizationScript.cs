@@ -25,6 +25,20 @@ public class CharacterCustomizationScript : MonoBehaviour
     [HideInInspector]
     public Transform Transform_HandR;
 
+    private ObjectHeld heldObject;
+
+    private class ObjectHeld
+    {
+        public GameObject Object = null;
+        public bool Parented = false;
+        public bool RightHanded = false;
+
+        public bool IsSet
+        {
+            get { return Object != null; }
+        }
+    }
+
     private void Awake()
     {
         GameObject objHandL, objHandR;
@@ -73,6 +87,63 @@ public class CharacterCustomizationScript : MonoBehaviour
 
         //Remove all clothing (in this case, will remove/clear placeholder objects)
         UnsetAllClothing();
+
+        heldObject = new ObjectHeld();
+    }
+
+    private void Update()
+    {
+        if (heldObject.IsSet && !heldObject.Parented)
+        {
+            if (heldObject.RightHanded)
+                heldObject.Object.transform.position = Transform_HandR.position;
+            else
+                heldObject.Object.transform.position = Transform_HandL.position;
+        }
+    }
+
+    public void HoldObject(GameObject obj, bool rightHanded, bool parented)
+    {
+        heldObject.Object = obj;
+        heldObject.RightHanded = rightHanded;
+        heldObject.Parented = parented;
+
+        Vector3 rotation = heldObject.Object.transform.rotation.eulerAngles;
+        rotation.y = gameObject.GetComponent<Rigidbody>().transform.eulerAngles.y;
+        heldObject.Object.transform.rotation = Quaternion.Euler(rotation);
+
+        if (parented)
+        {
+            if (rightHanded)
+            {
+                heldObject.Object.transform.position = Transform_HandR.position;
+                heldObject.Object.transform.parent = Transform_HandR;
+            }
+            else
+            {
+                heldObject.Object.transform.position = Transform_HandL.position;
+                heldObject.Object.transform.parent = Transform_HandL;
+            }
+        }
+    }
+
+    public void DropObject(bool raycastGround)
+    {
+        GameObject obj = heldObject.Object;
+        heldObject.Object = null;
+
+        if (heldObject.Parented)
+            obj.transform.parent = null;
+
+        if (raycastGround)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(obj.transform.position, Vector3.down, out hit))
+            {
+                obj.transform.position = hit.point;
+            }
+        }
     }
 
     public void SetClothing(int clothingId)

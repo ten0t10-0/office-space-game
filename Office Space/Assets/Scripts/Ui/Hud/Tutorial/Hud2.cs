@@ -29,8 +29,8 @@ public class Hud2 : MonoBehaviour
 	public float CalculateBar()
 	{
 		float value = GameMaster.Instance.Player.Experience;
-		float iMin = 0;
-		float iMax = GameMaster.Instance.Player.GetLevelExperience(GameMaster.Instance.Player.Level);
+		float iMin = GameMaster.Instance.Player.GetLevelExperience(GameMaster.Instance.Player.Level);
+        float iMax = GameMaster.Instance.Player.GetLevelExperience(GameMaster.Instance.Player.Level + 1);
 
 		return (value - iMin) / (iMax - iMin);
 

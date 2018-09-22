@@ -150,6 +150,9 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <Misc>
+    public Material SkyboxDayMaterial;
+    [HideInInspector]
+    public Material Skybox_Current = null;
     public string CurrencySymbol = "$";
     [HideInInspector]
     public DayOfWeek DayDebt;
@@ -806,6 +809,18 @@ public class GameMaster : MonoBehaviour
                     player.RandomizeAppearance();
                     player.GetCustomizationData();
                 }
+
+                if (Input.GetKey(KeyCode.E))
+                    Player.IncreaseExperience(1);
+
+                if (Input.GetKey(KeyCode.H))
+                {
+                    GameObject obj = GameObject.Find("Cylinder");
+                    if (obj)
+                    {
+                        CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().HoldObject(obj, false, false);
+                    }
+                }
             }
             #endregion
         }
@@ -917,6 +932,8 @@ public class GameMaster : MonoBehaviour
                 {
                     dayStartHour = GameModeManager.Shop.DayStartHour;
 
+                    //Destroy/reset all npcs
+
                     break;
                 }
         }
@@ -936,11 +953,13 @@ public class GameMaster : MonoBehaviour
 
     private void NextDay() //**
     {
+        //SHOW REPORTS
+
         #region **DEBUG NEXT DAY**
         Debug.Log("NEXT DAY");
         #endregion
 
-        //*** TEMP:
+        //CALL THIS FROM REPORT:
         NewDay();
     }
 

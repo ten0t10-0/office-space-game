@@ -60,7 +60,7 @@ public class GameModeShop : MonoBehaviour
 
     public bool IsDayEndReady()
     {
-        return true; //*
+        return CountCustomersAtCounter == 0;
     }
     #endregion
 }
