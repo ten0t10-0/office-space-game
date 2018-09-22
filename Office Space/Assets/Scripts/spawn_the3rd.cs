@@ -6,14 +6,11 @@ public class spawn_the3rd : MonoBehaviour {
 
 	public GameObject nagent;
 	public GameObject goalObject;
-	public int minValue;
-	public int maxValue;
 
 	// Use this for initialization
 	void Start () 
 	{
 
-		Invoke ("SpawnAgent", Random.Range(minValue,maxValue));
 	}
 
 	// Update is called once per frame

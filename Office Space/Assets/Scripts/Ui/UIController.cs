@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UIController : MonoBehaviour 
 {
-	public GameObject buildmode,endDayOffice,endDayShop;
+	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof;
+	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU;// dontforget graphic raycaster
 	public Animator buildM,endDayOffA,endDayShopA;
+
+	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit;
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
 
@@ -47,6 +51,10 @@ public class UIController : MonoBehaviour
 	public void EndDayOffice()
 	{
 		endDayOffice.SetActive (true);
+		profit.SetText (GameMaster.Instance.Player.Business.GetProfits ().ToString());
+		orderComplete.SetText (GameMaster.Instance.OrderManager.CountCompletedToday.ToString());
+		orderFailed.SetText (GameMaster.Instance.OrderManager.CountFailedToday.ToString ());
+
 		endDayOffA.SetBool ("EndOfficeO", true);
 		//set varibles
 	}

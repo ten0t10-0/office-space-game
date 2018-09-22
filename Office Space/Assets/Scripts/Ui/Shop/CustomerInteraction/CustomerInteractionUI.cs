@@ -19,6 +19,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	CharacterCustomizationScript playerCus;
 	ServeCustomer serve;
 	ShopManagerClass shopMan;
+	AiSpawnManager spawner;
 
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
@@ -57,6 +58,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		serve = FindObjectOfType<ServeCustomer> ();
 		shopMan = FindObjectOfType<ShopManagerClass> ();
+		spawner = FindObjectOfType<AiSpawnManager> ();
 	}
 	void Start()
 	{
@@ -76,6 +78,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				} 
 				else 
 				{
+					spawner.SpawnAI1 ();
 					//InteractionPanel.SetActive (true);
 					OpenPanel.SetActive (false);
 					hudCanvas.SetActive (false);
@@ -217,7 +220,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				Destroy (customerGuy, 1f);
 				subCate = true;
 				serve.AiExit (AInum);
-
+				spawner.SpawnAI1 ();
 				//GameMaster.Instance.CameraLock = false;
 
 				if (saleSuccessful == true) 

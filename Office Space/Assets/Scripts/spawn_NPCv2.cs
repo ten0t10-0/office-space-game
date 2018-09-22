@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spawn_NPCv2 : MonoBehaviour {
+public class spawn_NPCv2 : MonoBehaviour 
+{
 
 	public GameObject nagent;
 	public GameObject goalObject;
 
-	// Use this for initialization
-	void Start () 
-	{
-		Invoke ("SpawnAgent", 10);
-	}
-
-	// Update is called once per frame
 	public void SpawnAgent() 
 	{
 		GameObject na = (GameObject)Instantiate (nagent, this.transform.position, Quaternion.identity);

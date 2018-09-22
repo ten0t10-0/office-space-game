@@ -7,7 +7,7 @@ using TMPro;
 public class DashBoard : MonoBehaviour 
 {
 
-	public TextMeshProUGUI time, money, company, failedOrders,CompleteOrders,currentOrders;
+	public TextMeshProUGUI time, money, company, failedOrders,CompleteOrders,currentOrders,customersat,markUp;
 
 	int failed, current,complete;
 
@@ -24,6 +24,9 @@ public class DashBoard : MonoBehaviour
 		current = GameMaster.Instance.OrderManager.CountOpen;
 		complete = GameMaster.Instance.OrderManager.CountCompleted;
 
+		customersat.SetText ((GameMaster.Instance.Player.Business.CustomerTolerance_Total* 100).ToString ()+"%");
+		markUp.SetText((GameMaster.Instance.Player.Business.MarkupPercentage_Total * 100).ToString()+"%");
+
 		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 		money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
 	
@@ -33,10 +36,4 @@ public class DashBoard : MonoBehaviour
 		CompleteOrders.SetText(complete.ToString());
 		currentOrders.SetText(current.ToString());
 	}
-//	public int ListCount(List<Order> list)
-//	{
-//		 int c = list.Count;
-//		return c;
-//
-//	}
 }

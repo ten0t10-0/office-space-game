@@ -16,13 +16,28 @@ public class AiSpawnManager : MonoBehaviour
 		npc3 = FindObjectOfType<spawn_the3rd> ();
 	}
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 		
+	}
+
+	public void SpawnAI1()
+	{
+		npc3.SpawnAgent ();
+	}
+	public void SpawnAI2()
+	{
+		npc2.SpawnAgent ();
+	}
+	public void SpawnAI3()
+	{
+		npc1.SpawnAgent ();
 	}
 		
 }

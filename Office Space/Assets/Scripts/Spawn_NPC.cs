@@ -7,13 +7,7 @@ public class Spawn_NPC : MonoBehaviour
 	public GameObject nagent;
 	public GameObject goalObject;
 
-	// Use this for initialization
-	void Start () 
-	{
-		Invoke ("SpawnAgent", 5);
-	}
-	
-	// Update is called once per frame
+
 	public void SpawnAgent() 
 	{
 		GameObject na = (GameObject)Instantiate (nagent, this.transform.position, Quaternion.identity);
