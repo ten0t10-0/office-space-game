@@ -6,6 +6,7 @@ using TMPro;
 public class GetNpc : MonoBehaviour {
 
 	public GameObject cube1,cube2,cube3,interact;
+
 	public Collider col1, col2, col3;
 	public int line;
 

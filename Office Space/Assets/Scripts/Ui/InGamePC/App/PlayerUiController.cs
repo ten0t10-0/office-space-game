@@ -12,6 +12,8 @@ public class PlayerUiController : MonoBehaviour
 	public TextMeshProUGUI totalText;
 	public TextMeshProUGUI nameText;
 	public TextMeshProUGUI playerMoney;
+	public Image quality, picture;
+	public Sprite gold, silver, bronze;
 
 	public GameObject buyPanel;
 	public GameObject moneyA,moneyMsg,location;
@@ -45,6 +47,23 @@ public class PlayerUiController : MonoBehaviour
 		iItem = iItm;
 
         nameText.SetText(purchasedItem.Name);
+
+		picture.sprite = purchasedItem.Picture;
+
+		if (purchasedItem.Quality == ItemQuality.Low)
+		{
+			quality.sprite = bronze;;
+
+		}
+		else if (purchasedItem.Quality == ItemQuality.Medium)
+		{
+			quality.sprite = silver;;
+
+		}
+		else if (purchasedItem.Quality == ItemQuality.High)
+		{
+			quality.sprite = gold;;
+		}
 
 		totalText.SetText(CalculateDiscount(pi).ToString());
     }

@@ -21,10 +21,13 @@ public class CustomerInteractionUI : MonoBehaviour
 	ShopManagerClass shopMan;
 	AiSpawnManager spawner;
 
+	public Image border, pic;
+	public Sprite bronze, silver, gold;
+
 	public GameObject OpenPanel = null;
 	private bool isInsideTrigger = false;
 
-	bool disableSpace = true, markUpFail = false,subCate = false,saleSuccessful = false,subNothing = false;
+	bool disableSpace = true, markUpFail = false,subCate = false,saleSuccessful = false,subNothing = false,endOfDay = false; //End of day True set up!!!
 
 	public TextMeshProUGUI text,name,itemName,labelCat; 
 	public TextMeshProUGUI itemCost,calPercentage; 
@@ -79,6 +82,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				else 
 				{
 					spawner.SpawnAI1 ();
+					Invoke ("spawnAI2", Random.Range (3f, 5f));
+					Invoke ("spawnAI3", Random.Range (4f, 7f));
 					//InteractionPanel.SetActive (true);
 					OpenPanel.SetActive (false);
 					hudCanvas.SetActive (false);
@@ -126,7 +131,6 @@ public class CustomerInteractionUI : MonoBehaviour
 		playerGuy = Instantiate (uiCharacter, playerLoc.transform);
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
 		AInum = ai;
-		Debug.Log ("scoooooooooop" + ai.ToString ());
 		InteractionPanel.SetActive (true);
 		hudO.SetBool ("UIO", true);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
@@ -166,6 +170,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length-1)]);
 				name.SetText("Bryawando");
 				itemName.SetText(customerItem.Name.ToString());
+				pic.sprite = customerItem.Picture;
+				SetBorder (customerItem);
 				currentAmount = customerItem.UnitCost;
 				itemCost.SetText (currentAmount.ToString ());
 				item.SetBool("ItemIn",true);
@@ -220,7 +226,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				Destroy (customerGuy, 1f);
 				subCate = true;
 				serve.AiExit (AInum);
-				spawner.SpawnAI1 ();
+				SpawnAfterServed (AInum);
 				//GameMaster.Instance.CameraLock = false;
 
 				if (saleSuccessful == true) 
@@ -256,7 +262,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		case 1:
 			{
 				customer.SetBool ("CustomerIn", true);
-
+			
 				text.SetText(customerSubcate[Random.Range(0 , customerSubcate.Length - 1)]+ customerSub.Name.ToString());
 				name.SetText("Bryawando");
 				inventoryP.SetActive (true);
@@ -326,6 +332,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				subCate = false;
 				subNothing = false;
 				serve.AiExit (AInum);
+				SpawnAfterServed (AInum);
 				// dont forget set stuff false, change animator stuf that dont need to go away disableSpace = true;
 				break;
 			}
@@ -334,15 +341,17 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 
 	}
+	public void NoItems()
+	{
+		customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length - 1)];
+		playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+		inventoryP.SetActive (false);
+		runSubInteraction (4);
+		counter = 5;
+	}
 
 	public void SelectSubItem(Item subItem, int type)
 	{
-		if (type == -1) 
-		{
-			subFailCounter = 3;
-			subNothing = true;
-		}
-
 		inventoryType = type;
 
 		if (customerSub == subItem.Subcategory && subNothing == false) 
@@ -351,6 +360,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			runSubInteraction (2);
 			customerItem = subItem;
 			itemName.SetText(customerItem.Name.ToString());
+			SetBorder (customerItem);
 			currentAmount = customerItem.UnitCost;
 			itemCost.SetText (currentAmount.ToString ());
 		}
@@ -439,6 +449,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			OpenPanel.SetActive(true);
 		}
 	}
+
 	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Player")
@@ -447,6 +458,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			OpenPanel.SetActive(true);
 		}
 	}
+
 	void OnTriggerExit(Collider other)
 	{
 		if (other.tag == "Player")
@@ -463,6 +475,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			return OpenPanel.activeInHierarchy;
 		}
 	}
+
 	public void ChangeAmount(bool increase)
 	{
 		// clamp current value between min-max
@@ -476,6 +489,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		btnDecrease.interactable = currentAmount > min;
 		btnIncrease.interactable = currentAmount < max;
 	}
+
 	 Item RandomItem()
 	{
 		List<Item> tempItems = new List<Item> ();
@@ -503,6 +517,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 		return tempCats [Random.Range (0, tempCats.Count)];
 	}
+
 	float CheckMarkUp()
 	{
 		if (customerItem.Quality == ItemQuality.Low) 
@@ -562,4 +577,59 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 	}
 
+	void SetBorder(Item purchasedItem)
+	{
+		if (purchasedItem.Quality == ItemQuality.Low)
+		{
+			border.sprite = bronze;;
+
+		}
+		else if (purchasedItem.Quality == ItemQuality.Medium)
+		{
+			border.sprite = silver;;
+
+		}
+		else if (purchasedItem.Quality == ItemQuality.High)
+		{
+			border.sprite = gold;;
+		}
+
+	}
+	void spawnAI2()
+	{
+		spawner.SpawnAI2();
+	}
+	void spawnAI3()
+	{
+		spawner.SpawnAI3();
+	}
+	void spawnAI1()
+	{
+		spawner.SpawnAI1();
+	}
+
+	void SpawnAfterServed(int i)
+	{
+		if (endOfDay == false)
+		{
+			switch (i) 
+			{
+			case 1:
+				{
+					Invoke ("spawnAI1", Random.Range (3f, 6f));
+					break;
+				}
+			case 2:
+				{
+					Invoke ("spawnAI2", Random.Range (3f, 5f));
+					break;
+				}
+			case 3:
+				{
+					Invoke ("spawnAI3", Random.Range (3f, 5f));
+					break;
+				}
+			}
+		}
+	}
 }

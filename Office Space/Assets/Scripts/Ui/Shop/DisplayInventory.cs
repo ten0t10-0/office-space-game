@@ -29,7 +29,7 @@ public class DisplayInventory : MonoBehaviour
 
 	Item tempItem;
 
-	bool inventoryS = true;
+	bool inventoryS = true,nothingB = false;
 
 	void Start () 
 	{
@@ -165,7 +165,7 @@ public class DisplayInventory : MonoBehaviour
 	}
 	void SetNothing()
 	{
-		inventoryType = -1;
+		nothingB = true;
 		confirmPanel.SetActive (true);
 	}
 
@@ -177,7 +177,14 @@ public class DisplayInventory : MonoBehaviour
 
 	public void ConfirmButton()
 	{
-		cusInt.SelectSubItem (tempItem,inventoryType);
+		if (nothing == false)
+			cusInt.SelectSubItem (tempItem, inventoryType);
+		else 
+		{
+			cusInt.NoItems ();
+			nothingB = true;
+		}
+
 		confirmPanel.SetActive (false);
 	}
 }

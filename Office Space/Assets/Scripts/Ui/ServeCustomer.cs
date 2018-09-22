@@ -12,6 +12,9 @@ public class ServeCustomer : MonoBehaviour
 	public TextMeshProUGUI time1,time2,time3;
 	public Collider col1,col2,col3;
 
+	AiSpawnManager spawner;
+	bool endOfDay = false;
+
 	[HideInInspector]
 	public CharacterCustomizationScript cus1,cus2,cus3;
 
@@ -32,6 +35,7 @@ public class ServeCustomer : MonoBehaviour
 	void Awake()
 	{
 		cusI = FindObjectOfType<CustomerInteractionUI> ();
+		spawner = FindObjectOfType<AiSpawnManager> ();
 	}
 
 	void Update ()
@@ -44,10 +48,12 @@ public class ServeCustomer : MonoBehaviour
 				float t = start1 - Time.time;
 				string min = ((int)t / 60).ToString ();
 				string sec = (t % 60).ToString ("f0");
-				if (t < 60) {
+				if (t < 60) 
+				{
 					time1.color = new Color32 (249, 137, 0, 255);
 				}
-				if (t < 30) {
+				if (t < 30) 
+				{
 					time1.color = new Color32 (216, 43, 43, 255);
 					timerA.SetBool ("TimeO", true);
 				}
@@ -55,6 +61,7 @@ public class ServeCustomer : MonoBehaviour
 				{
 					cusWait1 = false;
 					AI1.exit4 = true;
+					SpawnAfterServed (1);
 					line1.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -69,10 +76,12 @@ public class ServeCustomer : MonoBehaviour
 				float t2 = start2 - Time.time;
 				string min = ((int)t2 / 60).ToString ();
 				string sec = (t2 % 60).ToString ("f0");
-				if (t2 < 60) {
+				if (t2 < 60) 
+				{
 					time2.color = new Color32 (249, 137, 0, 255);
 				}
-				if (t2 < 30) {
+				if (t2 < 30) 
+				{
 					time2.color = new Color32 (216, 43, 43, 255);
 					timerB.SetBool ("TimeO", true);
 				}
@@ -80,6 +89,7 @@ public class ServeCustomer : MonoBehaviour
 				{
 					cusWait2 = false;
 					AI2.exit3 = true;
+					SpawnAfterServed (2);
 					line2.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -94,10 +104,12 @@ public class ServeCustomer : MonoBehaviour
 				float t3 = start3 - Time.time;
 				string min = ((int)t3 / 60).ToString ();
 				string sec = (t3 % 60).ToString ("f0");
-				if (t3 < 60) {
+				if (t3 < 60) 
+				{
 					time3.color = new Color32 (249, 137, 0, 255);
 				}
-				if (t3 < 30) {
+				if (t3 < 30) 
+				{
 					time3.color = new Color32 (216, 43, 43, 255);
 					timerC.SetBool ("TimeO", true);
 				}
@@ -105,6 +117,7 @@ public class ServeCustomer : MonoBehaviour
 				{
 					cusWait3 = false;
 					AI3.exit = true;
+					SpawnAfterServed(3);
 					line3.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
@@ -205,6 +218,44 @@ public class ServeCustomer : MonoBehaviour
 			{	
 				AI3.exit = true;
 				break;
+			}
+		}
+	}
+
+	void spawnAI2()
+	{
+		spawner.SpawnAI2();
+	}
+	void spawnAI3()
+	{
+		spawner.SpawnAI3();
+	}
+	void spawnAI1()
+	{
+		spawner.SpawnAI1();
+	}
+
+	void SpawnAfterServed(int i)
+	{
+		if (endOfDay == false)
+		{
+			switch (i) 
+			{
+			case 1:
+				{
+					Invoke ("spawnAI1", Random.Range (3f, 6f));
+					break;
+				}
+			case 2:
+				{
+					Invoke ("spawnAI2", Random.Range (3f, 5f));
+					break;
+				}
+			case 3:
+				{
+					Invoke ("spawnAI3", Random.Range (3f, 5f));
+					break;
+				}
 			}
 		}
 	}
