@@ -8,7 +8,7 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button,inventory;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP,confirm;
 
 	public Button btnDecrease,btnIncrease;
 
@@ -81,16 +81,11 @@ public class CustomerInteractionUI : MonoBehaviour
 				} 
 				else 
 				{
-					spawner.SpawnAI1 ();
-					Invoke ("spawnAI2", Random.Range (3f, 5f));
-					Invoke ("spawnAI3", Random.Range (4f, 7f));
-					//InteractionPanel.SetActive (true);
 					OpenPanel.SetActive (false);
-					hudCanvas.SetActive (false);
-					particle.SetActive (false);
-					cube.SetActive (true);
-					mount.GetComponent<Collider>().enabled = false;
-					Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+					confirm.SetActive (true);
+					Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
+					Cursor.lockState = CursorLockMode.None;
+					GameMaster.Instance.PlayerControl = false;
 				}
 
 			}
@@ -124,6 +119,27 @@ public class CustomerInteractionUI : MonoBehaviour
 			}
 	}
 
+	}
+
+	public void OpenShop()
+	{
+		spawner.SpawnAI1 ();
+		Invoke ("spawnAI2", Random.Range (3f, 5f));
+		Invoke ("spawnAI3", Random.Range (4f, 7f));
+		//InteractionPanel.SetActive (true);
+		Cursor.lockState = CursorLockMode.Locked;
+		hudCanvas.SetActive (false);
+		particle.SetActive (false);
+		cube.SetActive (true);
+		mount.GetComponent<Collider>().enabled = false;
+		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+		GameMaster.Instance.PlayerControl = true;
+	}
+	public void Cancel()
+	{
+		GameMaster.Instance.PlayerControl = true;
+		Cursor.lockState = CursorLockMode.Locked;
+		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 	}
 
 	public void startInteraction(CharacterCustomizationScript customer,int ai)
@@ -442,15 +458,6 @@ public class CustomerInteractionUI : MonoBehaviour
 	}
 
 	void OnTriggerEnter(Collider other)
-	{
-		if (other.tag == "Player")
-		{
-			isInsideTrigger = true;
-			OpenPanel.SetActive(true);
-		}
-	}
-
-	void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Player")
 		{

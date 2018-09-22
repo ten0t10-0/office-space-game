@@ -83,25 +83,25 @@ public class ShopInventoryUi : MonoBehaviour
 			if (item.Category.EnumID.ToString() == cat[currentAmount]) 
 			{	
 				GameObject newItem = Instantiate (ItemContainer, scrollViewContent);
-				newItem.transform.Find ("Button/Name").GetComponent<TMP_Text> ().text = item.Name;
-				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = item.Picture;
-				newItem.transform.Find ("Button/Qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
+				newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+				newItem.transform.Find ("Pic").GetComponent<Image> ().sprite = item.Picture;
+				newItem.transform.Find ("Qty").GetComponent<TMP_Text> ().text = item.Quantity.ToString ();
 
 				if (item.Quality == ItemQuality.Low)
 				{
-					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = bronze;;
+					newItem.transform.Find ("Border").GetComponent<Image> ().sprite = bronze;;
 
 				}
 				else if (item.Quality == ItemQuality.Medium)
 				{
-					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = silver;;
+					newItem.transform.Find ("Border").GetComponent<Image> ().sprite = silver;;
 
 				}
 				else if (item.Quality == ItemQuality.High)
 				{
-					newItem.transform.Find ("Button/Border").GetComponent<Image> ().sprite = gold;;
+					newItem.transform.Find ("Border").GetComponent<Image> ().sprite = gold;;
 				}
-				newItem.transform.Find ("Button").GetComponent<Button> ().onClick.AddListener(delegate {spawn(item);});
+				newItem.GetComponent<Button> ().onClick.AddListener(delegate {spawn(item);});
 				//newItem.transform.Find ("Button").GetComponent<Button> ().(delegate {spawn(item);});
 			}
 		}

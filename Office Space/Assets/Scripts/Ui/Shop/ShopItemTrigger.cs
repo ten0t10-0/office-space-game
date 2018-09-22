@@ -71,6 +71,7 @@ public class ShopItemTrigger : MonoBehaviour {
 				shopI.setItems (slot, pos1, rot,tempcanvas);
 				hudO.SetBool ("UIO", true);
 				hud.SetActive (false);
+				Cursor.lockState = CursorLockMode.None;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
 			}
@@ -131,6 +132,7 @@ public class ShopItemTrigger : MonoBehaviour {
 			OpenPanel.SetActive(false);
 			cube.SetActive (false);
 			canvas.enabled = false;
+			Cursor.lockState = CursorLockMode.Locked;
 			if (shopCanvas.activeInHierarchy) 
 			{
 				shopCanvas.SetActive (false);

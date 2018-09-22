@@ -6,7 +6,7 @@ using TMPro;
 public class UIController : MonoBehaviour 
 {
 	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof;
-	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU;// dontforget graphic raycaster
+	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
 	public Animator buildM,endDayOffA,endDayShopA;
 
 	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit;
