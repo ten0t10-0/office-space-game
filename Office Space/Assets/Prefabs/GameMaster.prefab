@@ -125,6 +125,8 @@ MonoBehaviour:
     type: 2}
   CurrentPlayerObject: {fileID: 0}
   Player: {}
+  CurrentUsername: 
+  CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
   initPlayerMoney: 1000000

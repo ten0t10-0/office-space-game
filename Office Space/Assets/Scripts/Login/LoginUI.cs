@@ -63,6 +63,8 @@ public class LoginUI : MonoBehaviour
                 //Username and password seem reasonable. Change UI to 'Loading...'. Start the Coroutine which tries to log the player in.
                 loginP.gameObject.SetActive(false);
                 loadingP.gameObject.SetActive(true);
+
+                GameMaster.Instance.CurrentUsername = playerUsername;
             }
             else
             {

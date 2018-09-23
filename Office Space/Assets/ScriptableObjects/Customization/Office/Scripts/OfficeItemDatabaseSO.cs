@@ -417,7 +417,13 @@ public class OfficeItemDatabaseSO : ScriptableObject
         return value;
     }
 
-    public bool RepossessItems(float debtValue)
+    /// <summary>
+    /// Result 0 = Items repossessed, Result 1 = Lifelines used, all items gone
+    /// </summary>
+    /// <param name="debtValue"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public bool RepossessItems(float debtValue, out int result)
     {
         bool sufficientValue = true;
 
@@ -425,8 +431,12 @@ public class OfficeItemDatabaseSO : ScriptableObject
         float accumulatedValue = 0f;
         float remainingValue = 0f;
 
+        result = -1;
+
         if (officeValue >= debtValue)
         {
+            result = 0;
+
             while (accumulatedValue < debtValue)
             {
                 float lowestValue = Mathf.Infinity;
@@ -458,6 +468,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
         }
         else if (GameMaster.Instance.Player.HasLifeLine)
         {
+            result = 1;
+
             GameMaster.Instance.Player.HasLifeLine = false;
 
             Debug.Log("*LIFELINE USED");

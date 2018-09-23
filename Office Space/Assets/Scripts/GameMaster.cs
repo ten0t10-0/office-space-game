@@ -74,6 +74,10 @@ public class GameMaster : MonoBehaviour
 
     [HideInInspector]
     public Player Player;
+    [HideInInspector]
+    public string CurrentUsername = null;
+    [HideInInspector]
+    public string CurrentBusinessName = null;
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
     public float initPlayerMoney = 10000;
@@ -148,6 +152,7 @@ public class GameMaster : MonoBehaviour
     public float GameTimeSpeed_DEFAULT = 1;
 
     private int dayEndCurrent;
+    private DayOfWeek dayEndCurrentDOW;
     #endregion
 
     #region <Misc>
@@ -284,32 +289,32 @@ public class GameMaster : MonoBehaviour
 
     private void Start()
     {
-        if (!IsMainMenu)
-        {
-            //DB Tests
-            if (!OfflineMode)
-            {
-                DBPlayer currentPlayer = Player.GetDBPlayer();
+        //if (!IsMainMenu)
+        //{
+        //    //DB Tests
+        //    if (!OfflineMode)
+        //    {
+        //        DBPlayer currentPlayer = Player.GetDBPlayer();
 
-                if (!DBManager.CheckUsername(Player.Name))
-                {
-                    bool success = DBManager.AddPlayer(currentPlayer, "Password123");
+        //        if (!DBManager.CheckUsername(Player.Name))
+        //        {
+        //            bool success = DBManager.AddPlayer(currentPlayer, "Password123");
 
-                    Debug.Log("*ADDED PLAYER: " + success.ToString());
-                }
-                else
-                {
-                    bool success = DBManager.UpdatePlayer(currentPlayer);
+        //            Debug.Log("*ADDED PLAYER: " + success.ToString());
+        //        }
+        //        else
+        //        {
+        //            bool success = DBManager.UpdatePlayer(currentPlayer);
 
-                    Debug.Log("*UPDATED PLAYER: " + success.ToString());
-                }
+        //            Debug.Log("*UPDATED PLAYER: " + success.ToString());
+        //        }
 
-                List<DBPlayer> highScores = DBManager.GetHighScores();
+        //        List<DBPlayer> highScores = DBManager.GetHighScores();
 
-                foreach (DBPlayer player in highScores)
-                    Debug.Log(player.ToString());
-            }
-        }
+        //        foreach (DBPlayer player in highScores)
+        //            Debug.Log(player.ToString());
+        //    }
+        //}
     }
 
     /// <summary>
@@ -320,7 +325,10 @@ public class GameMaster : MonoBehaviour
     {
         Debug.Log("INIT BEGIN");
 
-        DayDebt = GameDateTime.DayOfWeek;
+        if (CurrentUsername == null)
+            CurrentUsername = initPlayerName;
+        if (CurrentBusinessName == null)
+            CurrentBusinessName = initBusinessName;
 
         //UIMode = false;
         //BuildMode = false;
@@ -355,8 +363,6 @@ public class GameMaster : MonoBehaviour
 
         IsGameInitialized = true;
 
-        Debug.Log(GameModeManager.Shop.CountCustomersAtCounter.ToString());
-
         //**TEST**
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Upper);
         //CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().UnsetClothing(ClothingSlot.Lower);
@@ -383,6 +389,9 @@ public class GameMaster : MonoBehaviour
         }
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
 
+        //Debt day
+        DayDebt = GameDateTime.DayOfWeek;
+
         //Clear notifications
         Notifications = new NotificationList();
 
@@ -390,7 +399,7 @@ public class GameMaster : MonoBehaviour
         GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
         //Initialize Player
-        Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+        Player = new Player(CurrentUsername, CurrentBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
         if (TutorialMode)
         {
@@ -779,7 +788,8 @@ public class GameMaster : MonoBehaviour
             if (Input.GetKey(KeyCode.RightShift) && Input.GetKeyUp(KeyCode.D))
             {
                 Debug.Log("*CURRENT OFFICE VALUE: " + CustomizationManager.Office.GetTotalValue());
-                bool result = CustomizationManager.Office.RepossessItems(1000f);
+                int x;
+                bool result = CustomizationManager.Office.RepossessItems(1000f, out x);
 
                 if (result)
                     Debug.Log("**REPOSSESSION SUCCESS**");
@@ -854,6 +864,7 @@ public class GameMaster : MonoBehaviour
         UIMode = true;
 
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>
@@ -865,6 +876,7 @@ public class GameMaster : MonoBehaviour
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void EnableBuildMode()
@@ -929,6 +941,7 @@ public class GameMaster : MonoBehaviour
         {
             DayEnd = true;
             dayEndCurrent = GameDateTime.Day;
+            dayEndCurrentDOW = GameDateTime.DayOfWeek;
         }
     }
 
@@ -938,12 +951,45 @@ public class GameMaster : MonoBehaviour
         GUIManager.UIController.EndDayOffice();
         SleepMode = true;
 
-        #region **DEBUG NEXT DAY**
-        Debug.Log("NEXT DAY");
+        #region **DEBUG END DAY**
+        Debug.Log("DAY END");
         #endregion
 
         //CALL THIS FROM REPORT:
         //NewDay();
+    }
+
+    public bool IsDebtDay
+    {
+        get { return dayEndCurrentDOW == DayDebt; }
+    }
+
+    public void NewDayWithDebt()
+    {
+        Debug.Log("Current day: " + dayEndCurrentDOW.ToString() + "; Debt day: " + DayDebt.ToString());
+        if (IsDebtDay)
+        {
+            if (Player.Business.Money >= 10000)
+            {
+                GUIManager.UIController.PassDebtCheck();
+            }
+            else
+            {
+                int result;
+
+                if (CustomizationManager.Office.RepossessItems(10000, out result))
+                {
+                    if (result == 0)
+                        GUIManager.UIController.DebtFailNoLifeLineUsed();
+                    else if (result == 1)
+                        GUIManager.UIController.DebtFailUseLifeLine();
+                }
+                else
+                {
+                    GUIManager.UIController.FailDebtGameOver();
+                }
+            }
+        }
     }
 
     public void NewDay()
@@ -992,6 +1038,8 @@ public class GameMaster : MonoBehaviour
 
         //if (GameModeManager.GameMode_Current == GameMode.Shop)
         //    SaveGame(SaveSlotCurrent);
+
+        Debug.Log("NEW DAY START");
     }
 
     #region <Time Display format methods>
@@ -1070,6 +1118,7 @@ public class GameMaster : MonoBehaviour
                 Difficulty = this.Difficulty,
 
                 GameDateTime = this.GameDateTime,
+                DayDebt = this.DayDebt,
 
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
@@ -1101,7 +1150,8 @@ public class GameMaster : MonoBehaviour
             file.Close();
 
             //UPDATE DB:
-            DBManager.UpdatePlayer(Player.GetDBPlayer());
+            if (!OfflineMode)
+                DBManager.UpdatePlayer(Player.GetDBPlayer());
 
             //LOG:
             Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
@@ -1126,6 +1176,13 @@ public class GameMaster : MonoBehaviour
         //Load data from GameData object (loadData):
         Player = gameData.Player;
 
+        if (CurrentUsername != Player.Name)
+        {
+            Player.Name = CurrentUsername;
+            Debug.Log("*Player name in save file is not the same as the current username. Changed.");
+        }
+        CurrentBusinessName = Player.Business.Name;
+
         SupplierManager.Suppliers = gameData.Suppliers;
 
         OrderManager.Orders = gameData.Orders;
@@ -1138,6 +1195,7 @@ public class GameMaster : MonoBehaviour
         Difficulty = gameData.Difficulty;
 
         GameDateTime = gameData.GameDateTime;
+        DayDebt = gameData.DayDebt;
 
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
