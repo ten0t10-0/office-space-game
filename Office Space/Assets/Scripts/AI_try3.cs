@@ -108,7 +108,7 @@ public class AI_try3 : MonoBehaviour
 
 				if (Cur_Waypoint == 8) 
 				{
-					cur_timer = 0.2f;
+					//cur_timer = 0.2f;
 					exit3 = false;
 				}
 		//
