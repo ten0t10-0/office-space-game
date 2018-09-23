@@ -77,37 +77,40 @@ public class UIController : MonoBehaviour
 	}
 	public void NextDayBtn()
 	{
-        if (!GameMaster.Instance.IsDebtDay)
-        {
-            if (GameMaster.Instance.ShopUnlocked == false)
-            {
-                NotificationCanvas.gameObject.GetComponent<GraphicRaycaster>().enabled = false;
-                GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
-                GameMaster.Instance.NewDay();
-                endDayOffice.SetActive(false);
-				GameMaster.Instance.ModeSetPlay();
+		if (!GameMaster.Instance.IsDebtDay) {
+			if (GameMaster.Instance.ShopUnlocked == false) {
+				NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
+				GameMaster.Instance.GameModeManager.ChangeGameMode (GameMode.Office);
+				GameMaster.Instance.NewDay ();
+				endDayOffice.SetActive (false);
+				GameMaster.Instance.ModeSetPlay ();
 				hudcanvas.SetActive (true);
 
-                if (appMontior.activeInHierarchy || homescreen.activeInHierarchy)
-                {
-                    homescreen.SetActive(true);
-                    screensaver.SetActive(true);
-                    appMontior.SetActive(false);
-                    pcTrig.CloseShop();
-                }
-            }
-            else
-            {
-                confirmDay.SetActive(true);
+				if (appMontior.activeInHierarchy || homescreen.activeInHierarchy) {
+					homescreen.SetActive (true);
+					screensaver.SetActive (true);
+					appMontior.SetActive (false);
+					pcTrig.CloseShop ();
+				}
+			} else 
+			{
+				confirmDay.SetActive (true);
 
-                if (endDayOffice.activeInHierarchy)
-                    endDayOffice.SetActive(false);
-                else
-                    endDayShop.SetActive(false);
-            }
-        }
-        else
-            GameMaster.Instance.NewDayWithDebt();
+				if (endDayOffice.activeInHierarchy)
+					endDayOffice.SetActive (false);
+				else
+					endDayShop.SetActive (false);
+			}
+		} else 
+		{
+			if (endDayOffice.activeInHierarchy)
+				endDayOffice.SetActive (false);
+			
+			if (endDayShop.activeInHierarchy)
+				endDayShop.SetActive (false);
+			
+			GameMaster.Instance.NewDayWithDebt ();
+		}
 	}
 
 	public void OfficeNextDayBtn()
