@@ -87,7 +87,11 @@ public class CustomerInteractionUI : MonoBehaviour
 					Cursor.lockState = CursorLockMode.None;
 					GameMaster.Instance.PlayerControl = false;
 				}
+			}
 
+			if (GameMaster.Instance.DayEnd == true) 
+			{
+				endOfDay = true;
 			}
 		}
 		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
@@ -117,7 +121,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				counter++;
 				Debug.Log (counter);
 			}
-	}
+		}
 
 	}
 
