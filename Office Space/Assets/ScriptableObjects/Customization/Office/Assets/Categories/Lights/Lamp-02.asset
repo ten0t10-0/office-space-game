@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5696201cb49a8ac49b95455973b01e99, type: 3}
   m_Name: Lamp-02
   m_EditorClassIdentifier: 
-  Name: Lamp 2
+  Name: Floor Lamp
   Price: 500
   Essential: 0
   LevelRequirement: 15

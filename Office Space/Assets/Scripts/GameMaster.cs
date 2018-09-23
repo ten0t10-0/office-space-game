@@ -834,7 +834,7 @@ public class GameMaster : MonoBehaviour
                 }
 
                 if (Input.GetKey(KeyCode.E))
-                    Player.IncreaseExperience(1);
+                    Player.IncreaseExperience(50);
 
                 if (Input.GetKey(KeyCode.H))
                 {
@@ -951,7 +951,7 @@ public class GameMaster : MonoBehaviour
         //NewDay();
     }
 
-    private void NewDay()
+    public void NewDay()
     {
         int dayStartHour = DayStartHour_DEFAULT;
 
@@ -1077,7 +1077,6 @@ public class GameMaster : MonoBehaviour
 
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
-                SleepMode = this.SleepMode,
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
@@ -1143,7 +1142,6 @@ public class GameMaster : MonoBehaviour
 
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
-        SleepMode = gameData.SleepMode;
         DayEnd = gameData.DayEnd;
 
         dayEndCurrent = gameData.DayEndCurrent;

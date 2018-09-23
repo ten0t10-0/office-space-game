@@ -417,7 +417,7 @@ MonoBehaviour:
   ChanceNextOrder: 0
   DayStartHour: 8
   DayEndHour: 20
-  GameTimeSpeed: 60
+  GameTimeSpeed: 5
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
