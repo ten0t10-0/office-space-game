@@ -35,6 +35,7 @@ public class DebtLifeLineUsed : MonoBehaviour
 			{
 				controller.NextDayBtn ();
 				tutorial.SetActive (false);
+				canvas.SetActive (false);
 			}
 			counter++;
 			manager.DisplayNextSentence();

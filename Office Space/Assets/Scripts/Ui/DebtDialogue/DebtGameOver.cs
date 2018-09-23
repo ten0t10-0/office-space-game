@@ -36,6 +36,7 @@ public class DebtGameOver : MonoBehaviour
 			{
 				controller.GameOverScreen ();
 				tutorial.SetActive (false);
+				canvas.SetActive (false);
 			}
 			counter++;
 			manager.DisplayNextSentence();
