@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc16193e27fd8640a4976a46ac81e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ServerName: 10.0.0.14, 1433
+  ServerName: 127.0.0.1, 1433
   NetworkLibrary: DBMSSOCN
   DatabaseName: OfficeSpacePPG
   Username: admin

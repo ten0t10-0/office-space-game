@@ -289,16 +289,11 @@ public class GameMaster : MonoBehaviour
             //DB Tests
             if (!OfflineMode)
             {
-                DBPlayer currentPlayer = new DBPlayer()
-                {
-                    Username = Player.Name,
-                    Experience = Player.Experience,
-                    Money = Player.Business.Money
-                };
+                DBPlayer currentPlayer = Player.GetDBPlayer();
 
-                if (!DBManager.CheckPlayerUsername(Player.Name))
+                if (!DBManager.CheckUsername(Player.Name))
                 {
-                    bool success = DBManager.AddPlayer(currentPlayer, "12345");
+                    bool success = DBManager.AddPlayer(currentPlayer, "Password123");
 
                     Debug.Log("*ADDED PLAYER: " + success.ToString());
                 }
@@ -992,6 +987,7 @@ public class GameMaster : MonoBehaviour
         DayEnd = false;
         SleepMode = false;
 
+        Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
         InitializePlayer();
 
         //if (GameModeManager.GameMode_Current == GameMode.Shop)
@@ -1103,6 +1099,9 @@ public class GameMaster : MonoBehaviour
             bf.Serialize(file, saveData);
 
             file.Close();
+
+            //UPDATE DB:
+            DBManager.UpdatePlayer(Player.GetDBPlayer());
 
             //LOG:
             Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");

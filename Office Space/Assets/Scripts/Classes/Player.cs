@@ -108,6 +108,16 @@ public class Player
         return (int)((expBase * level) * (1 + (level / 2) - 0.5) - expBase);
     }
 
+    public DBPlayer GetDBPlayer()
+    {
+        return new DBPlayer()
+        {
+            Username = this.Name,
+            Experience = this.Experience,
+            Money = this.Business.Money
+        };
+    }
+
     private void IncreaseLevel()
     {
         Level++;

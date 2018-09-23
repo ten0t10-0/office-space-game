@@ -130,13 +130,15 @@ public class DatabaseManager : MonoBehaviour
         {
             foreach (DataRow row in dt.Rows)
             {
-                string name = Convert.ToString(row[0]);
-                int score = Convert.ToInt32(row[1]);
+                string name = Convert.ToString(row["Username"]);
+                int score = Convert.ToInt32(row["Experience"]);
+                float money = Convert.ToInt32(row["Money"]);
 
                 DBPlayer player = new DBPlayer()
                 {
                     Username = name,
-                    Experience = score
+                    Experience = score,
+                    Money = money
                 };
 
                 highScores.Add(player);
@@ -150,14 +152,14 @@ public class DatabaseManager : MonoBehaviour
         return highScores;
     }
 
-    public bool CheckPlayerUsername(string username)
+    public bool CheckUsername(string username)
     {
         Dictionary<string, object> pars = new Dictionary<string, object>()
         {
             { "@username", username }
         };
 
-        return Convert.ToInt32(Query("usp_CheckPlayerUsername", pars).Rows[0][0]) == 1;
+        return Convert.ToInt32(Query("usp_CheckUsername", pars).Rows[0][0]) == 1;
     }
 
     public bool AddPlayer(DBPlayer player, string password)
@@ -183,6 +185,16 @@ public class DatabaseManager : MonoBehaviour
         };
 
         return NonQuery("usp_UpdatePlayer", pars);
+    }
+
+    public string GetPassword(string username)
+    {
+        Dictionary<string, object> pars = new Dictionary<string, object>()
+        {
+            { "@username", username }
+        };
+
+        return Convert.ToString(Query("usp_GetPassword", pars).Rows[0]["Password"]);
     }
     #endregion
 }

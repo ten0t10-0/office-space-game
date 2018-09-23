@@ -25,6 +25,13 @@ public class MenuCamGuide : MonoBehaviour {
 
 	}
 
+    public void SkipButton(Transform newMount)
+    {
+        GameMaster.Instance.OfflineMode = true;
+        Debug.Log("*OFFLINE");
+        setMount(newMount);
+    }
+
 	public void  setMount ( Transform newMount  )
 	{
 		currentMount = newMount;

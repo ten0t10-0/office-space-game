@@ -44,75 +44,98 @@ public class LoginUI : MonoBehaviour
 		
 	}
 
-	public void Login_LoginButtonPressed ()
-	{
-		//Called when player presses button to Login
+    public void Login_LoginButtonPressed()
+    {
+        if (!GameMaster.Instance.OfflineMode)
+            GameMaster.Instance.OfflineMode = false;
 
-		//Get the username and password the player entered
-		playerUsername = LoginUsernameField.text;
-		playerPassword = LoginPasswordField.text;
+        //Called when player presses button to Login
 
-		//Check the lengths of the username and password. (If they are wrong, we might as well show an error now instead of waiting for the request to the server)
-		if (playerUsername.Length > 3)
-		{
-			if (playerPassword.Length > 5)
-			{
-				//Username and password seem reasonable. Change UI to 'Loading...'. Start the Coroutine which tries to log the player in.
-				loginP.gameObject.SetActive(false);
-				loadingP.gameObject.SetActive(true);
-				//StartCoroutine(LoginUser());
-			}
-			else
-			{
-				//Password too short so it must be wrong
-				LoginErrorText.text = "Error: Password Incorrect";
-			}
-		} else
-		{
-			//Username too short so it must be wrong
-			LoginErrorText.text = "Error: Username Incorrect";
-		}
-	}
+        //Get the username and password the player entered
+        playerUsername = LoginUsernameField.text;
+        playerPassword = LoginPasswordField.text;
+
+        //Check the lengths of the username and password. (If they are wrong, we might as well show an error now instead of waiting for the request to the server)
+        if (playerUsername != "" && playerUsername != null && playerPassword != "" && playerPassword != null)
+        {
+            if (GameMaster.Instance.DBManager.CheckUsername(playerUsername) && playerPassword == GameMaster.Instance.DBManager.GetPassword(playerUsername))
+            {
+                //Username and password seem reasonable. Change UI to 'Loading...'. Start the Coroutine which tries to log the player in.
+                loginP.gameObject.SetActive(false);
+                loadingP.gameObject.SetActive(true);
+            }
+            else
+            {
+                //Details incorrect
+                LoginErrorText.text = "Error: Please check details";
+            }
+        }
+        else
+        {
+            //Details not filled in
+            LoginErrorText.text = "Error: Please enter both username and password";
+        }
+    }
 
 	public void Register_RegisterButtonPressed ()
 	{
-		//Called when the player presses the button to register
+        if (!GameMaster.Instance.OfflineMode)
+            GameMaster.Instance.OfflineMode = false;
 
-		//Get the username and password and repeated password the player entered
-		playerUsername = RegisterUsernameField.text;
+        //Called when the player presses the button to register
+
+        //Get the username and password and repeated password the player entered
+        playerUsername = RegisterUsernameField.text;
 		playerPassword = RegisterPasswordField.text;
 
 		string confirmedPassword = RegisterConfirmPasswordField.text;
 
 		//Make sure username and password are long enough
-		if (playerUsername.Length > 3)
+		if (playerUsername.Length > 3 && playerUsername.Length <= 15)
 		{
-			if (playerPassword.Length > 5)
-			{
-				//Check the two passwords entered match
-				if (playerPassword == confirmedPassword)
-				{
-					//Username and passwords seem reasonable. Switch to 'Loading...' and start the coroutine to try and register an account on the server
-					registerP.gameObject.SetActive(false);
-					loadingP.gameObject.SetActive(true);
-					//StartCoroutine(RegisterUser());
-				}
-				else
-				{
-					//Passwords don't match, show error
-					RegisterErrorText.text = "Error: Password's don't Match";
-				}
-			}
-			else
-			{
-				//Password too short so show error
-				RegisterErrorText.text = "Error: Password too Short";
-			}
+            if (!GameMaster.Instance.DBManager.CheckUsername(playerUsername))
+            {
+                if (playerPassword.Length > 5 && playerPassword.Length <= 25)
+                {
+                    //Check the two passwords entered match
+                    if (playerPassword == confirmedPassword)
+                    {
+                        //Username and passwords seem reasonable. Switch to 'Loading...' and start the coroutine to try and register an account on the server
+                        registerP.gameObject.SetActive(false);
+                        loadingP.gameObject.SetActive(true);
+
+                        DBPlayer player = new DBPlayer()
+                        {
+                            Username = playerUsername,
+                            Experience = 0,
+                            Money = 0f
+                        };
+
+                        if (GameMaster.Instance.DBManager.AddPlayer(player, playerPassword))
+                            Debug.Log("*Player added!");
+                    }
+                    else
+                    {
+                        //Passwords don't match, show error
+                        RegisterErrorText.text = "Error: Passwords do not match";
+                    }
+                }
+                else
+                {
+                    //Password too short so show error
+                    RegisterErrorText.text = "Error: Password must contain 6-25 characters";
+                }
+            }
+            else
+            {
+                //Username taken
+                RegisterErrorText.text = "Error: Username has already been taken";
+            }
 		}
 		else
 		{
 			//Username too short so show error
-			RegisterErrorText.text = "Error: Username too Short";
+			RegisterErrorText.text = "Error: Username must contain 4-15 characters";
 		}
 	}
 
