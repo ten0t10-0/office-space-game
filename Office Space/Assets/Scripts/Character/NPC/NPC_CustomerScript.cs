@@ -7,29 +7,18 @@ public class NPC_CustomerScript : MonoBehaviour
     [HideInInspector]
     public int NPC_ID = -1;
 
-    public Customer CustomerInfo;
-    public Item ItemHeld;
-
-    public bool IsHoldingItem
+    private void Awake()
     {
-        get { return ItemHeld != null; }
-    }
+        NPC_ID = GameMaster.Instance.NPCManager.GetNextID();
+        GameMaster.Instance.NPCManager.CurrentNPCs[NPC_ID] = this.gameObject;
 
-    public void Initialize(int id)
-    {
-        NPC_ID = id;
-        CustomerInfo = GameMaster.Instance.CustomerManager.GenerateCustomer();
-        ItemHeld = null;
-    }
-
-    public void TakeItem(int iSlot)
-    {
-        ItemHeld = new Item(GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay[iSlot].ItemID);
-        GameMaster.Instance.Player.Business.Shop.RemoveItem(iSlot); //***
+        Debug.Log("MY ID IS " + NPC_ID.ToString());
     }
 
     private void OnDestroy()
     {
         GameMaster.Instance.NPCManager.CurrentNPCs_ResetAt(NPC_ID);
+        
+        Debug.Log("ID DEAD IS " + NPC_ID.ToString());
     }
 }

@@ -106,6 +106,7 @@ public class GameMaster : MonoBehaviour
     public bool SleepMode = false; //* + Check save data
 
 	public bool TutorialMode = false;
+    [HideInInspector]
 	public bool ShopUnlocked = false;
 
     private bool IsGameInitialized = false;
@@ -297,7 +298,7 @@ public class GameMaster : MonoBehaviour
 
                 if (!DBManager.CheckPlayerUsername(Player.Name))
                 {
-                    bool success = DBManager.AddPlayer(currentPlayer);
+                    bool success = DBManager.AddPlayer(currentPlayer, "12345");
 
                     Debug.Log("*ADDED PLAYER: " + success.ToString());
                 }
@@ -396,18 +397,40 @@ public class GameMaster : MonoBehaviour
         //Initialize Player
         Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
 
-        //Set Difficulty
-        Difficulty = initDifficulty;
+        if (TutorialMode)
+        {
+            //TUTORIAL SETUPS:
+
+            string temp;
+
+            Difficulty = 0;
+
+            SupplierManager.GenerateSuppliers(2, out temp);
+
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(23), out temp);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(24), out temp);
+            SupplierManager.Suppliers[0].Inventory.AddItem(new Item(9), out temp);
+
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(13), out temp);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(23), out temp);
+            SupplierManager.Suppliers[1].Inventory.AddItem(new Item(24), out temp);
+        }
+        else
+        {
+            //Initialize Difficulty
+            Difficulty = initDifficulty;
+
+            //Generate Suppliers
+            SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out message);
+
+            //Generating supplier items
+            SupplierManager.PopulateSupplierInventories();
+        }
+            
         CheckDifficulty();
 
         //Player Initalizations outside Player class...
         AchievementManager.CheckAllAchievements();
-
-        //Generate Suppliers
-        SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out message);
-
-        //TEST: Generating supplier items *
-        SupplierManager.PopulateSupplierInventories();
 
         //  ^ Adding office object:
         int iObject;
@@ -667,7 +690,11 @@ public class GameMaster : MonoBehaviour
         }
         else
         {
-            CurrentPlayerObject.transform.position = Vector3.up;
+            if (GameModeManager.GameMode_Current == GameMode.Shop)
+                CurrentPlayerObject.transform.position = new Vector3(18f, 1f, -8f);
+            else
+                CurrentPlayerObject.transform.position = Vector3.up;
+
             CurrentPlayerObject.transform.rotation = Quaternion.Euler(Vector3.zero);
             CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().SetAppearanceByData(Player.CharacterCustomizationData);
         }
@@ -698,13 +725,7 @@ public class GameMaster : MonoBehaviour
 
                     AdvanceInGameTime(gameTimeSpeed);
 
-                    if (!DayEnd)
-                    {
-                        #region <Random, non-gamemode-related events, etc>
-                        //*
-                        #endregion
-                    }
-                    else
+                    if (DayEnd)
                     {
                         #region <Next day & checks>
                         bool readyNextDay = true;
@@ -726,7 +747,7 @@ public class GameMaster : MonoBehaviour
 
                         if (readyNextDay)
                         {
-                            NextDay(); //*
+                            EndDay(); //*
                         }
                         #endregion
                     }
@@ -910,6 +931,18 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void EndDay() //**
+    {
+        //SHOW REPORTS
+
+        #region **DEBUG NEXT DAY**
+        Debug.Log("NEXT DAY");
+        #endregion
+
+        //CALL THIS FROM REPORT:
+        NewDay();
+    }
+
     private void NewDay()
     {
         int dayStartHour = DayStartHour_DEFAULT;
@@ -949,18 +982,11 @@ public class GameMaster : MonoBehaviour
         Player.Business.ResetMoneyStart();
 
         DayEnd = false;
-    }
 
-    private void NextDay() //**
-    {
-        //SHOW REPORTS
+        InitializePlayer();
 
-        #region **DEBUG NEXT DAY**
-        Debug.Log("NEXT DAY");
-        #endregion
-
-        //CALL THIS FROM REPORT:
-        NewDay();
+        //if (GameModeManager.GameMode_Current == GameMode.Shop)
+        //    SaveGame(SaveSlotCurrent);
     }
 
     #region <Time Display format methods>
@@ -993,12 +1019,15 @@ public class GameMaster : MonoBehaviour
 
     public void CheckDifficulty()
     {
-        if (Difficulty != -1 && Difficulty < 3)
+        if (!TutorialMode)
         {
-            for (int i = Difficulty; i <= 3; i++)
+            if (Difficulty != -1 && Difficulty < 3)
             {
-                if (Player.Level >= DifficultySettings[i].LevelRequirement)
-                    Difficulty = i;
+                for (int i = Difficulty; i <= 3; i++)
+                {
+                    if (Player.Level >= DifficultySettings[i].LevelRequirement)
+                        Difficulty = i;
+                }
             }
         }
 

@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 114662479340912026}
   - component: {fileID: 82088856800757656}
   - component: {fileID: 114083629422655648}
+  - component: {fileID: 114129117898684530}
   m_Layer: 2
   m_Name: NPC 1
   m_TagString: NPC
@@ -977,6 +978,18 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 1fe25e01245415c4ba40a3854a838572, type: 3}
   - {fileID: 8300000, guid: 0baffd84388d6174ebca5108b5e9f0da, type: 3}
+--- !u!114 &114129117898684530
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1807665537654758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f9a9f4bf7828474f9dbe8e57af4214b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NPC_ID: -1
 --- !u!114 &114207873951103108
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 82838820927404456}
   - component: {fileID: 114793379406617094}
   - component: {fileID: 114820479414562924}
+  - component: {fileID: 114484628389703056}
   m_Layer: 2
   m_Name: NPC 1 3
   m_TagString: NPC
@@ -1069,6 +1070,18 @@ MonoBehaviour:
   ClothingIndex: 0
   IsBodyObject: 0
   HasCustomMaterial: 0
+--- !u!114 &114484628389703056
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1865418489776752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f9a9f4bf7828474f9dbe8e57af4214b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NPC_ID: -1
 --- !u!114 &114657259671496822
 MonoBehaviour:
   m_ObjectHideFlags: 1

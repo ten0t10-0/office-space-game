@@ -104,6 +104,13 @@ public class OrderManager : MonoBehaviour
         Debug.Log("Order value (with player markup): " + GameMaster.MarkupPrice(Orders[Orders.Count - 1].TotalValue(), GameMaster.Instance.Player.Business.GetTotalMarkup()).ToString());
     }
 
+    public void CreateCustomOrder(int countItems, int qty, DateTime? dateDue = null)
+    {
+        Customer customer = GameMaster.Instance.CustomerManager.GenerateCustomer();
+
+
+    }
+
     public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, float markup, out float payment, out int score, out float penaltyMultiplier)
     {
         Orders[iOrderToComplete].CompleteOrder(orderItems, dateFilled, markup, out payment, out score, out penaltyMultiplier);

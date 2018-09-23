@@ -147,9 +147,12 @@ public class PlayerCustShop : MonoBehaviour
 		{
 			if (item.ClothingSlot.Slot == ClothingSlot.Costume) 
 			{
-				GameObject newItem = Instantiate (Container, Upperscroll);
-				SetItem (newItem, item);
-				newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = outfit;
+                if (!item.Special)
+                {
+                    GameObject newItem = Instantiate(Container, Upperscroll);
+                    SetItem(newItem, item);
+                    newItem.transform.Find("Button/Image").GetComponent<Image>().sprite = outfit;
+                }
 			}
 		}
 	}
@@ -168,22 +171,21 @@ public class PlayerCustShop : MonoBehaviour
 	}
 	void SetItem(GameObject newItem, CharacterClothingSO item)
 	{
-		newItem.transform.Find ("Button/Image").GetComponent<Image> ().sprite = outfit;
-		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = item.Name;
+        newItem.transform.Find("Button/Image").GetComponent<Image>().sprite = outfit;
+        newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.Name;
 
-		if (item == selectedItems(item)) 
-		{
-			newItem.transform.Find ("Button/Equipped").GetComponent<Image> ().sprite = equipped;
-			Debug.Log("Bloop");
-		}
-			
-		if (item.LevelRequirement > GameMaster.Instance.Player.Level) 
-		{
-			newItem.transform.Find ("Image").GetComponent<Image> ().gameObject.SetActive(true);
-		}
-		newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate{slots(item);});
+        if (selectedItems(item))
+        {
+            newItem.transform.Find("Button/Equipped").GetComponent<Image>().sprite = equipped;
+            Debug.Log("Bloop");
+        }
 
-	}
+        if (item.LevelRequirement > GameMaster.Instance.Player.Level)
+        {
+            newItem.transform.Find("Image").GetComponent<Image>().gameObject.SetActive(true);
+        }
+        newItem.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { slots(item); });
+    }
 
 	void slots(CharacterClothingSO clothing)
 	{
@@ -220,18 +222,16 @@ public class PlayerCustShop : MonoBehaviour
 		playerCus.UnsetAllClothing ();
 	}
 
-	public CharacterClothingSO selectedItems(CharacterClothingSO item)
+	public bool selectedItems(CharacterClothingSO item)
 	{
-		foreach (int current in playerCus.ClothingObjects.Values)
-		{
-			if (GameMaster.Instance.CustomizationManager.Character.Clothing [current] == item)
-			{
-				Debug.Log ("Print");
-				return item;
-			} else
-				return null;
-		}
-		return null;
+        int iCurrent = playerCus.GetClothingIndexBySlot(item.ClothingSlot.Slot);
+        CharacterClothingSO itemFound = null;
+
+        if (iCurrent != -1)
+            itemFound = GameMaster.Instance.CustomizationManager.Character.Clothing[iCurrent];
+
+
+        return itemFound == item;
 	}
 		
 	public CharacterClothingSO PurchasedItems(CharacterClothingSO item)

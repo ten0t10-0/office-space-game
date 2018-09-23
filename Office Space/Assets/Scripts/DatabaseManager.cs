@@ -160,13 +160,14 @@ public class DatabaseManager : MonoBehaviour
         return Convert.ToInt32(Query("usp_CheckPlayerUsername", pars).Rows[0][0]) == 1;
     }
 
-    public bool AddPlayer(DBPlayer player)
+    public bool AddPlayer(DBPlayer player, string password)
     {
         Dictionary<string, object> pars = new Dictionary<string, object>()
         {
             { "@username", player.Username },
             { "@experience", player.Experience },
-            { "@money", player.Money }
+            { "@money", player.Money },
+            { "@password", password }
         };
 
         return NonQuery("usp_AddPlayer", pars);

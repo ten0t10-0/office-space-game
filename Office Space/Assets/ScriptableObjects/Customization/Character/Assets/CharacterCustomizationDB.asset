@@ -14,16 +14,14 @@ MonoBehaviour:
   MaterialBlank: {fileID: 0}
   MaterialBodyDefault: {fileID: 2100000, guid: 67854ed261cd1fb41b2624148f20cfa5, type: 2}
   Clothing:
-  - {fileID: 11400000, guid: 7a6fe24bf6845a641b2869c3333be32d, type: 2}
-  - {fileID: 11400000, guid: 784cbf68fb5b4b4469584fecb1c3a786, type: 2}
+  - {fileID: 11400000, guid: 0a026697f14849b47af6c08d12cb1244, type: 2}
+  - {fileID: 11400000, guid: 69dc9ed20ba92db4084314f34ca298a9, type: 2}
   - {fileID: 11400000, guid: aedb8fbfe8d9e1240af13743a29f1cfe, type: 2}
   - {fileID: 11400000, guid: dff920947b7d2ad41969623e27ba1c6a, type: 2}
   - {fileID: 11400000, guid: b1acdfe744961cf4f87299a2e6a55b05, type: 2}
   - {fileID: 11400000, guid: 0b36466b06756d242acc4191ff86963e, type: 2}
   - {fileID: 11400000, guid: 99801b1c44ca88248b1b492c52b9e75b, type: 2}
   - {fileID: 11400000, guid: 941177848f3b50f49a2b08d132704b80, type: 2}
-  - {fileID: 11400000, guid: 0a026697f14849b47af6c08d12cb1244, type: 2}
-  - {fileID: 11400000, guid: 69dc9ed20ba92db4084314f34ca298a9, type: 2}
   ClothingSlots:
   - {fileID: 11400000, guid: 9ca95f108f2155042948915067794a09, type: 2}
   - {fileID: 11400000, guid: 4b8d4a6e5ffecfa4384bca03deb82661, type: 2}

@@ -129,13 +129,15 @@ public class Player
     {
         for (int i = 0; i < GameMaster.Instance.CustomizationManager.Character.Clothing.Count; i++)
         {
-            if (GameMaster.Instance.CustomizationManager.Character.Clothing[i].LevelRequirement <= Level)
+            CharacterClothingSO clothing = GameMaster.Instance.CustomizationManager.Character.Clothing[i];
+
+            if (!clothing.Special && clothing.LevelRequirement <= Level)
             {
                 if (!UnlockedClothing.Contains(i))
                 {
                     UnlockedClothing.Add(i);
 
-                    GameMaster.Instance.Notifications.Add(string.Format("Clothing unlocked: '{0}'", GameMaster.Instance.CustomizationManager.Character.Clothing[i].Name));
+                    GameMaster.Instance.Notifications.Add(string.Format("Clothing unlocked: '{0}'", clothing.Name));
                 }
             }
         }

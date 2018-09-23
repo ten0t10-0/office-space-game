@@ -16,36 +16,12 @@ public class NPCManager : MonoBehaviour
         CurrentNPCs = new GameObject[MaximumNPCs];
     }
 
-    //public void SpawnNPC(NPCType npcType)
-    //{
-    //    int npcId = GetNextID();
-
-    //    if (npcId != -1)
-    //    {
-    //        switch (npcType)
-    //        {
-    //            case NPCType.Customer:
-    //                {
-    //                    CurrentNPCs[npcId] = Instantiate(GameMaster.Instance.GenericCharacterObject, DefaultPosition, Quaternion.Euler(DefaultRotation));
-
-    //                    //*
-
-    //                    break;
-    //                }
-    //        }
-    //    }
-    //}
-
-    public void DestroyNPC(int npcId)
-    {
-        Destroy(CurrentNPCs[npcId]);
-    }
-
     public void DestroyAllNPCs()
     {
         for (int i = 0; i < CurrentNPCs.Length; i++)
         {
-            Destroy(CurrentNPCs[i]);
+            if (CurrentNPCs[i] != null)
+                Destroy(CurrentNPCs[i]);
         }
     }
 
@@ -62,7 +38,7 @@ public class NPCManager : MonoBehaviour
         get { return GetNextID() == -1; }
     }
 
-    private int GetNextID()
+    public int GetNextID()
     {
         int id = -1;
 

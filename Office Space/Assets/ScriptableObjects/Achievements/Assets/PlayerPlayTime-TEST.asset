@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Name: PlayerPlayTime-TEST
   m_EditorClassIdentifier: 
   Name: 10 Seconds? WOW!
+  des: 
   AchievementType: 2
   TargetValue: 10
