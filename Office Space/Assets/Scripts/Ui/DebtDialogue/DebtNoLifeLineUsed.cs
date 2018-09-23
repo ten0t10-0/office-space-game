@@ -37,7 +37,7 @@ public class DebtNoLifeLineUsed : MonoBehaviour
 	{
 		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 		{
-			if (counter == 3) 
+			if (counter == 2) 
 			{
 				controller.NewDayAfterDebt();
 				tutorial.SetActive (false);

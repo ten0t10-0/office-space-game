@@ -34,7 +34,7 @@ public class DebtGameOver : MonoBehaviour
 	{
 		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 		{
-			if (counter == 3) 
+			if (counter == 2) 
 			{
 				controller.GameOverScreen ();
 				tutorial.SetActive (false);
