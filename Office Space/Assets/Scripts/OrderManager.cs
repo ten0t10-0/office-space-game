@@ -104,11 +104,22 @@ public class OrderManager : MonoBehaviour
         Debug.Log("Order value (with player markup): " + GameMaster.MarkupPrice(Orders[Orders.Count - 1].TotalValue(), GameMaster.Instance.Player.Business.GetTotalMarkup()).ToString());
     }
 
-    public void CreateCustomOrder(int countItems, int qty, DateTime? dateDue = null)
+    public void CreateTutorialOrder()
     {
         Customer customer = GameMaster.Instance.CustomerManager.GenerateCustomer();
+        DateTime dateReceived = GameMaster.Instance.GameDateTime;
+        List<OrderItem> items = new List<OrderItem>();
 
+        if (GameMaster.Instance.SupplierManager.Suppliers.Count > 1)
+        {
+            OrderItem item = new OrderItem(GameMaster.Instance.SupplierManager.Suppliers[0].Inventory.Items[0].ItemID, 5);
+            items.Add(item);
+        }
 
+        Order newOrder = new Order(customer, items, dateReceived, null);
+
+        Orders.Add(newOrder);
+        CountOpen++;
     }
 
     public void CompleteOrder(int iOrderToComplete, List<OrderItem> orderItems, DateTime dateFilled, float markup, out float payment, out int score, out float penaltyMultiplier)

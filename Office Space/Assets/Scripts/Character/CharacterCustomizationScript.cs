@@ -442,8 +442,8 @@ public class CharacterCustomizationScript : MonoBehaviour
             clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Lower));
             clothingToApply.Add(db.GetRandomClothingBySlot(ClothingSlot.Upper));
 
-            setArmLeft = GameMaster.Roll(0.05f);
-            setArmRight = GameMaster.Roll(0.05f);
+            //setArmLeft = GameMaster.Roll(0.05f);
+            //setArmRight = GameMaster.Roll(0.05f);
 
             if (setArmLeft)
             {

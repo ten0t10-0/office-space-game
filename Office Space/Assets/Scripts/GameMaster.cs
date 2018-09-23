@@ -414,6 +414,8 @@ public class GameMaster : MonoBehaviour
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(13), out temp);
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(23), out temp);
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(24), out temp);
+
+            //OrderManager.CreateTutorialOrder();
         }
         else
         {

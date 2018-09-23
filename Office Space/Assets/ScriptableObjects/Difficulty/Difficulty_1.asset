@@ -15,12 +15,12 @@ MonoBehaviour:
   LevelRequirement: 1
   GenerateOrders: 1
   MaxSimultaneousOpenOrders: 1
-  MaxOrderItems: 3
-  MaxOrderItemQuantity: 5
+  MaxOrderItems: 2
+  MaxOrderItemQuantity: 3
   GenerateOrderDueDate: 1
   OrderTimeShippingTimeMultiplier: 3
   OrderTimeAddedPerItem: 15
-  OrderGenerationRate: 0.02
+  OrderGenerationRate: 0.01
   IncludeCustomerTolerance: 1
   CustomerToleranceIncrement: 0.1
   CustomerToleranceDecrement: 0.1
