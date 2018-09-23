@@ -396,10 +396,12 @@ MonoBehaviour:
   goApps: AppPanelScreen
   goOrdersPanel: OrdersPanel
   HudCanvas: HudCanvas
+  goUIController: 
   OrdersPanelScript: {fileID: 0}
   hudScript: {fileID: 0}
   note: {fileID: 0}
   achiev: {fileID: 0}
+  UIController: {fileID: 0}
 --- !u!114 &114856139823664460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -415,7 +417,7 @@ MonoBehaviour:
   ChanceNextOrder: 0
   DayStartHour: 8
   DayEndHour: 20
-  GameTimeSpeed: 5
+  GameTimeSpeed: 60
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1

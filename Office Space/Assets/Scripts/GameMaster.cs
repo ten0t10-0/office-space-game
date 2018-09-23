@@ -415,7 +415,7 @@ public class GameMaster : MonoBehaviour
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(23), out temp);
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(24), out temp);
 
-            //OrderManager.CreateTutorialOrder();
+            OrderManager.CreateTutorialOrder();
         }
         else
         {
@@ -876,12 +876,16 @@ public class GameMaster : MonoBehaviour
     {
         BuildMode = true;
         SleepMode = true;
+
+        GUIManager.UIController.BuildModeUIOpen();
     }
 
     public void DisableBuildMode()
     {
         BuildMode = false;
         SleepMode = false;
+
+        GUIManager.UIController.BuildModeUIClose();
     }
     #endregion
 
@@ -936,13 +940,15 @@ public class GameMaster : MonoBehaviour
     private void EndDay() //**
     {
         //SHOW REPORTS
+        GUIManager.UIController.EndDayOffice();
+        SleepMode = true;
 
         #region **DEBUG NEXT DAY**
         Debug.Log("NEXT DAY");
         #endregion
 
         //CALL THIS FROM REPORT:
-        NewDay();
+        //NewDay();
     }
 
     private void NewDay()
@@ -984,6 +990,7 @@ public class GameMaster : MonoBehaviour
         Player.Business.ResetMoneyStart();
 
         DayEnd = false;
+        SleepMode = false;
 
         InitializePlayer();
 

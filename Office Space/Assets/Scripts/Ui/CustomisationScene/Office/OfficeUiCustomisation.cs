@@ -82,7 +82,7 @@ public class OfficeUiCustomisation : MonoBehaviour
 		newItem.transform.Find("Name").GetComponent<TMP_Text> ().text = item.Name;
 		newItem.transform.Find("Button/PriceText").GetComponent<TMP_Text> ().text = "$" + item.Price.ToString();
 
-		if(item.LevelRequirement < GameMaster.Instance.Player.Level)
+		if(GameMaster.Instance.Player.Level < item.LevelRequirement)
 		newItem.transform.Find ("Image").GetComponent<Image> ().gameObject.SetActive (true);
 
 		if (item.Category == OfficeItemCategory.Chairs)
@@ -134,7 +134,7 @@ public class OfficeUiCustomisation : MonoBehaviour
 			{
 				phone.SetBool ("PhoneH", false);
 				phone.SetBool ("PhoneO", false);
-                GameMaster.Instance.BuildMode = true;
+                GameMaster.Instance.EnableBuildMode();
 
                 GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
 				GameMaster.Instance.CustomizationManager.Office.SelectObject (random);

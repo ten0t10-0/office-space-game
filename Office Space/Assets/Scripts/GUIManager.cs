@@ -9,6 +9,8 @@ public class GUIManager : MonoBehaviour
 
 	public string HudCanvas;
 
+    public string goUIController;
+
     [HideInInspector]
     public OrderUI OrdersPanelScript;
 
@@ -20,11 +22,15 @@ public class GUIManager : MonoBehaviour
 	[HideInInspector]
 	public AchievmentsUI achiev;
 
+    [HideInInspector]
+    public UIController UIController;
+
     public void Initialize()
     {
         OrdersPanelScript = GameObject.Find(goMonitor).transform.Find(goUIScreen).Find(goCompCanvas).Find(goApps).Find(goOrdersPanel).gameObject.GetComponent<OrderUI>();
         hudScript = GameObject.Find("HudCanvas").GetComponent<HudMain>();
         note = GameObject.Find("HudCanvas").transform.Find("Phone").gameObject.GetComponent<Notifications>();
         achiev = GameObject.Find("NotificationCanvas").transform.Find("Acheivments").gameObject.GetComponent<AchievmentsUI>();
+        UIController = GameObject.Find("UiController").GetComponent<UIController>();
     }
 }
