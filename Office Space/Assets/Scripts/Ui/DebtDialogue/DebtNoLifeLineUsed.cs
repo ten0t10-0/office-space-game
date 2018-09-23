@@ -15,7 +15,7 @@ public class DebtNoLifeLineUsed : MonoBehaviour
 	UIController controller;
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
