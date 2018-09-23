@@ -75,9 +75,9 @@ public class GameMaster : MonoBehaviour
     [HideInInspector]
     public Player Player;
     [HideInInspector]
-    public string CurrentUsername = null;
+    public string CurrentUsername = "";
     [HideInInspector]
-    public string CurrentBusinessName = null;
+    public string CurrentBusinessName = "";
     public string initPlayerName = "New Player";
     public string initBusinessName = "My Business";
     public float initPlayerMoney = 10000;
@@ -325,9 +325,9 @@ public class GameMaster : MonoBehaviour
     {
         Debug.Log("INIT BEGIN");
 
-        if (CurrentUsername == null)
+        if (CurrentUsername == null || CurrentUsername == "")
             CurrentUsername = initPlayerName;
-        if (CurrentBusinessName == null)
+        if (CurrentBusinessName == null || CurrentBusinessName == "")
             CurrentBusinessName = initBusinessName;
 
         //UIMode = false;
@@ -397,6 +397,9 @@ public class GameMaster : MonoBehaviour
 
         //Set events
         GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
+
+        Debug.Log("NEW GAME: Current Player -> " + CurrentUsername);
+        Debug.Log("NEW GAME: Current Bus -> " + CurrentBusinessName);
 
         //Initialize Player
         Player = new Player(CurrentUsername, CurrentBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
@@ -864,7 +867,7 @@ public class GameMaster : MonoBehaviour
         UIMode = true;
 
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.visible = true;
     }
 
     /// <summary>
@@ -876,7 +879,7 @@ public class GameMaster : MonoBehaviour
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
     }
 
     public void EnableBuildMode()
@@ -1151,7 +1154,16 @@ public class GameMaster : MonoBehaviour
 
             //UPDATE DB:
             if (!OfflineMode)
-                DBManager.UpdatePlayer(Player.GetDBPlayer());
+            {
+                DBPlayer p = Player.GetDBPlayer();
+                Debug.Log(p.Username + p.Experience + p.Money);
+                bool s = DBManager.UpdatePlayer(Player.GetDBPlayer());
+
+                if (!s)
+                    Debug.Log("Uh oh");
+                else
+                    Debug.Log("Player updated.");
+            }
 
             //LOG:
             Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
