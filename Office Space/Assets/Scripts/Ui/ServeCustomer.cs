@@ -125,8 +125,10 @@ public class ServeCustomer : MonoBehaviour
 			}
 
 		}
-
-
+		if (GameMaster.Instance.DayEnd == true) 
+		{
+			endOfDay = true;
+		}
 	}
 
 	private bool IsOpenPanelActive
