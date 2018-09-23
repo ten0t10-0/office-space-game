@@ -126,7 +126,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1229670002630774
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1249271396149482
 GameObject:
   m_ObjectHideFlags: 1
@@ -533,7 +533,7 @@ Transform:
   m_GameObject: {fileID: 1132940838060850}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -106.999985, z: -2.7000008}
-  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_LocalScale: {x: 50, y: 50, z: 2}
   m_Children:
   - {fileID: 4826413970226834}
   - {fileID: 4302277687490060}
@@ -957,6 +957,7 @@ MonoBehaviour:
   ClothingSlot: 2
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!114 &114146025422402188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -971,6 +972,7 @@ MonoBehaviour:
   ClothingSlot: 3
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114188439010791542
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -985,6 +987,7 @@ MonoBehaviour:
   ClothingSlot: 2
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114195321308150210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1013,6 +1016,7 @@ MonoBehaviour:
   ClothingSlot: 5
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114386061769315920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1027,6 +1031,7 @@ MonoBehaviour:
   ClothingSlot: 1
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!114 &114450754282050566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1041,6 +1046,7 @@ MonoBehaviour:
   ClothingSlot: 1
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114610409750231244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1055,6 +1061,7 @@ MonoBehaviour:
   ClothingSlot: 0
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114758755995555648
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1085,6 +1092,7 @@ MonoBehaviour:
   ClothingSlot: 4
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114990351689301594
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1119,6 +1127,7 @@ MonoBehaviour:
   ClothingSlot: 0
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!135 &135871233733925596
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1633,7 +1642,7 @@ SkinnedMeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1229670002630774}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1

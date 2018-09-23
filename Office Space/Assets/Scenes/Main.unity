@@ -7822,6 +7822,7 @@ MonoBehaviour:
   appMontior: {fileID: 269597591}
   homescreen: {fileID: 2118549069}
   screensaver: {fileID: 1474296964}
+  hudcanvas: {fileID: 1592564641}
   DebtPass: {fileID: 275763732}
   DebtGameOver: {fileID: 744259239}
   DebtLifeLine: {fileID: 1601253313}

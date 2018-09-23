@@ -6,7 +6,7 @@ using TMPro;
 
 public class UIController : MonoBehaviour 
 {
-	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver;
+	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas;
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
 	public Animator buildM,endDayOffA,endDayShopA;
 
@@ -52,20 +52,27 @@ public class UIController : MonoBehaviour
 
 	public void EndDayOffice()
 	{
+		GameMaster.Instance.ModeSetUI();
 		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = true;
 		endDayOffice.SetActive (true);
 		profit.SetText (GameMaster.Instance.Player.Business.GetProfits ().ToString());
 		orderComplete.SetText (GameMaster.Instance.OrderManager.CountCompletedToday.ToString());
 		orderFailed.SetText (GameMaster.Instance.OrderManager.CountFailedToday.ToString ());
 
+		if (hudcanvas.activeInHierarchy)
+			hudcanvas.SetActive (false);
+
 		endDayOffA.SetBool ("EndOfficeO", true);
 		//set varibles
 	}
 	public void EndDayShop()
 	{
+		GameMaster.Instance.ModeSetUI();
 		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = true;
 		endDayOffice.SetActive (true);
 		endDayOffA.SetBool ("EndShopO", true);
+		if (hudcanvas.activeInHierarchy)
+			hudcanvas.SetActive (false);
 		//set varibles
 	}
 	public void NextDayBtn()
@@ -78,6 +85,8 @@ public class UIController : MonoBehaviour
                 GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
                 GameMaster.Instance.NewDay();
                 endDayOffice.SetActive(false);
+				GameMaster.Instance.ModeSetPlay();
+				hudcanvas.SetActive (true);
 
                 if (appMontior.activeInHierarchy || homescreen.activeInHierarchy)
                 {
@@ -108,6 +117,8 @@ public class UIController : MonoBehaviour
 		GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
 		GameMaster.Instance.NewDay ();
 		endDayOffice.SetActive (false);
+		GameMaster.Instance.ModeSetPlay();
+		hudcanvas.SetActive (true);
 
 		if (appMontior.activeInHierarchy || homescreen.activeInHierarchy) 
 		{
@@ -125,26 +136,32 @@ public class UIController : MonoBehaviour
 		GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Shop);
 		GameMaster.Instance.NewDay ();
 		endDayShop.SetActive (false);
+		GameMaster.Instance.ModeSetPlay();
+		hudcanvas.SetActive (true);
 	}
 
 	public void PassDebtCheck()
 	{
 		DebtPass.SetActive (true);
+		DebtPass.GetComponent<DebtCheckPass> ().StartUp ();
 	}
 
 	public void FailDebtGameOver()
 	{
 		DebtGameOver.SetActive (true);
+		DebtGameOver.GetComponent<DebtGameOver> ().StartUp ();
 	}
 
 	public void DebtFailUseLifeLine()
 	{
 		DebtLifeLine.SetActive (true);
+		DebtLifeLine.GetComponent<DebtLifeLineUsed> ().StartUp ();
 	}
 
 	public void DebtFailNoLifeLineUsed()
 	{
 		DebtNoLifeLineU.SetActive (true);
+		DebtNoLifeLineU.GetComponent<DebtNoLifeLineUsed> ().StartUp ();
 	}
 
 	public void GameOverScreen()
@@ -156,5 +173,33 @@ public class UIController : MonoBehaviour
 //	{
 //		
 //	}
+	public void NewDayAfterDebt()
+	{
+		if (GameMaster.Instance.ShopUnlocked == false)
+		{
+			NotificationCanvas.gameObject.GetComponent<GraphicRaycaster>().enabled = false;
+			GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+			GameMaster.Instance.NewDay();
+			endDayOffice.SetActive(false);
+			GameMaster.Instance.ModeSetPlay();
+			hudcanvas.SetActive (true);
+			if (appMontior.activeInHierarchy || homescreen.activeInHierarchy)
+			{
+				homescreen.SetActive(true);
+				screensaver.SetActive(true);
+				appMontior.SetActive(false);
+				pcTrig.CloseShop();
+			}
+		}
+		else
+		{
+			confirmDay.SetActive(true);
+
+			if (endDayOffice.activeInHierarchy)
+				endDayOffice.SetActive(false);
+			else
+				endDayShop.SetActive(false);
+		}
+	}
 
 }

@@ -21,10 +21,15 @@ public class DebtNoLifeLineUsed : MonoBehaviour
 		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
 		controller = FindObjectOfType<UIController> ();
+
+
+	}
+
+	public void StartUp()
+	{
 		canvas.SetActive (true);
 		trigger.TriggerDialogue ();
 		disableSpace = false;
-
 	}
 
 	// Update is called once per frame
@@ -34,7 +39,7 @@ public class DebtNoLifeLineUsed : MonoBehaviour
 		{
 			if (counter == 3) 
 			{
-				controller.NextDayBtn ();
+				controller.NewDayAfterDebt();
 				tutorial.SetActive (false);
 				canvas.SetActive (false);
 			}

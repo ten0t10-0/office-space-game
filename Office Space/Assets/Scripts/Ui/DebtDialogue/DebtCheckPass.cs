@@ -20,10 +20,13 @@ public class DebtCheckPass : MonoBehaviour
 		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
 		controller = FindObjectOfType<UIController> ();
+	}
+
+	public void StartUp()
+	{
 		canvas.SetActive (true);
 		trigger.TriggerDialogue ();
 		disableSpace = false;
-
 	}
 	
 	// Update is called once per frame
@@ -33,7 +36,7 @@ public class DebtCheckPass : MonoBehaviour
 		{
 			if (counter == 1) 
 			{
-				controller.NextDayBtn ();
+				controller.NewDayAfterDebt ();
 				tutorial.SetActive (false);
 				canvas.SetActive (false);
 			}
