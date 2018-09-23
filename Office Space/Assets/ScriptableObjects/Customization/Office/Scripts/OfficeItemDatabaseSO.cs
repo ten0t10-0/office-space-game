@@ -207,6 +207,12 @@ public class OfficeItemDatabaseSO : ScriptableObject
         SelectedObjectIndex = objectIndex;
     }
 
+    public void SelectObject(GameObject obj)
+    {
+        int id = obj.GetComponent<OfficeObjectScript>().ObjectIndex;
+        SelectObject(id);
+    }
+
     public void PlaceObject(GameObject parentObj)
     {
         if (parentObj != null && parentObj.GetComponent<OfficeObjectScript>() != null)
