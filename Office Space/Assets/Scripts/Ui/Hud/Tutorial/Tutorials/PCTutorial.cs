@@ -41,7 +41,6 @@ public class PCTutorial : MonoBehaviour
 				questionmark.SetActive (false);
 				trigger.TriggerDialogue ();
 				disableSpace = false;
-
 			}
 		}
 

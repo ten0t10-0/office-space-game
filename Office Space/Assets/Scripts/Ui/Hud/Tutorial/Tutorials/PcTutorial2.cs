@@ -23,6 +23,7 @@ public class PcTutorial2 : MonoBehaviour
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
+
 	}
 	
 	// Update is called once per frame

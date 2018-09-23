@@ -1,23 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIController : MonoBehaviour 
 {
-	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof;
+	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver;
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
 	public Animator buildM,endDayOffA,endDayShopA;
 
 	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit;
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
+	PcTrigger pcTrig;
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
-		endDayOffice.SetActive (true);
-		endDayOffA.SetBool ("EndShopO", true);
+		pcTrig = FindObjectOfType<PcTrigger> ();
 	}
 	
 	// Update is called once per frame
@@ -51,6 +52,7 @@ public class UIController : MonoBehaviour
 
 	public void EndDayOffice()
 	{
+		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = true;
 		endDayOffice.SetActive (true);
 		profit.SetText (GameMaster.Instance.Player.Business.GetProfits ().ToString());
 		orderComplete.SetText (GameMaster.Instance.OrderManager.CountCompletedToday.ToString());
@@ -61,6 +63,7 @@ public class UIController : MonoBehaviour
 	}
 	public void EndDayShop()
 	{
+		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = true;
 		endDayOffice.SetActive (true);
 		endDayOffA.SetBool ("EndShopO", true);
 		//set varibles
@@ -69,12 +72,84 @@ public class UIController : MonoBehaviour
 	{
 		if (GameMaster.Instance.ShopUnlocked == false) 
 		{
+			NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
 			GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+			GameMaster.Instance.NewDay ();
+			endDayOffice.SetActive (false);
+
+			if (appMontior.activeInHierarchy || homescreen.activeInHierarchy) 
+			{
+				homescreen.SetActive (true);
+				screensaver.SetActive (true);
+				appMontior.SetActive (false);
+				pcTrig.CloseShop ();
+			}
 		}
 		else 
 		{
 			confirmDay.SetActive (true);
+
+			if (endDayOffice.activeInHierarchy)
+				endDayOffice.SetActive (false);
+			else
+				endDayShop.SetActive(false);
 		}
 	}
+
+	public void OfficeNextDayBtn()
+	{
+		confirmDay.SetActive (false);
+		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
+		GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+		GameMaster.Instance.NewDay ();
+		endDayOffice.SetActive (false);
+
+		if (appMontior.activeInHierarchy || homescreen.activeInHierarchy) 
+		{
+			homescreen.SetActive (true);
+			screensaver.SetActive (true);
+			appMontior.SetActive (false);
+			pcTrig.CloseShop ();
+		}
+	}
+
+	public void ShopNextDayBtn()
+	{
+		confirmDay.SetActive (false);
+		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
+		GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Shop);
+		GameMaster.Instance.NewDay ();
+		endDayShop.SetActive (false);
+	}
+
+	public void PassDebtCheck()
+	{
+		DebtPass.SetActive (true);
+	}
+
+	public void FailDebtGameOver()
+	{
+		DebtGameOver.SetActive (true);
+	}
+
+	public void DebtFailUseLifeLine()
+	{
+		DebtLifeLine.SetActive (true);
+	}
+
+	public void DebtFailNoLifeLineUsed()
+	{
+		DebtNoLifeLineU.SetActive (true);
+	}
+
+	public void GameOverScreen()
+	{
+		GameOver.SetActive (true);
+	}
+
+//	public void GameOverBtn()
+//	{
+//		
+//	}
 
 }
