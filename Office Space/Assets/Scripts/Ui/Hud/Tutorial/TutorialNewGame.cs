@@ -25,4 +25,19 @@ public class TutorialNewGame : MonoBehaviour
 		}
 
 	}
+	public void NextDialogue(int i)
+	{
+		switch (i) {
+		case 1:
+			{
+
+				break;
+			}
+		case 2:
+			{
+
+				break;
+			}
+		}
+	}
 }

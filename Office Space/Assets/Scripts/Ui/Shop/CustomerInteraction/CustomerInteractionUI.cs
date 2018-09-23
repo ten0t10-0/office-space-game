@@ -246,6 +246,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				Destroy (customerGuy, 1f);
 				subCate = true;
 				serve.AiExit (AInum);
+				Debug.Log ("I r Exit"+AInum.ToString());
 				SpawnAfterServed (AInum);
 				//GameMaster.Instance.CameraLock = false;
 

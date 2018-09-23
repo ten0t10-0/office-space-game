@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spawn_the3rd : MonoBehaviour {
+public class spawn_the3rd : MonoBehaviour 
+{
 
 	public GameObject nagent;
 	public GameObject goalObject;

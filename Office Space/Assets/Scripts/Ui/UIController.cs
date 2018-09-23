@@ -16,7 +16,8 @@ public class UIController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		
+		endDayOffice.SetActive (true);
+		endDayOffA.SetBool ("EndShopO", true);
 	}
 	
 	// Update is called once per frame
@@ -44,7 +45,7 @@ public class UIController : MonoBehaviour
 	}
 	IEnumerator BuildClose()
 	{
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(1);
 		buildmode.SetActive (false);
 	}
 
@@ -63,6 +64,17 @@ public class UIController : MonoBehaviour
 		endDayOffice.SetActive (true);
 		endDayOffA.SetBool ("EndShopO", true);
 		//set varibles
+	}
+	public void NextDayBtn()
+	{
+		if (GameMaster.Instance.ShopUnlocked == false) 
+		{
+			GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+		}
+		else 
+		{
+			confirmDay.SetActive (true);
+		}
 	}
 
 }
