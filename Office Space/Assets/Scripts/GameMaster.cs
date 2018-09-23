@@ -824,7 +824,7 @@ public class GameMaster : MonoBehaviour
                     CharacterCustomizationScript player = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>();
 
                     player.UnsetAllClothing();
-                    player.SetClothing(9);
+                    player.SetClothing(1);
                     player.SetAccessoriesByPreset(CustomizationManager.Character.AccessoryPresets[0]);
                     player.UpdateBodyColor(CustomizationManager.Character.SkinColors[3]);
                 }
@@ -1190,8 +1190,9 @@ public class GameMaster : MonoBehaviour
 
         if (CurrentUsername != Player.Name)
         {
+            Debug.Log("*Player name in save file is not the same as the current username. Changed. (CurrentUserName: " + CurrentUsername + "; Save Username: " + Player.Name);
             Player.Name = CurrentUsername;
-            Debug.Log("*Player name in save file is not the same as the current username. Changed.");
+            
         }
         CurrentBusinessName = Player.Business.Name;
 

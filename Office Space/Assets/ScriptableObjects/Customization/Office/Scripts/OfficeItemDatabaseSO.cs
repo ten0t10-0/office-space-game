@@ -248,6 +248,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
                     child.GetComponent<OfficeObjectScript>().ParentIndex = -1;
                     child.GetComponent<OfficeObjectScript>().Deselect();
                     child.transform.parent = officeObjectTransform;
+
+                    i--;
                 }
             }
 
@@ -271,10 +273,10 @@ public class OfficeItemDatabaseSO : ScriptableObject
                     {
                         child.gameObject.GetComponent<OfficeObjectScript>().SetParent(objScript.ObjectIndex);
 
-                        Debug.Log("New parent: " + objScript.gameObject.name);
+                        //Debug.Log("New parent: " + objScript.gameObject.name);
                     }
-                    else
-                        Debug.Log("New parent: " + child.parent.name);
+                    //else
+                    //    Debug.Log("New parent: " + child.parent.name);
                 }
             }
         }
