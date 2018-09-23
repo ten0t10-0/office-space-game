@@ -94,15 +94,21 @@ public class AI_try3 : MonoBehaviour
 					Target = WayPoints [Cur_Waypoint];
 
 
-					cur_timer = Random.Range (0.1f, .5f);
+					cur_timer = Random.Range (0.2f, .5f);
 				}
 			}
 			nm.SetDestination (Target.position);
 		}
 
+//		if (Cur_Waypoint == 1)
+//		{
+//			cur_timer = PauseTimer;
+//		}
+
+
 				if (Cur_Waypoint == 8) 
 				{
-					cur_timer = 0;
+					cur_timer = 0.2f;
 					exit3 = false;
 				}
 		//

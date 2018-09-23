@@ -1009,7 +1009,7 @@ MonoBehaviour:
   tempr_Waypoint: 0
   speed: 1
   stop_distance: 0.5
-  PauseTimer: 1
+  PauseTimer: 0.2
   cur_timer: 0.9100001
   npcWayPoints: []
   exit: 1
@@ -1769,7 +1769,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
+  m_Speed: 5
   m_Acceleration: 1
   avoidancePriority: 50
   m_AngularSpeed: 120
