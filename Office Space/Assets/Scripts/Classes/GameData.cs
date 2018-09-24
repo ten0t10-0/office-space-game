@@ -22,6 +22,8 @@ public class GameData
     [SerializeField]
     public DateTime GameDateTime;
     [SerializeField]
+    public DateTime GameDateTimeStart;
+    [SerializeField]
     public DayOfWeek DayDebt;
     public int WeekCurrent;
 

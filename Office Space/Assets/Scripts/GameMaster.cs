@@ -134,6 +134,8 @@ public class GameMaster : MonoBehaviour
 
     #region <Date & Time>
     public DateTime GameDateTime;
+    [HideInInspector]
+    public DateTime GameDateTimeStart { get; private set; }
 
     public int initGameDateYear;
     [Range(0, 12)]
@@ -388,6 +390,7 @@ public class GameMaster : MonoBehaviour
                 initGameTimeHour = GameModeManager.Shop.DayStartHour; break;
         }
         GameDateTime = GameDateTime.AddHours(initGameTimeHour);
+        GameDateTimeStart = new DateTime(GameDateTime.Ticks);
 
         //Debt day
         DayDebt = GameDateTime.DayOfWeek;
@@ -1152,6 +1155,7 @@ public class GameMaster : MonoBehaviour
                 Difficulty = this.Difficulty,
 
                 GameDateTime = this.GameDateTime,
+                GameDateTimeStart = this.GameDateTimeStart,
                 DayDebt = this.DayDebt,
                 WeekCurrent = this.WeekCurrent,
 
@@ -1242,6 +1246,7 @@ public class GameMaster : MonoBehaviour
         Difficulty = gameData.Difficulty;
 
         GameDateTime = gameData.GameDateTime;
+        GameDateTimeStart = gameData.GameDateTimeStart;
         DayDebt = gameData.DayDebt;
         WeekCurrent = gameData.WeekCurrent;
 
