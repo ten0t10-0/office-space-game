@@ -11,6 +11,7 @@ public class PCTutorial : MonoBehaviour
 
 	DialogueManager manager;
 	DialogueTrigger trigger;
+	Dialogue dialogue;
 
 	public Button appbtn;
 	int counter = 0;
@@ -23,11 +24,8 @@ public class PCTutorial : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
-
-		appbtn.GetComponent<Button>().onClick.AddListener(delegate {NextScreen();});
 	}
 	
 	// Update is called once per frame

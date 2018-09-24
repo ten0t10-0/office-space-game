@@ -21,6 +21,7 @@ public class UiSave : MonoBehaviour
 	public TextMeshProUGUI loadtext;
 	public TextMeshProUGUI savetext;
 	public TextMeshProUGUI text;
+	public InputField savename;
 
 	string message = "";
 
@@ -71,12 +72,13 @@ public class UiSave : MonoBehaviour
 			return;
 		}
 		else
-		GameMaster.Instance.SaveGame (selectedSlot);
+			GameMaster.Instance.SaveGame (selectedSlot,savename.ToString());
 
 		DisplayMessage ("Game Saved");
 
 		selectedContainer.transform.Find ("Button/Empty").GetComponent<TMP_Text> ().text = "";
 		selectedContainer.transform.Find ("Button/Date").GetComponent<TMP_Text> ().text = DateTime.Now.ToString();
+		selectedContainer.transform.Find ("Button/Name").GetComponent<TMP_Text> ().text = savename.text;
 
 		confirmPanel.SetActive (false);
 	}

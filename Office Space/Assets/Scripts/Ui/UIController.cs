@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
 {
 	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas,orderNot;
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
-	public GameObject newDay;
+	public GameObject newDay,newGameTutorial;
 	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA;
     CustomerInteractionUI CustomerInteractionUI;
 	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit,orderScore,orderItems,orderTimeBonus,newDateT;
@@ -243,4 +243,9 @@ public class UIController : MonoBehaviour
     {
         CustomerInteractionUI.NextDayReset();
     }
+	public void NewGameTutorial()
+	{
+		newGameTutorial.SetActive (true);
+		newGameTutorial.GetComponent<TutorialNewGame> ().startTrigger ();
+	}
 }

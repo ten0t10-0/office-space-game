@@ -6,7 +6,14 @@ public class TutorialNewGame : MonoBehaviour
 {
 
 	DialogueManager manager;
+	DialogueTrigger trigger;
 	Dialogue dialogue;
+	public GameObject canvas;
+
+	int counter = 0;
+	bool disableSpace = true;
+
+	private bool isInsideTrigger = false;
 
 
 	void Start () 
@@ -19,15 +26,36 @@ public class TutorialNewGame : MonoBehaviour
 	void Update () 
 	{
 
-		if (Input.GetKeyDown (KeyCode.Space)) 
+			if (Input.GetKeyDown (KeyCode.E)) 
+			{
+				canvas.SetActive (true);
+				trigger.TriggerDialogue ();
+				disableSpace = false;
+			}
+
+
+
+		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 		{
-			manager.DisplayNextSentence ();
+			NextDialogue (counter);
+			counter++;
+		
+			manager.DisplayNextSentence();
 		}
 
 	}
+
+	public void startTrigger()
+	{
+		canvas.SetActive (true);
+		trigger.TriggerDialogue ();
+		disableSpace = false;
+	}
+
 	public void NextDialogue(int i)
 	{
-		switch (i) {
+		switch (i)
+		{
 		case 1:
 			{
 
