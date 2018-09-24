@@ -284,7 +284,9 @@ public class ShopController : MonoBehaviour
 			Debug.Log(string.Format("Purchase info: Item Name: {0}; Purchase Price: {1}; Player remaining Moneyz: {2}", purchasedItem.Name, purchasedItem.UnitCost.ToString(), (GameMaster.Instance.Player.Business.Money - purchasedItem.UnitCost).ToString()));
 		}			
 		qtyPanel.SetActive(true);
-	}
+        playerUI.currentAmount = 1;
+        playerUI.amount.text = playerUI.currentAmount.ToString();
+    }
 		
 
 	void SetItem(GameObject newItem,int iSupplier,int iItem, Item item)

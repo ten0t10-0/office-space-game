@@ -21,7 +21,7 @@ MonoBehaviour:
   OrderTimeShippingTimeMultiplier: 3
   OrderTimeAddedPerItem: 15
   OrderTimeAddedPerOpenOrder: 10
-  OrderGenerationRate: 0.015
+  OrderGenerationRate: 0.0175
   IncludeCustomerTolerance: 1
   CustomerToleranceIncrement: 0.1
   CustomerToleranceDecrement: 0.1

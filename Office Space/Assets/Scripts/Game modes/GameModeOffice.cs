@@ -185,17 +185,20 @@ public class GameModeOffice : MonoBehaviour
 
         Debug.Log("Order score: " + score.ToString());
 
-        if (GameMaster.Instance.GetDifficultySetting().IncludeCustomerTolerance)
-            player.Business.CustomerTolerance = Mathf.Clamp(player.Business.CustomerTolerance + (GameMaster.Instance.GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
-
         if (score > 0)
         {
+            if (GameMaster.Instance.GetDifficultySetting().IncludeCustomerTolerance)
+                player.Business.CustomerTolerance = Mathf.Clamp(player.Business.CustomerTolerance + (GameMaster.Instance.GetDifficultySetting().CustomerToleranceIncrement * penaltyMult), 0f, 1f);
+
             orderManager.CountCompleted++;
             orderManager.CountCompletedToday++;
             achievementManager.CheckAchievementsByType(AchievementType.OrdersCompleted);
         }
         else
         {
+            if (GameMaster.Instance.GetDifficultySetting().IncludeCustomerTolerance)
+                player.Business.CustomerTolerance = Mathf.Clamp(player.Business.CustomerTolerance - (GameMaster.Instance.GetDifficultySetting().CustomerToleranceDecrement), 0f, 1f);
+
             orderManager.CountFailed++;
             orderManager.CountFailedToday++;
             achievementManager.CheckAchievementsByType(AchievementType.OrdersFailed);
@@ -215,6 +218,8 @@ public class GameModeOffice : MonoBehaviour
 
         if (GameMaster.Instance.GetDifficultySetting().IncludeCustomerTolerance)
             player.Business.CustomerTolerance = Mathf.Clamp(player.Business.CustomerTolerance - GameMaster.Instance.GetDifficultySetting().CustomerToleranceDecrement, 0f, 1f);
+
+        Debug.Log("Tolerance now: " + player.Business.CustomerTolerance);
 
         GameMaster.Instance.OrderManager.CountFailed++;
         GameMaster.Instance.OrderManager.CountFailedToday++;

@@ -341,7 +341,6 @@ public class GameMaster : MonoBehaviour
 
         GameModeManager.Shop.CustomerCaptureScript = GameObject.Find("CustomerCapture").GetComponent<CustomerCaptureScript>();
 
-
         #region <Manager-specific initializations>
         CustomizationManager.Office.Initialize();
         GUIManager.Initialize();
@@ -438,8 +437,6 @@ public class GameMaster : MonoBehaviour
             //Generating supplier items
             SupplierManager.PopulateSupplierInventories();
         }
-            
-        CheckDifficulty();
 
         //Player Initalizations outside Player class...
         AchievementManager.CheckAllAchievements();

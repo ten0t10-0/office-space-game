@@ -24,7 +24,7 @@ public class PlayerUiController : MonoBehaviour
 	float total = 0;
 	int increasePerClick = 1;
 
-	int currentAmount = 1;
+	public int currentAmount = 1;
 
 	public Item purchasedItem;
 	public int iSupplier,iItem;
