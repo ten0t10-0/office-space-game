@@ -951,7 +951,13 @@ public class GameMaster : MonoBehaviour
     private void EndDay() //**
     {
         //SHOW REPORTS
-        GUIManager.UIController.EndDayOffice();
+        switch (GameModeManager.GameMode_Current)
+        {
+            case GameMode.Office:
+                GUIManager.UIController.EndDayOffice(); break;
+            case GameMode.Shop:
+                GUIManager.UIController.EndDayShop(); break;
+        }
         SleepMode = true;
 
         #region **DEBUG END DAY**
@@ -1007,12 +1013,18 @@ public class GameMaster : MonoBehaviour
         {
             case GameMode.Office:
                 {
+                    SleepMode = false;
+
                     dayStartHour = GameModeManager.Office.DayStartHour;
 
                     GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
                     OrderManager.Orders.Clear();
                     OrderManager.CountCompletedToday = OrderManager.CountFailedToday = 0;
+
+                    NPCManager.DestroyAllNPCs();
+
+                    GUIManager.UIController.NextDayReset();
 
                     break;
                 }
@@ -1026,6 +1038,8 @@ public class GameMaster : MonoBehaviour
                     NPCManager.DestroyAllNPCs();
 
                     GUIManager.UIController.NextDayReset();
+
+
 
                     break;
                 }
@@ -1042,7 +1056,6 @@ public class GameMaster : MonoBehaviour
         Player.Business.ResetMoneyStart();
 
         DayEnd = false;
-        SleepMode = false;
 
         Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
         InitializePlayer();

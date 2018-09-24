@@ -132,7 +132,7 @@ MonoBehaviour:
   initPlayerMoney: 2000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  initPlayerLevel: 1
+  initPlayerLevel: 10
   PlayerExperienceBase: 100
   ShopModeLevelRequirement: 10
   GameModeManager: {fileID: 0}
@@ -403,7 +403,6 @@ MonoBehaviour:
   goApps: AppPanelScreen
   goOrdersPanel: OrdersPanel
   HudCanvas: HudCanvas
-  goUIController: 
   OrdersPanelScript: {fileID: 0}
   hudScript: {fileID: 0}
   note: {fileID: 0}
@@ -451,6 +450,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitGameMode: 0
+  InitGameMode: 1
   Office: {fileID: 0}
   Shop: {fileID: 0}

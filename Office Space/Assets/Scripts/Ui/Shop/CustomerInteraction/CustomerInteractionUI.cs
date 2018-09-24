@@ -256,7 +256,9 @@ public class CustomerInteractionUI : MonoBehaviour
 				serve.AiExit (AInum);
 				Debug.Log ("I r Exit"+AInum.ToString());
 				SpawnAfterServed (AInum);
-				//GameMaster.Instance.CameraLock = false;
+                //GameMaster.Instance.CameraLock = false;
+
+                disableSpace = true;
 
 				if (saleSuccessful == true) 
 				{
@@ -358,6 +360,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				//GameMaster.Instance.CameraLock = false;
 				Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 
+                disableSpace = true;
+
 				subCate = false;
 				subNothing = false;
 				serve.AiExit (AInum);
@@ -377,6 +381,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		inventoryP.SetActive (false);
 		runSubInteraction (4);
 		counter = 5;
+        customerFailed++;
 	}
 
 	public void SelectSubItem(Item subItem, int type)
@@ -665,12 +670,18 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	public void NextDayReset()
 	{
+        InteractionPanel.SetActive(false);
 		particle.SetActive (true);
 		cube.SetActive (false);
 		customerFailed = 0;
 		customerServed = 0;
 		serve.setFalse ();
-	}
+        disableSpace = true;
+        mount.GetComponent<Collider>().enabled = true;
+        isInsideTrigger = false;
+        OpenPanel.SetActive(false);
+        hudO.SetBool("UIO", false);
+    }
 
 	bool EmptyItems()
 	{

@@ -9,8 +9,9 @@ public class UIController : MonoBehaviour
 	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas,orderNot;
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
 	public GameObject newDay,newGameTutorial;
-	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA;
+	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA, doorShop;
     CustomerInteractionUI CustomerInteractionUI;
+    ShopInventoryUi ShopInventoryUi;
 	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit,orderScore,orderItems,orderTimeBonus,newDateT;
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
@@ -22,7 +23,8 @@ public class UIController : MonoBehaviour
 	{
         CustomerInteractionUI = FindObjectOfType<CustomerInteractionUI>();
         pcTrig = FindObjectOfType<PcTrigger> ();
-	}
+        ShopInventoryUi = FindObjectOfType<ShopInventoryUi>();
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -75,8 +77,8 @@ public class UIController : MonoBehaviour
 		cusFail.SetText (CustomerInteractionUI.customerFailed.ToString ());
 		cusCom.SetText (CustomerInteractionUI.customerServed.ToString ());
 		cusProfit.SetText (GameMaster.Instance.Player.Business.GetProfits ().ToString());
-		endDayOffice.SetActive (true);
-		endDayOffA.SetBool ("EndShopO", true);
+		endDayShop.SetActive (true);
+		endDayShopA.SetBool ("EndShopO", true);
 		if (hudcanvas.activeInHierarchy)
 			hudcanvas.SetActive (false);
 		//set varibles
@@ -245,6 +247,7 @@ public class UIController : MonoBehaviour
     public void NextDayReset()
     {
         CustomerInteractionUI.NextDayReset();
+        //ShopInventoryUi.ClearInventory();
     }
 	public void NewGameTutorial()
 	{
@@ -252,4 +255,8 @@ public class UIController : MonoBehaviour
 		newGameTutorial.GetComponent<TutorialNewGame> ().startTrigger ();
 	}
 
+    public void CloseShopDoor()
+    {
+        doorShop.SetBool("SOpen", false);
+    }
 }

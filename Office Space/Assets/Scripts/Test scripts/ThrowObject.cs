@@ -56,7 +56,8 @@ public class ThrowObject : MonoBehaviour {
 			else if (Input.GetMouseButtonDown(1))
 			{
 				GetComponent<Rigidbody>().isKinematic = false;
-				transform.parent = null;
+                GetComponent<Collider>().enabled = true;
+                transform.parent = null;
 				beingCarried = false;
 			}
 		}
