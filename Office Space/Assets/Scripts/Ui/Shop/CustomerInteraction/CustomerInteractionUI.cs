@@ -41,6 +41,9 @@ public class CustomerInteractionUI : MonoBehaviour
 	float max = 10000000,min = 0;
 	float increasePerClick = 100;
 
+	[HideInInspector]
+	public int customerServed = 0,customerFailed = 0; 
+
 	string[] greet = new string[] {"Hello there!","Welcome","Good Day","Welcome, Im here to help","How can I help you?"};
 	string[] buyGreeting = new string[]{"I want this","I'll take this","How much is this?","I finally found this"};
 	string[] customerHappy = new string[]{"Thats Perfect","I'll take that","Thats fine","That will do","Not bad"};
@@ -394,6 +397,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				inventoryP.SetActive (false);
 				runSubInteraction (4);
 				counter = 5;
+				customerFailed++;
 			} 
 			else 
 			{
@@ -418,6 +422,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				runSubInteraction (4);
 			}
 			counter = 5;
+			customerFailed++;
 		} 
 		else 
 		{
@@ -458,6 +463,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				runSubInteraction (4);
 			
 			counter = 5;
+			customerServed++;
 	
 		}
 	}
@@ -643,5 +649,13 @@ public class CustomerInteractionUI : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void NextDayReset()
+	{
+		particle.SetActive (true);
+		cube.SetActive (false);
+		customerFailed = 0;
+		customerServed = 0;
 	}
 }

@@ -20,6 +20,9 @@ public class UiSave : MonoBehaviour
 	public GameObject confirmPanel;
 	public TextMeshProUGUI loadtext;
 	public TextMeshProUGUI savetext;
+	public TextMeshProUGUI text;
+
+	string message = "";
 
 	void Start()
 	{
@@ -60,13 +63,17 @@ public class UiSave : MonoBehaviour
 	}
 	public void Save()
 	{
+		Debug.Log ("Runnnnn PPPPP");
 		if (selectedSlot == -1) 
 		{
+			DisplayMessage ("Please select a savegame");
 			Debug.Log ("Please select a savegame");
 			return;
 		}
 		else
 		GameMaster.Instance.SaveGame (selectedSlot);
+
+		DisplayMessage ("Game Saved");
 
 		selectedContainer.transform.Find ("Button/Empty").GetComponent<TMP_Text> ().text = "";
 		selectedContainer.transform.Find ("Button/Date").GetComponent<TMP_Text> ().text = DateTime.Now.ToString();
@@ -82,6 +89,7 @@ public class UiSave : MonoBehaviour
 		}
 		if (selectedSlot == -1) 
 		{
+			DisplayMessage ("Please select a savegame");
 			Debug.Log ("Please select a savegame");
 			return;
 		}
@@ -95,11 +103,11 @@ public class UiSave : MonoBehaviour
 	}
 	public void SavePanel()
 	{
-		savetext.SetText("Save Game using slot" +selectedSlot+"?");
+		savetext.SetText("Save Game using slot " +(selectedSlot+1) +"?");
 	}
 	public void LoadPanel()
 	{
-		loadtext.SetText("Load Game" +selectedSlot+"?");
+		loadtext.SetText("Load Game " +(selectedSlot + 1 )+"?");
 	}
 
 	public void ClearScroll()
@@ -114,5 +122,16 @@ public class UiSave : MonoBehaviour
 		{
 			Destroy(child.gameObject);
 		}
+	}
+	public void DisplayMessage(string m)
+	{
+		text.SetText (m);
+		text.gameObject.SetActive (true); 
+		StartCoroutine (messages ());
+	}
+	IEnumerator messages()
+	{
+		yield return new WaitForSeconds(4);
+		text.gameObject.SetActive (false);
 	}
 }

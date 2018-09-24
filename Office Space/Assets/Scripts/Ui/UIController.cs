@@ -6,11 +6,12 @@ using TMPro;
 
 public class UIController : MonoBehaviour 
 {
-	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas;
+	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas,orderNot;
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
-	public Animator buildM,endDayOffA,endDayShopA;
+	public GameObject newDay;
+	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA;
 
-	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit;
+	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit,orderScore,orderItems,orderTimeBonus,newDateT;
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
 	PcTrigger pcTrig;
@@ -101,7 +102,8 @@ public class UIController : MonoBehaviour
 				else
 					endDayShop.SetActive (false);
 			}
-		} else 
+		} 
+		else 
 		{
 			if (endDayOffice.activeInHierarchy)
 				endDayOffice.SetActive (false);
@@ -204,5 +206,31 @@ public class UIController : MonoBehaviour
 				endDayShop.SetActive(false);
 		}
 	}
+	public void OrderNotification(string score,string item, string time)
+	{
+		orderItems.SetText (item);
+		orderScore.SetText (score);
+		orderTimeBonus.SetText (time);
+		orderNot.SetActive (true);
+		orderNote.SetBool ("OrderC", true);
+		StartCoroutine (OrderNoti ());
+	}
 
+	IEnumerator OrderNoti()
+	{
+		yield return new WaitForSeconds(5);
+		orderNot.SetActive (false);
+	}
+
+	public void NewDayDate()
+	{
+		newDateT.SetText (GameMaster.Instance.GameDateTime.Day.ToString () + GameMaster.Instance.GameDateTime.DayOfWeek.ToString ());
+		newDay.SetActive (true);
+	}
+
+	IEnumerator NewDayShow()
+	{
+		yield return new WaitForSeconds(5);
+		newDay.SetActive (false);
+	}
 }

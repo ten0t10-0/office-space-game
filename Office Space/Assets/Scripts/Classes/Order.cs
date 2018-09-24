@@ -93,6 +93,7 @@ public class Order
         int score = 0;
         paymentTotal = 0;
         penaltyMultiplier = 1;
+		string timebonus = "";
 
         if (Filled)
         {
@@ -114,22 +115,26 @@ public class Order
                 {
                     score = 200;
                     Debug.Log("Time bonus: x2");
+					timebonus = "Time bonus: x2";
                 }
                 else if (rate >= 0.5f)
                 {
                     score = 150;
                     Debug.Log("Time bonus: x1.5");
+					timebonus = "Time bonus: x1.5";
                 }
                 else
                 {
                     score = 100;
                     Debug.Log("Time bonus: <none>");
+					timebonus = "none";
                 }
             }
             else
             {
                 score = 100; //*
                 Debug.Log("Time bonus: <none>");
+				timebonus = "none";
             }
 
             //*** Calculate penalty (based on accuracy/correctness of items):
@@ -170,6 +175,7 @@ public class Order
             penaltyMultiplier = (float)quantityTotal / TotalQuantity(); //*
 
             score = (int)(score * penaltyMultiplier);
+			GameMaster.Instance.GUIManager.UIController.OrderNotification (score.ToString (), quantityTotal.ToString () + "/" + TotalQuantity (), timebonus);
         }
 
         return score;
