@@ -162,6 +162,8 @@ public class GameMaster : MonoBehaviour
     public string CurrencySymbol = "$";
     [HideInInspector]
     public DayOfWeek DayDebt;
+    public float[] DebtAmounts;
+    private int WeekCurrent;
     #endregion
 
     #endregion
@@ -391,6 +393,7 @@ public class GameMaster : MonoBehaviour
 
         //Debt day
         DayDebt = GameDateTime.DayOfWeek;
+        WeekCurrent = 0;
 
         //Clear notifications
         Notifications = new NotificationList();
@@ -972,7 +975,7 @@ public class GameMaster : MonoBehaviour
         Debug.Log("Current day: " + dayEndCurrentDOW.ToString() + "; Debt day: " + DayDebt.ToString());
         if (IsDebtDay)
         {
-            if (Player.Business.Money >= 10000)
+            if (Player.Business.Money >= DebtAmounts[WeekCurrent])
             {
                 GUIManager.UIController.PassDebtCheck();
             }
@@ -980,7 +983,7 @@ public class GameMaster : MonoBehaviour
             {
                 int result;
 
-                if (CustomizationManager.Office.RepossessItems(10000, out result))
+                if (CustomizationManager.Office.RepossessItems(DebtAmounts[WeekCurrent], out result))
                 {
                     if (result == 0)
                         GUIManager.UIController.DebtFailNoLifeLineUsed();
@@ -993,6 +996,8 @@ public class GameMaster : MonoBehaviour
                 }
             }
         }
+
+        WeekCurrent++;
     }
 
     public void NewDay()
@@ -1122,6 +1127,7 @@ public class GameMaster : MonoBehaviour
 
                 GameDateTime = this.GameDateTime,
                 DayDebt = this.DayDebt,
+                WeekCurrent = this.WeekCurrent,
 
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
@@ -1209,6 +1215,7 @@ public class GameMaster : MonoBehaviour
 
         GameDateTime = gameData.GameDateTime;
         DayDebt = gameData.DayDebt;
+        WeekCurrent = gameData.WeekCurrent;
 
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 

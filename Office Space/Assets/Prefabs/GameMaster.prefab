@@ -169,6 +169,11 @@ MonoBehaviour:
   Skybox_Current: {fileID: 0}
   CurrencySymbol: $
   DayDebt: 0
+  DebtAmounts:
+  - 2500
+  - 5000
+  - 7500
+  - 10000
   MaxStoredNotifications: 50
   Notifications:
     AllNotificationsRead: 1

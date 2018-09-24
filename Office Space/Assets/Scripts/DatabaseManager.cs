@@ -196,5 +196,47 @@ public class DatabaseManager : MonoBehaviour
 
         return Convert.ToString(Query("usp_GetPassword", pars).Rows[0]["Password"]);
     }
+
+    //public bool CheckPlayerFile(string username)
+    //{
+    //    Dictionary<string, object> pars = new Dictionary<string, object>()
+    //    {
+    //        { "@username", username }
+    //    };
+
+    //    return NonQuery("usp_CheckPlayerFile", pars);
+    //}
+
+    //public bool AddPlayerFile(string username, string file)
+    //{
+    //    Dictionary<string, object> pars = new Dictionary<string, object>()
+    //    {
+    //        { "@username", username },
+    //        { "@file", file }
+    //    };
+
+    //    return NonQuery("usp_AddPlayerFile", pars);
+    //}
+
+    //public bool UpdatePlayerFile(string username, string file)
+    //{
+    //    Dictionary<string, object> pars = new Dictionary<string, object>()
+    //    {
+    //        { "@username", username },
+    //        { "@file", file }
+    //    };
+
+    //    return NonQuery("usp_UpdatePlayerFile", pars);
+    //}
+
+    //public string GetPlayerFile(string username)
+    //{
+    //    Dictionary<string, object> pars = new Dictionary<string, object>()
+    //    {
+    //        { "@username", username }
+    //    };
+
+    //    return Convert.ToString(Query("usp_GetPlayerFile", pars).Rows[0][0]);
+    //}
     #endregion
 }
