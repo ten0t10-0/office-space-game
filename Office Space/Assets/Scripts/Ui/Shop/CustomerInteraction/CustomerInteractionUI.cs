@@ -100,7 +100,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		}
 		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
 		{
-			if (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay == null) 
+			if (EmptyItems()) 
 			{
 				subCate = true;
 			}
@@ -162,7 +162,8 @@ public class CustomerInteractionUI : MonoBehaviour
 		hudO.SetBool ("UIO", true);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 
-		customerItem = RandomItem ();
+        if (!EmptyItems())
+            customerItem = RandomItem ();
 		customerSub = RandomSubCat ();
 
 		playerGuy.GetComponent<CharacterCustomizationScript>().SetAppearanceByData (customer.GetCustomizationData ());
@@ -572,6 +573,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				{
 					GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay [i] = null;
 					shopMan.RemoveItem (i);
+
+                    break;
 
 				}
 			}

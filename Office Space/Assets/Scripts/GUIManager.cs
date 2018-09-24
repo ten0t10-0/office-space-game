@@ -9,8 +9,6 @@ public class GUIManager : MonoBehaviour
 
 	public string HudCanvas;
 
-    public string goUIController;
-
     [HideInInspector]
     public OrderUI OrdersPanelScript;
 
