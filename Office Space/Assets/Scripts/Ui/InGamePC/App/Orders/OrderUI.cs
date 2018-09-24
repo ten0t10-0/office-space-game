@@ -37,6 +37,8 @@ public class OrderUI : MonoBehaviour {
 
 	public GameObject purchase,location;
 
+	bool interactable = false;
+
 	GameObject selectcontainer,selectedOrder;
 	Item selectOrder;
 	OrderItem tempitem;
@@ -49,7 +51,7 @@ public class OrderUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		
+
 		DisplayOrders ();
 		AddInventory ();
 
@@ -61,11 +63,10 @@ public class OrderUI : MonoBehaviour {
 		DisplayTime ();
 		companyName.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 
-//	if (GameMaster.Instance.OrderManager.Orders [i].Open == false) 
-//	{
-//			clearInvoice ();
-//	}
-
+		if (interactable == false)
+			confirm.interactable = false;
+		else
+			confirm.interactable = true;
 	}
 
 	public void DisplayOrders()
@@ -104,6 +105,7 @@ public class OrderUI : MonoBehaviour {
 	// displays the order information to the invoice
 	void SetOrder(int i, GameObject setOrder)
 	{
+		interactable = true;
 		Debug.Log("bloooooooooop" + i.ToString());
 		List<Order> order = GameMaster.Instance.OrderManager.Orders;
 		ordersNum = i; 
@@ -275,6 +277,9 @@ public class OrderUI : MonoBehaviour {
 	{
 		string a;
         float paymentTotal;
+
+		interactable = false;
+
 		Debug.Log ("Bloooooooooooop"+ ordersNum);
 
 		foreach (Item item in debug) 
@@ -316,6 +321,7 @@ public class OrderUI : MonoBehaviour {
 			if (newItem != null && newItem.activeInHierarchy)
 				newItem.transform.Find ("Button/time").GetComponent<TMP_Text> ().text = GameMaster.Instance.OrderManager.Orders [ordersNum].GetTimeRemaining ().ToString ();
 	}
+		
 
 
 }

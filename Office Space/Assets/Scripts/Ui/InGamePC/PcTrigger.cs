@@ -14,6 +14,7 @@ public class PcTrigger : MonoBehaviour {
 	public Animator hudO;
 
 
+
 	void Update ()
 	{
 		if (IsOpenPanelActive && isInsideTrigger) 
@@ -35,6 +36,7 @@ public class PcTrigger : MonoBehaviour {
 	public void SetMount()
 	{
 		FindObjectOfType<CamMounts> ().setMount(pcMount);
+
 	}
 
 	public void CloseShop()

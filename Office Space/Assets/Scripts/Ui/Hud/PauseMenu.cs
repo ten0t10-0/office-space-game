@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 	public static bool isPaused = false;
 
 	public GameObject pauseMenu; 
+	public GameObject screensaver;
 
 	void Update () 
 	{
@@ -30,8 +31,11 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1f;
 		isPaused = false;
-	
-        GameMaster.Instance.ModeSetPlay();
+
+		if (screensaver.activeInHierarchy) {
+			GameMaster.Instance.ModeSetPlay ();
+
+		}
 		//Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.ThirdPerson);
 		gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
 
@@ -42,6 +46,7 @@ public class PauseMenu : MonoBehaviour
 		Time.timeScale = 0f;
 		isPaused = true;
         GameMaster.Instance.ModeSetUI();
+	
 		//Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 		gameObject.GetComponent<GraphicRaycaster> ().enabled= true;
 	}
