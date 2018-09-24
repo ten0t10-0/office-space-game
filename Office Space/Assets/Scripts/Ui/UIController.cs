@@ -10,7 +10,7 @@ public class UIController : MonoBehaviour
 	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
 	public GameObject newDay;
 	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA;
-
+    CustomerInteractionUI CustomerInteractionUI;
 	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit,orderScore,orderItems,orderTimeBonus,newDateT;
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
@@ -19,7 +19,9 @@ public class UIController : MonoBehaviour
 	// Use this for initialization
 	void Awake () 
 	{
-		pcTrig = FindObjectOfType<PcTrigger> ();
+        CustomerInteractionUI = FindObjectOfType<CustomerInteractionUI>();
+
+        pcTrig = FindObjectOfType<PcTrigger> ();
 	}
 	
 	// Update is called once per frame
@@ -81,6 +83,7 @@ public class UIController : MonoBehaviour
 		if (!GameMaster.Instance.IsDebtDay) {
 			if (GameMaster.Instance.ShopUnlocked == false) {
 				NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
+                Debug.Log("NewDayBtn");
 				GameMaster.Instance.GameModeManager.ChangeGameMode (GameMode.Office);
 				GameMaster.Instance.NewDay ();
 				endDayOffice.SetActive (false);
@@ -119,7 +122,8 @@ public class UIController : MonoBehaviour
 	{
 		confirmDay.SetActive (false);
 		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = false;
-		GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+        Debug.Log("OfficeNext");
+        GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
 		GameMaster.Instance.NewDay ();
 		endDayOffice.SetActive (false);
 		GameMaster.Instance.ModeSetPlay();
@@ -183,7 +187,8 @@ public class UIController : MonoBehaviour
 		if (GameMaster.Instance.ShopUnlocked == false)
 		{
 			NotificationCanvas.gameObject.GetComponent<GraphicRaycaster>().enabled = false;
-			GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
+            Debug.Log("NewDayDebt");
+            GameMaster.Instance.GameModeManager.ChangeGameMode(GameMode.Office);
 			GameMaster.Instance.NewDay();
 			endDayOffice.SetActive(false);
 			GameMaster.Instance.ModeSetPlay();
@@ -233,4 +238,9 @@ public class UIController : MonoBehaviour
 		yield return new WaitForSeconds(5);
 		newDay.SetActive (false);
 	}
+
+    public void NextDayReset()
+    {
+        CustomerInteractionUI.NextDayReset();
+    }
 }

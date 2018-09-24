@@ -1004,6 +1004,8 @@ public class GameMaster : MonoBehaviour
     {
         int dayStartHour = DayStartHour_DEFAULT;
 
+        Debug.Log("Game mode now: " + GameModeManager.GameMode_Current.ToString());
+
         switch (GameModeManager.GameMode_Current)
         {
             case GameMode.Office:
@@ -1020,9 +1022,13 @@ public class GameMaster : MonoBehaviour
 
             case GameMode.Shop:
                 {
+                    SleepMode = true;
+
                     dayStartHour = GameModeManager.Shop.DayStartHour;
 
-                    //Destroy/reset all npcs
+                    NPCManager.DestroyAllNPCs();
+
+                    GUIManager.UIController.NextDayReset();
 
                     break;
                 }
@@ -1131,6 +1137,7 @@ public class GameMaster : MonoBehaviour
 
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
+                ShopUnlocked = this.ShopUnlocked,
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
@@ -1140,7 +1147,7 @@ public class GameMaster : MonoBehaviour
                 GameMode = GameModeManager.GameMode_Current
             };
 
-            if (saveName == null)
+            if (saveName == null || saveName == "")
             {
                 saveName = string.Format("{0} {1}", SaveNameDefault, saveSlot.ToString().PadLeft(3, '0'));
             }
@@ -1219,6 +1226,7 @@ public class GameMaster : MonoBehaviour
 
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
+        ShopUnlocked = gameData.ShopUnlocked;
         DayEnd = gameData.DayEnd;
 
         dayEndCurrent = gameData.DayEndCurrent;

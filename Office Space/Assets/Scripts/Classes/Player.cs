@@ -41,12 +41,12 @@ public class Player
 
         Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, shopItemSlotCount);
 
+        Level = 1;
         if (initialLevel < 1)
         {
             initialLevel = 1;
         } 
-        Level = initialLevel;
-        Experience = GetLevelExperience(initialLevel);
+        int tempExp = GetLevelExperience(initialLevel);
 
         PlayTime = 0f;
 
@@ -72,6 +72,8 @@ public class Player
 
         UnlockedUpgradesPassive = new List<int>();
         CurrentUpgradesActive = new List<UpgradeActive>();
+
+        IncreaseExperience(tempExp);
 
         ////TEMP:
         //for (int i = 1; i <= 20; i++)

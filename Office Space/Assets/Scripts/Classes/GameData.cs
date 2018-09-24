@@ -27,6 +27,7 @@ public class GameData
 
     public float ChanceNextOrder;
 
+    public bool ShopUnlocked;
     public bool SleepMode;
     public bool DayEnd;
 

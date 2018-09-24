@@ -21,7 +21,10 @@ public class NPCManager : MonoBehaviour
         for (int i = 0; i < CurrentNPCs.Length; i++)
         {
             if (CurrentNPCs[i] != null)
+            {
                 Destroy(CurrentNPCs[i]);
+                CurrentNPCs[i] = null;
+            }
         }
     }
 

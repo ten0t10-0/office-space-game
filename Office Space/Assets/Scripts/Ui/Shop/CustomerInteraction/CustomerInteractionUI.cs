@@ -141,6 +141,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		mount.GetComponent<Collider>().enabled = false;
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 		GameMaster.Instance.PlayerControl = true;
+        GameMaster.Instance.SleepMode = false;
 	}
 	public void Cancel()
 	{
@@ -576,23 +577,28 @@ public class CustomerInteractionUI : MonoBehaviour
 	}
 	void SaleSuccessInventory(Item item)
 	{
+        string outstuff = "";
 		//normal sale
 
 		GameMaster.Instance.Player.Business.IncreaseMoney(currentAmount);
 
 		int i = 0;
-		foreach (OrderItem items in GameMaster.Instance.Player.Business.WarehouseInventory.Items) 
-		{
-			if (items != null) 
-			{
-				if (items.ItemID == item.ItemID)
-				{
-					GameMaster.Instance.Player.Business.WarehouseInventory.Items [i] = null;
+		for (int iItem = 0; i < GameMaster.Instance.Player.Business.WarehouseInventory.Items.Count; i++)
+        {
+            OrderItem items = GameMaster.Instance.Player.Business.WarehouseInventory.Items[iItem];
 
-				}
-			}
-			i++;
-		}
+            if (items != null)
+            {
+                if (items.ItemID == item.ItemID)
+                {
+                    if (items.Quantity > 1)
+                        GameMaster.Instance.Player.Business.WarehouseInventory.Items[iItem].ReduceQuantity(1, false, out outstuff);
+                    else
+                        GameMaster.Instance.Player.Business.WarehouseInventory.RemoveItem(iItem, out outstuff);
+                }
+            }
+            i++;
+        }
 	}
 
 	void SetBorder(Item purchasedItem)

@@ -37,6 +37,8 @@ public class HighScores : MonoBehaviour
 			newItem.transform.Find ("Num").GetComponent<TMP_Text> ().text = i.ToString ();
 			newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = player.Username;
 			newItem.transform.Find ("Score").GetComponent<TMP_Text> ().text = player.Experience.ToString();
+
+			i++;
 		}
 	}
 }
