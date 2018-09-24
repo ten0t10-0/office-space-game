@@ -9,6 +9,8 @@ public class HighScores : MonoBehaviour
 	private GameObject SaveContainer;
 	private Transform scrollViewContent;
 
+	List<DBPlayer> dbplay = new List<DBPlayer>();
+
 	public void ClearScroll()
 	{
 
@@ -25,10 +27,15 @@ public class HighScores : MonoBehaviour
 
 	public void AddScores()
 	{
-		//foreach
-//		GameObject newItem = Instantiate (SaveContainer, scrollViewContent);
-//		newItem.transform.Find ("Num").GetComponent<TMP_Text> ().text = (i + 1).ToString();
-//		newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = (i + 1).ToString();
-//		newItem.transform.Find ("Score").GetComponent<TMP_Text> ().text = (i + 1).ToString();
+		dbplay = GameMaster.Instance.DBManager.GetHighScores ();
+		int i = 1;
+
+		foreach (DBPlayer player in dbplay) 
+		{
+			GameObject newItem = Instantiate (SaveContainer, scrollViewContent);
+			newItem.transform.Find ("Num").GetComponent<TMP_Text> ().text = i.ToString ();
+			newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = player.Username;
+			newItem.transform.Find ("Score").GetComponent<TMP_Text> ().text = player.Experience.ToString();
+		}
 	}
 }
