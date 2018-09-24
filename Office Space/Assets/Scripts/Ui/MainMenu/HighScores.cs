@@ -27,6 +27,7 @@ public class HighScores : MonoBehaviour
 
 	public void AddScores()
 	{
+		ClearScroll ();
 		dbplay = GameMaster.Instance.DBManager.GetHighScores ();
 		int i = 1;
 

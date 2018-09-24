@@ -15,6 +15,9 @@ public class LoginUI : MonoBehaviour
 	public InputField RegisterPasswordField;
 	public InputField RegisterConfirmPasswordField;
 
+	public Transform mainMount;
+	MenuCamGuide menucam;
+
 	public Text LoginErrorText;
 	public Text RegisterErrorText;
 
@@ -35,8 +38,9 @@ public class LoginUI : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start () 
+	{
+		menucam = FindObjectOfType<MenuCamGuide> ();
 	}
 	
 	// Update is called once per frame
@@ -63,6 +67,7 @@ public class LoginUI : MonoBehaviour
                 //Username and password seem reasonable. Change UI to 'Loading...'. Start the Coroutine which tries to log the player in.
                 loginP.gameObject.SetActive(false);
                 loadingP.gameObject.SetActive(true);
+				StartCoroutine (MainMenus ());
 
                 GameMaster.Instance.CurrentUsername = playerUsername;
             }
@@ -105,6 +110,7 @@ public class LoginUI : MonoBehaviour
                         //Username and passwords seem reasonable. Switch to 'Loading...' and start the coroutine to try and register an account on the server
                         registerP.gameObject.SetActive(false);
                         loadingP.gameObject.SetActive(true);
+						StartCoroutine (MainMenus ());
 
                         DBPlayer player = new DBPlayer()
                         {
@@ -153,5 +159,10 @@ public class LoginUI : MonoBehaviour
 		ResetAllUIElements();
 		loginP.gameObject.SetActive(false);
 		registerP.gameObject.SetActive(true);
+	}
+	IEnumerator MainMenus()
+	{
+		yield return new WaitForSeconds(2);
+		menucam.setMount (mainMount);
 	}
 }
