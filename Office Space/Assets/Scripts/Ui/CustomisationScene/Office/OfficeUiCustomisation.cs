@@ -48,16 +48,34 @@ public class OfficeUiCustomisation : MonoBehaviour
     public void PurchaseSoccerball()
     {
         GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+        phone.SetBool("PhoneH", false);
+        phone.SetBool("PhoneO", false);
+        GameMaster.Instance.EnableBuildMode();
+        GameMaster.Instance.ModeSetPlay();
+        tablet.SetActive(false);
+        GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("SOCCER_Ball"));
     }
 
     public void PurchaseHoverboard()
     {
         GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+        phone.SetBool("PhoneH", false);
+        phone.SetBool("PhoneO", false);
+        GameMaster.Instance.EnableBuildMode();
+        GameMaster.Instance.ModeSetPlay();
+        tablet.SetActive(false);
+        GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("Hover Car"));
     }
 
     public void PurchaseCar()
     {
         GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+        phone.SetBool("PhoneH", false);
+        phone.SetBool("PhoneO", false);
+        GameMaster.Instance.EnableBuildMode();
+        GameMaster.Instance.ModeSetPlay();
+        tablet.SetActive(false);
+        GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("RcCar"));
     }
 
 	public void AddItems(OfficeItemCategory cat)

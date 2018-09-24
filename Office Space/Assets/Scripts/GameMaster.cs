@@ -112,8 +112,6 @@ public class GameMaster : MonoBehaviour
 	public bool TutorialMode = false;
     [HideInInspector]
 	public bool ShopUnlocked = false;
-    [HideInInspector]
-    public bool CarUnlocked = false;
 
     private bool IsGameInitialized = false;
 
@@ -1150,6 +1148,7 @@ public class GameMaster : MonoBehaviour
                 ChanceNextOrder = gmOffice.ChanceNextOrder,
 
                 ShopUnlocked = this.ShopUnlocked,
+
                 DayEnd = this.DayEnd,
 
                 DayEndCurrent = this.dayEndCurrent,
@@ -1239,6 +1238,7 @@ public class GameMaster : MonoBehaviour
         gmOffice.ChanceNextOrder = gameData.ChanceNextOrder;
 
         ShopUnlocked = gameData.ShopUnlocked;
+
         DayEnd = gameData.DayEnd;
 
         dayEndCurrent = gameData.DayEndCurrent;
