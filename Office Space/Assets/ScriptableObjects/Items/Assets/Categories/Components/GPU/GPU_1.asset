@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
   m_Name: GPU_1
   m_EditorClassIdentifier: 
-  Name: TGX 550 GPU
+  Name: 4GB GPU
   Subcategory: {fileID: 11400000, guid: 04c29416ff1056f4cbae5de4f263d4b3, type: 2}
   Quality: 2
   UnitCost: 5000

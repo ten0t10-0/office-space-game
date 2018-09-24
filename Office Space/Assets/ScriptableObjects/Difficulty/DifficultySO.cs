@@ -14,6 +14,7 @@ public class DifficultySO : ScriptableObject
     public bool GenerateOrderDueDate;
     public float OrderTimeShippingTimeMultiplier;
     public float OrderTimeAddedPerItem;
+    public float OrderTimeAddedPerOpenOrder;
     //public float OrderDelay;
     public float OrderGenerationRate;
     public bool IncludeCustomerTolerance;

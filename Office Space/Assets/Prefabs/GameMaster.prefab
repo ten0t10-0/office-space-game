@@ -98,7 +98,7 @@ MonoBehaviour:
   ShopItemSlotCount: 17
   DayStartHour: 9
   DayEndHour: 17
-  GameTimeSpeed: 10
+  GameTimeSpeed: 5
 --- !u!114 &114137614351113880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,7 +147,7 @@ MonoBehaviour:
   OfflineMode: 1
   TEMPSaveGame: 1
   SleepMode: 0
-  TutorialMode: 1
+  TutorialMode: 0
   ShopUnlocked: 0
   CameraLock: 0
   DayEnd: 0
@@ -451,6 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitGameMode: 1
+  InitGameMode: 0
   Office: {fileID: 0}
   Shop: {fileID: 0}
