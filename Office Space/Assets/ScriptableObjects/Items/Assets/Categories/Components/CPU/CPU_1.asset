@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
   m_Name: CPU_1
   m_EditorClassIdentifier: 
-  Name: '4.1GHz Dual-Core CPU   '
+  Name: Quad-Core CPU
   Subcategory: {fileID: 11400000, guid: 90f8f5b2d7338fd448196100c311d473, type: 2}
   Quality: 2
   UnitCost: 4000

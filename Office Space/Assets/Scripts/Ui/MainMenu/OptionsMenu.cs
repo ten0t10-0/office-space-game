@@ -14,7 +14,7 @@ public class OptionsMenu : MonoBehaviour
 
 	void Start()
 	{
-		res = Screen.resolutions;
+        res = Screen.resolutions;
 		dropdown.ClearOptions ();
 
 		List<string> options = new List<string> ();
@@ -45,7 +45,7 @@ public class OptionsMenu : MonoBehaviour
 	}
 	public void SetFull(bool isFull)
 	{
-		Screen.fullScreen = isFull;
+        Screen.fullScreen = !Screen.fullScreen;
 	}
 	public void Setres(int resIndex)
 	{
