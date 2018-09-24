@@ -23,6 +23,7 @@ public class GameData
     public DateTime GameDateTime;
     [SerializeField]
     public DayOfWeek DayDebt;
+    public int WeekCurrent;
 
     public float ChanceNextOrder;
 
