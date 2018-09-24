@@ -112,6 +112,8 @@ public class GameMaster : MonoBehaviour
 	public bool TutorialMode = false;
     [HideInInspector]
 	public bool ShopUnlocked = false;
+    [HideInInspector]
+    public bool CarUnlocked = false;
 
     private bool IsGameInitialized = false;
 

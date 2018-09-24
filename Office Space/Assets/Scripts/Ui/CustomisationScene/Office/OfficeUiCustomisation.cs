@@ -45,6 +45,21 @@ public class OfficeUiCustomisation : MonoBehaviour
 
 	}
 
+    public void PurchaseSoccerball()
+    {
+        GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+    }
+
+    public void PurchaseHoverboard()
+    {
+        GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+    }
+
+    public void PurchaseCar()
+    {
+        GameMaster.Instance.Player.Business.DecreaseMoney(10000);
+    }
+
 	public void AddItems(OfficeItemCategory cat)
 	{
 		ClearScroll ();
