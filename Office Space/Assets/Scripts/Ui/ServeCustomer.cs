@@ -261,5 +261,11 @@ public class ServeCustomer : MonoBehaviour
 			}
 		}
 	}
+	public void setFalse()
+	{
+		line1.SetActive (false);
+		line3.SetActive (false);
+		line2.SetActive (false);
+	}
 
 }

@@ -24,7 +24,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	public Image border, pic;
 	public Sprite bronze, silver, gold;
 
-	public GameObject OpenPanel = null;
+	public GameObject OpenPanel = null,nullitems;
 	private bool isInsideTrigger = false;
 
 	bool disableSpace = true, markUpFail = false,subCate = false,saleSuccessful = false,subNothing = false,endOfDay = false; //End of day True set up!!!
@@ -78,9 +78,10 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
 			{
-				if (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay == null) 
+				if (EmptyItems()) 
 				{
-					Debug.Log ("No Items on display");
+					nullitems.SetActive (true);
+					StartCoroutine (CloseNull());
 				} 
 				else 
 				{
@@ -130,18 +131,20 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	public void OpenShop()
 	{
-		spawner.SpawnAI1 ();
-		Invoke ("spawnAI2", Random.Range (3f, 5f));
-		Invoke ("spawnAI3", Random.Range (4f, 7f));
-		//InteractionPanel.SetActive (true);
-		Cursor.lockState = CursorLockMode.Locked;
-		hudCanvas.SetActive (false);
-		particle.SetActive (false);
-		cube.SetActive (true);
-		mount.GetComponent<Collider>().enabled = false;
-		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
-		GameMaster.Instance.PlayerControl = true;
-        GameMaster.Instance.SleepMode = false;
+
+			spawner.SpawnAI1 ();
+			Invoke ("spawnAI2", Random.Range (3f, 5f));
+			Invoke ("spawnAI3", Random.Range (4f, 7f));
+			//InteractionPanel.SetActive (true);
+			Cursor.lockState = CursorLockMode.Locked;
+			hudCanvas.SetActive (false);
+			particle.SetActive (false);
+			cube.SetActive (true);
+			mount.GetComponent<Collider> ().enabled = false;
+			Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
+			GameMaster.Instance.PlayerControl = true;
+			GameMaster.Instance.SleepMode = false;
+	
 	}
 	public void Cancel()
 	{
@@ -663,5 +666,26 @@ public class CustomerInteractionUI : MonoBehaviour
 		cube.SetActive (false);
 		customerFailed = 0;
 		customerServed = 0;
+		serve.setFalse ();
+	}
+
+	bool EmptyItems()
+	{
+		bool check = true;
+		for(int i = 0; i<GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay.Length;i++)
+		{
+			if (GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay[i] != null) 
+			{
+				check = false;
+				break;
+			}
+
+		}
+		return check;
+	}
+	IEnumerator CloseNull()
+	{
+		yield return new WaitForSeconds(3);
+		nullitems.SetActive (false);
 	}
 }

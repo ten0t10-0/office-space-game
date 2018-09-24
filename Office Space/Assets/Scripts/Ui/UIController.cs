@@ -15,12 +15,12 @@ public class UIController : MonoBehaviour
 
 	public Collider ShopDoor, ClosetDoor, PcTrigger;
 	PcTrigger pcTrig;
+	ServeCustomer serveCust;
 
 	// Use this for initialization
 	void Awake () 
 	{
         CustomerInteractionUI = FindObjectOfType<CustomerInteractionUI>();
-
         pcTrig = FindObjectOfType<PcTrigger> ();
 	}
 	
@@ -72,6 +72,9 @@ public class UIController : MonoBehaviour
 	{
 		GameMaster.Instance.ModeSetUI();
 		NotificationCanvas.gameObject.GetComponent<GraphicRaycaster> ().enabled = true;
+		cusFail.SetText (CustomerInteractionUI.customerFailed.ToString ());
+		cusCom.SetText (CustomerInteractionUI.customerServed.ToString ());
+		cusProfit.SetText (GameMaster.Instance.Player.Business.GetProfits ().ToString());
 		endDayOffice.SetActive (true);
 		endDayOffA.SetBool ("EndShopO", true);
 		if (hudcanvas.activeInHierarchy)
@@ -248,4 +251,5 @@ public class UIController : MonoBehaviour
 		newGameTutorial.SetActive (true);
 		newGameTutorial.GetComponent<TutorialNewGame> ().startTrigger ();
 	}
+
 }
