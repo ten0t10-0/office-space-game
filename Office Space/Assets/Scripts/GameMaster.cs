@@ -163,7 +163,7 @@ public class GameMaster : MonoBehaviour
     [HideInInspector]
     public DayOfWeek DayDebt;
     public float[] DebtAmounts;
-    private int WeekCurrent;
+    public int WeekCurrent;
     #endregion
 
     #endregion
@@ -875,7 +875,7 @@ public class GameMaster : MonoBehaviour
         UIMode = true;
 
         Cursor.lockState = CursorLockMode.None;
-        //Cursor.visible = true;
+        Cursor.visible = true;
     }
 
     /// <summary>
@@ -887,7 +887,7 @@ public class GameMaster : MonoBehaviour
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.visible = false;
     }
 
     public void EnableBuildMode()
