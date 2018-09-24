@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Hud2 : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class Hud2 : MonoBehaviour
 	public Image content;
 	public GameObject hudCanvas;
 	public TextMeshProUGUI level;
+	public GameObject load;
+
+	PauseMenu pause;
+
+	void Awake()
+	{
+		pause = FindObjectOfType<PauseMenu> ();
+	}
 
 	void Update()
 	{
@@ -34,6 +43,28 @@ public class Hud2 : MonoBehaviour
 
 		return (value - iMin) / (iMax - iMin);
 
+	}
+
+	public void Quit()
+	{
+		pause.Resume ();
+		load.SetActive (true);
+
+		StartCoroutine(LoadAsynchronously("MainMenu"));
+	}
+
+	private IEnumerator LoadAsynchronously(string sceneName)
+	{
+		AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
+
+		while (!op.isDone)
+		{
+			float progress = Mathf.Clamp01(op.progress / .9f);
+
+			Debug.Log(progress);
+
+			yield return null;
+		}
 	}
 
 }

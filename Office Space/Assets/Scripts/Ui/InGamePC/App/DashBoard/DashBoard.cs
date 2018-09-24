@@ -7,7 +7,7 @@ using TMPro;
 public class DashBoard : MonoBehaviour 
 {
 
-	public TextMeshProUGUI time, money, company, failedOrders,CompleteOrders,currentOrders,customersat,markUp;
+	public TextMeshProUGUI time, money, company, failedOrders,CompleteOrders,currentOrders,customersat,markUp,amount,date;
 
 	int failed, current,complete;
 
@@ -26,6 +26,9 @@ public class DashBoard : MonoBehaviour
 
 		customersat.SetText ((GameMaster.Instance.Player.Business.CustomerTolerance_Total* 100).ToString ()+"%");
 		markUp.SetText((GameMaster.Instance.Player.Business.MarkupPercentage_Total * 100).ToString()+"%");
+		amount.SetText ( " $" + GameMaster.Instance.DebtAmounts [GameMaster.Instance.WeekCurrent].ToString());
+
+		//date.SetText (gamemaster); here bryan!!!!!!
 
 		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 		money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
