@@ -4,33 +4,40 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIController : MonoBehaviour 
+public class UIController : MonoBehaviour
 {
-	public GameObject buildmode,endDayOffice,endDayShop,GameOver,NotificationCanvas,roof,appMontior,homescreen,screensaver,hudcanvas,orderNot;
-	public GameObject DebtPass,DebtGameOver,DebtLifeLine,DebtNoLifeLineU,confirmDay;// dontforget graphic raycaster
-	public GameObject newDay,newGameTutorial;
-	public Animator buildM,endDayOffA,endDayShopA,orderNote, newDayA, doorShop;
+    public GameObject buildmode, endDayOffice, endDayShop, GameOver, NotificationCanvas, roof, appMontior, homescreen, screensaver, hudcanvas, orderNot;
+    public GameObject DebtPass, DebtGameOver, DebtLifeLine, DebtNoLifeLineU, confirmDay;// dontforget graphic raycaster
+    public GameObject newDay, newGameTutorial;
+    public Animator buildM, endDayOffA, endDayShopA, orderNote, newDayA, doorShop;
     CustomerInteractionUI CustomerInteractionUI;
     ShopInventoryUi ShopInventoryUi;
-	public TextMeshProUGUI orderFailed, orderComplete,profit,cusFail,cusCom,cusProfit,orderScore,orderItems,orderTimeBonus,newDateT;
+    public TextMeshProUGUI orderFailed, orderComplete, profit, cusFail, cusCom, cusProfit, orderScore, orderItems, orderTimeBonus, newDateT;
 
-	public Collider ShopDoor, ClosetDoor, PcTrigger;
-	PcTrigger pcTrig;
-	ServeCustomer serveCust;
+    public Collider ShopDoor, ClosetDoor, PcTrigger;
+    PcTrigger pcTrig;
+    ServeCustomer serveCust;
 
-	// Use this for initialization
-	void Awake () 
-	{
+    // Use this for initialization
+    void Awake()
+    {
         CustomerInteractionUI = FindObjectOfType<CustomerInteractionUI>();
-        pcTrig = FindObjectOfType<PcTrigger> ();
+        pcTrig = FindObjectOfType<PcTrigger>();
         ShopInventoryUi = FindObjectOfType<ShopInventoryUi>();
     }
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		
-	}
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    public void Tutorial()
+    {
+        newGameTutorial.SetActive(true);
+        newGameTutorial.GetComponent<TutorialNewGame>().startTrigger();
+    }
+
 	public void BuildModeUIOpen()
 	{
 		buildmode.SetActive (true);

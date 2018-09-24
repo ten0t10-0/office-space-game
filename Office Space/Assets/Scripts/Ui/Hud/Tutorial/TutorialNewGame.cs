@@ -19,19 +19,15 @@ public class TutorialNewGame : MonoBehaviour
 	void Start () 
 	{
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
-		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue; 
-	}
+		dialogue = gameObject.GetComponent<DialogueTrigger>().dialogue;
+        trigger = gameObject.GetComponent<DialogueTrigger>();
+    }
 	
 	// Update is called once per frame
 	void Update () 
 	{
 
-			if (Input.GetKeyDown (KeyCode.E)) 
-			{
-				canvas.SetActive (true);
-				trigger.TriggerDialogue ();
-				disableSpace = false;
-			}
+			
 
 
 
@@ -61,9 +57,10 @@ public class TutorialNewGame : MonoBehaviour
 
 				break;
 			}
-		case 2:
+		case 5:
 			{
-
+                    //GameMaster.Instance.NewGame_PostTutorial();
+                    gameObject.SetActive(false);
 				break;
 			}
 		}

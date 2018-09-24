@@ -375,7 +375,6 @@ public class GameMaster : MonoBehaviour
 
     public void NewGame()
     {
-        string message;
         double initGameTimeHour = DayStartHour_DEFAULT;
 
         //Initialize Date & Time
@@ -425,17 +424,12 @@ public class GameMaster : MonoBehaviour
             SupplierManager.Suppliers[1].Inventory.AddItem(new Item(24), out temp);
 
             OrderManager.CreateTutorialOrder();
+
+            GUIManager.UIController.Tutorial();
         }
         else
         {
-            //Initialize Difficulty
-            Difficulty = initDifficulty;
-
-            //Generate Suppliers
-            SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out message);
-
-            //Generating supplier items
-            SupplierManager.PopulateSupplierInventories();
+            NewGame_PostTutorial();
         }
 
         //Player Initalizations outside Player class...
@@ -452,6 +446,20 @@ public class GameMaster : MonoBehaviour
 
         //Spawn Player Object
         InitializePlayer();
+    }
+
+    public void NewGame_PostTutorial()
+    {
+        string message;
+
+        //Initialize Difficulty
+        Difficulty = initDifficulty;
+
+        //Generate Suppliers
+        SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out message);
+
+        //Generating supplier items
+        SupplierManager.PopulateSupplierInventories();
     }
 
     public void EndGame()
@@ -1059,6 +1067,8 @@ public class GameMaster : MonoBehaviour
 
         Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
         InitializePlayer();
+
+        GUIManager.UIController.NewDayDate();
 
         //if (GameModeManager.GameMode_Current == GameMode.Shop)
         //    SaveGame(SaveSlotCurrent);

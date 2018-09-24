@@ -50,7 +50,7 @@ public class LoginUI : MonoBehaviour
 
     public void Login_LoginButtonPressed()
     {
-        if (!GameMaster.Instance.OfflineMode)
+        if (GameMaster.Instance.OfflineMode)
             GameMaster.Instance.OfflineMode = false;
 
         //Called when player presses button to Login
@@ -86,7 +86,7 @@ public class LoginUI : MonoBehaviour
 
 	public void Register_RegisterButtonPressed ()
 	{
-        if (!GameMaster.Instance.OfflineMode)
+        if (GameMaster.Instance.OfflineMode)
             GameMaster.Instance.OfflineMode = false;
 
         //Called when the player presses the button to register
@@ -121,6 +121,8 @@ public class LoginUI : MonoBehaviour
 
                         if (GameMaster.Instance.DBManager.AddPlayer(player, playerPassword))
                             Debug.Log("*Player added!");
+
+                        GameMaster.Instance.CurrentUsername = playerUsername;
                     }
                     else
                     {

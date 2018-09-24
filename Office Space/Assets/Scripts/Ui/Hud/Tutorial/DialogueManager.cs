@@ -27,9 +27,12 @@ public class DialogueManager : MonoBehaviour {
 		sentences = new Queue<string> ();
 		currentGuy = Instantiate (tutorialGuy, spawnLocation.transform);
 
-		currentGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(GameMaster.Instance.CustomizationManager.Character.AccessoryPresets[0]);
-		currentGuy.GetComponent<CharacterCustomizationScript> ().RandomizeAppearance ();
-		charaA = currentGuy.GetComponent<CharacterAnimationScript> ();
+		currentGuy.GetComponent<CharacterCustomizationScript>().UnsetAllClothing();
+        currentGuy.GetComponent<CharacterCustomizationScript>().SetClothing(1);
+        currentGuy.GetComponent<CharacterCustomizationScript>().SetAccessoriesByPreset(GameMaster.Instance.CustomizationManager.Character.AccessoryPresets[0]);
+        currentGuy.GetComponent<CharacterCustomizationScript>().UpdateBodyColor(GameMaster.Instance.CustomizationManager.Character.SkinColors[3]);
+
+        charaA = currentGuy.GetComponent<CharacterAnimationScript> ();
 		canvas.SetActive (false);
 
 	}

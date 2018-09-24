@@ -21,9 +21,14 @@ public class NewGame : MonoBehaviour
 	{
 		if (GameMaster.Instance.OfflineMode == false)
 			UserName.interactable = false;
+        else
+        {
+            UserName.interactable = true;
+        }
 	}
 	public void startGame()
 	{
+        Debug.Log("OFFLINE MODE?: " + GameMaster.Instance.OfflineMode.ToString());
 		GameMaster.Instance.CurrentBusinessName = CompanyName.text;
 
 		if (GameMaster.Instance.OfflineMode == true)

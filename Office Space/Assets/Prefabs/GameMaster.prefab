@@ -129,10 +129,10 @@ MonoBehaviour:
   CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 2000
+  initPlayerMoney: 1000000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  initPlayerLevel: 10
+  initPlayerLevel: 20
   PlayerExperienceBase: 100
   ShopModeLevelRequirement: 10
   GameModeManager: {fileID: 0}
