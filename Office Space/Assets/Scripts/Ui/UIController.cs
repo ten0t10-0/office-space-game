@@ -29,8 +29,7 @@ public class UIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (GameMaster.Instance.Player.Level < 10)
-			ShopDoor.enabled = false;
+
     }
 
     public void Tutorial()

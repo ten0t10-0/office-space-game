@@ -45,7 +45,6 @@ public class LoadGame : MonoBehaviour {
 
 				newItem.transform.Find ("empty").GetComponent<TMP_Text> ().text = "";
 				newItem.transform.Find ("date").GetComponent<TMP_Text> ().text = loadData.Date.ToString();
-				newItem.transform.Find ("Name").GetComponent<TMP_Text> ().text = loadData.Name.ToString ();
 			}
 			newItem.GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("num").GetComponent<TMP_Text>().text),newItem);});
 		}
