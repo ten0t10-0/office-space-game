@@ -720,6 +720,27 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    public DateTime[] GetDebtDates()
+    {
+        DateTime[] dateTimes = new DateTime[4];
+
+        DateTime dateTime = new DateTime(GameDateTimeStart.Ticks).AddDays(6);
+
+        dateTimes[0] = dateTime;
+
+        for (int i = 1; i <= 3; i++)
+        {
+            dateTimes[i] = dateTime.AddDays(7 * i);
+        }
+
+        for (int i = 0; i <= 3; i++)
+        {
+            Debug.Log(dateTimes[i].ToLongDateString());
+        }
+
+        return dateTimes;
+    }
+
     private void Update()
     {
         if (IsGameInitialized)
@@ -866,6 +887,14 @@ public class GameMaster : MonoBehaviour
             }
             #endregion
         }
+
+        switch (Cursor.lockState)
+        {
+            case CursorLockMode.Locked:
+                Cursor.visible = false; break;
+            case CursorLockMode.None:
+                Cursor.visible = true; break;
+        }
     }
 
     #region <"Mode" change methods>
@@ -878,7 +907,6 @@ public class GameMaster : MonoBehaviour
         UIMode = true;
 
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     /// <summary>
@@ -890,7 +918,6 @@ public class GameMaster : MonoBehaviour
         UIMode = false;
 
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public void EnableBuildMode()
