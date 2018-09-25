@@ -129,10 +129,10 @@ MonoBehaviour:
   CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 1000000
+  initPlayerMoney: 2000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  initPlayerLevel: 20
+  initPlayerLevel: 1
   PlayerExperienceBase: 100
   ShopModeLevelRequirement: 10
   GameModeManager: {fileID: 0}
@@ -451,6 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitGameMode: 1
+  InitGameMode: 0
   Office: {fileID: 0}
   Shop: {fileID: 0}
