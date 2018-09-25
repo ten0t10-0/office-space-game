@@ -53,10 +53,6 @@ public class HudMain : MonoBehaviour {
         money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
 		DisplayNotes ();
 
-		if (order.activeInHierarchy)
-			orderNew ();
-
-
     }
 
 	public void DisplayNotes()
@@ -97,13 +93,7 @@ public class HudMain : MonoBehaviour {
 		if (hudCanvas.activeInHierarchy) 
 		{
 			order.SetActive (true);
-			StartCoroutine (orderNew ());
 		}
-	}
-	IEnumerator orderNew()
-	{
-		yield return new WaitForSeconds(2);
-		order.SetActive (false);
 	}
 	IEnumerator PhoneClose()
 	{

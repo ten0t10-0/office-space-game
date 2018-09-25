@@ -58,6 +58,7 @@ public class CustomerInteractionUI : MonoBehaviour
 	string customerResponce = "";
 	string playerResponce = "";
 	string customerSubCat = "";
+	string customerName = "";
 
 	// Use this for initialization
 	void Awake () 
@@ -161,7 +162,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		InteractionPanel.SetActive (true);
 		hudO.SetBool ("UIO", true);
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
-
+		customerName = GameMaster.Instance.CustomerManager.GenerateCustomer ().FullName ();
         if (!EmptyItems())
             customerItem = RandomItem ();
 		customerSub = RandomSubCat ();
@@ -196,7 +197,7 @@ public class CustomerInteractionUI : MonoBehaviour
 
 				customer.SetBool ("CustomerIn", true);
 				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length-1)]);
-				name.SetText("Bryawando");
+				name.SetText(customerName);
 				itemName.SetText(customerItem.Name.ToString());
 				pic.sprite = customerItem.Picture;
 				SetBorder (customerItem);
@@ -225,7 +226,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				disableSpace = false;
 				item.SetBool("ItemIn",false);
 				text.SetText(customerResponce);
-				name.SetText("Bryawando");
+				name.SetText(customerName);
 //				button.SetBool ("ButtonIn", false);
 				buttonpanel.SetActive (false);
 				speech.SetBool ("SpeechIn", true);
@@ -295,7 +296,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				customer.SetBool ("CustomerIn", true);
 			
 				text.SetText(customerSubcate[Random.Range(0 , customerSubcate.Length - 1)]+ customerSub.Name.ToString());
-				name.SetText("Bryawando");
+				name.SetText(customerName);
 				inventoryP.SetActive (true);
 				inventory.SetBool ("InvenO", true);
 				disableSpace = true;
@@ -323,7 +324,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				disableSpace = false;
 				item.SetBool("ItemIn",false);
 				text.SetText(customerResponce);
-				name.SetText("Bryawando");
+				name.SetText(customerName);
 				//				button.SetBool ("ButtonIn", false);
 				buttonpanel.SetActive (false);
 				speech.SetBool ("SpeechIn", true);
