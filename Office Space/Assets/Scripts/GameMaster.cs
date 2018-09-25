@@ -106,12 +106,13 @@ public class GameMaster : MonoBehaviour
     public bool UIMode = false;
     public bool BuildMode = false;
     public bool OfflineMode = false;
-    public bool TEMPSaveGame = true;
-    public bool SleepMode = false; //* + Check save data
+    public bool SleepMode = false; //* + Check save data\
 
-	public bool TutorialMode = false;
+    public bool TutorialMode = false;
     [HideInInspector]
 	public bool ShopUnlocked = false;
+
+    public bool TEMPLoadDefaultSave = false;
 
     private bool IsGameInitialized = false;
 
@@ -353,7 +354,7 @@ public class GameMaster : MonoBehaviour
 
         ModeSetPlay();
 
-        if (initialSaveSlot != -1 && SaveFileExists(initialSaveSlot))
+        if (initialSaveSlot != -1 && SaveFileExists(initialSaveSlot) && TEMPLoadDefaultSave)
         {
             LoadGame(initialSaveSlot);
         }
@@ -1027,6 +1028,7 @@ public class GameMaster : MonoBehaviour
         {
             if (Player.Business.Money >= DebtAmounts[WeekCurrent])
             {
+                Player.Business.DecreaseMoney(DebtAmounts[WeekCurrent]);
                 GUIManager.UIController.PassDebtCheck();
             }
             else
@@ -1164,84 +1166,83 @@ public class GameMaster : MonoBehaviour
     #region <SAVING & LOADING METHODS>
     public void SaveGame(int saveSlot, string saveName = null)
     {
-        if (TEMPSaveGame)
+        BinaryFormatter bf = new BinaryFormatter();
+
+        GameModeOffice gmOffice = GameModeManager.Office;
+        GameModeShop gmShop = GameModeManager.Shop;
+
+        Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
+        Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
+
+        //Save data to GameData object (saveData):
+        GameData gameData = new GameData
         {
-            BinaryFormatter bf = new BinaryFormatter();
+            Player = this.Player,
 
-            GameModeOffice gmOffice = GameModeManager.Office;
-            GameModeShop gmShop = GameModeManager.Shop;
+            Suppliers = SupplierManager.Suppliers,
 
-            Player.CharacterCustomizationData = CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().GetCustomizationData();
-            Player.OfficeCustomizationData = CustomizationManager.Office.GetCustomizationData();
+            Orders = OrderManager.Orders,
+            OrdersCountOpen = OrderManager.CountOpen,
+            OrdersCountCompleted = OrderManager.CountCompleted,
+            OrdersCountFailed = OrderManager.CountFailed,
+            OrdersCountCompletedToday = OrderManager.CountCompletedToday,
+            OrdersCountFailedToday = OrderManager.CountFailedToday,
 
-            //Save data to GameData object (saveData):
-            GameData gameData = new GameData
-            {
-                Player = this.Player,
+            Difficulty = this.Difficulty,
 
-                Suppliers = SupplierManager.Suppliers,
+            GameDateTime = this.GameDateTime,
+            GameDateTimeStart = this.GameDateTimeStart,
+            DayDebt = this.DayDebt,
+            WeekCurrent = this.WeekCurrent,
 
-                Orders = OrderManager.Orders,
-                OrdersCountOpen = OrderManager.CountOpen,
-                OrdersCountCompleted = OrderManager.CountCompleted,
-                OrdersCountFailed = OrderManager.CountFailed,
-                OrdersCountCompletedToday = OrderManager.CountCompletedToday,
-                OrdersCountFailedToday = OrderManager.CountFailedToday,
+            ChanceNextOrder = gmOffice.ChanceNextOrder,
 
-                Difficulty = this.Difficulty,
+            ShopUnlocked = this.ShopUnlocked,
 
-                GameDateTime = this.GameDateTime,
-                GameDateTimeStart = this.GameDateTimeStart,
-                DayDebt = this.DayDebt,
-                WeekCurrent = this.WeekCurrent,
+            DayEnd = this.DayEnd,
 
-                ChanceNextOrder = gmOffice.ChanceNextOrder,
+            DayEndCurrent = this.dayEndCurrent,
 
-                ShopUnlocked = this.ShopUnlocked,
+            Notifications = this.Notifications,
 
-                DayEnd = this.DayEnd,
+            GameMode = GameModeManager.GameMode_Current
+        };
 
-                DayEndCurrent = this.dayEndCurrent,
-
-                Notifications = this.Notifications,
-
-                GameMode = GameModeManager.GameMode_Current
-            };
-
-            if (saveName == null || saveName == "")
-            {
-                saveName = string.Format("{0} {1}", SaveNameDefault, saveSlot.ToString().PadLeft(3, '0'));
-            }
-
-            SaveData saveData = new SaveData
-            {
-                Name = saveName,
-                Date = DateTime.Now,
-                GameData = gameData
-            };
-
-            FileStream file = File.Create(GetSaveFilePath(saveSlot));
-
-            bf.Serialize(file, saveData);
-
-            file.Close();
-
-            //UPDATE DB:
-            if (!OfflineMode)
-            {
-                DBPlayer p = Player.GetDBPlayer();
-                Debug.Log(p.Username + p.Experience + p.Money);
-                bool s = DBManager.UpdatePlayer(Player.GetDBPlayer());
-
-                if (!s)
-                    Debug.Log("Uh oh");
-                else
-                    Debug.Log("Player updated.");
-            }
-
-            //LOG:
-            Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
+        if (saveName == null || saveName == "")
+        {
+            saveName = string.Format("{0} {1}", SaveNameDefault, saveSlot.ToString().PadLeft(3, '0'));
         }
+
+        Debug.Log(saveName);
+
+        SaveData saveData = new SaveData
+        {
+            Name = saveName,
+            Date = DateTime.Now,
+            GameData = gameData
+        };
+
+        FileStream file = File.Create(GetSaveFilePath(saveSlot));
+
+        bf.Serialize(file, saveData);
+
+        file.Close();
+
+        //UPDATE DB:
+        if (!OfflineMode)
+        {
+            DBPlayer p = Player.GetDBPlayer();
+            Debug.Log(p.Username + p.Experience + p.Money);
+            bool s = DBManager.UpdatePlayer(Player.GetDBPlayer());
+
+            if (!s)
+                Debug.Log("Uh oh");
+            else
+                Debug.Log("Player updated.");
+        }
+
+        //LOG:
+        Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA SAVED TO '" + Application.persistentDataPath + "'!");
     }
 
     public void LoadGame(int saveSlot)
@@ -1251,6 +1252,8 @@ public class GameMaster : MonoBehaviour
         FileStream file = File.Open(GetSaveFilePath(saveSlot), FileMode.Open);
 
         SaveData loadData = (SaveData)bf.Deserialize(file);
+
+        Debug.Log(loadData.Name);
 
         file.Close();
 

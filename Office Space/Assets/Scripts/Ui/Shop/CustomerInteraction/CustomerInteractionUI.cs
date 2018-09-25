@@ -44,16 +44,16 @@ public class CustomerInteractionUI : MonoBehaviour
 	[HideInInspector]
 	public int customerServed = 0,customerFailed = 0; 
 
-	string[] greet = new string[] {"Hello there!","Welcome","Good Day","Welcome, Im here to help","How can I help you?"};
-	string[] buyGreeting = new string[]{"I want this","I'll take this","How much is this?","I finally found this"};
-	string[] customerHappy = new string[]{"Thats Perfect","I'll take that","Thats fine","That will do","Not bad"};
+	string[] greet = new string[] {"Hello there!","Welcome.","Good day.","Welcome, I'm here to help!","How can I help you?"};
+	string[] buyGreeting = new string[]{"I want this, please.","I'll take this.","How much is this?","I finally found this!"};
+	string[] customerHappy = new string[]{"That's perfect!","I'll take that.","That's fine.","That will do.","Not bad."};
 	string[] customerSubcate = new string[]{"I'm looking for some ","Do you have ","I want any "};
-	string[] customerSubSad = new string[]{"Think I'll try else where ","So you do not have any? ","Thanks for nothing "};
-	string[] customerSad = new string[]{"You are crazy","Im not paying that!","Think I'll try else where"};
-	string[] customerFind = new string[]{"Thats not it","I dont want that","Not what I'm looking for"};
-	string[] playerHappy = new string[]{"Score!","Awesome","Alright","Thank you","Come again"};
-	string[] playerSad = new string[]{"Awww","I made them mad","Better luck next time"};
-	string[] tooHigh = new string[]{"I can't pay that much","Could you lower it?","Maybe a bit lower?"};
+	string[] customerSubSad = new string[]{"Think I'll try elsewhere ","So you do not have any? ","Thanks for nothing "};
+	string[] customerSad = new string[]{"You are crazy.","I'm not paying that!","Think I'll try elsewhere."};
+	string[] customerFind = new string[]{"That's not it.","I don't want that.","Not what I'm looking for."};
+	string[] playerHappy = new string[]{"Score!","Awesome!","Alright.","Thank you.","Come again."};
+	string[] playerSad = new string[]{"Awww.","I don't think they liked that.","Better luck next time."};
+	string[] tooHigh = new string[]{"I can't pay that much.","Could you lower it?","Maybe a bit lower?"};
 
 	string customerResponce = "";
 	string playerResponce = "";
@@ -187,7 +187,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				player.SetBool ("PlayerIn", true);
 				name.SetText(GameMaster.Instance.Player.Name);
 				//array of random greetings
-				text.SetText(greet[Random.Range(0,greet.Length-1)]);
+				text.SetText(greet[Random.Range(0,greet.Length)]);
 				speech.SetBool ("SpeechIn", true);
 				disableSpace = false;
 				break;
@@ -196,7 +196,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			{
 
 				customer.SetBool ("CustomerIn", true);
-				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length-1)]);
+				text.SetText(buyGreeting[Random.Range(0,buyGreeting.Length)]);
 				name.SetText(customerName);
 				itemName.SetText(customerItem.Name.ToString());
 				pic.sprite = customerItem.Picture;
@@ -286,7 +286,7 @@ public class CustomerInteractionUI : MonoBehaviour
 				player.SetBool ("PlayerIn", true);
 				name.SetText (GameMaster.Instance.Player.Name);
 				//array of random greetings
-				text.SetText (greet [Random.Range (0, greet.Length - 1)]);
+				text.SetText (greet [Random.Range (0, greet.Length)]);
 				speech.SetBool ("SpeechIn", true);
 				disableSpace = false;
 				break;
@@ -295,7 +295,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			{
 				customer.SetBool ("CustomerIn", true);
 			
-				text.SetText(customerSubcate[Random.Range(0 , customerSubcate.Length - 1)]+ customerSub.Name.ToString());
+				text.SetText(customerSubcate[Random.Range(0 , customerSubcate.Length)]+ customerSub.Name.ToString());
 				name.SetText(customerName);
 				inventoryP.SetActive (true);
 				inventory.SetBool ("InvenO", true);
@@ -377,8 +377,8 @@ public class CustomerInteractionUI : MonoBehaviour
 	}
 	public void NoItems()
 	{
-		customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length - 1)];
-		playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+		customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length)];
+		playerResponce = playerSad[Random.Range (0, playerSad.Length)];
 		inventoryP.SetActive (false);
 		runSubInteraction (4);
 		counter = 5;
@@ -403,8 +403,8 @@ public class CustomerInteractionUI : MonoBehaviour
 		{
 			if (subFailCounter >= 3) 
 			{
-				customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length - 1)];
-				playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+				customerResponce = customerSubSad[Random.Range (0, customerSubSad.Length)];
+				playerResponce = playerSad[Random.Range (0, playerSad.Length)];
 				inventoryP.SetActive (false);
 				runSubInteraction (4);
 				counter = 5;
@@ -422,8 +422,8 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		if (failCounter >= 3) 
 		{
-			customerResponce = customerSad[Random.Range (0, customerSad.Length - 1)];
-			playerResponce = playerSad[Random.Range (0, playerSad.Length - 1)];
+			customerResponce = customerSad[Random.Range (0, customerSad.Length)];
+			playerResponce = playerSad[Random.Range (0, playerSad.Length)];
 			if (subCate == false) 
 			{
 				runInteraction (4);
@@ -457,14 +457,14 @@ public class CustomerInteractionUI : MonoBehaviour
 		if (percentage > per) 
 		{
 			Debug.Log ("Customer sad");
-			customerResponce = tooHigh[Random.Range (0, tooHigh.Length - 1)];
+			customerResponce = tooHigh[Random.Range (0, tooHigh.Length)];
 			MarkUpTooHigh ();
 		}
 		else
 		{
 			saleSuccessful = true;
-			customerResponce = customerHappy [Random.Range (0, customerHappy.Length - 1)];
-			playerResponce = playerHappy [Random.Range (0, playerHappy.Length - 1)];
+			customerResponce = customerHappy [Random.Range (0, customerHappy.Length)];
+			playerResponce = playerHappy [Random.Range (0, playerHappy.Length)];
 			Debug.Log ("Customer happy");
 			if (subCate == false) 
 			{
