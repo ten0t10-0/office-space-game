@@ -35,18 +35,13 @@ public class Player
     /// <summary>
     /// Creates a NEW player. Default clothing unlocked and activated in customization data. Default Office items unlocked.
     /// </summary>
-    public Player(string name, string businessName, int initialLevel, float startingMoney, float initialMarkup, float maximumInventorySpace, int shopItemSlotCount)
+    public Player(string name, string businessName, float startingMoney, float initialMarkup, float maximumInventorySpace, int shopItemSlotCount)
     {
         Name = name;
 
         Business = new SupplierPlayer(businessName, startingMoney, initialMarkup, maximumInventorySpace, shopItemSlotCount);
 
         Level = 1;
-        if (initialLevel < 1)
-        {
-            initialLevel = 1;
-        } 
-        int tempExp = GetLevelExperience(initialLevel);
 
         PlayTime = 0f;
 
@@ -72,8 +67,6 @@ public class Player
 
         UnlockedUpgradesPassive = new List<int>();
         CurrentUpgradesActive = new List<UpgradeActive>();
-
-        IncreaseExperience(tempExp);
 
         ////TEMP:
         //for (int i = 1; i <= 20; i++)

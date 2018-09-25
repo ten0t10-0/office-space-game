@@ -126,7 +126,7 @@ public class GameMaster : MonoBehaviour
     #endregion
 
     #region <Difficulty>
-    public int initDifficulty = 0; //0 = First
+    public int initDifficulty; //0 = First
     public List<DifficultySO> DifficultySettings;
     [HideInInspector]
     public int Difficulty { get; private set; }
@@ -399,7 +399,8 @@ public class GameMaster : MonoBehaviour
         GameDateTimeStart = new DateTime(GameDateTime.Ticks);
 
         //Debt day
-        DayDebt = GameDateTime.DayOfWeek;
+        DayDebt = GameDateTime.AddDays(-1).DayOfWeek;
+        Debug.Log(DayDebt.ToString());
         WeekCurrent = 0;
 
         //Clear notifications
@@ -412,7 +413,8 @@ public class GameMaster : MonoBehaviour
         Debug.Log("NEW GAME: Current Bus -> " + CurrentBusinessName);
 
         //Initialize Player
-        Player = new Player(CurrentUsername, CurrentBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+        Player = new Player(CurrentUsername, CurrentBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+        Player.IncreaseExperience(Player.GetLevelExperience(initPlayerLevel));
 
         if (TutorialMode)
         {
@@ -523,7 +525,8 @@ public class GameMaster : MonoBehaviour
             GameModeManager.Office.ChanceNextOrder = GetDifficultySetting().OrderGenerationRate;
 
             //Player Initializer
-            Player = new Player(initPlayerName, initBusinessName, initPlayerLevel, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+            Player = new Player(initPlayerName, initBusinessName, initPlayerMoney, initPlayerMarkup, initPlayerInventorySpace, GameModeManager.Shop.ShopItemSlotCount);
+            Player.IncreaseExperience(Player.GetLevelExperience(initPlayerLevel));
 
             //Supplier generator
             SupplierManager.GenerateSuppliers(SupplierManager.InitNumberOfSuppliers, out resultGeneric);

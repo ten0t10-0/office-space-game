@@ -263,8 +263,6 @@ public class OfficeItemDatabaseSO : ScriptableObject
             Destroy(obj);
             CurrentObjects.RemoveAt(objectIndex);
 
-            UpdateObjectIndexes();
-
             SelectedObjectIndex = -1;
 
             foreach (Transform child in children)
@@ -285,6 +283,8 @@ public class OfficeItemDatabaseSO : ScriptableObject
                     //    Debug.Log("New parent: " + child.parent.name);
                 }
             }
+
+            UpdateObjectIndexes();
         }
         else
             Debug.Log("Cannot remove essential office items!");
