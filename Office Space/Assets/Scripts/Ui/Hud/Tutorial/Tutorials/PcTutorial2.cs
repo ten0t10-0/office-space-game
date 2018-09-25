@@ -34,12 +34,10 @@ public class PcTutorial2 : MonoBehaviour
 			NextDialogue (counter);
 			counter++;
 			Debug.Log ("Blooooop"+counter);
-			Cursor.lockState = CursorLockMode.Locked;
 
 			manager.DisplayNextSentence();
 		}
 	}
-
 	public void NextDialogue(int i)
 	{
 		switch (i) 

@@ -13,19 +13,25 @@ public class PCTutorial : MonoBehaviour
 	DialogueTrigger trigger;
 	Dialogue dialogue;
 
-	public Button appbtn;
-	int counter = 0;
+	public Button appbtn,office,achivments,help,close;
+	int counter = -1;
 	bool disableSpace = true;
 
 	private bool isInsideTrigger = false;
+	bool appbtnP = false;
 
+	public Animator DashBtn, orderBtn, inventoryBtn, OrdersBtn,upgradesbtn;
 
+	public GameObject DashP, orderP, inventoryP, OrdersP,upgradesp;
+
+	public GameObject shopDoor,customisationt;
 
 	// Use this for initialization
 	void Start () 
 	{
 		manager = GameObject.Find("DialogueManager").GetComponent<DialogueManager>();
 		trigger = gameObject.GetComponent<DialogueTrigger>(); 
+		app.GetComponent<Button>().onClick.AddListener(delegate {NextScreen();});
 	}
 	
 	// Update is called once per frame
@@ -39,22 +45,34 @@ public class PCTutorial : MonoBehaviour
 				questionmark.SetActive (false);
 				trigger.TriggerDialogue ();
 				disableSpace = false;
+
+				appbtn.enabled = false;
+				office.enabled = false;
+				achivments.enabled = false;
+				help.enabled = false;
+				close.enabled = false;
 			}
 		}
 
 
 		if (Input.GetKeyUp(KeyCode.Space) && disableSpace == false && manager.done == true)
 			{
-				NextDialogue (counter);
+			if (appbtnP == false) 
+			{
+				
 				counter++;
-				Debug.Log ("Blooooop"+counter);
-				Cursor.lockState = CursorLockMode.Locked;
-
-				manager.DisplayNextSentence();
+				Debug.Log ("Blooooop" + counter);
+				NextDialogue (counter);
+				manager.DisplayNextSentence ();
+			} 
+			else 
+			{
+				counter++;
+				NextDialogue2 (counter);
+				Debug.Log ("Blooooop" + counter);
+				manager.DisplayNextSentence ();
 			}
-
-
-
+		}
 	}
 
 	public void NextDialogue(int i)
@@ -86,13 +104,10 @@ public class PCTutorial : MonoBehaviour
 			{
 				manager.charaA.PointSideUp ();
 				achivment.SetBool ("BtnO", false);
-				break;
-			}
-		case 5:
-			{
-				Cursor.lockState = CursorLockMode.None;
-				manager.charaA.PointSideUp ();
 				app.SetBool ("BtnO", true);
+				appbtn.enabled = true;
+				disableSpace = true;
+
 				break;
 			}
 		default:
@@ -111,7 +126,75 @@ public class PCTutorial : MonoBehaviour
 	void NextScreen()
 	{
 		app.SetBool ("BtnO", false);
-		pcTutorial2.SetActive (true);
-		Cursor.visible = false;
+		appbtnP = true;
+		counter = 0;
+		office.enabled = true;
+		achivments.enabled = true;
+		help.enabled = true;
+		close.enabled = true;
+		manager.DisplayNextSentence ();
+		manager.charaA.PointSideUp ();
+		DashBtn.SetBool ("BtnO", true);
+
+		disableSpace = false;
+	}
+		
+	public void NextDialogue2(int i)
+	{
+		switch (i) 
+		{
+
+		case 1:
+			{
+				ShowPanel (orderP, DashP);
+				DashBtn.SetBool ("BtnO", false);
+				orderBtn.SetBool("BtnO", true);
+				break;
+			}
+		case 2:
+			{
+				ShowPanel (inventoryP, orderP);
+				inventoryBtn.SetBool("BtnO", true);
+				orderBtn.SetBool("BtnO", false);
+				break;
+			}
+		case 3:
+			{
+				ShowPanel (OrdersP, inventoryP);
+				inventoryBtn.SetBool("BtnO", false);
+				OrdersBtn.SetBool("BtnO", true);
+				break;
+			}
+		case 4:
+			{
+				ShowPanel (upgradesp,OrdersP);
+				upgradesbtn.SetBool("BtnO", true);
+				OrdersBtn.SetBool("BtnO", false);
+				break;
+			}
+		case 5:
+			{
+				upgradesbtn.SetBool("BtnO", false);
+				break;
+			}
+		default:
+			break;
+		}
+	}
+
+	void ShowPanel(GameObject panel,GameObject prevPanel)
+	{
+		prevPanel.SetActive (false);
+
+		panel.SetActive (true);
+
+	}
+	void ExitTutorial()
+	{
+		shopDoor.SetActive (true);
+		customisationt.SetActive(true);
+
+		pcTutorial2.SetActive (false);
+
 	}
 }

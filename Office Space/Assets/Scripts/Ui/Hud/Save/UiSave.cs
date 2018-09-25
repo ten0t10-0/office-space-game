@@ -48,6 +48,7 @@ public class UiSave : MonoBehaviour
 
 				newItem.transform.Find ("Button/Empty").GetComponent<TMP_Text> ().text = "";
 				newItem.transform.Find ("Button/Date").GetComponent<TMP_Text> ().text = loadData.Date.ToString();
+				newItem.transform.Find ("Button/Name").GetComponent<TMP_Text> ().text = loadData.Name.ToString ();
 			}
 			newItem.transform.Find ("Button").GetComponent<Button>().onClick.AddListener(delegate {SaveGame(int.Parse(newItem.transform.Find ("Button/Slot").GetComponent<TMP_Text>().text),newItem);});
 		}
@@ -72,7 +73,7 @@ public class UiSave : MonoBehaviour
 			return;
 		}
 		else
-			GameMaster.Instance.SaveGame (selectedSlot,savename.ToString());
+			GameMaster.Instance.SaveGame (selectedSlot,savename.text.ToString());
 
 		DisplayMessage ("Game Saved");
 

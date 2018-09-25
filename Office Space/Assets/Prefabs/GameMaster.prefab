@@ -451,6 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitGameMode: 0
+  InitGameMode: 1
   Office: {fileID: 0}
   Shop: {fileID: 0}
