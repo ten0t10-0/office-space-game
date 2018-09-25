@@ -28,7 +28,7 @@ public class DashBoard : MonoBehaviour
 		markUp.SetText((GameMaster.Instance.Player.Business.MarkupPercentage_Total * 100).ToString()+"%");
 		amount.SetText ( " $" + GameMaster.Instance.DebtAmounts [GameMaster.Instance.WeekCurrent].ToString());
 
-		//date.SetText (gamemaster); here bryan!!!!!!
+        date.SetText(GameMaster.Instance.DebtDates[GameMaster.Instance.WeekCurrent].ToShortDateString());
 
 		company.SetText((GameMaster.Instance.Player.Business.Name).ToString());
 		money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());

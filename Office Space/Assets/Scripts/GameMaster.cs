@@ -136,6 +136,8 @@ public class GameMaster : MonoBehaviour
     public DateTime GameDateTime;
     [HideInInspector]
     public DateTime GameDateTimeStart { get; private set; }
+    [HideInInspector]
+    public DateTime[] DebtDates { get; private set; }
 
     public int initGameDateYear;
     [Range(0, 12)]
@@ -165,6 +167,7 @@ public class GameMaster : MonoBehaviour
     [HideInInspector]
     public DayOfWeek DayDebt;
     public float[] DebtAmounts;
+    [HideInInspector]
     public int WeekCurrent;
     #endregion
 
@@ -363,6 +366,9 @@ public class GameMaster : MonoBehaviour
 
         //Set Camera target
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
+
+        //Debt dates
+        DebtDates = GetDebtDates();
 
         IsGameInitialized = true;
 
@@ -720,7 +726,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    public DateTime[] GetDebtDates()
+    private DateTime[] GetDebtDates()
     {
         DateTime[] dateTimes = new DateTime[4];
 
