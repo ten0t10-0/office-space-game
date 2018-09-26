@@ -129,7 +129,7 @@ MonoBehaviour:
   CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 2000
+  initPlayerMoney: 1250000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerLevel: 1
@@ -145,10 +145,10 @@ MonoBehaviour:
   UIMode: 0
   BuildMode: 0
   OfflineMode: 1
-  TEMPSaveGame: 1
   SleepMode: 0
   TutorialMode: 1
   ShopUnlocked: 0
+  TEMPLoadDefaultSave: 0
   CameraLock: 0
   DayEnd: 0
   PlayerControl: 1
