@@ -24,7 +24,7 @@ public class DashBoard : MonoBehaviour
 		current = GameMaster.Instance.OrderManager.CountOpen;
 		complete = GameMaster.Instance.OrderManager.CountCompleted;
 
-		customersat.SetText ((GameMaster.Instance.Player.Business.CustomerTolerance_Total* 100).ToString ()+"%");
+		customersat.SetText ((GameMaster.Instance.Player.Business.CustomerTolerance_Total* 100).ToString ("f0")+"%");
 		markUp.SetText((GameMaster.Instance.Player.Business.MarkupPercentage_Total * 100).ToString()+"%");
 		amount.SetText ( " $" + GameMaster.Instance.DebtAmounts [GameMaster.Instance.WeekCurrent].ToString());
 

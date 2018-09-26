@@ -244,6 +244,7 @@ public class UIController : MonoBehaviour
 	{
 		newDateT.SetText (" "+ GameMaster.Instance.GameDateTime.Day.ToString ()+ " " + GameMaster.Instance.GameDateTime.DayOfWeek.ToString ());
 		newDay.SetActive (true);
+        StartCoroutine(NewDayShow());
 	}
 
 	IEnumerator NewDayShow()

@@ -894,6 +894,21 @@ public class GameMaster : MonoBehaviour
                         CurrentPlayerObject.GetComponent<CharacterCustomizationScript>().HoldObject(obj, false, false);
                     }
                 }
+
+                if (Input.GetKey(KeyCode.T))
+                {
+                    if (!SleepMode)
+                        AdvanceInGameTime(5);
+                }
+
+                if (Input.GetKey(KeyCode.KeypadPlus))
+                {
+                    Player.Business.IncreaseMoney(100);
+                }
+                if (Input.GetKey(KeyCode.KeypadMinus))
+                {
+                    Player.Business.DecreaseMoney(100);
+                }
             }
             #endregion
         }
@@ -1300,6 +1315,8 @@ public class GameMaster : MonoBehaviour
         Notifications = gameData.Notifications;
 
         GameModeManager.ChangeGameMode(gameData.GameMode);
+
+        Debug.Log(GameModeManager.GameMode_Current.ToString());
 
         //Setup Player Object
         InitializePlayer();

@@ -438,7 +438,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		else 
 		{
 			item.SetBool("ItemIn",false);
-			name.SetText("Bryawando");
+			name.SetText(customerName);
 			text.SetText(customerResponce);
 			buttonpanel.SetActive (false);
 			speech.SetBool ("SpeechIn", true);

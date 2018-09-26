@@ -22,20 +22,20 @@ public class Calender : MonoBehaviour {
 
 	void Start () 
 	{
-		month = 9;
-		day = GameMaster.Instance.GameDateTime.Day;
-		year = GameMaster.Instance.GameDateTime.Year;
-		monthName.SetText(GameMaster.Instance.GameDateTime.ToString("MMMM"));
+		calculateMonth();
+    }
 
-		calculateMonth ();
-	}
-
-	void calculateMonth ()
+    public void calculateMonth ()
 	{
 
 		ClearCalender ();
 
-		DateTime dt = new DateTime(year, month, 1);
+        month = GameMaster.Instance.GameDateTime.Month;
+        day = GameMaster.Instance.GameDateTime.Day;
+        year = GameMaster.Instance.GameDateTime.Year;
+        monthName.SetText(GameMaster.Instance.GameDateTime.ToString("MMMM"));
+
+        DateTime dt = new DateTime(year, month, 1);
 		GameObject newItem;
 
 		switch (dt.DayOfWeek) 
@@ -106,7 +106,7 @@ public class Calender : MonoBehaviour {
 
 			newItem.transform.Find("day").GetComponent<TMP_Text>().text = date.Day.ToString();
 
-			if (date.Day == day) 
+			if (date.Day == GameMaster.Instance.GameDateTime.Day) 
 			{
 				newItem.transform.Find ("Image").GetComponent<Image> ().sprite = image;;
 			}

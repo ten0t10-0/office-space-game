@@ -115,13 +115,13 @@ public class Order
                 {
                     score = 200;
                     Debug.Log("Time bonus: x2");
-					timebonus = "Time bonus: x2";
+					timebonus = "x2";
                 }
                 else if (rate >= 0.5f)
                 {
                     score = 150;
                     Debug.Log("Time bonus: x1.5");
-					timebonus = "Time bonus: x1.5";
+					timebonus = "x1.5";
                 }
                 else
                 {

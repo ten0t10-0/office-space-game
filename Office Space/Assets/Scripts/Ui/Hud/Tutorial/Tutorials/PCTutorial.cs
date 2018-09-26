@@ -125,18 +125,21 @@ public class PCTutorial : MonoBehaviour
 
 	void NextScreen()
 	{
-		app.SetBool ("BtnO", false);
-		appbtnP = true;
-		counter = 0;
-		office.enabled = true;
-		achivments.enabled = true;
-		help.enabled = true;
-		close.enabled = true;
-		manager.DisplayNextSentence ();
-		manager.charaA.PointSideUp ();
-		DashBtn.SetBool ("BtnO", true);
+        if (GameMaster.Instance.TutorialMode)
+        {
+            app.SetBool("BtnO", false);
+            appbtnP = true;
+            counter = 0;
+            office.enabled = true;
+            achivments.enabled = true;
+            help.enabled = true;
+            close.enabled = true;
+            manager.DisplayNextSentence();
+            manager.charaA.PointSideUp();
+            DashBtn.SetBool("BtnO", true);
 
-		disableSpace = false;
+            disableSpace = false;
+        }
 	}
 		
 	public void NextDialogue2(int i)
@@ -184,9 +187,21 @@ public class PCTutorial : MonoBehaviour
 			}
 		case 6:
 			{
-				tutorial.SetActive (false);
-				canvas.SetActive (false);
-				break;
+                    tutorial.SetActive(false);
+                    canvas.SetActive(false);
+                    orderP.SetActive(false);
+                    inventoryP.SetActive(false);
+                    OrdersP.SetActive(false);
+                    upgradesp.SetActive(false);
+                    DashP.SetActive(true);
+
+                    DashBtn.SetBool("BtnO", false);
+
+                    GameMaster.Instance.TutorialMode = false;
+                    GameMaster.Instance.CheckDifficulty();
+
+                    this.enabled = false;
+                break;
 			}
 		default:
 			break;
