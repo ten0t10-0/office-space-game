@@ -22,7 +22,7 @@ public class PCTutorial : MonoBehaviour
 
 	public Animator DashBtn, orderBtn, inventoryBtn, OrdersBtn,upgradesbtn;
 
-	public GameObject DashP, orderP, inventoryP, OrdersP,upgradesp;
+	public GameObject DashP, orderP, inventoryP, OrdersP,upgradesp , tutorial;
 
 	public GameObject shopDoor,customisationt;
 
@@ -146,6 +146,7 @@ public class PCTutorial : MonoBehaviour
 
 		case 1:
 			{
+				manager.charaA.PointSideUp ();
 				ShowPanel (orderP, DashP);
 				DashBtn.SetBool ("BtnO", false);
 				orderBtn.SetBool("BtnO", true);
@@ -153,6 +154,7 @@ public class PCTutorial : MonoBehaviour
 			}
 		case 2:
 			{
+				manager.charaA.PointSideUp ();
 				ShowPanel (inventoryP, orderP);
 				inventoryBtn.SetBool("BtnO", true);
 				orderBtn.SetBool("BtnO", false);
@@ -160,6 +162,7 @@ public class PCTutorial : MonoBehaviour
 			}
 		case 3:
 			{
+				manager.charaA.PointSide ();
 				ShowPanel (OrdersP, inventoryP);
 				inventoryBtn.SetBool("BtnO", false);
 				OrdersBtn.SetBool("BtnO", true);
@@ -167,6 +170,7 @@ public class PCTutorial : MonoBehaviour
 			}
 		case 4:
 			{
+				manager.charaA.PointSide ();
 				ShowPanel (upgradesp,OrdersP);
 				upgradesbtn.SetBool("BtnO", true);
 				OrdersBtn.SetBool("BtnO", false);
@@ -174,7 +178,14 @@ public class PCTutorial : MonoBehaviour
 			}
 		case 5:
 			{
+				
 				upgradesbtn.SetBool("BtnO", false);
+				break;
+			}
+		case 6:
+			{
+				tutorial.SetActive (false);
+				canvas.SetActive (false);
 				break;
 			}
 		default:

@@ -8,7 +8,7 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button,inventory;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP,confirm;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP,confirm,otherOpenP;
 
 	public Button btnDecrease,btnIncrease;
 
@@ -682,6 +682,7 @@ public class CustomerInteractionUI : MonoBehaviour
         isInsideTrigger = false;
         OpenPanel.SetActive(false);
         hudO.SetBool("UIO", false);
+		otherOpenP.SetActive (false);
     }
 
 	bool EmptyItems()
