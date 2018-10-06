@@ -11,6 +11,7 @@ public class OptionsMenu : MonoBehaviour
 	public AudioMixer mix;
 	Resolution[] res;
 	public TMP_Dropdown dropdown;
+	public TextMeshProUGUI percentage;
 
 	void Start()
 	{
@@ -52,5 +53,20 @@ public class OptionsMenu : MonoBehaviour
 		Resolution resolution = res [resIndex];
 
 		Screen.SetResolution (resolution.width, resolution.height, Screen.fullScreen);
+	}
+	public void UpdateVolume(float value)
+	{
+		float min = -80f;
+		float max = 0f; 
+		float scaledValue;
+		scaledValue = (value - min) / (max - min);
+		if (scaledValue < .3)
+			percentage.color = Color.red;
+		if (scaledValue > .3)
+			percentage.color = Color.yellow;
+		if (scaledValue > .7)
+			percentage.color = Color.green;
+		
+		percentage.SetText ((scaledValue * 100).ToString("f0") + "%");
 	}
 }

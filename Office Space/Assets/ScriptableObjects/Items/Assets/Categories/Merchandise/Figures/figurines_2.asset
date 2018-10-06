@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f6bc87f64241134bac581f724e86e76, type: 3}
   m_Name: figurines_2
   m_EditorClassIdentifier: 
-  Name: Soldier 24
+  Name: Ninja Figurine
   Subcategory: {fileID: 11400000, guid: e91a1cc35a57db140a16df78b547ebe1, type: 2}
   Quality: 3
   UnitCost: 750

@@ -10,7 +10,7 @@ public class DebtCheckPass : MonoBehaviour
 	DialogueManager manager;
 	Dialogue dialogue;
 	DialogueTrigger trigger;
-	public GameObject canvas,tutorial;
+	public GameObject canvas,tutorial,invoice;
 	UIController controller;
 
 	// Use this for initialization
@@ -39,6 +39,7 @@ public class DebtCheckPass : MonoBehaviour
 				controller.NewDayAfterDebt ();
 				tutorial.SetActive (false);
 				canvas.SetActive (false);
+				invoice.SetActive (false);
 			}
 			counter++;
 			manager.DisplayNextSentence();

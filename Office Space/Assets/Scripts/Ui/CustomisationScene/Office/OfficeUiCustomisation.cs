@@ -7,12 +7,11 @@ using TMPro;
 public class OfficeUiCustomisation : MonoBehaviour 
 {
 	public TextMeshProUGUI money;
-	public TextMeshProUGUI date;
-	public TextMeshProUGUI time,confirmName;
+	public TextMeshProUGUI time,confirmName,hudCash;
 	public Button tables, chairs, lights, misc,station;
 	public Sprite chair, lightS, other, stationary, table;
 
-	public GameObject tablet,confirm;
+	public GameObject tablet,confirm,hudMoney;
 	public Animator phone;
 
 	OfficeItemSO tempItem;
@@ -27,8 +26,7 @@ public class OfficeUiCustomisation : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		time.SetText (GameMaster.Instance.GameTimeString12 ());
-		money.SetText((GameMaster.Instance.Player.Business.Money).ToString());
+
 
 		tables.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Tables);});
 		chairs.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Chairs);});
@@ -36,13 +34,13 @@ public class OfficeUiCustomisation : MonoBehaviour
 		misc.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Miscellaneous);});
 		station.GetComponent<Button>().onClick.AddListener(delegate {AddItems(OfficeItemCategory.Stationery);});
 
-		AddItems (OfficeItemCategory.Tables);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-
+		time.SetText (GameMaster.Instance.GameTimeString12 ());
+		money.SetText("$" + (GameMaster.Instance.Player.Business.Money).ToString());
 	}
 
     public void PurchaseSoccerball()
@@ -54,6 +52,8 @@ public class OfficeUiCustomisation : MonoBehaviour
         GameMaster.Instance.ModeSetPlay();
         tablet.SetActive(false);
         GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("SOCCER_Ball"));
+		hudCash.SetText ("-$10000");
+		hudMoney.SetActive (true);
     }
 
     public void PurchaseHoverboard()
@@ -65,6 +65,8 @@ public class OfficeUiCustomisation : MonoBehaviour
         GameMaster.Instance.ModeSetPlay();
         tablet.SetActive(false);
         GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("Hover Car"));
+		hudCash.SetText ("-$10000");
+		hudMoney.SetActive (true);
     }
 
     public void PurchaseCar()
@@ -76,6 +78,8 @@ public class OfficeUiCustomisation : MonoBehaviour
         GameMaster.Instance.ModeSetPlay();
         tablet.SetActive(false);
         GameMaster.Instance.CustomizationManager.Office.SelectObject(GameObject.Find("RcCar"));
+		hudCash.SetText ("-$10000");
+		hudMoney.SetActive (true);
     }
 
 	public void AddItems(OfficeItemCategory cat)
@@ -91,6 +95,10 @@ public class OfficeUiCustomisation : MonoBehaviour
 				SetItem (newItem, item);
 			}
 		}
+	}
+	public void AddItemsBtn()
+	{
+		AddItems (OfficeItemCategory.Tables);
 	}
 
 	public void ClearScroll()
@@ -167,6 +175,8 @@ public class OfficeUiCustomisation : MonoBehaviour
 			{
 				phone.SetBool ("PhoneH", false);
 				phone.SetBool ("PhoneO", false);
+				hudCash.SetText ("-$" + item.Price.ToString ());
+				hudMoney.SetActive (true);
                 GameMaster.Instance.EnableBuildMode();
 
                 GameMaster.Instance.CustomizationManager.Office.InitializeOfficeObject(i, out random);
@@ -186,5 +196,11 @@ public class OfficeUiCustomisation : MonoBehaviour
 		confirmName.SetText (item.Name);
 		confirm.SetActive (true);
 	}
-
+	public void exitTablet()
+	{
+		phone.SetBool ("PhoneH", false);
+		phone.SetBool ("PhoneO", false);
+		GameMaster.Instance.ModeSetPlay ();
+		tablet.SetActive (false);
+	}
 }

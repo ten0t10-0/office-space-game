@@ -98,7 +98,7 @@ MonoBehaviour:
   ShopItemSlotCount: 17
   DayStartHour: 9
   DayEndHour: 17
-  GameTimeSpeed: 5
+  GameTimeSpeed: 2
 --- !u!114 &114137614351113880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,7 +132,7 @@ MonoBehaviour:
   initPlayerMoney: 1250000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
-  initPlayerLevel: 1
+  initPlayerLevel: 25
   PlayerExperienceBase: 100
   ShopModeLevelRequirement: 10
   GameModeManager: {fileID: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   BuildMode: 0
   OfflineMode: 1
   SleepMode: 0
-  TutorialMode: 1
+  TutorialMode: 0
   ShopUnlocked: 0
   TEMPLoadDefaultSave: 0
   CameraLock: 0
@@ -424,7 +424,7 @@ MonoBehaviour:
   ChanceNextOrder: 0
   DayStartHour: 8
   DayEndHour: 20
-  GameTimeSpeed: 5
+  GameTimeSpeed: 2
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,6 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4857c0975436a4d99b77e468c328d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitGameMode: 0
+  InitGameMode: 1
   Office: {fileID: 0}
   Shop: {fileID: 0}

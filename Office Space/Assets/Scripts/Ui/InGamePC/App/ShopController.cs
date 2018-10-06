@@ -34,7 +34,7 @@ public class ShopController : MonoBehaviour
 	//components
 	gpuBtn,CpuBtn,
 	//gaming
-	pcgameBtn,ConsoleBtn,
+	pcgameBtn,ConsoleBtn,Consoles,
 	//merch
 	figurineBtn,
 	//hardware
@@ -67,6 +67,8 @@ public class ShopController : MonoBehaviour
 		pcgameBtn = transform.Find("CategoryPanel/catListPanel/gamningBtn/GamingPanel/PcGamesBtn").GetComponent<Button>();
 		ConsoleBtn = transform.Find("CategoryPanel/catListPanel/gamningBtn/GamingPanel/ConsoleGameBtn").GetComponent<Button>();
 
+		Consoles = transform.Find("CategoryPanel/catListPanel/gamningBtn/GamingPanel/ConsoleBtn").GetComponent<Button>();
+
 		figurineBtn = transform.Find("CategoryPanel/catListPanel/merchBtn/MerchandicePanel/FigurineBtn").GetComponent<Button>();
 
 		keyboardBtn =  transform.Find("CategoryPanel/catListPanel/HardwareBtn/HardwarePanel/KeyboardBtn").GetComponent<Button>();
@@ -89,6 +91,9 @@ public class ShopController : MonoBehaviour
 
 		pcgameBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.PCGame.ToString());});
 		ConsoleBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.ConsoleGame.ToString());});
+
+		Consoles.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Gaming.ToString(),ItemSubcategory.Console.ToString());});
+
 
 		figurineBtn.GetComponent<Button>().onClick.AddListener(delegate {SetSubCate(ItemCategory.Merchandise.ToString(),ItemSubcategory.figurines.ToString());});
 

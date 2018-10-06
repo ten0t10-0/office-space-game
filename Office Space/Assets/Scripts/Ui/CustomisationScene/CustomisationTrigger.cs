@@ -47,6 +47,7 @@ public class CustomisationTrigger : MonoBehaviour {
 		hud.SetActive (true);
 		custom.SetActive (false);
 		hudO.SetBool ("UIO", false);
+
 	}
 
 	void OnTriggerEnter(Collider other)

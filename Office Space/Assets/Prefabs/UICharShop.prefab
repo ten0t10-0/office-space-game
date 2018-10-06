@@ -107,7 +107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1277501568026282
 GameObject:
   m_ObjectHideFlags: 1
@@ -201,7 +201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1385973438294816
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +977,7 @@ MonoBehaviour:
   ClothingSlot: 2
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!114 &114205177677362188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1005,6 +1006,7 @@ MonoBehaviour:
   ClothingSlot: 0
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114507349870503886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1019,6 +1021,7 @@ MonoBehaviour:
   ClothingSlot: 0
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!114 &114524168166387514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1033,6 +1036,7 @@ MonoBehaviour:
   ClothingSlot: 4
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114533810220570834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1047,6 +1051,7 @@ MonoBehaviour:
   ClothingSlot: 1
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114629287457966040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1061,6 +1066,7 @@ MonoBehaviour:
   ClothingSlot: 5
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114701237099931798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1075,6 +1081,7 @@ MonoBehaviour:
   ClothingSlot: 1
   ClothingIndex: 0
   IsBodyObject: 1
+  HasCustomMaterial: 0
 --- !u!114 &114788627973831954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1089,6 +1096,7 @@ MonoBehaviour:
   ClothingSlot: 3
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114868967058265656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1103,6 +1111,7 @@ MonoBehaviour:
   ClothingSlot: 2
   ClothingIndex: 0
   IsBodyObject: 0
+  HasCustomMaterial: 0
 --- !u!114 &114918597963168798
 MonoBehaviour:
   m_ObjectHideFlags: 1

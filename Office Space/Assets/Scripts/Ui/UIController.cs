@@ -8,12 +8,13 @@ public class UIController : MonoBehaviour
 {
     public GameObject buildmode, endDayOffice, endDayShop, GameOver, NotificationCanvas, roof, appMontior, homescreen, screensaver, hudcanvas, orderNot;
     public GameObject DebtPass, DebtGameOver, DebtLifeLine, DebtNoLifeLineU, confirmDay;// dontforget graphic raycaster
-    public GameObject newDay, newGameTutorial;
+	public GameObject newDay, newGameTutorial,debtDay;
+	public GameObject dashP,StockP,InventoryP,orderP,upgradeP;
     public Animator buildM, endDayOffA, endDayShopA, orderNote, newDayA, doorShop;
     CustomerInteractionUI CustomerInteractionUI;
     ShopInventoryUi ShopInventoryUi;
-    public TextMeshProUGUI orderFailed, orderComplete, profit, cusFail, cusCom, cusProfit, orderScore, orderItems, orderTimeBonus, newDateT;
-
+	public TextMeshProUGUI orderFailed, orderComplete, profit, cusFail, cusCom, cusProfit, orderScore, orderItems, orderTimeBonus, newDateT;
+	OrderUI orderui;
     public Collider ShopDoor, ClosetDoor, PcTrigger;
     PcTrigger pcTrig;
     ServeCustomer serveCust;
@@ -24,6 +25,7 @@ public class UIController : MonoBehaviour
         CustomerInteractionUI = FindObjectOfType<CustomerInteractionUI>();
         pcTrig = FindObjectOfType<PcTrigger>();
         ShopInventoryUi = FindObjectOfType<ShopInventoryUi>();
+		orderui = orderP.GetComponent<OrderUI> ();
     }
 
     // Update is called once per frame
@@ -256,8 +258,32 @@ public class UIController : MonoBehaviour
     public void NextDayReset()
     {
         CustomerInteractionUI.NextDayReset();
-        //ShopInventoryUi.ClearInventory();
+
+		if (!dashP.activeInHierarchy)
+			dashP.SetActive (true);
+
+		if (StockP.activeInHierarchy)
+			StockP.SetActive (false);
+
+		if (InventoryP.activeInHierarchy)
+			InventoryP.SetActive (false);
+		
+		if (orderP.activeInHierarchy)
+			orderP.SetActive (false);
+		
+		if (upgradeP.activeInHierarchy)
+			upgradeP.SetActive (false);
+
+
+		orderui.ClearInventory ();
+		orderui.clearInvoice ();
+		orderui.ClearItems ();
+		orderui.ClearOrders ();
+		orderui.ClearTime ();
+	
+       
     }
+
 	public void NewGameTutorial()
 	{
 		newGameTutorial.SetActive (true);
@@ -268,4 +294,9 @@ public class UIController : MonoBehaviour
     {
         doorShop.SetBool("SOpen", false);
     }
+
+	public void DebtDayAnimation()
+	{
+		debtDay.SetActive (true);
+	}
 }
