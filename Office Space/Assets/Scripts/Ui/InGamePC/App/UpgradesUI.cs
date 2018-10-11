@@ -190,8 +190,7 @@ public class UpgradesUI : MonoBehaviour
 
 	void PurchaseLow()
 	{
-		GameObject pur = Instantiate (moneyLow, moneyLowLoc.transform);
-		Destroy (pur, 3f);
+		moneyLow.SetActive (true);
 	}
 	void PurchaseS(int m)
 	{

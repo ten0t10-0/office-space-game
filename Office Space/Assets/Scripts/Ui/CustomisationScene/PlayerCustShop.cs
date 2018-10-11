@@ -10,8 +10,8 @@ public class PlayerCustShop : MonoBehaviour
 	CharacterCustomizationScript playerCus;
 	ColourPicker colour;
 
-	public TextMeshProUGUI price;
-
+	public TextMeshProUGUI price,priceD;
+	public GameObject moneyD;
 	public Sprite locked;
 	public Sprite equipped;
 	public Sprite upper, lower, access, outfit;
@@ -84,6 +84,8 @@ public class PlayerCustShop : MonoBehaviour
 			{
 				CurrentOutfit();
 				GameMaster.Instance.Player.Business.DecreaseMoney (tempItem.Price);
+				priceD.SetText ("-$" + tempItem.Price.ToString ());
+				moneyD.SetActive (true);
 				Debug.Log("Item Purchased");
 			}
 		}
@@ -98,6 +100,7 @@ public class PlayerCustShop : MonoBehaviour
 		{
 			playerCus.UpdateClothingColor(currentSlot,colour.textureColour);
 		}
+		price.SetText (GameMaster.Instance.Player.Business.Money.ToString ());
 	}
 
 	public void ClearScroll()
@@ -147,12 +150,12 @@ public class PlayerCustShop : MonoBehaviour
 		{
 			if (item.ClothingSlot.Slot == ClothingSlot.Costume) 
 			{
-                if (!item.Special)
-                {
+                //if (!item.Special)
+              //  {
                     GameObject newItem = Instantiate(Container, Upperscroll);
                     SetItem(newItem, item);
                     newItem.transform.Find("Button/Image").GetComponent<Image>().sprite = outfit;
-                }
+              //  }
 			}
 		}
 	}
@@ -173,6 +176,7 @@ public class PlayerCustShop : MonoBehaviour
 	{
         newItem.transform.Find("Button/Image").GetComponent<Image>().sprite = outfit;
         newItem.transform.Find("Name").GetComponent<TMP_Text>().text = item.Name;
+		newItem.transform.Find ("Button/Text").GetComponent<TMP_Text> ().text = "$"+item.Price.ToString ();
 
         if (selectedItems(item))
         {
@@ -192,7 +196,6 @@ public class PlayerCustShop : MonoBehaviour
 		int i = 0;
 		clicked = true;
 		tempItem = clothing;
-		price.SetText (clothing.Price.ToString ());
 		foreach (CharacterClothingSO item in GameMaster.Instance.CustomizationManager.Character.Clothing) 
 		{
 			if (item == clothing)

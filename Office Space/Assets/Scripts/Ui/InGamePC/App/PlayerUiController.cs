@@ -14,7 +14,7 @@ public class PlayerUiController : MonoBehaviour
 	public TextMeshProUGUI playerMoney;
 	public Image quality, picture;
 	public Sprite gold, silver, bronze;
-
+	public GameObject NoMoney;
 	public GameObject buyPanel;
 	public GameObject moneyA,moneyMsg,location;
 	//public GameObject pic;
@@ -105,7 +105,7 @@ public class PlayerUiController : MonoBehaviour
 		{
 			moneyMsg.transform.Find ("noMoneyText").GetComponent<TMP_Text> ().text = "You Do Not Have Enough Money!";
 			moneyMsg.SetActive (true);
-
+			NoMoney.SetActive (true);
 			StartCoroutine(moneyErrors());
 		}
 		if (space > avalibleSpace) 
@@ -123,7 +123,7 @@ public class PlayerUiController : MonoBehaviour
 
 			buyPanel.SetActive (false);
 
-			moneyA.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "- "+ total.ToString();
+			moneyA.transform.Find("MoneyPopUpText").GetComponent<TMP_Text> ().text = "-$ "+ total.ToString();
 			GameObject pur = Instantiate (moneyA, location.transform);
 			Destroy (pur, 2f);
 			//moneyA.SetActive (true);

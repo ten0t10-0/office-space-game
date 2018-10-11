@@ -129,7 +129,7 @@ MonoBehaviour:
   CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 1250000
+  initPlayerMoney: 10000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerLevel: 25
@@ -424,7 +424,7 @@ MonoBehaviour:
   ChanceNextOrder: 0
   DayStartHour: 8
   DayEndHour: 20
-  GameTimeSpeed: 2
+  GameTimeSpeed: 10
 --- !u!114 &114933794338400064
 MonoBehaviour:
   m_ObjectHideFlags: 1

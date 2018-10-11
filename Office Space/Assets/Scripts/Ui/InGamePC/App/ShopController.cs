@@ -16,7 +16,7 @@ public class ShopController : MonoBehaviour
 	private GameObject Supplierbtn;
 	private Transform SupplierContent;
 
-	public GameObject qtyPanel;
+	public GameObject qtyPanel,NoMoney;
 	private PlayerUiController playerUI;
 
 	[HideInInspector]
@@ -280,6 +280,7 @@ public class ShopController : MonoBehaviour
 		{
 			moneyMsg.transform.Find ("noMoneyText").GetComponent<TMP_Text> ().text = "You Do Not Have Enough Money!";
 			moneyMsg.SetActive (true);
+			NoMoney.SetActive (true);
 			StartCoroutine(moneyError());
 			Debug.Log(string.Format("Not enough monies. Purchase Price: {0}; Player Moneyz: {1}", purchasedItem.UnitCost.ToString(), GameMaster.Instance.Player.Business.Money.ToString()));
 			return;
