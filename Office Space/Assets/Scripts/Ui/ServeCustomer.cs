@@ -31,6 +31,7 @@ public class ServeCustomer : MonoBehaviour
 	//float start1;
 	bool cusWait1 = false, cusWait2 = false, cusWait3 = false;
 	float start1,start2,start3;
+    float prevTime1, prevTime2, prevTime3;
 
 	void Awake()
 	{
@@ -45,9 +46,9 @@ public class ServeCustomer : MonoBehaviour
 		{
 			if (cusWait1 == true) 
 			{
-				float t = start1 - Time.time;
+				float t = start1 - (Time.time - prevTime1) + Time.deltaTime;
 				string min = ((int)t / 60).ToString ();
-				string sec = (t % 60).ToString ("f0");
+				string sec = (t % 60).ToString ("f0").PadLeft(2, '0');
 				if (t < 60) 
 				{
 					time1.color = new Color32 (249, 137, 0, 255);
@@ -62,7 +63,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait1 = false;
 					AiExit (1);
 					SpawnAfterServed (1);
-					//line1.SetActive (false);
+					line1.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time1.SetText (min + ":" + sec);
@@ -73,9 +74,9 @@ public class ServeCustomer : MonoBehaviour
 		{
 			if (cusWait2 == true) 
 			{
-				float t2 = start2 - Time.time;
-				string min = ((int)t2 / 60).ToString ();
-				string sec = (t2 % 60).ToString ("f0");
+				float t2 = start2 - (Time.time - prevTime2) + Time.deltaTime;
+                string min = ((int)t2 / 60).ToString ();
+				string sec = (t2 % 60).ToString ("f0").PadLeft(2, '0');
 				if (t2 < 60) 
 				{
 					time2.color = new Color32 (249, 137, 0, 255);
@@ -90,7 +91,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait2 = false;
 					AiExit (2);
 					SpawnAfterServed (2);
-					//line2.SetActive (false);
+					line2.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time2.SetText (min + ":" + sec);
@@ -101,9 +102,9 @@ public class ServeCustomer : MonoBehaviour
 		{
 			if (cusWait3 == true) 
 			{
-				float t3 = start3 - Time.time;
-				string min = ((int)t3 / 60).ToString ();
-				string sec = (t3 % 60).ToString ("f0");
+				float t3 = start3 - (Time.time - prevTime3) + Time.deltaTime;
+                string min = ((int)t3 / 60).ToString ();
+				string sec = (t3 % 60).ToString ("f0").PadLeft(2, '0');
 				if (t3 < 60) 
 				{
 					time3.color = new Color32 (249, 137, 0, 255);
@@ -118,7 +119,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait3 = false;
 					AiExit (3);
 					SpawnAfterServed(3);
-					//line3.SetActive (false);
+					line3.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time3.SetText (min + ":" + sec);
@@ -181,20 +182,23 @@ public class ServeCustomer : MonoBehaviour
 		{
 		case 1:
 			{
-				start1 = Random.Range (100f, 250f);
+				start1 = Random.Range (10f, 30f);
+                prevTime1 = Time.time;
 				cusWait1 = true;
 				Debug.Log ("start tiiiiiimer");
 				break;
 			}
 		case 2:
 			{
-				start2 = Random.Range (100f, 250f);
+				start2 = Random.Range(10f, 30f);
+                    prevTime2 = Time.time;
 				cusWait2 = true;
 				break;
 			}
 		case 3:
 			{	
-				start3 = Random.Range (100f, 250f);
+				start3 = Random.Range(10f, 30f);
+                    prevTime3 = Time.time;
 				cusWait3 = true;
 	
 				break;
