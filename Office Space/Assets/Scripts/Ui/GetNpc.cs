@@ -5,9 +5,7 @@ using TMPro;
 
 public class GetNpc : MonoBehaviour {
 
-	public GameObject cube1,cube2,cube3,interact;
-
-	public Collider col1, col2, col3;
+	public GameObject interact;
 	public int line;
 
 	ServeCustomer serve;
@@ -43,8 +41,7 @@ public class GetNpc : MonoBehaviour {
 			{
 				serve.cus1 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				serve.AI1 = col.gameObject.GetComponent<AI_try4> ();
-				cube1.SetActive (true);
-				col1.enabled = true;
+				serve.Counter1True ();
 				serve.StartTimer (en);
 				Debug.Log ("Customer Counter on Enter" + en);
 				break;
@@ -53,9 +50,8 @@ public class GetNpc : MonoBehaviour {
 			{
 				serve.cus2 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				serve.AI2 = col.gameObject.GetComponent<AI_try3> ();
-				cube2.SetActive (true);
+				serve.Counter2True ();
 				serve.StartTimer (en);
-				col2.enabled = true;
 				Debug.Log ("Customer Counter " + en);
 				break;
 			}
@@ -63,8 +59,7 @@ public class GetNpc : MonoBehaviour {
 			{
 				serve.cus3 = col.gameObject.GetComponent<CharacterCustomizationScript> ();
 				serve.AI3 = col.gameObject.GetComponent<AI_try>();
-				cube3.SetActive (true);
-				col3.enabled = true;
+				serve.Counter3True ();
 				serve.StartTimer (en);
 				Debug.Log ("Customer Counter " + en);
 				break;
@@ -77,20 +72,17 @@ public class GetNpc : MonoBehaviour {
 		{
 		case 1:
 			{
-				cube1.SetActive (false);
-				col1.enabled = false;
+				serve.Counter1False ();
 				break;
 			}
 		case 2:
 			{
-				cube2.SetActive (false);
-				col2.enabled = false;
+				serve.Counter2False ();
 				break;
 			}
 		case 3:
 			{
-				cube3.SetActive (false);
-				col3.enabled = false;
+				serve.Counter3False ();
 				break;
 			}
 		}

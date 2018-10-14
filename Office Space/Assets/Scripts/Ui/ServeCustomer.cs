@@ -62,7 +62,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait1 = false;
 					AiExit (1);
 					SpawnAfterServed (1);
-					line1.SetActive (false);
+					//line1.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time1.SetText (min + ":" + sec);
@@ -90,7 +90,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait2 = false;
 					AiExit (2);
 					SpawnAfterServed (2);
-					line2.SetActive (false);
+					//line2.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time2.SetText (min + ":" + sec);
@@ -118,7 +118,7 @@ public class ServeCustomer : MonoBehaviour
 					cusWait3 = false;
 					AiExit (3);
 					SpawnAfterServed(3);
-					line3.SetActive (false);
+					//line3.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
 				}
 				time3.SetText (min + ":" + sec);
@@ -269,6 +269,42 @@ public class ServeCustomer : MonoBehaviour
 		line1.SetActive (false);
 		line3.SetActive (false);
 		line2.SetActive (false);
+	}
+
+	public void Counter1False()
+	{
+		line1.SetActive (false);
+		col1.enabled = false;
+	}
+
+	public void Counter2False()
+	{
+		line2.SetActive (false);
+		col2.enabled = false;
+	}
+
+	public void Counter3False()
+	{
+		line3.SetActive (false);
+		col3.enabled = false;
+	}
+
+	public void Counter1True()
+	{
+		line1.SetActive (true);
+		col1.enabled = true;
+	}
+
+	public void Counter2True()
+	{
+		line2.SetActive (true);
+		col2.enabled = true;
+	}
+
+	public void Counter3True()
+	{
+		line3.SetActive (true);
+		col3.enabled = true;
 	}
 
 }
