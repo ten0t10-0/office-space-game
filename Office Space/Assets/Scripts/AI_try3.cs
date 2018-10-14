@@ -19,7 +19,7 @@ public class AI_try3 : MonoBehaviour
 	public float speed, stop_distance;
 	public float PauseTimer;
 	[SerializeField]
-	private float cur_timer;
+	public float cur_timer;
 	Transform sm;
 	public List<Transform> npcWayPoints;
 	public bool exit3 = true;
@@ -63,7 +63,8 @@ public class AI_try3 : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{ 
-		if (exit3 == true) {
+		if (exit3 == true) 
+		{
 			nm.acceleration = speed;
 			nm.stoppingDistance = stop_distance;
 
@@ -108,8 +109,8 @@ public class AI_try3 : MonoBehaviour
 
 				if (Cur_Waypoint == 8) 
 				{
-					cur_timer = 0f;
-					exit3 = false;
+					cur_timer = 100;
+					//exit3 = false;
 				}
 		//
 		//		if (Cur_Waypoint == 5) 

@@ -19,7 +19,7 @@ public class AI_try4 : MonoBehaviour
 	public float speed, stop_distance;
 	public float PauseTimer;
 	[SerializeField]
-	private float cur_timer;
+	public float cur_timer;
 	Transform sm;
 	public List<Transform> npcWayPoints;
 	public bool exit4 = true;
@@ -108,8 +108,8 @@ public class AI_try4 : MonoBehaviour
 
 				if (Cur_Waypoint == 3) 
 				{
-					cur_timer = 0f;
-					exit4 = false;
+					cur_timer = 100;
+					//exit4 = false;
 				}
 		//
 		//		if (Cur_Waypoint == 5) 

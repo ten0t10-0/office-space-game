@@ -60,7 +60,7 @@ public class ServeCustomer : MonoBehaviour
 				if (t <= 0) 
 				{
 					cusWait1 = false;
-					AI1.exit4 = true;
+					AiExit (1);
 					SpawnAfterServed (1);
 					line1.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
@@ -88,7 +88,7 @@ public class ServeCustomer : MonoBehaviour
 				if (t2 <= 0) 
 				{
 					cusWait2 = false;
-					AI2.exit3 = true;
+					AiExit (2);
 					SpawnAfterServed (2);
 					line2.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
@@ -116,7 +116,7 @@ public class ServeCustomer : MonoBehaviour
 				if (t3 <= 0) 
 				{
 					cusWait3 = false;
-					AI3.exit = true;
+					AiExit (3);
 					SpawnAfterServed(3);
 					line3.SetActive (false);
 					Debug.Log ("end tiiiiiimer");
@@ -208,17 +208,20 @@ public class ServeCustomer : MonoBehaviour
 		{
 		case 1:
 			{
-				AI1.exit4 = true;
+				//AI1.exit4 = true;
+				AI1.cur_timer = 0;
 				break;
 			}
 		case 2:
 			{
-				AI2.exit3 = true;
+				//AI2.exit3 = true;
+				AI2.cur_timer = 0;
 				break;
 			}
 		case 3:
 			{	
-				AI3.exit = true;
+				//AI3.exit = true;
+				AI3.cur_timer = 0;
 				break;
 			}
 		}

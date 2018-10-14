@@ -19,7 +19,7 @@ public class AI_try2 : MonoBehaviour
 	public float speed, stop_distance;
 	public float PauseTimer;
 	[SerializeField]
-	private float cur_timer;
+	public float cur_timer;
 	Transform sm;
 	public List<Transform> npcWayPoints;
 	bool taken1 = false;
