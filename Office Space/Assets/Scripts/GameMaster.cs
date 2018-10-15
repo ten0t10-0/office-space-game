@@ -1086,10 +1086,6 @@ public class GameMaster : MonoBehaviour
                     OrderManager.Orders.Clear();
                     OrderManager.CountCompletedToday = OrderManager.CountFailedToday = 0;
 
-                    NPCManager.DestroyAllNPCs();
-
-                    GUIManager.UIController.NextDayReset();
-
                     break;
                 }
 
@@ -1099,15 +1095,13 @@ public class GameMaster : MonoBehaviour
 
                     dayStartHour = GameModeManager.Shop.DayStartHour;
 
-                    NPCManager.DestroyAllNPCs();
-
-                    GUIManager.UIController.NextDayReset();
-
-
-
                     break;
                 }
         }
+
+        NPCManager.DestroyAllNPCs();
+
+        GUIManager.UIController.NextDayReset();
 
         if (GameDateTime.Day == dayEndCurrent)
             GameDateTime = GameDateTime.AddDays(1);
@@ -1323,6 +1317,9 @@ public class GameMaster : MonoBehaviour
 
         //Set up area
         CustomizationManager.Office.SetUpOffice(Player.OfficeCustomizationData);
+
+        //Destroy NPC's
+        NPCManager.DestroyAllNPCs();
 
         //LOG:
         Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA LOADED!");
