@@ -177,14 +177,18 @@ public class DisplayInventory : MonoBehaviour
 
 	public void ConfirmButton()
 	{
-		if (nothing == false)
+		if (nothingB == false)
+		{
 			cusInt.SelectSubItem (tempItem, inventoryType);
+		}
 		else 
 		{
 			cusInt.NoItems ();
-			nothingB = true;
+			nothingB = false;
 		}
 
 		confirmPanel.SetActive (false);
 	}
+
+
 }

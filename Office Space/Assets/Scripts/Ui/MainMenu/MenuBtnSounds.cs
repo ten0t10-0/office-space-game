@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuBtnSounds : MonoBehaviour {
-
-	SoundManager sm;
+public class MenuBtnSounds : MonoBehaviour 
+{
+	MenuSound sm;
 
 	void Awake ()
 	{
-		sm = gameObject.GetComponent<SoundManager> ();
+		sm = gameObject.GetComponent<MenuSound> ();
 	}
-	void Start()
-	{
-		sm.Play ("MenuMusic");
-	}
-
-
+		
 	public void Confirm()
 	{
 		sm.Play ("Confirm");

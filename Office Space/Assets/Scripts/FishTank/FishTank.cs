@@ -35,7 +35,7 @@ public class FishTank : MonoBehaviour {
 	void CreateAIGroup()
 	{
 		GameObject AiGroupSpawn;
-		for (int i = 0; i < 1; i++) 
+		for (int i = 0; i < 2; i++) 
 		{
 			AiGroupSpawn = new GameObject (AiObject [i].AIGroupName);
 			AiGroupSpawn.transform.parent = this.gameObject.transform;
@@ -57,7 +57,7 @@ public class FishTank : MonoBehaviour {
 	void SpawnNPC ()
 	{ 
 
-		for (int i = 0; i < 1; i++) 
+		for (int i = 0; i < 2; i++) 
 		{ 
 			GameObject tempGroup = GameObject.Find(AiObject[i].AIGroupName); 
 			if(tempGroup.GetComponentInChildren<Transform>().childCount < AiObject[i].MaxAi) 

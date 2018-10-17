@@ -19,8 +19,11 @@ public class NewGame : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (GameMaster.Instance.OfflineMode == false)
+		if (GameMaster.Instance.OfflineMode == false) 
+		{
 			UserName.interactable = false;
+			UserName.text = GameMaster.Instance.CurrentUsername;
+		}
         else
         {
             UserName.interactable = true;

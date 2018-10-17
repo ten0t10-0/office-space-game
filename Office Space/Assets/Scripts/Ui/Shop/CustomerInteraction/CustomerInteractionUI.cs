@@ -145,6 +145,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.FirstPerson);
 			GameMaster.Instance.PlayerControl = true;
 			GameMaster.Instance.SleepMode = false;
+			hudO.SetBool ("UIO", true);
 	
 	}
 	public void Cancel()
@@ -160,7 +161,7 @@ public class CustomerInteractionUI : MonoBehaviour
 		customerGuy = Instantiate (uiCharacter, customerLoc.transform);
 		AInum = ai;
 		InteractionPanel.SetActive (true);
-		hudO.SetBool ("UIO", true);
+
 		Camera.main.GetComponent<CameraController> ().ChangeMode (CameraMode.Static);
 		customerName = GameMaster.Instance.CustomerManager.GenerateCustomer ().FullName ();
         if (!EmptyItems())
@@ -204,6 +205,8 @@ public class CustomerInteractionUI : MonoBehaviour
 				currentAmount = customerItem.UnitCost;
 				itemCost.SetText (currentAmount.ToString ());
 				item.SetBool("ItemIn",true);
+				CalculatePercentage ();
+				SetIncreaseAmount ();
 				break;
 			}
 		case 2:
@@ -325,10 +328,10 @@ public class CustomerInteractionUI : MonoBehaviour
 				item.SetBool("ItemIn",false);
 				text.SetText(customerResponce);
 				name.SetText(customerName);
-				//				button.SetBool ("ButtonIn", false);
+				//button.SetBool ("ButtonIn", false);
 				buttonpanel.SetActive (false);
 				speech.SetBool ("SpeechIn", true);
-				perc.SetBool ("PerIn", false);
+//				perc.SetBool ("PerIn", false);
 				percentagePanel.SetActive (false);
 				break;
 			}
@@ -388,9 +391,10 @@ public class CustomerInteractionUI : MonoBehaviour
 	public void SelectSubItem(Item subItem, int type)
 	{
 		inventoryType = type;
-
-		if (customerSub == subItem.Subcategory && subNothing == false) 
+		Debug.Log (subItem.Subcategory.Name + "  9999999999999 " + customerSub.Name);
+		if (customerSub == subItem.Subcategory) 
 		{
+			
 			counter = 3;
 			runSubInteraction (2);
 			customerItem = subItem;
@@ -398,6 +402,8 @@ public class CustomerInteractionUI : MonoBehaviour
 			SetBorder (customerItem);
 			currentAmount = customerItem.UnitCost;
 			itemCost.SetText (currentAmount.ToString ());
+			CalculatePercentage ();
+			SetIncreaseAmount ();
 		}
 		else 
 		{
@@ -703,5 +709,24 @@ public class CustomerInteractionUI : MonoBehaviour
 	{
 		yield return new WaitForSeconds(3);
 		nullitems.SetActive (false);
+	}
+	void CalculatePercentage()
+	{
+		profit = currentAmount - customerItem.UnitCost;
+		percentage = (profit / customerItem.UnitCost) * 100;
+		calPercentage.SetText ((percentage + 100).ToString ("f0")+"%");
+	}
+	public void SetIncreaseAmount()
+	{
+		if (customerItem.UnitCost < 300)
+		{
+			increasePerClick = 10;
+		} 
+		else if (customerItem.UnitCost < 1000) 
+		{
+			increasePerClick = 50;
+		}
+		else
+			increasePerClick = 100;
 	}
 }

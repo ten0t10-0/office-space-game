@@ -36,10 +36,10 @@ public class DebtCheckPass : MonoBehaviour
 		{
 			if (counter == 1) 
 			{
+				invoice.SetActive (false);
 				controller.NewDayAfterDebt ();
 				tutorial.SetActive (false);
 				canvas.SetActive (false);
-				invoice.SetActive (false);
 			}
 			counter++;
 			manager.DisplayNextSentence();

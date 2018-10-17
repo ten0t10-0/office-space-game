@@ -8,12 +8,12 @@ public class UIController : MonoBehaviour
 {
     public GameObject buildmode, endDayOffice, endDayShop, GameOver, NotificationCanvas, roof, appMontior, homescreen, screensaver, hudcanvas, orderNot;
     public GameObject DebtPass, DebtGameOver, DebtLifeLine, DebtNoLifeLineU, confirmDay;// dontforget graphic raycaster
-	public GameObject newDay, newGameTutorial,debtDay;
+	public GameObject newDay, newGameTutorial,debtDay,debtPassInvoice;
 	public GameObject dashP,StockP,InventoryP,orderP,upgradeP;
-    public Animator buildM, endDayOffA, endDayShopA, orderNote, newDayA, doorShop;
+    public Animator buildM, endDayOffA, endDayShopA, orderNote, newDayA, doorShop,debt;
     CustomerInteractionUI CustomerInteractionUI;
     ShopInventoryUi ShopInventoryUi;
-	public TextMeshProUGUI orderFailed, orderComplete, profit, cusFail, cusCom, cusProfit, orderScore, orderItems, orderTimeBonus, newDateT;
+	public TextMeshProUGUI orderFailed, orderComplete, profit, cusFail, cusCom, cusProfit, orderScore, orderItems, orderTimeBonus, newDateT,debtInvoiceName,debtInvoiceAmount;
 	OrderUI orderui;
     public Collider ShopDoor, ClosetDoor, PcTrigger;
     PcTrigger pcTrig;
@@ -167,6 +167,7 @@ public class UIController : MonoBehaviour
 	public void PassDebtCheck()
 	{
 		DebtPass.SetActive (true);
+		DisplayInvoice ();
 		DebtPass.GetComponent<DebtCheckPass> ().StartUp ();
 	}
 
@@ -298,5 +299,12 @@ public class UIController : MonoBehaviour
 	public void DebtDayAnimation()
 	{
 		debtDay.SetActive (true);
+	}
+
+	public void DisplayInvoice()
+	{
+		debtPassInvoice.SetActive (true);
+		debtInvoiceAmount.SetText (" $" + GameMaster.Instance.DebtAmounts [GameMaster.Instance.WeekCurrent].ToString());
+		debtInvoiceName.SetText (GameMaster.Instance.Player.Name);
 	}
 }
