@@ -146,7 +146,7 @@ MonoBehaviour:
   BuildMode: 0
   OfflineMode: 1
   SleepMode: 0
-  TutorialMode: 0
+  TutorialMode: 1
   ShopUnlocked: 0
   TEMPLoadDefaultSave: 0
   CameraLock: 0
