@@ -16,6 +16,12 @@ public class ShopManagerClass : MonoBehaviour
 
 	void Start()
 	{
+
+	}
+
+	public void spawnShopItems()
+	{
+		RemoveAllItems ();
 		int i = 0;
 		foreach (Item item in GameMaster.Instance.Player.Business.Shop.ItemsOnDisplay) 
 		{
@@ -28,6 +34,7 @@ public class ShopManagerClass : MonoBehaviour
 			i++;
 		}
 	}
+
 	public Rigidbody StartSpawn(Item item)
 	{
 		if (item.Subcategory.EnumID == ItemSubcategory.Console)
@@ -70,6 +77,20 @@ public class ShopManagerClass : MonoBehaviour
 		Debug.Log("Removing item " + i.ToString());
 		Destroy (items[i].gameObject);
 		items [i] = null;
+	}
+
+	public void RemoveAllItems()
+	{
+		int i = 0;
+		foreach (Rigidbody prefab in items) 
+		{
+			if (prefab != null) 
+			{
+				Destroy (items[i].gameObject);
+				items [i] = null;
+			}
+			i++;
+		}
 	}
 
 }

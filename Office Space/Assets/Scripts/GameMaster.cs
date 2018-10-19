@@ -1321,6 +1321,8 @@ public class GameMaster : MonoBehaviour
         //Destroy NPC's
         NPCManager.DestroyAllNPCs();
 
+		GUIManager.shopManager.spawnShopItems ();
+
         //LOG:
         Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA LOADED!");
     }
