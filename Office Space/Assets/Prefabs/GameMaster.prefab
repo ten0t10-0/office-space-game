@@ -409,6 +409,7 @@ MonoBehaviour:
   note: {fileID: 0}
   achiev: {fileID: 0}
   UIController: {fileID: 0}
+  shopManager: {fileID: 0}
 --- !u!114 &114856139823664460
 MonoBehaviour:
   m_ObjectHideFlags: 1

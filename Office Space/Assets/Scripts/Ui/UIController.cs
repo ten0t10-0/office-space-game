@@ -307,4 +307,23 @@ public class UIController : MonoBehaviour
 		debtInvoiceAmount.SetText (" $" + GameMaster.Instance.DebtAmounts [GameMaster.Instance.WeekCurrent].ToString());
 		debtInvoiceName.SetText (GameMaster.Instance.Player.Name);
 	}
+
+    public void GoToMainMenu()
+    {
+        StartCoroutine(LoadAsynchronously("MainMenu"));
+    }
+
+    private IEnumerator LoadAsynchronously(string sceneName)
+    {
+        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / .9f);
+
+            Debug.Log(progress);
+
+            yield return null;
+        }
+    }
 }

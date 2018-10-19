@@ -25,6 +25,11 @@ public class Calender : MonoBehaviour {
 		calculateMonth();
     }
 
+    private void Update()
+    {
+        calculateMonth();
+    }
+
     public void calculateMonth ()
 	{
 

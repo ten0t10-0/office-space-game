@@ -38,6 +38,8 @@ public class DebtLifeLineUsed : MonoBehaviour
 				controller.NewDayAfterDebt ();
 				tutorial.SetActive (false);
 				canvas.SetActive (false);
+
+                counter = 0;
 			}
 			counter++;
 			manager.DisplayNextSentence();

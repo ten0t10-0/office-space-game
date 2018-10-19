@@ -368,9 +368,6 @@ public class GameMaster : MonoBehaviour
         //Set Camera target
         Camera.main.GetComponent<CameraController>().SetTarget(CurrentPlayerObject.GetComponent<Rigidbody>().transform);
 
-        //Debt dates
-        DebtDates = GetDebtDates();
-
         IsGameInitialized = true;
 
         //**TEST**
@@ -458,6 +455,9 @@ public class GameMaster : MonoBehaviour
 
         //Spawn Player Object
         InitializePlayer();
+
+        //Debt dates
+        DebtDates = GetDebtDates();
     }
 
     public void NewGame_PostTutorial()
@@ -1123,6 +1123,9 @@ public class GameMaster : MonoBehaviour
         //if (GameModeManager.GameMode_Current == GameMode.Shop)
         //    SaveGame(SaveSlotCurrent);
 
+        if (GameDateTime.DayOfWeek == DayDebt)
+            GUIManager.UIController.DebtDayAnimation();
+
         Debug.Log("NEW DAY START");
     }
 
@@ -1322,6 +1325,9 @@ public class GameMaster : MonoBehaviour
         NPCManager.DestroyAllNPCs();
 
 		GUIManager.shopManager.spawnShopItems ();
+
+        //Debt dates
+        DebtDates = GetDebtDates();
 
         //LOG:
         Debug.Log("[SAVE SLOT: " + saveSlot.ToString() + "] GAME DATA LOADED!");
