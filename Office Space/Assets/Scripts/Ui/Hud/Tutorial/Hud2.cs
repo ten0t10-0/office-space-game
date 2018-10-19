@@ -50,6 +50,8 @@ public class Hud2 : MonoBehaviour
 		pause.Resume ();
 		load.SetActive (true);
 
+        GameMaster.Instance.ModeSetUI();
+
 		StartCoroutine(LoadAsynchronously("MainMenu"));
 	}
 
