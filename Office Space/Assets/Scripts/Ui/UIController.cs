@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
     {
 		if (GameMaster.Instance.Player.Level < 10)
 			ShopDoor.enabled = false;
+		else
+			ShopDoor.enabled = true;
     }
 
     public void Tutorial()
@@ -281,8 +283,6 @@ public class UIController : MonoBehaviour
 		orderui.ClearItems ();
 		orderui.ClearOrders ();
 		orderui.ClearTime ();
-	
-       
     }
 
 	public void NewGameTutorial()
