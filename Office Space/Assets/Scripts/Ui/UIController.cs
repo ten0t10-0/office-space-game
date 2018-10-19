@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
 {
     public GameObject buildmode, endDayOffice, endDayShop, GameOver, NotificationCanvas, roof, appMontior, homescreen, screensaver, hudcanvas, orderNot;
     public GameObject DebtPass, DebtGameOver, DebtLifeLine, DebtNoLifeLineU, confirmDay;// dontforget graphic raycaster
-	public GameObject newDay, newGameTutorial,debtDay,debtPassInvoice;
+	public GameObject newDay, newGameTutorial,debtDay,debtPassInvoice,LoadingCanvas;
 	public GameObject dashP,StockP,InventoryP,orderP,upgradeP;
     public Animator buildM, endDayOffA, endDayShopA, orderNote, newDayA, doorShop,debt;
     CustomerInteractionUI CustomerInteractionUI;
@@ -310,6 +310,7 @@ public class UIController : MonoBehaviour
 
     public void GoToMainMenu()
     {
+		LoadingCanvas.SetActive (true);
         StartCoroutine(LoadAsynchronously("MainMenu"));
     }
 
