@@ -354,7 +354,7 @@ public class GameMaster : MonoBehaviour
 
         ModeSetPlay();
 
-        if (initialSaveSlot != -1 && SaveFileExists(initialSaveSlot) && TEMPLoadDefaultSave)
+        if (initialSaveSlot != -1 && SaveFileExists(initialSaveSlot))
         {
             LoadGame(initialSaveSlot);
         }

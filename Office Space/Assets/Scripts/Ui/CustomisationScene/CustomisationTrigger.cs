@@ -29,6 +29,8 @@ public class CustomisationTrigger : MonoBehaviour {
 				hud.SetActive (false);
 				custom.SetActive (true);
 
+                GameMaster.Instance.SleepMode = true;
+
 			}
 		}
 	}
@@ -48,7 +50,9 @@ public class CustomisationTrigger : MonoBehaviour {
 		custom.SetActive (false);
 		hudO.SetBool ("UIO", false);
 
-	}
+        if (!GameMaster.Instance.BuildMode)
+            GameMaster.Instance.SleepMode = false;
+    }
 
 	void OnTriggerEnter(Collider other)
 	{

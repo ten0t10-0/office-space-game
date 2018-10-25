@@ -13,7 +13,6 @@ public class ServeCustomer : MonoBehaviour
 	public Collider col1,col2,col3;
 
 	AiSpawnManager spawner;
-	bool endOfDay = false;
 
 	[HideInInspector]
 	public CharacterCustomizationScript cus1,cus2,cus3;
@@ -49,6 +48,10 @@ public class ServeCustomer : MonoBehaviour
 				float t = start1 - (Time.time - prevTime1) + Time.deltaTime;
 				string min = ((int)t / 60).ToString ();
 				string sec = (t % 60).ToString ("f0").PadLeft(2, '0');
+                if (t >= 60)
+                {
+                    time1.color = new Color32(45, 246, 52, 255);
+                }
 				if (t < 60) 
 				{
 					time1.color = new Color32 (249, 137, 0, 255);
@@ -77,7 +80,11 @@ public class ServeCustomer : MonoBehaviour
 				float t2 = start2 - (Time.time - prevTime2) + Time.deltaTime;
                 string min = ((int)t2 / 60).ToString ();
 				string sec = (t2 % 60).ToString ("f0").PadLeft(2, '0');
-				if (t2 < 60) 
+                if (t2 >= 60)
+                {
+                    time2.color = new Color32(45, 246, 52, 255);
+                }
+                if (t2 < 60) 
 				{
 					time2.color = new Color32 (249, 137, 0, 255);
 				}
@@ -105,7 +112,11 @@ public class ServeCustomer : MonoBehaviour
 				float t3 = start3 - (Time.time - prevTime3) + Time.deltaTime;
                 string min = ((int)t3 / 60).ToString ();
 				string sec = (t3 % 60).ToString ("f0").PadLeft(2, '0');
-				if (t3 < 60) 
+                if (t3 >= 60)
+                {
+                    time3.color = new Color32(45, 246, 52, 255);
+                }
+                if (t3 < 60) 
 				{
 					time3.color = new Color32 (249, 137, 0, 255);
 				}
@@ -125,10 +136,6 @@ public class ServeCustomer : MonoBehaviour
 				time3.SetText (min + ":" + sec);
 			}
 
-		}
-		if (GameMaster.Instance.DayEnd == true) 
-		{
-			endOfDay = true;
 		}
 	}
 
@@ -182,7 +189,7 @@ public class ServeCustomer : MonoBehaviour
 		{
 		case 1:
 			{
-				start1 = Random.Range (10f, 30f);
+				start1 = Random.Range (45f, 90f);
                 prevTime1 = Time.time;
 				cusWait1 = true;
 				Debug.Log ("start tiiiiiimer");
@@ -190,14 +197,14 @@ public class ServeCustomer : MonoBehaviour
 			}
 		case 2:
 			{
-				start2 = Random.Range(10f, 30f);
+				start2 = Random.Range(45f, 90f);
                     prevTime2 = Time.time;
 				cusWait2 = true;
 				break;
 			}
 		case 3:
 			{	
-				start3 = Random.Range(10f, 30f);
+				start3 = Random.Range(45f, 90f);
                     prevTime3 = Time.time;
 				cusWait3 = true;
 	
@@ -246,7 +253,7 @@ public class ServeCustomer : MonoBehaviour
 
 	void SpawnAfterServed(int i)
 	{
-		if (endOfDay == false)
+		if (GameMaster.Instance.DayEnd == false)
 		{
 			switch (i) 
 			{

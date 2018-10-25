@@ -129,7 +129,7 @@ MonoBehaviour:
   CurrentBusinessName: 
   initPlayerName: New Player
   initBusinessName: My Business
-  initPlayerMoney: 2000
+  initPlayerMoney: 5000
   initPlayerMarkup: 0.15
   initPlayerInventorySpace: 100
   initPlayerLevel: 1

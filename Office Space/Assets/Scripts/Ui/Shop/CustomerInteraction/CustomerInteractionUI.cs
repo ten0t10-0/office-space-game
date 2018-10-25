@@ -8,7 +8,7 @@ public class CustomerInteractionUI : MonoBehaviour
 {
 
 	public Animator customer,player,bars,item,speech,perc,button,inventory;
-	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP,confirm,otherOpenP;
+	public GameObject InteractionPanel,uiCharacter, playerLoc,customerLoc,percentagePanel,hudCanvas, mount,buttonpanel,cube,particle,inventoryP,confirm,otherOpenP, hudPanel;
 
 	public Button btnDecrease,btnIncrease;
 
@@ -27,9 +27,9 @@ public class CustomerInteractionUI : MonoBehaviour
 	public GameObject OpenPanel = null,nullitems;
 	private bool isInsideTrigger = false;
 
-	bool disableSpace = true, markUpFail = false,subCate = false,saleSuccessful = false,subNothing = false,endOfDay = false; //End of day True set up!!!
+    bool disableSpace = true, markUpFail = false, subCate = false, saleSuccessful = false, subNothing = false;
 
-	public TextMeshProUGUI text,name,itemName,labelCat; 
+	public TextMeshProUGUI text,name,itemName,labelCat, time, money; 
 	public TextMeshProUGUI itemCost,calPercentage; 
 	Item customerItem;
 	ItemSubcategorySO customerSub;
@@ -75,6 +75,8 @@ public class CustomerInteractionUI : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+        money.SetText("$ " + (GameMaster.Instance.Player.Business.Money).ToString());
+        time.SetText(GameMaster.Instance.GameTimeString12());
 		if (IsOpenPanelActive && isInsideTrigger) 
 		{
 			if (Input.GetKeyDown (KeyCode.E)) 
@@ -92,11 +94,6 @@ public class CustomerInteractionUI : MonoBehaviour
 					Cursor.lockState = CursorLockMode.None;
 					GameMaster.Instance.PlayerControl = false;
 				}
-			}
-
-			if (GameMaster.Instance.DayEnd == true) 
-			{
-				endOfDay = true;
 			}
 		}
 		if (Input.GetKeyUp (KeyCode.Space) && Time.time > canPress && disableSpace == false) 
@@ -146,6 +143,7 @@ public class CustomerInteractionUI : MonoBehaviour
 			GameMaster.Instance.PlayerControl = true;
 			GameMaster.Instance.SleepMode = false;
 			hudO.SetBool ("UIO", true);
+        hudPanel.SetActive(true);
 	
 	}
 	public void Cancel()
@@ -652,7 +650,7 @@ public class CustomerInteractionUI : MonoBehaviour
 
 	void SpawnAfterServed(int i)
 	{
-		if (endOfDay == false)
+		if (GameMaster.Instance.DayEnd == false)
 		{
 			switch (i) 
 			{
@@ -689,6 +687,7 @@ public class CustomerInteractionUI : MonoBehaviour
         OpenPanel.SetActive(false);
         hudO.SetBool("UIO", false);
 		otherOpenP.SetActive (false);
+        hudPanel.SetActive(false);
     }
 
 	bool EmptyItems()

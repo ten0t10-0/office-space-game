@@ -40,13 +40,17 @@ public class HudMain : MonoBehaviour {
 			FindObjectOfType<SoundManager>().Play("PhoneO");
 			Cursor.lockState = CursorLockMode.None;
 			ph.noteCount ();
+
+            GameMaster.Instance.ModeSetUI();
 		}
 		if (Input.GetKeyDown(KeyCode.N)) 
 		{
 			animator.SetBool ("PhoneO", false);
 			Cursor.lockState = CursorLockMode.Locked;
 			StartCoroutine (PhoneClose());
-		}
+
+            GameMaster.Instance.ModeSetPlay();
+        }
 
 
 		time.SetText (GameMaster.Instance.GameTimeString12 ());
